@@ -129,6 +129,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -341,9 +370,25 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#installing-and-managing-python-and-packages" id="toc-installing-and-managing-python-and-packages" class="nav-link active" data-scroll-target="#installing-and-managing-python-and-packages">Installing and Managing Python and Packages</a></li>
-  <li><a href="#overview-of-python-and-python-modules" id="toc-overview-of-python-and-python-modules" class="nav-link" data-scroll-target="#overview-of-python-and-python-modules">Overview of Python and Python Modules</a></li>
-  <li><a href="#writing-functions" id="toc-writing-functions" class="nav-link" data-scroll-target="#writing-functions">Writing Functions</a></li>
+  <li><a href="#installing-and-managing-python-and-packages" id="toc-installing-and-managing-python-and-packages" class="nav-link active" data-scroll-target="#installing-and-managing-python-and-packages">Installing and Managing Python and Packages</a>
+  <ul class="collapse">
+  <li><a href="#option-1-uv-recommended-for-new-users" id="toc-option-1-uv-recommended-for-new-users" class="nav-link" data-scroll-target="#option-1-uv-recommended-for-new-users">Option 1: <code>uv</code> (Recommended for New Users)</a></li>
+  <li><a href="#option-2-conda-anaconda" id="toc-option-2-conda-anaconda" class="nav-link" data-scroll-target="#option-2-conda-anaconda">Option 2: <code>conda</code> / Anaconda</a></li>
+  <li><a href="#choosing-an-editor-interface" id="toc-choosing-an-editor-interface" class="nav-link" data-scroll-target="#choosing-an-editor-interface">Choosing an Editor / Interface</a></li>
+  </ul></li>
+  <li><a href="#overview-of-python-and-python-modules" id="toc-overview-of-python-and-python-modules" class="nav-link" data-scroll-target="#overview-of-python-and-python-modules">Overview of Python and Python Modules</a>
+  <ul class="collapse">
+  <li><a href="#what-is-python" id="toc-what-is-python" class="nav-link" data-scroll-target="#what-is-python">What is Python?</a></li>
+  <li><a href="#what-is-a-python-module-package" id="toc-what-is-a-python-module-package" class="nav-link" data-scroll-target="#what-is-a-python-module-package">What is a Python Module (Package)?</a></li>
+  <li><a href="#importing-modules-and-namespaces" id="toc-importing-modules-and-namespaces" class="nav-link" data-scroll-target="#importing-modules-and-namespaces">Importing Modules and Namespaces</a></li>
+  </ul></li>
+  <li><a href="#writing-functions" id="toc-writing-functions" class="nav-link" data-scroll-target="#writing-functions">Writing Functions</a>
+  <ul class="collapse">
+  <li><a href="#basic-function-syntax" id="toc-basic-function-syntax" class="nav-link" data-scroll-target="#basic-function-syntax">Basic Function Syntax</a></li>
+  <li><a href="#functions-with-multiple-arguments-and-default-values" id="toc-functions-with-multiple-arguments-and-default-values" class="nav-link" data-scroll-target="#functions-with-multiple-arguments-and-default-values">Functions with Multiple Arguments and Default Values</a></li>
+  <li><a href="#lambda-functions-anonymous-functions" id="toc-lambda-functions-anonymous-functions" class="nav-link" data-scroll-target="#lambda-functions-anonymous-functions">Lambda Functions (Anonymous Functions)</a></li>
+  <li><a href="#returning-multiple-values" id="toc-returning-multiple-values" class="nav-link" data-scroll-target="#returning-multiple-values">Returning Multiple Values</a></li>
+  </ul></li>
   <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting">Plotting</a>
   <ul class="collapse">
   <li><a href="#basic-plotting" id="toc-basic-plotting" class="nav-link" data-scroll-target="#basic-plotting">Basic Plotting</a></li>
@@ -351,21 +396,29 @@ div.csl-indent {
   </ul></li>
   <li><a href="#intro-to-scientific-python" id="toc-intro-to-scientific-python" class="nav-link" data-scroll-target="#intro-to-scientific-python">Intro to Scientific Python</a>
   <ul class="collapse">
-  <li><a href="#intro-to-numpy" id="toc-intro-to-numpy" class="nav-link" data-scroll-target="#intro-to-numpy">Intro to Numpy</a></li>
+  <li><a href="#intro-to-numpy" id="toc-intro-to-numpy" class="nav-link" data-scroll-target="#intro-to-numpy">Intro to NumPy</a></li>
   <li><a href="#intro-to-scipy" id="toc-intro-to-scipy" class="nav-link" data-scroll-target="#intro-to-scipy">Intro to SciPy</a></li>
   <li><a href="#intro-to-sympy" id="toc-intro-to-sympy" class="nav-link" data-scroll-target="#intro-to-sympy">Intro to SymPy</a></li>
   </ul></li>
   <li><a href="#numerical-methods-for-odes-in-python" id="toc-numerical-methods-for-odes-in-python" class="nav-link" data-scroll-target="#numerical-methods-for-odes-in-python">Numerical Methods for ODEs in Python</a>
   <ul class="collapse">
   <li><a href="#using-scipy" id="toc-using-scipy" class="nav-link" data-scroll-target="#using-scipy">Using SciPy</a></li>
-  <li><a href="#using-sympy" id="toc-using-sympy" class="nav-link" data-scroll-target="#using-sympy">Using Sympy</a></li>
+  <li><a href="#using-sympy" id="toc-using-sympy" class="nav-link" data-scroll-target="#using-sympy">Using SymPy</a></li>
   </ul></li>
   <li><a href="#linear-algebra-in-python" id="toc-linear-algebra-in-python" class="nav-link" data-scroll-target="#linear-algebra-in-python">Linear Algebra in Python</a>
   <ul class="collapse">
   <li><a href="#numerical-linear-algebra-with-numpy-and-scipy" id="toc-numerical-linear-algebra-with-numpy-and-scipy" class="nav-link" data-scroll-target="#numerical-linear-algebra-with-numpy-and-scipy">Numerical Linear Algebra with NumPy and SciPy</a></li>
-  <li><a href="#symbolic-linear-algebra-with-symp" id="toc-symbolic-linear-algebra-with-symp" class="nav-link" data-scroll-target="#symbolic-linear-algebra-with-symp">Symbolic Linear Algebra with SymP</a></li>
+  <li><a href="#symbolic-linear-algebra-with-sympy" id="toc-symbolic-linear-algebra-with-sympy" class="nav-link" data-scroll-target="#symbolic-linear-algebra-with-sympy">Symbolic Linear Algebra with SymPy</a></li>
   </ul></li>
   <li><a href="#phase-portraits-in-python" id="toc-phase-portraits-in-python" class="nav-link" data-scroll-target="#phase-portraits-in-python">Phase Portraits in Python</a></li>
+  <li><a href="#laplace-transforms-with-sympy" id="toc-laplace-transforms-with-sympy" class="nav-link" data-scroll-target="#laplace-transforms-with-sympy">Laplace Transforms with SymPy</a></li>
+  <li><a href="#tips-for-debugging-python-code" id="toc-tips-for-debugging-python-code" class="nav-link" data-scroll-target="#tips-for-debugging-python-code">Tips for Debugging Python Code</a>
+  <ul class="collapse">
+  <li><a href="#read-the-error-message" id="toc-read-the-error-message" class="nav-link" data-scroll-target="#read-the-error-message">Read the Error Message</a></li>
+  <li><a href="#use-print-statements" id="toc-use-print-statements" class="nav-link" data-scroll-target="#use-print-statements">Use <code>print</code> Statements</a></li>
+  <li><a href="#check-array-shapes" id="toc-check-array-shapes" class="nav-link" data-scroll-target="#check-array-shapes">Check Array Shapes</a></li>
+  <li><a href="#useful-resources" id="toc-useful-resources" class="nav-link" data-scroll-target="#useful-resources">Useful Resources</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -377,7 +430,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Python Reference</h1>
-<p class="subtitle lead">Common Python Commands for Differential Equations</p>
+<p class="subtitle lead">Useful Python Commands for Differential Equations</p>
 </div>
 
 
@@ -394,80 +447,1584 @@ div.csl-indent {
 </header>
 
 
-<div id="03500418" class="cell" data-execution_count="1">
+<div id="d6f4dc45" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># NumPy for numerical computations</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy <span class="im">as</span> sp <span class="co"># SciPy for scientific computing</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym <span class="co"># SymPy for symbolic mathematics</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl <span class="co"># Matplotlib for plotting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np    <span class="co"># NumPy for numerical computations</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy <span class="im">as</span> sp    <span class="co"># SciPy for scientific computing</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym   <span class="co"># SymPy for symbolic mathematics</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt  <span class="co"># Matplotlib for plotting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This page is a quick-reference guide to Python tools used throughout this course. It is not a complete Python tutorial. Students who want a deeper introduction may find the following resources helpful:</p>
+<ul>
+<li><a href="https://docs.python.org/3/tutorial/">The Official Python Tutorial</a></li>
+<li><a href="https://www.py4e.com/">Python for Everybody (free online textbook)</a></li>
+<li><a href="https://lectures.scientific-python.org/">Scientific Python Lectures</a></li>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/">Python Data Science Handbook (free online)</a></li>
+</ul>
+</div>
+</div>
+<hr>
 <section id="installing-and-managing-python-and-packages" class="level2">
 <h2 class="anchored" data-anchor-id="installing-and-managing-python-and-packages">Installing and Managing Python and Packages</h2>
+<p>Python <span class="citation" data-cites="python">(<a href="#ref-python" role="doc-biblioref">Python Software Foundation 2024</a>)</span> can be installed and managed in several ways. Below we describe two popular approaches: <strong><code>uv</code></strong> (a modern, fast tool) and <strong><code>conda</code></strong> (a traditional choice popular in scientific computing). Either approach works fine for this course.</p>
+<section id="option-1-uv-recommended-for-new-users" class="level3">
+<h3 class="anchored" data-anchor-id="option-1-uv-recommended-for-new-users">Option 1: <code>uv</code> (Recommended for New Users)</h3>
+<p><a href="https://docs.astral.sh/uv/"><code>uv</code></a> is a fast, modern Python package and project manager written in Rust. It can install Python itself, create isolated project environments, and manage packages — all in one tool.</p>
+<p><strong>Installing <code>uv</code>:</strong></p>
+<p>On macOS and Linux (run in your terminal):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On Windows (run in PowerShell):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>powershell <span class="op">-</span>ExecutionPolicy ByPass <span class="op">-</span>c <span class="st">"irm https://astral.sh/uv/install.ps1 | iex"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Installing Python with <code>uv</code>:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python install 3.13   <span class="co"># installs Python 3.13</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Creating a virtual environment and installing packages:</strong></p>
+<p>A <em>virtual environment</em> is an isolated folder that holds a specific Python version and a set of packages for a project. This keeps your projects from interfering with each other.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new project folder and enter it</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> my_diffeq_project</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> my_diffeq_project</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a virtual environment using a specific Python version</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> venv <span class="at">--python</span> 3.13</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate the environment</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># On macOS/Linux:</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># On Windows:</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv\Scripts\activate</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Install packages needed for this course</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> pip install numpy scipy sympy matplotlib</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Deactivate when you're done working</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">deactivate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Registering the environment as a Jupyter kernel</strong> (so it appears in VS Code or JupyterLab):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> pip install ipykernel</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> diffeq_py <span class="at">--display-name</span> <span class="st">"DiffEq Python"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For full documentation see <a href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a>.</p>
+<hr>
+</section>
+<section id="option-2-conda-anaconda" class="level3">
+<h3 class="anchored" data-anchor-id="option-2-conda-anaconda">Option 2: <code>conda</code> / Anaconda</h3>
+<p><a href="https://docs.conda.io/">Conda</a> is a package and environment manager that is widely used in scientific computing. <a href="https://www.anaconda.com/download">Anaconda</a> is a full distribution that bundles Python, conda, and hundreds of scientific packages. <a href="https://docs.anaconda.com/miniconda/">Miniconda</a> is a lighter-weight installer that includes only Python and conda itself.</p>
+<p><strong>Installing conda:</strong></p>
+<p>Download and run the installer for your operating system from one of the following:</p>
+<ul>
+<li>Anaconda: <a href="https://www.anaconda.com/download">https://www.anaconda.com/download</a></li>
+<li>Miniconda: <a href="https://docs.anaconda.com/miniconda/">https://docs.anaconda.com/miniconda/</a></li>
+</ul>
+<p><strong>Creating a conda environment:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new environment named "diffeq" with Python 3.13</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> diffeq python=3.13</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate the environment</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate diffeq</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Install the packages needed for this course</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install numpy scipy sympy matplotlib</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Jupyter support</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install ipykernel jupyter</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Register the environment as a Jupyter kernel</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> diffeq_py <span class="at">--display-name</span> <span class="st">"DiffEq Python"</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Deactivate when done</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Useful conda commands:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env list           <span class="co"># list all environments</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> list               <span class="co"># list packages in the active environment</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="op">&lt;</span>package<span class="op">&gt;</span>  <span class="co"># install a package</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> remove <span class="op">&lt;</span>package<span class="op">&gt;</span>   <span class="co"># remove a package</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> update <span class="op">&lt;</span>package<span class="op">&gt;</span>   <span class="co"># update a package</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> remove <span class="at">-n</span> diffeq <span class="at">--all</span>   <span class="co"># delete the environment entirely</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For full documentation see <a href="https://docs.conda.io/">https://docs.conda.io/</a>.</p>
+<hr>
+</section>
+<section id="choosing-an-editor-interface" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-an-editor-interface">Choosing an Editor / Interface</h3>
+<p>You can write and run Python code in several ways:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Interface</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://code.visualstudio.com/">VS Code</a></td>
+<td>Full-featured editor; excellent Jupyter notebook support via extension</td>
+</tr>
+<tr class="even">
+<td><a href="https://jupyterlab.readthedocs.io/">JupyterLab</a></td>
+<td>Browser-based environment for notebooks</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.spyder-ide.org/">Spyder</a></td>
+<td>MATLAB-like IDE popular with scientists and engineers</td>
+</tr>
+<tr class="even">
+<td>Terminal / <code>python</code> REPL</td>
+<td>Lightweight; good for quick tests</td>
+</tr>
+</tbody>
+</table>
+<p>For this course, <strong>VS Code</strong> or <strong>JupyterLab</strong> are recommended. Both work seamlessly with Quarto and Jupyter kernels.</p>
+<hr>
+</section>
 </section>
 <section id="overview-of-python-and-python-modules" class="level2">
 <h2 class="anchored" data-anchor-id="overview-of-python-and-python-modules">Overview of Python and Python Modules</h2>
+<section id="what-is-python" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-python">What is Python?</h3>
+<p><a href="https://www.python.org/">Python</a> is a general-purpose, high-level programming language known for its clean, readable syntax. It is one of the most widely used languages in scientific computing, data analysis, machine learning, and engineering.</p>
+<p>Key characteristics:</p>
+<ul>
+<li><strong>Interpreted</strong>: code is executed line by line; no compilation step required.</li>
+<li><strong>Dynamically typed</strong>: you do not need to declare variable types.</li>
+<li><strong>Free and open-source</strong>: Python and most of its scientific libraries are freely available.</li>
+</ul>
+<p>A minimal Python example:</p>
+<div id="16fcd1b1" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign a value to a variable and print it</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="fl">3.14</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The value of x is"</span>, x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The value of x is 3.14</code></pre>
+</div>
+</div>
+<p>Python supports the standard arithmetic operators <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>**</code> (exponentiation), and <code>//</code> (integer division):</p>
+<div id="898c6d8c" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">+</span> b)   <span class="co"># addition:       13</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">-</span> b)   <span class="co"># subtraction:     7</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">*</span> b)   <span class="co"># multiplication: 30</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">/</span> b)   <span class="co"># division:        3.333...</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">**</span> b)  <span class="co"># exponentiation: 1000</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">//</span> b)  <span class="co"># integer division: 3</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">%</span> b)   <span class="co"># remainder:        1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>13
+7
+30
+3.3333333333333335
+1000
+3
+1</code></pre>
+</div>
+</div>
+</section>
+<section id="what-is-a-python-module-package" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-python-module-package">What is a Python Module (Package)?</h3>
+<p>Python’s power comes largely from its ecosystem of <strong>modules</strong> (also called <em>libraries</em> or <em>packages</em>). A module is a file (or collection of files) containing Python code — functions, classes, and constants — that extends what plain Python can do.</p>
+<p>For example, plain Python does not have a function to compute <span class="math inline">\(\sin(x)\)</span>. But the <code>math</code> module (part of Python’s standard library) does:</p>
+<div id="8f57b86e" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(math.sin(math.pi <span class="op">/</span> <span class="dv">2</span>))   <span class="co"># 1.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.0</code></pre>
+</div>
+</div>
+<p>For this course we rely on four major third-party packages:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>Purpose</th>
+<th>Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://numpy.org/doc/stable/">NumPy</a></td>
+<td>Fast arrays and numerical math</td>
+<td>numpy.org</td>
+</tr>
+<tr class="even">
+<td><a href="https://docs.scipy.org/doc/scipy/">SciPy</a></td>
+<td>Scientific algorithms (ODE solvers, linear algebra, …)</td>
+<td>scipy.org</td>
+</tr>
+<tr class="odd">
+<td><a href="https://docs.sympy.org/latest/">SymPy</a></td>
+<td>Symbolic (exact) mathematics</td>
+<td>sympy.org</td>
+</tr>
+<tr class="even">
+<td><a href="https://matplotlib.org/stable/">Matplotlib</a></td>
+<td>2-D and 3-D plotting</td>
+<td>matplotlib.org</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="importing-modules-and-namespaces" class="level3">
+<h3 class="anchored" data-anchor-id="importing-modules-and-namespaces">Importing Modules and Namespaces</h3>
+<p>To use a module you must first <strong>import</strong> it. Importing makes the module’s contents available in your current session.</p>
+<p><strong>Method 1 — import the whole module:</strong></p>
+<div id="9dc2c120" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(math.sqrt(<span class="dv">16</span>))   <span class="co"># 4.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4.0</code></pre>
+</div>
+</div>
+<p>The prefix <code>math.</code> is the module’s <strong>namespace</strong> — it tells Python where to find <code>sqrt</code>. Using namespaces prevents name conflicts: if two modules both define a function called <code>array</code>, you can still use both as <code>numpy.array</code> and <code>someother.array</code>.</p>
+<p><strong>Method 2 — import with an alias (most common in scientific Python):</strong></p>
+<div id="4808f28d" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np      <span class="co"># conventional alias for NumPy</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym     <span class="co"># conventional alias for SymPy</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> sym.Symbol(<span class="st">'y'</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1 2 3]
+y</code></pre>
+</div>
+</div>
+<p>Using standard aliases (<code>np</code>, <code>sym</code>, <code>sp</code>, <code>plt</code>) makes code more concise and matches what you will see in textbooks and online documentation.</p>
+<p><strong>Method 3 — import specific names:</strong></p>
+<div id="365bbadc" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> sqrt, pi</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sqrt(<span class="dv">2</span>))   <span class="co"># no "math." prefix needed</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pi)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.4142135623730951
+3.141592653589793</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Avoid <code>from numpy import *</code>. This imports <em>everything</em> into your namespace, which can silently overwrite built-in Python names and makes code harder to read and debug.</p>
+</div>
+</div>
+<hr>
+</section>
 </section>
 <section id="writing-functions" class="level2">
 <h2 class="anchored" data-anchor-id="writing-functions">Writing Functions</h2>
+<p>Functions let you package a block of code under a name so you can reuse it without copying and pasting. In Python, functions are defined with the <code>def</code> keyword.</p>
+<section id="basic-function-syntax" class="level3">
+<h3 class="anchored" data-anchor-id="basic-function-syntax">Basic Function Syntax</h3>
+<div id="a6316dfa" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square(x):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return the square of x."""</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(square(<span class="dv">5</span>))    <span class="co"># 25</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(square(<span class="fl">2.5</span>))  <span class="co"># 6.25</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>25
+6.25</code></pre>
+</div>
+</div>
+<p>The string immediately inside the function (in triple quotes) is called a <strong>docstring</strong>. It documents what the function does and is a good habit to include.</p>
+</section>
+<section id="functions-with-multiple-arguments-and-default-values" class="level3">
+<h3 class="anchored" data-anchor-id="functions-with-multiple-arguments-and-default-values">Functions with Multiple Arguments and Default Values</h3>
+<div id="13697e26" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> exponential_decay(t, y0<span class="op">=</span><span class="fl">1.0</span>, k<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Evaluate the exponential decay function y0 * exp(-k*t).</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">    t  : float or array-like — time value(s)</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">    y0 : float — initial value (default 1.0)</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">    k  : float — decay rate (default 1.0)</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y0 <span class="op">*</span> np.exp(<span class="op">-</span>k <span class="op">*</span> t)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exponential_decay(t_vals))                  <span class="co"># uses defaults y0=1, k=1</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exponential_decay(t_vals, y0<span class="op">=</span><span class="fl">2.0</span>, k<span class="op">=</span><span class="fl">0.5</span>))  <span class="co"># override defaults</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1.         0.36787944 0.13533528 0.04978707 0.01831564 0.00673795]
+[2.         1.21306132 0.73575888 0.44626032 0.27067057 0.16417   ]</code></pre>
+</div>
+</div>
+</section>
+<section id="lambda-functions-anonymous-functions" class="level3">
+<h3 class="anchored" data-anchor-id="lambda-functions-anonymous-functions">Lambda Functions (Anonymous Functions)</h3>
+<p>For short, one-line functions, Python offers <strong>lambda expressions</strong>:</p>
+<div id="b04e1751" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="kw">lambda</span> t, y: <span class="op">-</span><span class="dv">2</span> <span class="op">*</span> y   <span class="co"># represents dy/dt = -2y</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(f(<span class="dv">0</span>, <span class="dv">1</span>))   <span class="co"># -2.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-2</code></pre>
+</div>
+</div>
+<p>Lambda functions are often used when passing a function as an argument to another function, as we will see with ODE solvers.</p>
+</section>
+<section id="returning-multiple-values" class="level3">
+<h3 class="anchored" data-anchor-id="returning-multiple-values">Returning Multiple Values</h3>
+<p>Python functions can return multiple values as a <strong>tuple</strong>:</p>
+<div id="c6edec84" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sincos(x):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return (sin(x), cos(x)) as a tuple."""</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sin(x), np.cos(x)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>s, c <span class="op">=</span> sincos(np.pi <span class="op">/</span> <span class="dv">4</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"sin(π/4) = </span><span class="sc">{</span>s<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"cos(π/4) = </span><span class="sc">{</span>c<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sin(π/4) = 0.707107
+cos(π/4) = 0.707107</code></pre>
+</div>
+</div>
+<hr>
+</section>
 </section>
 <section id="plotting" class="level2">
 <h2 class="anchored" data-anchor-id="plotting">Plotting</h2>
+<p>We use <a href="https://matplotlib.org/stable/">Matplotlib</a> for all plotting <span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter 2007</a>)</span>. The standard import is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <a href="https://matplotlib.org/stable/gallery/index.html">Matplotlib gallery</a> is an excellent resource for example plots with source code.</p>
 <section id="basic-plotting" class="level3">
 <h3 class="anchored" data-anchor-id="basic-plotting">Basic Plotting</h3>
+<div id="abf418ab" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Data ---</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span> <span class="op">*</span> np.pi, <span class="dv">400</span>)   <span class="co"># 400 points from 0 to 4π</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Create figure and axes ---</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Plot curves ---</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>ax.plot(t, np.sin(t), label<span class="op">=</span><span class="vs">r'</span><span class="dv">$\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>ax.plot(t, np.cos(t), label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,    linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Labels and formatting ---</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'t'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'y'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Sine and Cosine'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>)  <span class="co"># draw y = 0 line</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-13-output-1.png" width="757" height="371" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Key ideas:</strong></p>
+<ul>
+<li><code>fig, ax = plt.subplots()</code> creates a <em>figure</em> (the whole image) and an <em>axes</em> (the plotting region). This is the recommended, object-oriented style.</li>
+<li><code>ax.plot(x, y)</code> draws a line.</li>
+<li>LaTeX math can be used in labels by wrapping strings with <code>r'$ ... $'</code>.</li>
+<li><code>plt.tight_layout()</code> adjusts spacing to prevent clipped labels.</li>
+</ul>
+<section id="plotting-multiple-subplots" class="level4">
+<h4 class="anchored" data-anchor-id="plotting-multiple-subplots">Plotting Multiple Subplots</h4>
+<div id="5454bd0d" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))   <span class="co"># 1 row, 2 columns</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi, <span class="dv">400</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t, np.sin(t), color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y = </span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'t'</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t, np.exp(<span class="op">-</span><span class="fl">0.3</span> <span class="op">*</span> t) <span class="op">*</span> np.sin(t), color<span class="op">=</span><span class="st">'tomato'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y = e</span><span class="dv">^</span><span class="vs">{-0</span><span class="dv">.</span><span class="vs">3t}</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'t'</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-14-output-1.png" width="950" height="372" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="saving-figures" class="level4">
+<h4 class="anchored" data-anchor-id="saving-figures">Saving Figures</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"my_figure.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"my_figure.pdf"</span>)   <span class="co"># vector format; best for documents</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 </section>
 <section id="plotting-vector-fields" class="level3">
 <h3 class="anchored" data-anchor-id="plotting-vector-fields">Plotting Vector Fields</h3>
+<p>In the study of differential equations, <strong>direction fields</strong> (also called <em>slope fields</em> for first-order equations or <em>vector fields</em> for systems) are invaluable for understanding qualitative behavior.</p>
+<section id="slope-field-for-a-first-order-ode" class="level4">
+<h4 class="anchored" data-anchor-id="slope-field-for-a-first-order-ode">Slope Field for a First-Order ODE</h4>
+<p>For <span class="math inline">\(\dfrac{dy}{dt} = f(t, y)\)</span>, we draw a short line segment at each grid point <span class="math inline">\((t, y)\)</span> with slope <span class="math inline">\(f(t, y)\)</span>.</p>
+<div id="4ae216a8" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ODE: dy/dt = t - y</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t, y):</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> t <span class="op">-</span> y</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a grid of (t, y) values</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">20</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>y_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">20</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>T, Y <span class="op">=</span> np.meshgrid(t_vals, y_vals)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute slope at each grid point</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>dY <span class="op">=</span> f(T, Y)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>dT <span class="op">=</span> np.ones_like(dY)            <span class="co"># dt component is always 1</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize for uniform arrow length</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>magnitude <span class="op">=</span> np.sqrt(dT<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> dY<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>dT_norm <span class="op">=</span> dT <span class="op">/</span> magnitude</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>dY_norm <span class="op">=</span> dY <span class="op">/</span> magnitude</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>ax.quiver(T, Y, dT_norm, dY_norm,</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>          angles<span class="op">=</span><span class="st">'xy'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, scale<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay a particular solution for reference</span></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(f, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>], [<span class="fl">3.0</span>], dense_output<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">200</span>)</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, sol.sol(t_plot)[<span class="dv">0</span>], <span class="st">'tomato'</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'Solution with </span><span class="dv">$</span><span class="vs">y</span><span class="kw">(</span><span class="vs">-1</span><span class="kw">)</span><span class="vs">=3</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'t'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'y'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Slope field: </span><span class="dv">$\d</span><span class="vs">frac{dy}{dt} = t - y</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-15-output-1.png" width="661" height="560" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="vector-field-for-a-2-2-system" class="level4">
+<h4 class="anchored" data-anchor-id="vector-field-for-a-2-2-system">Vector Field for a 2 × 2 System</h4>
+<p>For the system <span class="math inline">\(\dfrac{d\mathbf{x}}{dt} = A\mathbf{x}\)</span>, we draw arrows at each grid point <span class="math inline">\((x_1, x_2)\)</span> pointing in the direction <span class="math inline">\((f_1, f_2)\)</span>.</p>
+<div id="214b25d4" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># System: dx/dt = -x + y,  dy/dt = -x - y</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> system(X, Y):</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    dX <span class="op">=</span> <span class="op">-</span>X <span class="op">+</span> Y</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    dY <span class="op">=</span> <span class="op">-</span>X <span class="op">-</span> Y</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dX, dY</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>x_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">18</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>y_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">18</span>)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x_vals, y_vals)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>dX, dY <span class="op">=</span> system(X, Y)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>mag <span class="op">=</span> np.sqrt(dX<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> dY<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>dX_n <span class="op">=</span> dX <span class="op">/</span> mag</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>dY_n <span class="op">=</span> dY <span class="op">/</span> mag</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>ax.quiver(X, Y, dX_n, dY_n, mag, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, alpha<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x_1</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x_2</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Vector field: </span><span class="dv">$\d</span><span class="vs">ot{x}_1 = -x_1</span><span class="op">+</span><span class="vs">x_2,</span><span class="ch">\;</span><span class="dv">\d</span><span class="vs">ot{x}_2 = -x_1-x_2</span><span class="dv">$</span><span class="vs">"</span>,</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-16-output-1.png" width="547" height="564" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>cmap='coolwarm'</code> coloring encodes the <em>speed</em> (magnitude) of the vector field — blue regions are slow, red regions are fast.</p>
+</div>
+</div>
+<hr>
+</section>
 </section>
 </section>
 <section id="intro-to-scientific-python" class="level2">
 <h2 class="anchored" data-anchor-id="intro-to-scientific-python">Intro to Scientific Python</h2>
 <section id="intro-to-numpy" class="level3">
-<h3 class="anchored" data-anchor-id="intro-to-numpy">Intro to Numpy</h3>
+<h3 class="anchored" data-anchor-id="intro-to-numpy">Intro to NumPy</h3>
+<p><a href="https://numpy.org/doc/stable/">NumPy</a> (Numerical Python) is the foundation of scientific computing in Python <span class="citation" data-cites="numpy">(<a href="#ref-numpy" role="doc-biblioref">Harris et al. 2020</a>)</span>. Its central object is the <strong>ndarray</strong> — an efficient, multidimensional array.</p>
+<p>Full documentation: <a href="https://numpy.org/doc/stable/">https://numpy.org/doc/stable/</a></p>
+<section id="creating-arrays" class="level4">
+<h4 class="anchored" data-anchor-id="creating-arrays">Creating Arrays</h4>
+<div id="668ef1f2" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># From a Python list</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)          <span class="co"># [1 2 3 4 5]</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a.dtype)    <span class="co"># int64  (data type)</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a.shape)    <span class="co"># (5,)   (dimensions)</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Floating-point array</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(b.dtype)    <span class="co"># float64</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-D array (matrix)</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]])</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A.shape)    <span class="co"># (2, 3)  → 2 rows, 3 columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1 2 3 4 5]
+int64
+(5,)
+float64
+(2, 3)</code></pre>
+</div>
+</div>
+</section>
+<section id="useful-array-creation-functions" class="level4">
+<h4 class="anchored" data-anchor-id="useful-array-creation-functions">Useful Array-Creation Functions</h4>
+<div id="30ccf2b7" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.zeros(<span class="dv">4</span>))           <span class="co"># [0. 0. 0. 0.]</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.ones((<span class="dv">2</span>, <span class="dv">3</span>)))       <span class="co"># 2×3 matrix of ones</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.eye(<span class="dv">3</span>))             <span class="co"># 3×3 identity matrix</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>)) <span class="co"># [0.   0.25 0.5  0.75 1.  ]</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.arange(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">2</span>))  <span class="co"># [0 2 4 6 8]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0. 0. 0. 0.]
+[[1. 1. 1.]
+ [1. 1. 1.]]
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+[0.   0.25 0.5  0.75 1.  ]
+[0 2 4 6 8]</code></pre>
+</div>
+</div>
+</section>
+<section id="array-arithmetic" class="level4">
+<h4 class="anchored" data-anchor-id="array-arithmetic">Array Arithmetic</h4>
+<p>NumPy operations act <strong>element-wise</strong> by default:</p>
+<div id="5a456c1c" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> np.array([<span class="fl">4.0</span>, <span class="fl">5.0</span>, <span class="fl">6.0</span>])</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">+</span> b)      <span class="co"># [5.  7.  9.]</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">*</span> b)      <span class="co"># [ 4. 10. 18.]  ← element-wise product</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a <span class="op">**</span> <span class="dv">2</span>)     <span class="co"># [1. 4. 9.]</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.sqrt(a)) <span class="co"># [1.    1.414 1.732]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[5. 7. 9.]
+[ 4. 10. 18.]
+[1. 4. 9.]
+[1.         1.41421356 1.73205081]</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>a * b</code> is <strong>not</strong> matrix multiplication. For matrix multiplication use <code>A @ B</code> or <code>np.dot(A, B)</code>.</p>
+</div>
+</div>
+<div id="8f3b57e0" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> np.array([[<span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>]])</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A <span class="op">@</span> B)       <span class="co"># matrix product</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[19 22]
+ [43 50]]</code></pre>
+</div>
+</div>
+</section>
+<section id="universal-functions-ufuncs" class="level4">
+<h4 class="anchored" data-anchor-id="universal-functions-ufuncs">Universal Functions (ufuncs)</h4>
+<p>NumPy provides vectorized versions of all standard math functions:</p>
+<div id="6a493f6f" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, np.pi, <span class="dv">5</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.sin(t))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.exp(<span class="op">-</span>t))</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.log(t <span class="op">+</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0.00000000e+00 7.07106781e-01 1.00000000e+00 7.07106781e-01
+ 1.22464680e-16]
+[1.         0.45593813 0.20787958 0.09478022 0.04321392]
+[0.         0.57964145 0.94421571 1.21080774 1.42108041]</code></pre>
+</div>
+</div>
+<p>These are far faster than looping over elements manually.</p>
+</section>
+<section id="array-indexing-and-slicing" class="level4">
+<h4 class="anchored" data-anchor-id="array-indexing-and-slicing">Array Indexing and Slicing</h4>
+<div id="89d8ed4c" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.array([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>])</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[<span class="dv">0</span>])     <span class="co"># 10  (first element)</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[<span class="op">-</span><span class="dv">1</span>])    <span class="co"># 50  (last element)</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[<span class="dv">1</span>:<span class="dv">4</span>])   <span class="co"># [20 30 40]  (slice: indices 1,2,3)</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a[::<span class="dv">2</span>])   <span class="co"># [10 30 50]  (every other element)</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-D indexing</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.arange(<span class="dv">12</span>).reshape(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A)</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A[<span class="dv">1</span>, <span class="dv">2</span>])    <span class="co"># element in row 1, column 2</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A[:, <span class="dv">1</span>])    <span class="co"># all rows, column 1  (column vector)</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A[<span class="dv">0</span>, :])    <span class="co"># row 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10
+50
+[20 30 40]
+[10 30 50]
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+6
+[1 5 9]
+[0 1 2 3]</code></pre>
+</div>
+</div>
+<hr>
+</section>
 </section>
 <section id="intro-to-scipy" class="level3">
 <h3 class="anchored" data-anchor-id="intro-to-scipy">Intro to SciPy</h3>
+<p><a href="https://docs.scipy.org/doc/scipy/">SciPy</a> builds on NumPy and provides algorithms for optimization, integration, interpolation, signal processing, statistics, and — most importantly for us — <strong>differential equations</strong> <span class="citation" data-cites="scipy">(<a href="#ref-scipy" role="doc-biblioref">Virtanen et al. 2020</a>)</span>.</p>
+<p>Full documentation: <a href="https://docs.scipy.org/doc/scipy/">https://docs.scipy.org/doc/scipy/</a></p>
+<p>SciPy is organized into submodules:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Submodule</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>scipy.integrate</code></td>
+<td>Numerical integration, ODE solvers</td>
+</tr>
+<tr class="even">
+<td><code>scipy.linalg</code></td>
+<td>Linear algebra</td>
+</tr>
+<tr class="odd">
+<td><code>scipy.optimize</code></td>
+<td>Root-finding, minimization</td>
+</tr>
+<tr class="even">
+<td><code>scipy.signal</code></td>
+<td>Signal processing</td>
+</tr>
+<tr class="odd">
+<td><code>scipy.sparse</code></td>
+<td>Sparse matrices</td>
+</tr>
+</tbody>
+</table>
+<p>Import submodules explicitly:</p>
+<div id="ff648313" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> integrate, linalg</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>SciPy’s ODE solvers and linear algebra routines are covered in the dedicated sections below.</p>
+<hr>
 </section>
 <section id="intro-to-sympy" class="level3">
 <h3 class="anchored" data-anchor-id="intro-to-sympy">Intro to SymPy</h3>
+<p><a href="https://docs.sympy.org/latest/">SymPy</a> is a Python library for <strong>symbolic mathematics</strong> — it performs exact algebraic manipulations rather than numerical approximations <span class="citation" data-cites="sympy">(<a href="#ref-sympy" role="doc-biblioref">Meurer et al. 2017</a>)</span>. Think of it as a free, Python-native computer algebra system (CAS).</p>
+<p>Full documentation: <a href="https://docs.sympy.org/latest/">https://docs.sympy.org/latest/</a></p>
+<section id="symbols-and-expressions" class="level4">
+<h4 class="anchored" data-anchor-id="symbols-and-expressions">Symbols and Expressions</h4>
+<div id="60a67afd" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare symbolic variables</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>t, y, C1, C2, k <span class="op">=</span> sym.symbols(<span class="st">'t y C1 C2 k'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Build expressions</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> sym.exp(<span class="op">-</span>k <span class="op">*</span> t) <span class="op">*</span> sym.sin(t)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(expr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>exp(-k*t)*sin(t)</code></pre>
+</div>
+</div>
+</section>
+<section id="pretty-printing" class="level4">
+<h4 class="anchored" data-anchor-id="pretty-printing">Pretty Printing</h4>
+<div id="01fb112c" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>sym.init_printing()   <span class="co"># enable pretty output in Jupyter/Quarto</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>expr2 <span class="op">=</span> sym.sin(t)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> sym.cos(t)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sym.simplify(expr2))   <span class="co"># → 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1</code></pre>
+</div>
+</div>
+</section>
+<section id="calculus-with-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="calculus-with-sympy">Calculus with SymPy</h4>
+<div id="aa7f108d" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Differentiation</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> sym.exp(<span class="op">-</span>t) <span class="op">*</span> sym.sin(<span class="dv">2</span> <span class="op">*</span> t)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sym.diff(f, t)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"f'(t) ="</span>, df)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Integration (indefinite)</span></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>integral <span class="op">=</span> sym.integrate(f, t)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"∫f dt ="</span>, integral)</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Definite integral</span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> sym.integrate(sym.sin(t), (t, <span class="dv">0</span>, sym.pi))</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"∫₀^π sin(t) dt ="</span>, result)   <span class="co"># 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>f'(t) = -exp(-t)*sin(2*t) + 2*exp(-t)*cos(2*t)
+∫f dt = -exp(-t)*sin(2*t)/5 - 2*exp(-t)*cos(2*t)/5
+∫₀^π sin(t) dt = 2</code></pre>
+</div>
+</div>
+</section>
+<section id="solving-algebraic-equations" class="level4">
+<h4 class="anchored" data-anchor-id="solving-algebraic-equations">Solving Algebraic Equations</h4>
+<div id="b1c4b51b" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>solutions <span class="op">=</span> sym.solve(x<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">5</span><span class="op">*</span>x <span class="op">+</span> <span class="dv">6</span>, x)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(solutions)   <span class="co"># [2, 3]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[2, 3]</code></pre>
+</div>
+</div>
+</section>
+<section id="symbolic-vs.-numerical" class="level4">
+<h4 class="anchored" data-anchor-id="symbolic-vs.-numerical">Symbolic vs.&nbsp;Numerical</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>SymPy (symbolic)</th>
+<th>NumPy/SciPy (numerical)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Results</td>
+<td>Exact</td>
+<td>Approximate (float)</td>
+</tr>
+<tr class="even">
+<td>Speed</td>
+<td>Slower</td>
+<td>Faster</td>
+</tr>
+<tr class="odd">
+<td>Good for</td>
+<td>Deriving formulas, exact solutions</td>
+<td>Large-scale computation</td>
+</tr>
+</tbody>
+</table>
+<p>You can convert a SymPy expression to a fast numerical function with <code>sym.lambdify</code>:</p>
+<div id="cbefd360" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>f_sym <span class="op">=</span> sym.sin(t) <span class="op">*</span> sym.exp(<span class="op">-</span>t)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>f_num <span class="op">=</span> sym.lambdify(t, f_sym, modules<span class="op">=</span><span class="st">'numpy'</span>)  <span class="co"># converts to NumPy function</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">200</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>y_vals <span class="op">=</span> f_num(t_vals)   <span class="co"># fast NumPy evaluation</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_vals[:<span class="dv">5</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0.         0.02449962 0.04776835 0.06983789 0.09073981]</code></pre>
+</div>
+</div>
+<hr>
+</section>
 </section>
 </section>
 <section id="numerical-methods-for-odes-in-python" class="level2">
 <h2 class="anchored" data-anchor-id="numerical-methods-for-odes-in-python">Numerical Methods for ODEs in Python</h2>
 <section id="using-scipy" class="level3">
 <h3 class="anchored" data-anchor-id="using-scipy">Using SciPy</h3>
+<p><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html"><code>scipy.integrate.solve_ivp</code></a> is the primary tool for solving initial value problems (IVPs) numerically. It implements several Runge–Kutta and multi-step methods.</p>
+<p><strong>General call signature:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>solve_ivp(fun, t_span, y0, method<span class="op">=</span><span class="st">'RK45'</span>, t_eval<span class="op">=</span><span class="va">None</span>, ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Argument</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>fun</code></td>
+<td>Function <code>f(t, y)</code> defining <span class="math inline">\(y' = f(t,y)\)</span></td>
+</tr>
+<tr class="even">
+<td><code>t_span</code></td>
+<td><code>(t0, tf)</code> — start and end times</td>
+</tr>
+<tr class="odd">
+<td><code>y0</code></td>
+<td>Initial condition (list or array)</td>
+</tr>
+<tr class="even">
+<td><code>method</code></td>
+<td>ODE algorithm (default <code>'RK45'</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>t_eval</code></td>
+<td>Times at which to store the solution</td>
+</tr>
+</tbody>
+</table>
+<section id="example-1-first-order-linear-ode" class="level4">
+<h4 class="anchored" data-anchor-id="example-1-first-order-linear-ode">Example 1: First-Order Linear ODE</h4>
+<p>Solve <span class="math inline">\(y' = -2y\)</span>, <span class="math inline">\(y(0) = 3\)</span>, and compare with the exact solution <span class="math inline">\(y(t) = 3e^{-2t}\)</span>.</p>
+<div id="d652dc20" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode(t, y):</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""dy/dt = -2*y"""</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> y[<span class="dv">0</span>]]          <span class="co"># must return a list/array</span></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">4</span>)</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> [<span class="fl">3.0</span>]                      <span class="co"># initial condition as a list</span></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">200</span>) <span class="co"># times at which to record solution</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(ode, t_span, y0, method<span class="op">=</span><span class="st">'RK45'</span>, t_eval<span class="op">=</span>t_eval)</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="co"># sol.t  → time values</span></span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a><span class="co"># sol.y  → array of shape (n_variables, n_times)</span></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Exact solution for comparison</span></span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>y_exact <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> sol.t)</span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>ax.plot(sol.t, sol.y[<span class="dv">0</span>], <span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'RK45 (numerical)'</span>)</span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>ax.plot(sol.t, y_exact,  <span class="st">'tomato'</span>,    linewidth<span class="op">=</span><span class="fl">1.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'Exact: </span><span class="dv">$</span><span class="vs">3e</span><span class="dv">^</span><span class="vs">{-2t}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'t'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'y(t)'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">y' = -2y,</span><span class="er">\</span><span class="vs">quad y</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=3</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb59-29"><a href="#cb59-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-29-output-1.png" width="661" height="371" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2-second-order-ode-mechanical-oscillator" class="level4">
+<h4 class="anchored" data-anchor-id="example-2-second-order-ode-mechanical-oscillator">Example 2: Second-Order ODE (Mechanical Oscillator)</h4>
+<p>Solve the damped harmonic oscillator: <span class="math inline">\(m x'' + c x' + k x = 0\)</span>.</p>
+<p>We reduce to a first-order system: let <span class="math inline">\(x_1 = x\)</span>, <span class="math inline">\(x_2 = x'\)</span>. Then</p>
+<p><span class="math display">\[x_1' = x_2, \qquad x_2' = -\frac{k}{m} x_1 - \frac{c}{m} x_2.\]</span></p>
+<div id="efcfdd46" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="fl">1.0</span>   <span class="co"># mass</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="fl">0.4</span>   <span class="co"># damping coefficient</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="fl">5.0</span>   <span class="co"># spring constant</span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> oscillator(t, state):</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Damped harmonic oscillator as a first-order system.</span></span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a><span class="co">    state = [x1, x2] = [position, velocity]</span></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>    x1, x2 <span class="op">=</span> state</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>    dx1 <span class="op">=</span> x2</span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>    dx2 <span class="op">=</span> <span class="op">-</span>(k<span class="op">/</span>m) <span class="op">*</span> x1 <span class="op">-</span> (c<span class="op">/</span>m) <span class="op">*</span> x2</span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dx1, dx2]</span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">20</span>)</span>
+<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>y0     <span class="op">=</span> [<span class="fl">2.0</span>, <span class="fl">0.0</span>]         <span class="co"># initial position = 2, initial velocity = 0</span></span>
+<span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">500</span>)</span>
+<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(oscillator, t_span, y0, method<span class="op">=</span><span class="st">'RK45'</span>, t_eval<span class="op">=</span>t_eval)</span>
+<span id="cb60-22"><a href="#cb60-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-23"><a href="#cb60-23" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb60-24"><a href="#cb60-24" aria-hidden="true" tabindex="-1"></a>ax.plot(sol.t, sol.y[<span class="dv">0</span>], <span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Position $x(t)$'</span>)</span>
+<span id="cb60-25"><a href="#cb60-25" aria-hidden="true" tabindex="-1"></a>ax.plot(sol.t, sol.y[<span class="dv">1</span>], <span class="st">'tomato'</span>,    linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Velocity $x</span><span class="ch">\'</span><span class="st">(t)$'</span>)</span>
+<span id="cb60-26"><a href="#cb60-26" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'t'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb60-27"><a href="#cb60-27" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'State'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb60-28"><a href="#cb60-28" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Damped Harmonic Oscillator'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb60-29"><a href="#cb60-29" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb60-30"><a href="#cb60-30" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb60-31"><a href="#cb60-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb60-32"><a href="#cb60-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-30-output-1.png" width="757" height="371" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-3-forced-ode" class="level4">
+<h4 class="anchored" data-anchor-id="example-3-forced-ode">Example 3: Forced ODE</h4>
+<p>Solve <span class="math inline">\(y'' + y = \cos(t)\)</span> (resonance) with <span class="math inline">\(y(0) = 0\)</span>, <span class="math inline">\(y'(0) = 0\)</span>.</p>
+<div id="7cde2564" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forced_oscillator(t, state):</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    x1, x2 <span class="op">=</span> state</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    dx1 <span class="op">=</span> x2</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    dx2 <span class="op">=</span> <span class="op">-</span>x1 <span class="op">+</span> np.cos(t)   <span class="co"># forcing term cos(t) at natural frequency</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dx1, dx2]</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">40</span>)</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>y0     <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.0</span>]</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">800</span>)</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(forced_oscillator, t_span, y0, method<span class="op">=</span><span class="st">'RK45'</span>, t_eval<span class="op">=</span>t_eval,</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>                rtol<span class="op">=</span><span class="fl">1e-8</span>, atol<span class="op">=</span><span class="fl">1e-10</span>)   <span class="co"># tighter tolerances for accuracy</span></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>ax.plot(sol.t, sol.y[<span class="dv">0</span>], <span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'t'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'y(t)'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Resonance: </span><span class="dv">$</span><span class="vs">y'' </span><span class="op">+</span><span class="vs"> y = </span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-31-output-1.png" width="853" height="371" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="available-ode-methods-in-solve_ivp" class="level4">
+<h4 class="anchored" data-anchor-id="available-ode-methods-in-solve_ivp">Available ODE Methods in <code>solve_ivp</code></h4>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><code>method</code></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>'RK45'</code></td>
+<td>Runge–Kutta 4(5); default; good for most problems</td>
+</tr>
+<tr class="even">
+<td><code>'RK23'</code></td>
+<td>Runge–Kutta 2(3); lower accuracy, faster</td>
+</tr>
+<tr class="odd">
+<td><code>'DOP853'</code></td>
+<td>Dormand–Prince 8(5,3); high accuracy</td>
+</tr>
+<tr class="even">
+<td><code>'Radau'</code></td>
+<td>Implicit Runge–Kutta; best for stiff problems</td>
+</tr>
+<tr class="odd">
+<td><code>'BDF'</code></td>
+<td>Backward differentiation formula; stiff problems</td>
+</tr>
+<tr class="even">
+<td><code>'LSODA'</code></td>
+<td>Automatically detects stiffness</td>
+</tr>
+</tbody>
+</table>
+<div id="a0563080" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Accessing the solution object</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Success?"</span>, sol.success)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Message:"</span>, sol.message)</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution shape (n_vars × n_times):"</span>, sol.y.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Success? True
+Message: The solver successfully reached the end of the integration interval.
+Solution shape (n_vars × n_times): (2, 800)</code></pre>
+</div>
+</div>
+<hr>
+</section>
 </section>
 <section id="using-sympy" class="level3">
-<h3 class="anchored" data-anchor-id="using-sympy">Using Sympy</h3>
+<h3 class="anchored" data-anchor-id="using-sympy">Using SymPy</h3>
+<p>SymPy can find <strong>exact, closed-form solutions</strong> to ODEs when they exist.</p>
+<div id="dec012f8" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> sym.Function(<span class="st">'y'</span>)   <span class="co"># y is a function of t</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="example-1-first-order-linear-ode-1" class="level4">
+<h4 class="anchored" data-anchor-id="example-1-first-order-linear-ode-1">Example 1: First-Order Linear ODE</h4>
+<p>Solve <span class="math inline">\(y' + 2y = 4\)</span>, <span class="math inline">\(y(0) = 1\)</span>.</p>
+<div id="71ae4b88" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>ode_eq <span class="op">=</span> sym.Eq(y(t).diff(t) <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>y(t), <span class="dv">4</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>general <span class="op">=</span> sym.dsolve(ode_eq, y(t))</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"General solution:"</span>, general)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply initial condition y(0) = 1</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>C1 <span class="op">=</span> sym.Symbol(<span class="st">'C1'</span>)</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>ic  <span class="op">=</span> {C1: sym.solve(general.rhs.subs(t, <span class="dv">0</span>) <span class="op">-</span> <span class="dv">1</span>, C1)[<span class="dv">0</span>]}</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>particular <span class="op">=</span> general.subs(ic)</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Particular solution:"</span>, particular)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>General solution: Eq(y(t), C1*exp(-2*t) + 2)
+Particular solution: Eq(y(t), 2 - exp(-2*t))</code></pre>
+</div>
+</div>
+</section>
+<section id="example-2-second-order-ode" class="level4">
+<h4 class="anchored" data-anchor-id="example-2-second-order-ode">Example 2: Second-Order ODE</h4>
+<p>Solve <span class="math inline">\(y'' - 3y' + 2y = 0\)</span>, <span class="math inline">\(y(0) = 0\)</span>, <span class="math inline">\(y'(0) = 1\)</span>.</p>
+<div id="ebf4d05a" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>ode2 <span class="op">=</span> sym.Eq(y(t).diff(t,<span class="dv">2</span>) <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>y(t).diff(t) <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>y(t), <span class="dv">0</span>)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>general2 <span class="op">=</span> sym.dsolve(ode2, y(t))</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"General solution:"</span>, general2)</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>C1, C2 <span class="op">=</span> sym.symbols(<span class="st">'C1 C2'</span>)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>ics <span class="op">=</span> sym.solve([</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>    general2.rhs.subs(t, <span class="dv">0</span>) <span class="op">-</span> <span class="dv">0</span>,          <span class="co"># y(0) = 0</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>    general2.rhs.diff(t).subs(t, <span class="dv">0</span>) <span class="op">-</span> <span class="dv">1</span>   <span class="co"># y'(0) = 1</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>], [C1, C2])</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>particular2 <span class="op">=</span> general2.subs(ics)</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Particular solution:"</span>, particular2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>General solution: Eq(y(t), (C1 + C2*exp(t))*exp(t))
+Particular solution: Eq(y(t), (exp(t) - 1)*exp(t))</code></pre>
+</div>
+</div>
+</section>
+<section id="example-3-nonhomogeneous-ode" class="level4">
+<h4 class="anchored" data-anchor-id="example-3-nonhomogeneous-ode">Example 3: Nonhomogeneous ODE</h4>
+<p>Solve <span class="math inline">\(y'' + y = \sin(t)\)</span> (the resonance equation) symbolically.</p>
+<div id="7845989c" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>ode3 <span class="op">=</span> sym.Eq(y(t).diff(t,<span class="dv">2</span>) <span class="op">+</span> y(t), sym.sin(t))</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>general3 <span class="op">=</span> sym.dsolve(ode3, y(t))</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(general3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eq(y(t), C2*sin(t) + (C1 - t/2)*cos(t))</code></pre>
+</div>
+</div>
+<hr>
+</section>
 </section>
 </section>
 <section id="linear-algebra-in-python" class="level2">
 <h2 class="anchored" data-anchor-id="linear-algebra-in-python">Linear Algebra in Python</h2>
 <section id="numerical-linear-algebra-with-numpy-and-scipy" class="level3">
 <h3 class="anchored" data-anchor-id="numerical-linear-algebra-with-numpy-and-scipy">Numerical Linear Algebra with NumPy and SciPy</h3>
+<section id="matrices-and-vectors" class="level4">
+<h4 class="anchored" data-anchor-id="matrices-and-vectors">Matrices and Vectors</h4>
+<div id="1271c689" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">2</span>, <span class="dv">1</span>],</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">5</span>, <span class="dv">3</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> np.array([<span class="dv">4</span>, <span class="dv">7</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix A:</span><span class="ch">\n</span><span class="st">"</span>, A)</span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Vector b:"</span>, b)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A:
+ [[2. 1.]
+ [5. 3.]]
+Vector b: [4. 7.]</code></pre>
+</div>
+</div>
+</section>
+<section id="solving-linear-systems-ax-b" class="level4">
+<h4 class="anchored" data-anchor-id="solving-linear-systems-ax-b">Solving Linear Systems <span class="math inline">\(Ax = b\)</span></h4>
+<div id="a66120ab" class="cell" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> linalg</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> linalg.solve(A, b)</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution x:"</span>, x)</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify: A @ x should equal b</span></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Residual A @ x - b:"</span>, A <span class="op">@</span> x <span class="op">-</span> b)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution x: [ 5. -6.]
+Residual A @ x - b: [0.00000000e+00 3.55271368e-15]</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix-operations" class="level4">
+<h4 class="anchored" data-anchor-id="matrix-operations">Matrix Operations</h4>
+<div id="a2779b05" class="cell" data-execution_count="38">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transpose</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A^T:</span><span class="ch">\n</span><span class="st">"</span>, A.T)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Determinant</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"det(A):"</span>, linalg.det(A))</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Inverse</span></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A^{-1}:</span><span class="ch">\n</span><span class="st">"</span>, linalg.inv(A))</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix–vector product</span></span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A @ x:"</span>, A <span class="op">@</span> x)</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix–matrix product</span></span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">0</span>, <span class="dv">2</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A @ B:</span><span class="ch">\n</span><span class="st">"</span>, A <span class="op">@</span> B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>A^T:
+ [[2. 5.]
+ [1. 3.]]
+det(A): 1.0
+A^{-1}:
+ [[ 3. -1.]
+ [-5.  2.]]
+A @ x: [4. 7.]
+A @ B:
+ [[2. 2.]
+ [5. 6.]]</code></pre>
+</div>
+</div>
+</section>
 <section id="computing-eigenvalues-and-eigenvectors-with-numpy-and-scipy" class="level4">
 <h4 class="anchored" data-anchor-id="computing-eigenvalues-and-eigenvectors-with-numpy-and-scipy">Computing Eigenvalues and Eigenvectors with NumPy and SciPy</h4>
+<p>For a square matrix <span class="math inline">\(A\)</span>, the eigenvalue problem is <span class="math inline">\(A\mathbf{v} = \lambda \mathbf{v}\)</span>.</p>
+<div id="8f32bc73" class="cell" data-execution_count="39">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> linalg</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">4</span>, <span class="dv">1</span>],</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">2</span>, <span class="dv">3</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Using NumPy (returns unsorted eigenvalues)</span></span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>eigenvalues, eigenvectors <span class="op">=</span> np.linalg.eig(A)</span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvalues (NumPy):"</span>, eigenvalues)</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvectors (columns):</span><span class="ch">\n</span><span class="st">"</span>, eigenvectors)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenvalues (NumPy): [5. 2.]
+Eigenvectors (columns):
+ [[ 0.70710678 -0.4472136 ]
+ [ 0.70710678  0.89442719]]</code></pre>
+</div>
+</div>
+<div id="ac55512a" class="cell" data-execution_count="40">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using SciPy (more options; can return left eigenvectors, etc.)</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>vals, vecs <span class="op">=</span> linalg.eig(A)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvalues (SciPy):"</span>, vals.real)</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The j-th eigenvector is vecs[:, j]</span></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(vals)):</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>    lam <span class="op">=</span> vals[j].real</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>    v   <span class="op">=</span> vecs[:, j].real</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  λ = </span><span class="sc">{</span>lam<span class="sc">:.4f}</span><span class="ss">,  v = </span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Verify A @ v = λ * v: </span><span class="sc">{</span>np<span class="sc">.</span>allclose(A <span class="op">@</span> v, lam <span class="op">*</span> v)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenvalues (SciPy): [5. 2.]
+  λ = 5.0000,  v = [0.70710678 0.70710678]
+  Verify A @ v = λ * v: True
+  λ = 2.0000,  v = [-0.4472136   0.89442719]
+  Verify A @ v = λ * v: True</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>np.linalg.eig</code> and <code>scipy.linalg.eig</code> may return complex eigenvalues even for real matrices (when complex eigenvalues occur in conjugate pairs). Use <code>.real</code> and <code>.imag</code> to extract real and imaginary parts.</p>
+</div>
+</div>
+<div id="5c76ea2f" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Symmetric matrices: use eigh for guaranteed real, sorted eigenvalues</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> np.array([[<span class="dv">3</span>, <span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">2</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>vals_sym, vecs_sym <span class="op">=</span> np.linalg.eigh(C)</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvalues of symmetric matrix:"</span>, vals_sym)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenvalues of symmetric matrix: [1.38196601 3.61803399]</code></pre>
+</div>
+</div>
+<hr>
 </section>
 </section>
-<section id="symbolic-linear-algebra-with-symp" class="level3">
-<h3 class="anchored" data-anchor-id="symbolic-linear-algebra-with-symp">Symbolic Linear Algebra with SymP</h3>
+<section id="symbolic-linear-algebra-with-sympy" class="level3">
+<h3 class="anchored" data-anchor-id="symbolic-linear-algebra-with-sympy">Symbolic Linear Algebra with SymPy</h3>
+<div id="16a533bf" class="cell" data-execution_count="42">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> sym.Matrix([[<span class="dv">4</span>, <span class="dv">1</span>],</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>                [<span class="dv">2</span>, <span class="dv">3</span>]])</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix A:"</span>)</span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>sym.pprint(A)</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Determinant and inverse</span></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">det(A) ="</span>, A.det())</span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">A^{-1}:"</span>)</span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a>sym.pprint(A.inv())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A:
+⎡4  1⎤
+⎢    ⎥
+⎣2  3⎦
+
+det(A) = 10
+
+A^{-1}:
+⎡3/10  -1/10⎤
+⎢           ⎥
+⎣-1/5   2/5 ⎦</code></pre>
+</div>
+</div>
+<section id="solving-linear-systems-symbolically" class="level4">
+<h4 class="anchored" data-anchor-id="solving-linear-systems-symbolically">Solving Linear Systems Symbolically</h4>
+<div id="c7143940" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> sym.Matrix([<span class="dv">5</span>, <span class="dv">4</span>])</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> A.solve(b)</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution x:"</span>, x.T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution x: Matrix([[11/10, 3/5]])</code></pre>
+</div>
+</div>
+</section>
 <section id="computing-eigenvalues-and-eigenvectors-with-sympy" class="level4">
 <h4 class="anchored" data-anchor-id="computing-eigenvalues-and-eigenvectors-with-sympy">Computing Eigenvalues and Eigenvectors with SymPy</h4>
+<div id="44d6b5e1" class="cell" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># eigenvals() returns {eigenvalue: algebraic_multiplicity, ...}</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>evals <span class="op">=</span> A.eigenvals()</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvalues:"</span>, evals)</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="co"># eigenvects() returns [(eigenvalue, multiplicity, [eigenvectors]), ...]</span></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>evects <span class="op">=</span> A.eigenvects()</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> lam, mult, vecs <span class="kw">in</span> evects:</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">λ = </span><span class="sc">{</span>lam<span class="sc">}</span><span class="ss">  (multiplicity </span><span class="sc">{</span>mult<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> vecs:</span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  eigenvector: </span><span class="sc">{</span>v<span class="sc">.</span>T<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenvalues: {5: 1, 2: 1}
+
+λ = 2  (multiplicity 1)
+  eigenvector: Matrix([[-1/2, 1]])
+
+λ = 5  (multiplicity 1)
+  eigenvector: Matrix([[1, 1]])</code></pre>
+</div>
+</div>
+<div id="fd160a8d" class="cell" data-execution_count="45">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagonalization: A = P * D * P^{-1}</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>P, D <span class="op">=</span> A.diagonalize()</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"P ="</span>)<span class="op">;</span> sym.pprint(P)</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"D ="</span>)<span class="op">;</span> sym.pprint(D)</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"P * D * P^{-1} ="</span>)<span class="op">;</span> sym.pprint(sym.simplify(P <span class="op">*</span> D <span class="op">*</span> P.inv()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>P =
+⎡-1  1⎤
+⎢     ⎥
+⎣2   1⎦
+D =
+⎡2  0⎤
+⎢    ⎥
+⎣0  5⎦
+P * D * P^{-1} =
+⎡4  1⎤
+⎢    ⎥
+⎣2  3⎦</code></pre>
+</div>
+</div>
+<div id="9f206b62" class="cell" data-execution_count="46">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Symbolic matrix with a parameter</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> sym.Symbol(<span class="st">'a'</span>)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> sym.Matrix([[a, <span class="dv">1</span>], [<span class="dv">1</span>, a]])</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvalues of [[a,1],[1,a]]:"</span>, B.eigenvals())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eigenvalues of [[a,1],[1,a]]: {a - 1: 1, a + 1: 1}</code></pre>
+</div>
+</div>
+<hr>
 </section>
 </section>
 </section>
 <section id="phase-portraits-in-python" class="level2">
 <h2 class="anchored" data-anchor-id="phase-portraits-in-python">Phase Portraits in Python</h2>
+<p>A <strong>phase portrait</strong> shows the trajectories of a two-dimensional autonomous system <span class="math display">\[\frac{d\mathbf{x}}{dt} = \mathbf{f}(\mathbf{x}), \qquad \mathbf{x} = (x_1, x_2)^T,\]</span> in the <span class="math inline">\((x_1, x_2)\)</span> plane (the <em>phase plane</em>) for many different initial conditions.</p>
+<div id="aca3effa" class="cell" data-execution_count="47">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> linear_system(t, state, A):</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Linear system dx/dt = A*x."""</span></span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> A <span class="op">@</span> np.array(state)</span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="co"># System matrix</span></span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>A_mat <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>],</span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>                  [<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid for the vector field</span></span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">18</span>)</span>
+<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">18</span>)</span>
+<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>X1, X2 <span class="op">=</span> np.meshgrid(x1, x2)</span>
+<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>dX1 <span class="op">=</span> A_mat[<span class="dv">0</span>, <span class="dv">0</span>]<span class="op">*</span>X1 <span class="op">+</span> A_mat[<span class="dv">0</span>, <span class="dv">1</span>]<span class="op">*</span>X2</span>
+<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>dX2 <span class="op">=</span> A_mat[<span class="dv">1</span>, <span class="dv">0</span>]<span class="op">*</span>X1 <span class="op">+</span> A_mat[<span class="dv">1</span>, <span class="dv">1</span>]<span class="op">*</span>X2</span>
+<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>mag <span class="op">=</span> np.sqrt(dX1<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> dX2<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-19"><a href="#cb93-19" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">7</span>))</span>
+<span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-21"><a href="#cb93-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the vector field</span></span>
+<span id="cb93-22"><a href="#cb93-22" aria-hidden="true" tabindex="-1"></a>ax.quiver(X1, X2, dX1<span class="op">/</span>mag, dX2<span class="op">/</span>mag, mag,</span>
+<span id="cb93-23"><a href="#cb93-23" aria-hidden="true" tabindex="-1"></a>          cmap<span class="op">=</span><span class="st">'Blues'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, scale<span class="op">=</span><span class="dv">28</span>)</span>
+<span id="cb93-24"><a href="#cb93-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-25"><a href="#cb93-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot several trajectories from different initial conditions</span></span>
+<span id="cb93-26"><a href="#cb93-26" aria-hidden="true" tabindex="-1"></a>initial_conditions <span class="op">=</span> [</span>
+<span id="cb93-27"><a href="#cb93-27" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">2.5</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="fl">2.5</span>, <span class="dv">0</span>], [<span class="dv">0</span>, <span class="fl">2.5</span>], [<span class="dv">0</span>, <span class="op">-</span><span class="fl">2.5</span>],</span>
+<span id="cb93-28"><a href="#cb93-28" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">2</span>, <span class="dv">2</span>],   [<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">2</span>],  [<span class="dv">2</span>, <span class="op">-</span><span class="dv">2</span>],  [<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>]</span>
+<span id="cb93-29"><a href="#cb93-29" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb93-30"><a href="#cb93-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-31"><a href="#cb93-31" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">6</span>)</span>
+<span id="cb93-32"><a href="#cb93-32" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">6</span>, <span class="dv">300</span>)</span>
+<span id="cb93-33"><a href="#cb93-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-34"><a href="#cb93-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ic <span class="kw">in</span> initial_conditions:</span>
+<span id="cb93-35"><a href="#cb93-35" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(linear_system, t_span, ic, args<span class="op">=</span>(A_mat,),</span>
+<span id="cb93-36"><a href="#cb93-36" aria-hidden="true" tabindex="-1"></a>                    t_eval<span class="op">=</span>t_eval, method<span class="op">=</span><span class="st">'RK45'</span>)</span>
+<span id="cb93-37"><a href="#cb93-37" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.y[<span class="dv">0</span>], sol.y[<span class="dv">1</span>], <span class="st">'tomato'</span>, linewidth<span class="op">=</span><span class="fl">1.4</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb93-38"><a href="#cb93-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mark starting point</span></span>
+<span id="cb93-39"><a href="#cb93-39" aria-hidden="true" tabindex="-1"></a>    ax.plot(ic[<span class="dv">0</span>], ic[<span class="dv">1</span>], <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb93-40"><a href="#cb93-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-41"><a href="#cb93-41" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x_1</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb93-42"><a href="#cb93-42" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x_2</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb93-43"><a href="#cb93-43" aria-hidden="true" tabindex="-1"></a>ax.set_title(</span>
+<span id="cb93-44"><a href="#cb93-44" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'Phase portrait: </span><span class="dv">$\d</span><span class="vs">ot{</span><span class="dv">\m</span><span class="vs">athbf{x}} = A</span><span class="dv">\m</span><span class="vs">athbf{x}</span><span class="dv">$</span><span class="vs">'</span> <span class="op">+</span></span>
+<span id="cb93-45"><a href="#cb93-45" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f'</span><span class="ch">\n</span><span class="ss">$A = [</span><span class="sc">{</span>A_mat[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">:.0f}</span><span class="ss">,</span><span class="sc">{</span>A_mat[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">:.0f}</span><span class="ss">;</span><span class="sc">{</span>A_mat[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">:.0f}</span><span class="ss">,</span><span class="sc">{</span>A_mat[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">:.0f}</span><span class="ss">]$'</span>,</span>
+<span id="cb93-46"><a href="#cb93-46" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span></span>
+<span id="cb93-47"><a href="#cb93-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb93-48"><a href="#cb93-48" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, linewidth<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb93-49"><a href="#cb93-49" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, linewidth<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb93-50"><a href="#cb93-50" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb93-51"><a href="#cb93-51" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">3.2</span>, <span class="fl">3.2</span>)</span>
+<span id="cb93-52"><a href="#cb93-52" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">3.2</span>, <span class="fl">3.2</span>)</span>
+<span id="cb93-53"><a href="#cb93-53" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb93-54"><a href="#cb93-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb93-55"><a href="#cb93-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-48-output-1.png" width="622" height="659" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="nonlinear-system-pendulum" class="level4">
+<h4 class="anchored" data-anchor-id="nonlinear-system-pendulum">Nonlinear System: Pendulum</h4>
+<div id="b4e3fd37" class="cell" data-execution_count="48">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="fl">9.8</span>   <span class="co"># gravitational acceleration (m/s²)</span></span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="fl">1.0</span>   <span class="co"># pendulum length (m)</span></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pendulum(t, state):</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Nonlinear pendulum (no damping).</span></span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a><span class="co">    state = [theta, omega]  (angle, angular velocity)</span></span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>    theta, omega <span class="op">=</span> state</span>
+<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [omega, <span class="op">-</span>(g<span class="op">/</span>L) <span class="op">*</span> np.sin(theta)]</span>
+<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.linspace(<span class="op">-</span>np.pi, np.pi, <span class="dv">22</span>)</span>
+<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">18</span>)</span>
+<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>X1, X2 <span class="op">=</span> np.meshgrid(x1, x2)</span>
+<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a>dX1 <span class="op">=</span> X2</span>
+<span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a>dX2 <span class="op">=</span> <span class="op">-</span>(g<span class="op">/</span>L) <span class="op">*</span> np.sin(X1)</span>
+<span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a>mag <span class="op">=</span> np.sqrt(dX1<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> dX2<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb94-20"><a href="#cb94-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-21"><a href="#cb94-21" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">6</span>))</span>
+<span id="cb94-22"><a href="#cb94-22" aria-hidden="true" tabindex="-1"></a>ax.quiver(X1, X2, dX1<span class="op">/</span>mag, dX2<span class="op">/</span>mag, mag, cmap<span class="op">=</span><span class="st">'Blues'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, scale<span class="op">=</span><span class="dv">28</span>)</span>
+<span id="cb94-23"><a href="#cb94-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-24"><a href="#cb94-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> theta0 <span class="kw">in</span> np.linspace(<span class="op">-</span><span class="fl">2.8</span>, <span class="fl">2.8</span>, <span class="dv">9</span>):</span>
+<span id="cb94-25"><a href="#cb94-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> omega0 <span class="kw">in</span> [<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>]:</span>
+<span id="cb94-26"><a href="#cb94-26" aria-hidden="true" tabindex="-1"></a>        sol <span class="op">=</span> solve_ivp(pendulum, (<span class="dv">0</span>, <span class="dv">8</span>), [theta0, omega0],</span>
+<span id="cb94-27"><a href="#cb94-27" aria-hidden="true" tabindex="-1"></a>                        t_eval<span class="op">=</span>np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">500</span>), method<span class="op">=</span><span class="st">'RK45'</span>,</span>
+<span id="cb94-28"><a href="#cb94-28" aria-hidden="true" tabindex="-1"></a>                        rtol<span class="op">=</span><span class="fl">1e-8</span>, atol<span class="op">=</span><span class="fl">1e-10</span>)</span>
+<span id="cb94-29"><a href="#cb94-29" aria-hidden="true" tabindex="-1"></a>        ax.plot(sol.y[<span class="dv">0</span>], sol.y[<span class="dv">1</span>], <span class="st">'tomato'</span>, linewidth<span class="op">=</span><span class="fl">0.9</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb94-30"><a href="#cb94-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-31"><a href="#cb94-31" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">rad</span><span class="kw">)</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb94-32"><a href="#cb94-32" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">omega</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">rad/s</span><span class="kw">)</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb94-33"><a href="#cb94-33" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Phase portrait: Nonlinear Pendulum'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb94-34"><a href="#cb94-34" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span>np.pi, np.pi)</span>
+<span id="cb94-35"><a href="#cb94-35" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb94-36"><a href="#cb94-36" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, linewidth<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb94-37"><a href="#cb94-37" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb94-38"><a href="#cb94-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb94-39"><a href="#cb94-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="py_tutorial_files/figure-html/cell-49-output-1.png" width="852" height="562" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="laplace-transforms-with-sympy" class="level2">
+<h2 class="anchored" data-anchor-id="laplace-transforms-with-sympy">Laplace Transforms with SymPy</h2>
+<p>The Laplace transform <span class="math inline">\(\mathcal{L}\{f(t)\}\)</span> is an important tool for solving linear ODEs with constant coefficients. SymPy can compute Laplace transforms and inverse Laplace transforms symbolically.</p>
+<div id="d75266c8" class="cell" data-execution_count="49">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>t, s <span class="op">=</span> sym.symbols(<span class="st">'t s'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Forward Laplace transform</span></span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> sym.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t) <span class="op">*</span> sym.sin(<span class="dv">3</span><span class="op">*</span>t)</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> sym.laplace_transform(f, t, s, noconds<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"L{e^{-2t} sin(3t)} ="</span>, F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>L{e^{-2t} sin(3t)} = 3/((s + 2)**2 + 9)</code></pre>
+</div>
+</div>
+<div id="875a4e54" class="cell" data-execution_count="50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inverse Laplace transform</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> s <span class="op">/</span> (s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">4</span>)</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sym.inverse_laplace_transform(G, s, t)</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"L^{-1}{s/(s²+4)} ="</span>, g)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>L^{-1}{s/(s²+4)} = cos(2*t)</code></pre>
+</div>
+</div>
+<div id="c25bee39" class="cell" data-execution_count="51">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Solving an IVP via Laplace transform</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve y'' + 4y = 0, y(0) = 1, y'(0) = 0</span></span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> sym.Function(<span class="st">'Y'</span>)   <span class="co"># Y(s) = L{y(t)}</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Using known Laplace transform rules:</span></span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="co"># L{y''} = s^2*Y - s*y(0) - y'(0)</span></span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a><span class="co">#         = s^2*Y - s - 0</span></span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a><span class="co"># So: (s^2 + 4)*Y = s  =&gt;  Y = s/(s^2 + 4)</span></span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>Y_s <span class="op">=</span> s <span class="op">/</span> (s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">4</span>)</span>
+<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>y_t <span class="op">=</span> sym.inverse_laplace_transform(Y_s, s, t)</span>
+<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution y(t) ="</span>, y_t)   <span class="co"># cos(2t)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution y(t) = cos(2*t)</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="tips-for-debugging-python-code" class="level2">
+<h2 class="anchored" data-anchor-id="tips-for-debugging-python-code">Tips for Debugging Python Code</h2>
+<p>Even experienced programmers spend much of their time debugging. Here are some practical strategies.</p>
+<section id="read-the-error-message" class="level3">
+<h3 class="anchored" data-anchor-id="read-the-error-message">Read the Error Message</h3>
+<p>Python’s error messages are informative. The last line tells you the error type and a short description; the lines above show the <em>traceback</em> — where in the code the error occurred.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Common error types</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="co"># NameError    — you used a variable or function that isn't defined</span></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co"># TypeError    — wrong type passed to a function</span></span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ValueError   — right type, but inappropriate value</span></span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="co"># IndexError   — index out of bounds</span></span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ZeroDivisionError — division by zero</span></span>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a><span class="co"># AttributeError — object doesn't have the attribute/method you called</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="use-print-statements" class="level3">
+<h3 class="anchored" data-anchor-id="use-print-statements">Use <code>print</code> Statements</h3>
+<p>Insert <code>print()</code> calls to inspect intermediate values:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb102"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_ode(t, y):</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> <span class="op">-</span><span class="dv">2</span> <span class="op">*</span> y[<span class="dv">0</span>]</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"t=</span><span class="sc">{</span>t<span class="sc">:.3f}</span><span class="ss">, y=</span><span class="sc">{</span>y[<span class="dv">0</span>]<span class="sc">:.6f}</span><span class="ss">, f=</span><span class="sc">{</span>result<span class="sc">:.6f}</span><span class="ss">"</span>)  <span class="co"># debug line</span></span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [result]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="check-array-shapes" class="level3">
+<h3 class="anchored" data-anchor-id="check-array-shapes">Check Array Shapes</h3>
+<p>Shape mismatches are a common source of errors in NumPy code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A.shape)   <span class="co"># always check shapes when something looks wrong</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(b.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="useful-resources" class="level3">
+<h3 class="anchored" data-anchor-id="useful-resources">Useful Resources</h3>
+<ul>
+<li><a href="https://docs.python.org/3/">Official Python Docs</a></li>
+<li><a href="https://stackoverflow.com/">Stack Overflow</a> — searching your exact error message often finds an answer immediately</li>
+<li><a href="https://numpy.org/doc/stable/user/quickstart.html">NumPy Debugging Guide</a></li>
+</ul>
+<hr>
+</section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
-
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-numpy" class="csl-entry" role="listitem">
+Harris, Charles R., K. Jarrod Millman, Stéfan J. van der Walt, et al. 2020. <span>“Array Programming with <span>NumPy</span>.”</span> <em>Nature</em> 585: 357–62. <a href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a>.
+</div>
+<div id="ref-matplotlib" class="csl-entry" role="listitem">
+Hunter, John D. 2007. <span>“Matplotlib: A <span>2D</span> Graphics Environment.”</span> <em>Computing in Science &amp; Engineering</em> 9 (3): 90–95. <a href="https://doi.org/10.1109/MCSE.2007.55">https://doi.org/10.1109/MCSE.2007.55</a>.
+</div>
+<div id="ref-sympy" class="csl-entry" role="listitem">
+Meurer, Aaron, Christopher P. Smith, Mateusz Paprocki, et al. 2017. <span>“<span>SymPy</span>: Symbolic Computing in <span>Python</span>.”</span> <em>PeerJ Computer Science</em> 3: e103. <a href="https://doi.org/10.7717/peerj-cs.103">https://doi.org/10.7717/peerj-cs.103</a>.
+</div>
+<div id="ref-python" class="csl-entry" role="listitem">
+Python Software Foundation. 2024. <em>Python Language Reference, Version 3</em>. <a href="https://docs.python.org/3/">https://docs.python.org/3/</a>.
+</div>
+<div id="ref-scipy" class="csl-entry" role="listitem">
+Virtanen, Pauli, Ralf Gommers, Travis E. Oliphant, et al. 2020. <span>“<span>SciPy</span> 1.0: Fundamental Algorithms for Scientific Computing in <span>Python</span>.”</span> <em>Nature Methods</em> 17: 261–72. <a href="https://doi.org/10.1038/s41592-019-0686-2">https://doi.org/10.1038/s41592-019-0686-2</a>.
+</div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -476,21 +2033,20 @@ div.csl-indent {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="be8157e8" class="cell" data-execution_count="2">
+<div id="1364e23b" class="cell" data-execution_count="52">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
 numpy==2.4.3
 scipy==1.17.1
-sympy==1.14.0
-matplotlib==3.10.8</code></pre>
+sympy==1.14.0</code></pre>
 </div>
 </div>
 </div>
