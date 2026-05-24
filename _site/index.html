@@ -75,6 +75,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -291,7 +320,47 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#course-materials" id="toc-course-materials" class="nav-link" data-scroll-target="#course-materials">Course Materials</a>
   <ul class="collapse">
   <li><a href="#required-course-materials" id="toc-required-course-materials" class="nav-link" data-scroll-target="#required-course-materials">Required Course Materials</a></li>
+  <li><a href="#recommended-resources" id="toc-recommended-resources" class="nav-link" data-scroll-target="#recommended-resources">Recommended Resources</a></li>
   </ul></li>
+  <li><a href="#course-information" id="toc-course-information" class="nav-link" data-scroll-target="#course-information">Course Information</a>
+  <ul class="collapse">
+  <li><a href="#course-description" id="toc-course-description" class="nav-link" data-scroll-target="#course-description">Course Description</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
+  </ul></li>
+  <li><a href="#student-learning-outcomes-and-assessment" id="toc-student-learning-outcomes-and-assessment" class="nav-link" data-scroll-target="#student-learning-outcomes-and-assessment">Student Learning Outcomes and Assessment</a>
+  <ul class="collapse">
+  <li><a href="#link-with-mathematics-program-learning-outcomes" id="toc-link-with-mathematics-program-learning-outcomes" class="nav-link" data-scroll-target="#link-with-mathematics-program-learning-outcomes">Link with Mathematics Program Learning Outcomes</a></li>
+  </ul></li>
+  <li><a href="#course-policies-and-procedures" id="toc-course-policies-and-procedures" class="nav-link" data-scroll-target="#course-policies-and-procedures">Course Policies and Procedures</a>
+  <ul class="collapse">
+  <li><a href="#attendance" id="toc-attendance" class="nav-link" data-scroll-target="#attendance">Attendance</a></li>
+  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading">Grading</a></li>
+  <li><a href="#use-of-ai" id="toc-use-of-ai" class="nav-link" data-scroll-target="#use-of-ai">Use of AI</a></li>
+  </ul></li>
+  <li><a href="#assignments" id="toc-assignments" class="nav-link" data-scroll-target="#assignments">Assignments</a>
+  <ul class="collapse">
+  <li><a href="#homework" id="toc-homework" class="nav-link" data-scroll-target="#homework">Homework</a></li>
+  <li><a href="#de-model-project" id="toc-de-model-project" class="nav-link" data-scroll-target="#de-model-project">DE Model Project</a></li>
+  <li><a href="#exams" id="toc-exams" class="nav-link" data-scroll-target="#exams">Exams</a></li>
+  <li><a href="#write-your-own-exam-problems" id="toc-write-your-own-exam-problems" class="nav-link" data-scroll-target="#write-your-own-exam-problems">Write Your Own Exam Problems</a></li>
+  </ul></li>
+  <li><a href="#course-timeline" id="toc-course-timeline" class="nav-link" data-scroll-target="#course-timeline">Course Timeline</a>
+  <ul class="collapse">
+  <li><a href="#weekly-schedule" id="toc-weekly-schedule" class="nav-link" data-scroll-target="#weekly-schedule">Weekly Schedule</a></li>
+  <li><a href="#important-dates" id="toc-important-dates" class="nav-link" data-scroll-target="#important-dates">Important Dates</a></li>
+  </ul></li>
+  <li><a href="#university-resources-for-students-and-academic-honesty" id="toc-university-resources-for-students-and-academic-honesty" class="nav-link" data-scroll-target="#university-resources-for-students-and-academic-honesty">University Resources for Students and Academic Honesty</a>
+  <ul class="collapse">
+  <li><a href="#students-with-disabilities" id="toc-students-with-disabilities" class="nav-link" data-scroll-target="#students-with-disabilities">Students with Disabilities</a></li>
+  <li><a href="#writing-center-services" id="toc-writing-center-services" class="nav-link" data-scroll-target="#writing-center-services">Writing Center Services</a></li>
+  <li><a href="#academic-honesty-and-integrity" id="toc-academic-honesty-and-integrity" class="nav-link" data-scroll-target="#academic-honesty-and-integrity">Academic Honesty and Integrity</a></li>
+  <li><a href="#my-reporting-obligation-as-a-responsible-employee" id="toc-my-reporting-obligation-as-a-responsible-employee" class="nav-link" data-scroll-target="#my-reporting-obligation-as-a-responsible-employee">My Reporting Obligation as a Responsible Employee</a></li>
+  <li><a href="#non-discrimination-statement" id="toc-non-discrimination-statement" class="nav-link" data-scroll-target="#non-discrimination-statement">Non-discrimination Statement</a></li>
+  <li><a href="#about-pronouns" id="toc-about-pronouns" class="nav-link" data-scroll-target="#about-pronouns">About Pronouns</a></li>
+  <li><a href="#student-mental-health-suggestions-and-resources" id="toc-student-mental-health-suggestions-and-resources" class="nav-link" data-scroll-target="#student-mental-health-suggestions-and-resources">Student Mental Health: Suggestions and Resources</a></li>
+  </ul></li>
+  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note">Final Note</a></li>
+  <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
   </ul>
 </nav>
     </div>
@@ -368,9 +437,422 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-
-
 </section>
+<section id="recommended-resources" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-resources">Recommended Resources</h3>
+<ul>
+<li><p><a href="https://www.python.org/">Python</a> open source programming language that supports packages for scientific computing. Can be used to check answers to computational homework exercises.</p></li>
+<li><p><a href="https://www.wolframalpha.com/">Wolfram Alpha</a> can also be useful for checking answers to computational homework exercises. See the <a href="https://www.wolframalpha.com/examples/mathematics/differential-equations">Wolfram Alpha differential equations reference</a>.</p></li>
+<li><p><a href="https://sagecell.sagemath.org/">SageMath</a> open source computer algebra software. Can be used to check answers to computational homework exercises.</p></li>
+</ul>
+</section>
+</section>
+<section id="course-information" class="level2">
+<h2 class="anchored" data-anchor-id="course-information">Course Information</h2>
+<section id="course-description" class="level3">
+<h3 class="anchored" data-anchor-id="course-description">Course Description</h3>
+<p>Treatment of ordinary differential equations with applications. Topics include: first-order equations, first-order systems, linear and non-linear systems, numerical methods, and Laplace transforms. Computer-aided solutions will be used when appropriate.</p>
+</section>
+<section id="prerequisites" class="level3">
+<h3 class="anchored" data-anchor-id="prerequisites">Prerequisites</h3>
+<p>The prerequisite for this course is MATH 222 <em>Calculus III</em>. Implicit in this is that students enrolled in the course should also have a mastery of Calculus I and II. In particular, students should be proficient in computing limits, derivatives, and integrals using techniques including but not limited to u-substitution, integration by parts, partial fractions, and trigonometric substitution. A solid grasp of Taylor series is also beneficial. Students should be able to independently look up or review calculus techniques when necessary.</p>
+</section>
+</section>
+<section id="student-learning-outcomes-and-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="student-learning-outcomes-and-assessment">Student Learning Outcomes and Assessment</h2>
+<p><em>Table 1: Course outcomes and assessment.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>After taking this course, the student should be able to:</th>
+<th>Methods of assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Recognize and explain what is meant by a differential equation as a mathematical model for a phenomenon, and understand the meaning of a solution to an ODE and an initial value problem.</td>
+<td>Homework assignments, DE model project, and in-class written exams.</td>
+</tr>
+<tr class="even">
+<td>Recognize and solve separable equations; recognize and solve basic first- and second-order constant-coefficient linear differential equations; and apply Laplace transform methods to solve differential equations.</td>
+<td>Homework assignments and in-class written exams.</td>
+</tr>
+<tr class="odd">
+<td>Analyze by a variety of methods—including graphical, qualitative, and numerical—first- and second-order nonlinear autonomous differential equations and systems.</td>
+<td>Homework assignments and in-class written exams.</td>
+</tr>
+<tr class="even">
+<td>Recognize and interpret differential equation models arising from applications in science, engineering, and the biosciences.</td>
+<td>Homework assignments and DE model project.</td>
+</tr>
+</tbody>
+</table>
+<section id="link-with-mathematics-program-learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="link-with-mathematics-program-learning-outcomes">Link with Mathematics Program Learning Outcomes</h3>
+<p>The student learning outcomes of this course are linked with the Mathematics Program Learning Outcomes:</p>
+<ul>
+<li>“Demonstrate college-level knowledge in applied mathematics.”</li>
+<li>“Demonstrate competence in analytical and critical reasoning.”</li>
+<li>“Demonstrate college-level knowledge in applied mathematics.”</li>
+</ul>
+</section>
+</section>
+<section id="course-policies-and-procedures" class="level2">
+<h2 class="anchored" data-anchor-id="course-policies-and-procedures">Course Policies and Procedures</h2>
+<section id="attendance" class="level3">
+<h3 class="anchored" data-anchor-id="attendance">Attendance</h3>
+<p>It is important that you attend class regularly and participate actively by asking and answering questions during lecture. If you must miss class for any reason, it is your responsibility to notify the instructor as soon as possible and make arrangements to quickly make up any content or assignments missed due to absence.</p>
+</section>
+<section id="grading" class="level3">
+<h3 class="anchored" data-anchor-id="grading">Grading</h3>
+<section id="grade-policy" class="level4">
+<h4 class="anchored" data-anchor-id="grade-policy">Grade Policy</h4>
+<p>The overall course grade will be based on the following assessments:</p>
+<ul>
+<li><strong>Regular homework assignments</strong> — 10% of overall course grade</li>
+<li><strong>Three in-class exams</strong> — weighted in order of best performance: best exam 25%, second best 20%, third best 15% of overall course grade</li>
+<li><strong>DE Model Project</strong> — 5% of overall course grade</li>
+<li><strong>Final exam</strong> — 25% of overall course grade</li>
+</ul>
+</section>
+<section id="grade-scale" class="level4">
+<h4 class="anchored" data-anchor-id="grade-scale">Grade Scale</h4>
+<p>Letter grades will be assigned based on the following scale:</p>
+<p><em>Table 2: Letter grade scale.</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Grade Range</th>
+<th>Letter Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>93–100</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>90–92</td>
+<td>A-</td>
+</tr>
+<tr class="odd">
+<td>87–89</td>
+<td>B+</td>
+</tr>
+<tr class="even">
+<td>83–86</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>80–82</td>
+<td>B-</td>
+</tr>
+<tr class="even">
+<td>77–79</td>
+<td>C+</td>
+</tr>
+<tr class="odd">
+<td>70–76</td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td>67–69</td>
+<td>C-</td>
+</tr>
+<tr class="odd">
+<td>63–66</td>
+<td>D+</td>
+</tr>
+<tr class="even">
+<td>60–62</td>
+<td>D</td>
+</tr>
+<tr class="odd">
+<td>Below 60</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="use-of-ai" class="level3">
+<h3 class="anchored" data-anchor-id="use-of-ai">Use of AI</h3>
+<p>Artificial intelligence (AI) can be an effective tool in science and engineering. For example, generative AI platforms like <a href="https://copilot.microsoft.com/">Copilot</a> or <a href="https://openai.com/chatgpt">ChatGPT</a> now help programmers to write better code in less time. Learning to use AI effectively and responsibly is quickly becoming a basic skill for the modern scientist. Because of this, I do not want to completely discourage the use of AI assistance.</p>
+<p>However, I ask that you avoid using AI platforms or tools in a manner that is inappropriate in the context of this course. This course teaches a variety of concepts, skills, and problem solving. Using AI in such a way as to avoid learning, developing skills, or problem solving is not appropriate. If you find yourself using AI to look up answers, search for complete solutions to problems, or things like this, then your use of AI is not acceptable.</p>
+<p>It might be helpful to think of AI as an analog to a calculator. If the goal of an assignment is for you to demonstrate that you can do a certain calculation, then using a calculator is not appropriate. On the other hand, if the goal of an assignment is for you to demonstrate that you can solve a problem for which a minor step involves doing a calculation, then using a calculator is okay. AI use in the context of this course should be treated analogously.</p>
+<p>In particular, it is expected that students will be able to explain independently and in detail any work or ideas on assignments this semester. If you have any doubts about your use of AI, then either ask the instructor if your use of AI is acceptable or just don’t use AI.</p>
+</section>
+</section>
+<section id="assignments" class="level2">
+<h2 class="anchored" data-anchor-id="assignments">Assignments</h2>
+<section id="homework" class="level3">
+<h3 class="anchored" data-anchor-id="homework">Homework</h3>
+<p>There will be regular homework assignments posted on the course learning management system. The homework assignments will be made up of problems relating to or extending the material covered in lecture and assigned readings.</p>
+<p>Students are permitted to collaborate on the homework assignments. Note that collaboration in this context means a roughly equal amount of contribution from all parties involved. Thus, asking another student to show you how to do a complete problem is not collaboration and constitutes copying the work of someone else, which is academic dishonesty. On submitted homework, please identify for each problem who you worked with. Looking up solutions to homework problems online is academic dishonesty. Of course, all students are always welcome and encouraged to seek out help from the course instructor for solving homework problems.</p>
+<p>Extensions on homework must be requested in writing via email no less than 24 hours before the assignment is due. No extension greater than 2 business days will be granted except in rare circumstances. Homework assignments for which an extension is granted should be submitted electronically via email to the instructor.</p>
+<p>Do not underestimate the value (and joy) of carefully working through homework problems.</p>
+</section>
+<section id="de-model-project" class="level3">
+<h3 class="anchored" data-anchor-id="de-model-project">DE Model Project</h3>
+<p>The differential equations model project is a writing assignment designed to assess students’ understanding of differential equations as mathematical models for scientific or other phenomena. In addition, this assignment assesses the students’ ability to effectively communicate mathematical ideas in the context of differential equations. Guidelines and a rubric for this assignment will be posted on the course learning management system.</p>
+</section>
+<section id="exams" class="level3">
+<h3 class="anchored" data-anchor-id="exams">Exams</h3>
+<p>The in-class exams are meant to assess 1) students’ understanding of the material covered in class and in homework assignments, 2) students’ understanding of the core concepts, 3) students’ problem solving abilities, and 4) students’ ability to think independently. You may use a non-programmable scientific calculator on exams.</p>
+<p>If you must miss an in-class exam, you are required to notify the instructor via email at least 24 hours before the exam or as soon as possible in the case of an emergency. Acceptable reasons for absence include but are not necessarily limited to medical emergencies, serious illness, family emergencies, religious observances, and participation in university-sanctioned events. You must provide appropriate documentation to substantiate your reason for the absence. If your absence is excused, you will be allowed to take a make-up exam scheduled within one week of the original exam date.</p>
+</section>
+<section id="write-your-own-exam-problems" class="level3">
+<h3 class="anchored" data-anchor-id="write-your-own-exam-problems">Write Your Own Exam Problems</h3>
+<p>In order to encourage active participation in the learning process, the instructor invites all students to submit suggested problems to appear on each exam. On any given exam, any individual student is welcome to submit up to two problems for consideration. Submissions must be made a minimum of three days before the exam. Along with a clear statement of the problem must appear a carefully, clearly, and correctly written solution. Any problem submission, along with its solution, will be copied and handed out to the rest of the class at least one day before the exam. Students will <strong>not</strong> know in advance if their problem has been chosen to appear on the exam. The instructor is under no obligation to use any or all submitted problems. However, the more problems that students submit, the greater the chances that some will be chosen to appear on an exam.</p>
+</section>
+</section>
+<section id="course-timeline" class="level2">
+<h2 class="anchored" data-anchor-id="course-timeline">Course Timeline</h2>
+<section id="weekly-schedule" class="level3">
+<h3 class="anchored" data-anchor-id="weekly-schedule">Weekly Schedule</h3>
+<p><em>Table 3: Class schedule.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 57%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Textbook Sections</th>
+<th>Topics</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1.1 – 1.3</td>
+<td>Introduction: differential equations and mathematical models; antiderivatives and integration review; separable equations.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1.3 – 1.5</td>
+<td>Separable equations continued; linear first-order equations; stability and phase-line analysis.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1.5, 2.1 – 2.2</td>
+<td>Bifurcation; second-order equations; constant-coefficient homogeneous equations.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>2.2 – 2.3</td>
+<td>Constant-coefficient equations continued; the method of undetermined coefficients.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>2.3 – 2.5</td>
+<td>Variation of parameters; resonance and applications; boundary value problems. <strong>Exam 1</strong></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>3.1 – 3.2</td>
+<td>Introduction to Laplace transforms; solving IVPs with Laplace transforms.</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>3.3 – 3.5</td>
+<td>The <span class="math inline">\(s\)</span>-shift formula; unit step functions and the <span class="math inline">\(t\)</span>-shift formula; convolution.</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>3.5, 4.1 – 4.2</td>
+<td>Convolution continued; introduction to linear systems; straight-line solutions and eigenvalues.</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>4.2 – 4.4</td>
+<td>Eigenvalue methods; phase plane analysis; general solution of nondefective systems. <strong>Exam 2</strong></td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>4.4 – 4.5</td>
+<td>Nondefective systems continued; defective systems and generalized eigenvectors.</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>5.1 – 5.3</td>
+<td>Introduction to nonlinear systems; nullclines and stability; linearization near equilibria.</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>5.3 – 5.5</td>
+<td>Linearization continued; applications in biology, physics, and engineering.</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>6.1 – 6.2</td>
+<td>Numerical methods: Euler’s method and Runge-Kutta methods. <strong>Exam 3</strong></td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Select sections</td>
+<td>Additional topics and applications.</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>Select sections / Review</td>
+<td>Additional topics and review for final exam.</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Final exam</td>
+<td>Final exam.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="important-dates" class="level3">
+<h3 class="anchored" data-anchor-id="important-dates">Important Dates</h3>
+<p><em>Table 4: Important dates.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 53%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Event</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Classes begin</td>
+<td>Monday, August 31</td>
+</tr>
+<tr class="even">
+<td>Last day to add/drop with no grade</td>
+<td>Friday, September 4</td>
+</tr>
+<tr class="odd">
+<td>Labor Day, no class</td>
+<td>Monday, September 7</td>
+</tr>
+<tr class="even">
+<td><strong>Exam 1</strong></td>
+<td><strong>Friday, October 2</strong></td>
+</tr>
+<tr class="odd">
+<td>Last day of class before fall break</td>
+<td>Friday, October 9</td>
+</tr>
+<tr class="even">
+<td>Fall break</td>
+<td>Saturday, October 10 – Tuesday, October 13</td>
+</tr>
+<tr class="odd">
+<td>Classes resume after fall break</td>
+<td>Wednesday, October 14</td>
+</tr>
+<tr class="even">
+<td>Semester midpoint (mid-semester grades due)</td>
+<td>Wednesday, October 21</td>
+</tr>
+<tr class="odd">
+<td><strong>Exam 2</strong></td>
+<td><strong>Friday, October 30</strong></td>
+</tr>
+<tr class="even">
+<td>Last day to withdraw with “W” grade</td>
+<td>Friday, November 6</td>
+</tr>
+<tr class="odd">
+<td><strong>Exam 3</strong></td>
+<td><strong>Friday, November 20</strong></td>
+</tr>
+<tr class="even">
+<td>Last day of class before Thanksgiving break</td>
+<td>Tuesday, November 24</td>
+</tr>
+<tr class="odd">
+<td>Thanksgiving break</td>
+<td>Wednesday, November 25 – Sunday, November 29</td>
+</tr>
+<tr class="even">
+<td>Classes resume after Thanksgiving</td>
+<td>Monday, November 30</td>
+</tr>
+<tr class="odd">
+<td>Last week of classes (no exams permitted)</td>
+<td>Tuesday, December 8 – Monday, December 14</td>
+</tr>
+<tr class="even">
+<td>Last day of class</td>
+<td>Monday, December 14</td>
+</tr>
+<tr class="odd">
+<td>Final exams begin</td>
+<td>Tuesday, December 15</td>
+</tr>
+<tr class="even">
+<td>Final exams end</td>
+<td>Saturday, December 19</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="university-resources-for-students-and-academic-honesty" class="level2">
+<h2 class="anchored" data-anchor-id="university-resources-for-students-and-academic-honesty">University Resources for Students and Academic Honesty</h2>
+<section id="students-with-disabilities" class="level3">
+<h3 class="anchored" data-anchor-id="students-with-disabilities">Students with Disabilities</h3>
+<p>Reasonable academic accommodations may be provided to students who submit relevant and current documentation of their disability. Students are encouraged to contact the Center for Teaching and Learning Excellence (CTLE) at <a href="mailto:disabilityservices@scranton.edu" class="email">disabilityservices@scranton.edu</a> or (570) 941-4038 if they have or think they may have a disability and wish to determine eligibility for any accommodations. For more information, please visit <a href="http://www.scranton.edu/disabilities" class="uri">http://www.scranton.edu/disabilities</a>.</p>
+</section>
+<section id="writing-center-services" class="level3">
+<h3 class="anchored" data-anchor-id="writing-center-services">Writing Center Services</h3>
+<p>The Writing Center focuses on helping students become better writers. Consultants will work one-on-one with students to discuss students’ work and provide feedback at any stage of the writing process. Scheduling appointments early in the writing process is encouraged.</p>
+<p>To meet with a writing consultant, call (570) 941-6147 to schedule an appointment, or send an email with your available meeting times, the course for which you need assistance, and your phone number to: <a href="mailto:writing-center@scranton.edu" class="email">writing-center@scranton.edu</a>. The Writing Center does offer online appointments for distance learning students.</p>
+</section>
+<section id="academic-honesty-and-integrity" class="level3">
+<h3 class="anchored" data-anchor-id="academic-honesty-and-integrity">Academic Honesty and Integrity</h3>
+<p>Each student is expected to do their own work. It is also expected that each student respect and abide by the Academic Code of Honesty as set forth in the University of Scranton student handbook. Conduct that violates the Academic Code of Honesty includes plagiarism, duplicate submission of the same work, collusion, providing false information, unauthorized use of computers, theft and destruction of property, and unauthorized possession of tests and other materials. Steps taken in response to suspected violations may include a discussion with the instructor, an informal meeting with the dean of the college, and a hearing before the Academic Dishonesty Hearing Board. Students who are found to have violated the Code will ordinarily be assigned the grade F by the instructor and may face other sanctions. The complete Academic Code of Honesty is located on the University website at <a href="https://www.scranton.edu/academics/wml/acad-integ/acad-code-honesty.shtml" class="uri">https://www.scranton.edu/academics/wml/acad-integ/acad-code-honesty.shtml</a>.</p>
+</section>
+<section id="my-reporting-obligation-as-a-responsible-employee" class="level3">
+<h3 class="anchored" data-anchor-id="my-reporting-obligation-as-a-responsible-employee">My Reporting Obligation as a Responsible Employee</h3>
+<p>As a faculty member, I am deeply invested in the well-being of each student I teach. I am here to assist you with your work in this course. Additionally, if you come to me with other non-course-related concerns, I will do my best to help. It is important for you to know that all faculty members are required to report incidents of sexual harassment or sexual misconduct involving students. This means that I cannot keep information about sexual harassment or discrimination, sexual assault, sexual exploitation, intimate partner violence or stalking confidential if you share that information with me. I will keep the information as private as I can but am required to bring it to the attention of the University’s Title IX Coordinator, Elizabeth M. Garcia, or Deputy Title IX Coordinator, Diana M. Collins, who, in conversation with you, will explain available support, resources, and options. I will not report anything to anybody without first letting you know and discussing choices as to how to proceed. The University’s Counseling Center (570-941-7620) is available to you as a confidential resource; counselors (in the counseling center) do not have an obligation to report to the Title IX Coordinator.</p>
+</section>
+<section id="non-discrimination-statement" class="level3">
+<h3 class="anchored" data-anchor-id="non-discrimination-statement">Non-discrimination Statement</h3>
+<p>The University is committed to providing an educational, residential, and working environment that is free from harassment and discrimination. Members of the University community, applicants for employment or admissions, guests, and visitors have the right to be free from harassment or discrimination based on race, color, creed, religion, ancestry, gender, sex, pregnancy and related conditions, sexual orientation, gender identity or expression, age, disability, genetic information, national origin, ethnicity, family responsibilities, marital status, veteran or military status, citizenship status, or any other status protected by applicable law.</p>
+<p>Students who believe they have been subject to harassment or discrimination based on any of the above class of characteristics, or experience sexual harassment, sexual misconduct or gender discrimination should contact Elizabeth M. Garcia, Title IX Coordinator, (570) 941-6645 <a href="mailto:elizabeth.garcia2@scranton.edu" class="email">elizabeth.garcia2@scranton.edu</a>, or Deputy Title IX Coordinators Diana M. Collins (570) 941-6645 <a href="mailto:diana.collins@scranton.edu" class="email">diana.collins@scranton.edu</a>. The United States Department of Education’s Office for Civil Rights (OCR) enforces Title IX. Information regarding OCR may be found at &lt;www.ed.gov/about/offices/list/ocr/index.html&gt;.</p>
+<p>The University of Scranton Sexual Harassment and Sexual Misconduct Policy can be found online at <a href="https://www.scranton.edu/diversity" class="uri">https://www.scranton.edu/diversity</a>. All reporting options and resources are available at <a href="https://www.scranton.edu/CARE" class="uri">https://www.scranton.edu/CARE</a>.</p>
+</section>
+<section id="about-pronouns" class="level3">
+<h3 class="anchored" data-anchor-id="about-pronouns">About Pronouns</h3>
+<p>It is easy to make assumptions about an individual’s pronouns, but we try not to! Please inform the instructor either in class or via a private email if you would like to share your pronouns, if/when you would like the instructor (and others) to use them, and certainly feel free to correct the instructor or others if a mistake is made. Using the pronouns that a person has indicated they prefer is considered both professional and polite, and as such we ask that all members of our class use the appropriate pronouns.</p>
+<p>If you have questions about this, please feel free to look up more information at <a href="https://www.mypronouns.org/" class="uri">https://www.mypronouns.org/</a> or email <a href="mailto:jason.graham@scranton.edu" class="email">jason.graham@scranton.edu</a> with any questions.</p>
+</section>
+<section id="student-mental-health-suggestions-and-resources" class="level3">
+<h3 class="anchored" data-anchor-id="student-mental-health-suggestions-and-resources">Student Mental Health: Suggestions and Resources</h3>
+<p>Many students experience mental health challenges at some point in college. Struggles vary and might be related to academics, anxiety, depression, relationships, grief/loss, substance abuse, and other challenges. There are resources to help you and getting help is the smart and courageous thing to do.</p>
+<ul>
+<li><p>Counseling Center (6th Floor O’Hara Hall; 570-941-7620) – Free, confidential individual and group counseling is available on campus.</p></li>
+<li><p>Teletherapy – For students who wish to access therapy via video, phone, and/or chat, the University offers a teletherapy resource. Please contact the Counseling Center (570-941-7620) to inquire about teletherapy.</p></li>
+<li><p><a href="https://www.scranton.edu/studentlife/studentaffairs/chew/mental-health-screenings-.shtml">Mental Health Screenings</a> – Confidential, online “check up from your neck up” to help you determine if you should connect with a mental health professional.</p></li>
+<li><p>Dean of Students Office (201 DeNaples Center; 570-941-7680) – Private support and guidance for students navigating personal challenges that may impact success at the University.</p></li>
+</ul>
+</section>
+</section>
+<section id="final-note" class="level2">
+<h2 class="anchored" data-anchor-id="final-note">Final Note</h2>
+<p>The instructor reserves the right to modify this syllabus; students will be immediately notified of any such changes and an updated syllabus will be made available to the class via the course learning management system.</p>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid"></a></p>
+
+
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
