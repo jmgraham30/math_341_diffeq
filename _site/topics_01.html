@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Dimensional Analysis – MATH 341 Differential Equations</title>
+<title>Dimensional Analysis and Non-Dimensionalization – MATH 341 Differential Equations</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,7 +23,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -75,6 +129,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -267,6 +350,14 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./topics.html" aria-current="page"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./py_tutorial.html"> 
 <span class="menu-text">Python Reference</span></a>
   </li>  
@@ -282,7 +373,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./topics_01.html">Dimensional Analysis</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./topics_01.html">Dimensional Analysis and Non-Dimensionalization</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -303,7 +394,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./topics_01.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Dimensional Analysis</span></a>
+ <span class="menu-text">Dimensional Analysis and Non-Dimensionalization</span></a>
   </div>
 </li>
     </ul>
@@ -311,8 +402,41 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dimensions-and-units" id="toc-dimensions-and-units" class="nav-link active" data-scroll-target="#dimensions-and-units">Dimensions and Units</a>
+  <ul class="collapse">
+  <li><a href="#the-fundamental-dimensions" id="toc-the-fundamental-dimensions" class="nav-link" data-scroll-target="#the-fundamental-dimensions">The Fundamental Dimensions</a></li>
+  <li><a href="#dimensional-analysis-a-simple-example" id="toc-dimensional-analysis-a-simple-example" class="nav-link" data-scroll-target="#dimensional-analysis-a-simple-example">Dimensional Analysis: A Simple Example</a></li>
+  </ul></li>
+  <li><a href="#buckingham-pi-theorem" id="toc-buckingham-pi-theorem" class="nav-link" data-scroll-target="#buckingham-pi-theorem">Buckingham <span class="math inline">\(\Pi\)</span> Theorem</a></li>
+  <li><a href="#non-dimensionalization-of-an-ode" id="toc-non-dimensionalization-of-an-ode" class="nav-link" data-scroll-target="#non-dimensionalization-of-an-ode">Non-Dimensionalization of an ODE</a></li>
+  <li><a href="#example-1-the-logistic-growth-model" id="toc-example-1-the-logistic-growth-model" class="nav-link" data-scroll-target="#example-1-the-logistic-growth-model">Example 1 — The Logistic Growth Model</a>
+  <ul class="collapse">
+  <li><a href="#the-dimensional-equation" id="toc-the-dimensional-equation" class="nav-link" data-scroll-target="#the-dimensional-equation">The Dimensional Equation</a></li>
+  <li><a href="#choosing-characteristic-scales" id="toc-choosing-characteristic-scales" class="nav-link" data-scroll-target="#choosing-characteristic-scales">Choosing Characteristic Scales</a></li>
+  <li><a href="#introducing-dimensionless-variables" id="toc-introducing-dimensionless-variables" class="nav-link" data-scroll-target="#introducing-dimensionless-variables">Introducing Dimensionless Variables</a></li>
+  <li><a href="#substituting-into-the-ode" id="toc-substituting-into-the-ode" class="nav-link" data-scroll-target="#substituting-into-the-ode">Substituting into the ODE</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
+  <li><a href="#comparison-dimensional-vs.-dimensionless-solutions" id="toc-comparison-dimensional-vs.-dimensionless-solutions" class="nav-link" data-scroll-target="#comparison-dimensional-vs.-dimensionless-solutions">Comparison: Dimensional vs.&nbsp;Dimensionless Solutions</a></li>
+  </ul></li>
+  <li><a href="#example-2-the-forced-damped-oscillator" id="toc-example-2-the-forced-damped-oscillator" class="nav-link" data-scroll-target="#example-2-the-forced-damped-oscillator">Example 2 — The Forced Damped Oscillator</a>
+  <ul class="collapse">
+  <li><a href="#the-dimensional-equation-1" id="toc-the-dimensional-equation-1" class="nav-link" data-scroll-target="#the-dimensional-equation-1">The Dimensional Equation</a></li>
+  <li><a href="#choosing-characteristic-scales-1" id="toc-choosing-characteristic-scales-1" class="nav-link" data-scroll-target="#choosing-characteristic-scales-1">Choosing Characteristic Scales</a></li>
+  <li><a href="#introducing-dimensionless-variables-1" id="toc-introducing-dimensionless-variables-1" class="nav-link" data-scroll-target="#introducing-dimensionless-variables-1">Introducing Dimensionless Variables</a></li>
+  <li><a href="#substituting-into-the-ode-1" id="toc-substituting-into-the-ode-1" class="nav-link" data-scroll-target="#substituting-into-the-ode-1">Substituting into the ODE</a></li>
+  <li><a href="#interpretation-of-the-dimensionless-groups" id="toc-interpretation-of-the-dimensionless-groups" class="nav-link" data-scroll-target="#interpretation-of-the-dimensionless-groups">Interpretation of the Dimensionless Groups</a></li>
+  <li><a href="#steady-state-amplitude-and-phase" id="toc-steady-state-amplitude-and-phase" class="nav-link" data-scroll-target="#steady-state-amplitude-and-phase">Steady-State Amplitude and Phase</a></li>
+  <li><a href="#solution-curves-in-the-dimensionless-variables" id="toc-solution-curves-in-the-dimensionless-variables" class="nav-link" data-scroll-target="#solution-curves-in-the-dimensionless-variables">Solution Curves in the Dimensionless Variables</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -320,7 +444,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Dimensional Analysis</h1>
+<h1 class="title">Dimensional Analysis and Non-Dimensionalization</h1>
 </div>
 
 
@@ -337,8 +461,682 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div id="b56af4c9" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>This section covers the basics of <strong><a href="https://en.wikipedia.org/wiki/Dimensional_analysis">dimensional analysis</a></strong> and the process of <strong>non-dimensionalizing</strong> a differential equation. These are powerful and broadly applicable techniques that:</p>
+<ul>
+<li>reveal the <em>essential</em> parameters governing a system by reducing many dimensional parameters to a smaller number of dimensionless groups;</li>
+<li>simplify numerical work by scaling variables to order-unity size;</li>
+<li>expose the natural time, length, and amplitude scales built into a problem;</li>
+<li>allow meaningful comparisons between physically different systems that share the same dimensionless equations.</li>
+</ul>
+<p>These ideas are standard tools in applied mathematics, physics, and engineering, and they appear throughout the analysis of ODEs. Good introductory references are <span class="citation" data-cites="logan2015first">@logan2015first</span> (Section 1.2), <span class="citation" data-cites="strogatz2018nonlinear">@strogatz2018nonlinear</span> (Section 3.5), and the Wikipedia article on <a href="https://en.wikipedia.org/wiki/Nondimensionalization">nondimensionalization</a>.</p>
+<hr>
+<section id="dimensions-and-units" class="level2">
+<h2 class="anchored" data-anchor-id="dimensions-and-units">Dimensions and Units</h2>
+<p>Every measurable physical quantity has a <strong><a href="https://en.wikipedia.org/wiki/Dimensional_analysis#Dimensional_symbols">dimension</a></strong> — a qualitative description of what kind of thing is being measured — and a <strong>unit</strong> — a conventional standard for expressing that dimension numerically.</p>
+<section id="the-fundamental-dimensions" class="level3">
+<h3 class="anchored" data-anchor-id="the-fundamental-dimensions">The Fundamental Dimensions</h3>
+<p>In mechanics the three fundamental dimensions are:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Symbol</th>
+<th>Dimension</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\mathsf{M}\)</span></td>
+<td>Mass</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\mathsf{L}\)</span></td>
+<td>Length</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}\)</span></td>
+<td>Time</td>
+</tr>
+</tbody>
+</table>
+<p>Every other mechanical quantity is expressed as a product of powers of these. We write <span class="math inline">\([Q]\)</span> for the dimension of quantity <span class="math inline">\(Q\)</span>. For example:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 45%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th style="text-align: center;">Dimension</th>
+<th>SI Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Time <span class="math inline">\(t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}\)</span></td>
+<td>second (s)</td>
+</tr>
+<tr class="even">
+<td>Length/position <span class="math inline">\(x\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{L}\)</span></td>
+<td>metre (m)</td>
+</tr>
+<tr class="odd">
+<td>Velocity <span class="math inline">\(v = dx/dt\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{L}\,\mathsf{T}^{-1}\)</span></td>
+<td>m s<span class="math inline">\(^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td>Acceleration <span class="math inline">\(a = d^2x/dt^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{L}\,\mathsf{T}^{-2}\)</span></td>
+<td>m s<span class="math inline">\(^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Mass <span class="math inline">\(m\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{M}\)</span></td>
+<td>kilogram (kg)</td>
+</tr>
+<tr class="even">
+<td>Force <span class="math inline">\(F = ma\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{M}\,\mathsf{L}\,\mathsf{T}^{-2}\)</span></td>
+<td>newton (N)</td>
+</tr>
+<tr class="odd">
+<td>Energy <span class="math inline">\(E\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{M}\,\mathsf{L}^{2}\,\mathsf{T}^{-2}\)</span></td>
+<td>joule (J)</td>
+</tr>
+<tr class="even">
+<td>Population <span class="math inline">\(P\)</span></td>
+<td style="text-align: center;">dimensionless</td>
+<td>individuals</td>
+</tr>
+<tr class="odd">
+<td>Rate constant <span class="math inline">\(r\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}^{-1}\)</span></td>
+<td>per second</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The Principle of Dimensional Homogeneity
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every term in a physically meaningful equation must have <strong>identical dimensions</strong>. An equation that adds a length to a time, for instance, is dimensionally inconsistent and cannot be correct.</p>
+</div>
+</div>
+<p>This principle is both a consistency check and a discovery tool: if a proposed formula is dimensionally inconsistent, it is wrong; if you know the dimensions of the answer, you can often guess the form of the formula.</p>
+</section>
+<section id="dimensional-analysis-a-simple-example" class="level3">
+<h3 class="anchored" data-anchor-id="dimensional-analysis-a-simple-example">Dimensional Analysis: A Simple Example</h3>
+<p>Suppose a pendulum of length <span class="math inline">\(\ell\)</span> swings under gravity <span class="math inline">\(g\)</span> (with <span class="math inline">\([g] = \mathsf{L}\,\mathsf{T}^{-2}\)</span>). What is the period <span class="math inline">\(\tau\)</span>?</p>
+<p>We expect <span class="math inline">\(\tau = C\,\ell^a g^b\)</span> for some pure number <span class="math inline">\(C\)</span> and unknown exponents <span class="math inline">\(a, b\)</span>. Matching dimensions: <span class="math display">\[
+[\tau] = \mathsf{T} = \mathsf{L}^a \cdot (\mathsf{L}\,\mathsf{T}^{-2})^b = \mathsf{L}^{a+b}\,\mathsf{T}^{-2b}.
+\]</span> Equating exponents: <span class="math inline">\(-2b = 1 \Rightarrow b = -\tfrac{1}{2}\)</span>; <span class="math inline">\(a + b = 0 \Rightarrow a = \tfrac{1}{2}\)</span>. Therefore <span class="math display">\[
+\tau = C\sqrt{\frac{\ell}{g}}.
+\]</span> Dimensional analysis alone tells us the <span class="math inline">\(\sqrt{\ell/g}\)</span> scaling; a full solution of the pendulum ODE gives <span class="math inline">\(C = 2\pi\)</span>.</p>
+<hr>
+</section>
+</section>
+<section id="buckingham-pi-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="buckingham-pi-theorem">Buckingham <span class="math inline">\(\Pi\)</span> Theorem</h2>
+<p>The systematic foundation for dimensional analysis is the <strong><a href="https://en.wikipedia.org/wiki/Buckingham_%CF%80_theorem">Buckingham <span class="math inline">\(\Pi\)</span> theorem</a></strong>:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Buckingham <span class="math inline">\(\Pi\)</span> Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If a physical relationship involves <span class="math inline">\(n\)</span> dimensional quantities built from <span class="math inline">\(k\)</span> independent fundamental dimensions, then it can be expressed as a relationship among <span class="math inline">\(n - k\)</span> <strong>dimensionless groups</strong> <span class="math inline">\(\Pi_1, \Pi_2, \ldots, \Pi_{n-k}\)</span>.</p>
+</div>
+</div>
+<p>Each <span class="math inline">\(\Pi_i\)</span> is a product of powers of the original quantities chosen so that all dimensions cancel. The theorem guarantees that reducing <span class="math inline">\(n\)</span> parameters to <span class="math inline">\(n-k\)</span> dimensionless groups is always possible and that nothing is lost in doing so.</p>
+<hr>
+</section>
+<section id="non-dimensionalization-of-an-ode" class="level2">
+<h2 class="anchored" data-anchor-id="non-dimensionalization-of-an-ode">Non-Dimensionalization of an ODE</h2>
+<p><strong>Non-dimensionalization</strong> is the process of rescaling the dependent and independent variables of a differential equation so that all variables and parameters become dimensionless. The procedure is:</p>
+<ol type="1">
+<li><strong>Identify all dimensional quantities</strong> in the ODE (variables, parameters, forcing terms) and record their dimensions.</li>
+<li><strong>Choose characteristic scales</strong> — a reference value with the correct dimension — for each variable. These scales should be natural to the problem (e.g., set by a parameter already present).</li>
+<li><strong>Introduce dimensionless variables</strong> by dividing each dimensional variable by its characteristic scale.</li>
+<li><strong>Substitute</strong> into the ODE and simplify. Collect the parameters into dimensionless groups.</li>
+<li><strong>Interpret</strong> the dimensionless groups: each one represents a physically meaningful ratio, and its size tells you which effects dominate.</li>
+</ol>
+<p>We now apply this procedure to two important examples.</p>
+<hr>
+</section>
+<section id="example-1-the-logistic-growth-model" class="level2">
+<h2 class="anchored" data-anchor-id="example-1-the-logistic-growth-model">Example 1 — The Logistic Growth Model</h2>
+<section id="the-dimensional-equation" class="level3">
+<h3 class="anchored" data-anchor-id="the-dimensional-equation">The Dimensional Equation</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Logistic_function#In_ecology:_modeling_population_growth">logistic equation</a> for a population <span class="math inline">\(P(t)\)</span> is <span class="math display">\[
+\frac{dP}{dt} = rP\!\left(1 - \frac{P}{K}\right), \qquad P(0) = P_0,
+\]</span> where:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Meaning</th>
+<th style="text-align: center;">Dimension</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(P\)</span></td>
+<td>population size</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{N}\)</span> (number of individuals)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t\)</span></td>
+<td>time</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(r &gt; 0\)</span></td>
+<td>intrinsic growth rate</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(K &gt; 0\)</span></td>
+<td>carrying capacity</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{N}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(P_0\)</span></td>
+<td>initial population</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{N}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Here we use <span class="math inline">\(\mathsf{N}\)</span> (number) as a fourth dimension for population counts, though it is often treated as dimensionless in practice.</p>
+<p>The equation has <strong>three</strong> dimensional parameters: <span class="math inline">\(r\)</span>, <span class="math inline">\(K\)</span>, <span class="math inline">\(P_0\)</span>.</p>
+</section>
+<section id="choosing-characteristic-scales" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-characteristic-scales">Choosing Characteristic Scales</h3>
+<ul>
+<li><strong>Population scale.</strong> The carrying capacity <span class="math inline">\(K\)</span> is the natural population scale, since it is the only characteristic population size built into the equation. Set <span class="math inline">\(\mathcal{P} = K\)</span>.</li>
+<li><strong>Time scale.</strong> The growth rate <span class="math inline">\(r\)</span> has dimension <span class="math inline">\(\mathsf{T}^{-1}\)</span>, so <span class="math inline">\(\mathcal{T} = 1/r\)</span> is the natural time scale — it is the characteristic time over which the population changes appreciably.</li>
+</ul>
+</section>
+<section id="introducing-dimensionless-variables" class="level3">
+<h3 class="anchored" data-anchor-id="introducing-dimensionless-variables">Introducing Dimensionless Variables</h3>
+<p>Define <span class="math display">\[
+u = \frac{P}{K}, \qquad \tau = r\,t.
+\]</span> Both <span class="math inline">\(u\)</span> and <span class="math inline">\(\tau\)</span> are dimensionless by construction. Note that <span class="math inline">\(P = Ku\)</span> and <span class="math inline">\(t = \tau/r\)</span>, so <span class="math display">\[
+\frac{dP}{dt} = \frac{d(Ku)}{d(\tau/r)} = Kr\,\frac{du}{d\tau}.
+\]</span></p>
+</section>
+<section id="substituting-into-the-ode" class="level3">
+<h3 class="anchored" data-anchor-id="substituting-into-the-ode">Substituting into the ODE</h3>
+<p><span class="math display">\[
+Kr\,\frac{du}{d\tau} = r\,(Ku)\!\left(1 - \frac{Ku}{K}\right) = rKu(1 - u).
+\]</span> Dividing both sides by <span class="math inline">\(Kr\)</span>: <span class="math display">\[
+\boxed{\frac{du}{d\tau} = u(1-u), \qquad u(0) = u_0 \equiv \frac{P_0}{K}.}
+\]</span></p>
+</section>
+<section id="interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation">Interpretation</h3>
+<p>The original ODE had three parameters <span class="math inline">\((r, K, P_0)\)</span>. The non-dimensionalized ODE has <strong>one</strong> parameter <span class="math inline">\(u_0 = P_0/K\)</span> — the initial population expressed as a fraction of the carrying capacity. The parameters <span class="math inline">\(r\)</span> and <span class="math inline">\(K\)</span> have been entirely absorbed into the rescaled variables; they set the scales but do not alter the <em>shape</em> of the solution.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This means that two logistic populations with different values of <span class="math inline">\(r\)</span> and <span class="math inline">\(K\)</span> but the same ratio <span class="math inline">\(P_0/K\)</span> follow <em>exactly the same</em> dimensionless trajectory. Non-dimensionalization makes this universality explicit.</p>
+</div>
+</div>
+<p>The solution in dimensionless variables (from our earlier work) is <span class="math display">\[
+u(\tau) = \frac{u_0}{u_0 + (1 - u_0)e^{-\tau}},
+\]</span> and converting back: <span class="math inline">\(P(t) = K\,u(rt)\)</span>.</p>
+</section>
+<section id="comparison-dimensional-vs.-dimensionless-solutions" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-dimensional-vs.-dimensionless-solutions">Comparison: Dimensional vs.&nbsp;Dimensionless Solutions</h3>
+<div id="cell-fig-logistic-nondim" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three different (r, K, P0) sets that share the same u0 = P0/K = 0.1</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>configs <span class="op">=</span> [</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">dict</span>(r<span class="op">=</span><span class="fl">1.0</span>,  K<span class="op">=</span><span class="dv">100</span>, P0<span class="op">=</span><span class="dv">10</span>,  label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">r=1,</span><span class="ch">\;</span><span class="vs">K=100,</span><span class="ch">\;</span><span class="vs">P_0=10</span><span class="dv">$</span><span class="vs">'</span>,   color<span class="op">=</span><span class="st">'steelblue'</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">dict</span>(r<span class="op">=</span><span class="fl">0.5</span>,  K<span class="op">=</span><span class="dv">200</span>, P0<span class="op">=</span><span class="dv">20</span>,  label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">r=0</span><span class="dv">.</span><span class="vs">5,</span><span class="ch">\;</span><span class="vs">K=200,</span><span class="ch">\;</span><span class="vs">P_0=20</span><span class="dv">$</span><span class="vs">'</span>, color<span class="op">=</span><span class="st">'crimson'</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">dict</span>(r<span class="op">=</span><span class="fl">2.0</span>,  K<span class="op">=</span><span class="dv">50</span>,  P0<span class="op">=</span><span class="dv">5</span>,   label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">r=2,</span><span class="ch">\;</span><span class="vs">K=50,</span><span class="ch">\;</span><span class="vs">P_0=5</span><span class="dv">$</span><span class="vs">'</span>,     color<span class="op">=</span><span class="st">'seagreen'</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cfg <span class="kw">in</span> configs:</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    r, K, P0 <span class="op">=</span> cfg[<span class="st">'r'</span>], cfg[<span class="st">'K'</span>], cfg[<span class="st">'P0'</span>]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    u0 <span class="op">=</span> P0 <span class="op">/</span> K</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dimensional time axis: show ~5 intrinsic time scales</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    t_dim  <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span> <span class="op">/</span> r, <span class="dv">400</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    P_sol  <span class="op">=</span> K <span class="op">*</span> u0 <span class="op">/</span> (u0 <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> u0) <span class="op">*</span> np.exp(<span class="op">-</span>r <span class="op">*</span> t_dim))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(t_dim, P_sol, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span>cfg[<span class="st">'color'</span>], label<span class="op">=</span>cfg[<span class="st">'label'</span>])</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dimensionless axis tau = r*t, same u0</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    tau <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">400</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    u_sol <span class="op">=</span> u0 <span class="op">/</span> (u0 <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> u0) <span class="op">*</span> np.exp(<span class="op">-</span>tau))</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(tau, u_sol, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span>cfg[<span class="st">'color'</span>], label<span class="op">=</span>cfg[<span class="st">'label'</span>])</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$P(t)$'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Dimensional form'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">au = rt</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">u</span><span class="kw">(</span><span class="ch">\t</span><span class="vs">au</span><span class="kw">)</span><span class="vs"> = P/K</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Dimensionless form'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">1</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'$u=1$ (carrying capacity)'</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Logistic Growth: Dimensional vs. Dimensionless'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-logistic-nondim" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logistic-nondim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_01_files/figure-html/fig-logistic-nondim-output-1.png" width="1632" height="595" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logistic-nondim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Logistic growth: dimensional form (left) for three different parameter sets, and the corresponding dimensionless form (right). In dimensionless variables all three collapse onto a single curve determined solely by <span class="math inline">\(u_0 = P_0/K\)</span>, illustrating the power of non-dimensionalization.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-2-the-forced-damped-oscillator" class="level2">
+<h2 class="anchored" data-anchor-id="example-2-the-forced-damped-oscillator">Example 2 — The Forced Damped Oscillator</h2>
+<section id="the-dimensional-equation-1" class="level3">
+<h3 class="anchored" data-anchor-id="the-dimensional-equation-1">The Dimensional Equation</h3>
+<p>The equation of motion for a damped harmonic oscillator driven by a periodic force is <span class="math display">\[
+\frac{d^2x}{dt^2} + 2\gamma\frac{dx}{dt} + \omega_0^2\,x = \frac{F_0}{m}\cos(\Omega t),
+\]</span> where (using SI units for concreteness):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Meaning</th>
+<th style="text-align: center;">Dimension</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(x\)</span></td>
+<td>displacement</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{L}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t\)</span></td>
+<td>time</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\gamma &gt; 0\)</span></td>
+<td>damping coefficient (per unit mass)</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\omega_0 &gt; 0\)</span></td>
+<td>natural angular frequency</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(F_0/m\)</span></td>
+<td>forcing amplitude (per unit mass)</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{L}\,\mathsf{T}^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\Omega\)</span></td>
+<td>driving frequency</td>
+<td style="text-align: center;"><span class="math inline">\(\mathsf{T}^{-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We write the damping term as <span class="math inline">\(2\gamma\)</span> (rather than <span class="math inline">\(\gamma\)</span>) purely as a notational convenience that simplifies the algebra later; <span class="math inline">\(\gamma\)</span> is sometimes called the <strong>damping rate</strong> or <strong>decay rate</strong>.</p>
+</div>
+</div>
+<p>The equation has <strong>four</strong> dimensional parameters: <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\omega_0\)</span>, <span class="math inline">\(F_0/m\)</span>, <span class="math inline">\(\Omega\)</span>.</p>
+</section>
+<section id="choosing-characteristic-scales-1" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-characteristic-scales-1">Choosing Characteristic Scales</h3>
+<ul>
+<li><strong>Time scale.</strong> The natural period of the oscillator, <span class="math inline">\(\mathcal{T} = 1/\omega_0\)</span>, is the obvious time scale.</li>
+<li><strong>Length scale.</strong> The static deflection produced by a constant force <span class="math inline">\(F_0/m\)</span> against a spring of stiffness <span class="math inline">\(\omega_0^2\)</span> is <span class="math inline">\(\mathcal{X} = (F_0/m)/\omega_0^2\)</span>. This is the natural amplitude scale.</li>
+</ul>
+</section>
+<section id="introducing-dimensionless-variables-1" class="level3">
+<h3 class="anchored" data-anchor-id="introducing-dimensionless-variables-1">Introducing Dimensionless Variables</h3>
+<p>Define <span class="math display">\[
+u = \frac{x}{\mathcal{X}} = \frac{x\,\omega_0^2}{F_0/m}, \qquad \tau = \omega_0\,t.
+\]</span> Then <span class="math inline">\(x = \mathcal{X}\,u\)</span> and <span class="math inline">\(t = \tau/\omega_0\)</span>. Computing derivatives via the chain rule: <span class="math display">\[
+\frac{dx}{dt} = \mathcal{X}\,\omega_0\,\frac{du}{d\tau}, \qquad
+\frac{d^2x}{dt^2} = \mathcal{X}\,\omega_0^2\,\frac{d^2u}{d\tau^2}.
+\]</span></p>
+</section>
+<section id="substituting-into-the-ode-1" class="level3">
+<h3 class="anchored" data-anchor-id="substituting-into-the-ode-1">Substituting into the ODE</h3>
+<p>Replace each term: <span class="math display">\[
+\mathcal{X}\omega_0^2\,\frac{d^2u}{d\tau^2}
++ 2\gamma\,\mathcal{X}\omega_0\,\frac{du}{d\tau}
++ \omega_0^2\,\mathcal{X}\,u
+= \frac{F_0}{m}\cos\!\left(\frac{\Omega}{\omega_0}\tau\right).
+\]</span> Divide every term by <span class="math inline">\(\mathcal{X}\omega_0^2 = F_0/m\)</span>: <span class="math display">\[
+\boxed{\frac{d^2u}{d\tau^2} + 2\zeta\,\frac{du}{d\tau} + u = \cos(\nu\tau),}
+\]</span> where we have introduced two key <strong>dimensionless groups</strong>:</p>
+<p><span class="math display">\[
+\zeta = \frac{\gamma}{\omega_0} \quad \text{(damping ratio)}, \qquad \nu = \frac{\Omega}{\omega_0} \quad \text{(frequency ratio)}.
+\]</span></p>
+</section>
+<section id="interpretation-of-the-dimensionless-groups" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-of-the-dimensionless-groups">Interpretation of the Dimensionless Groups</h3>
+<p>The original ODE had four parameters <span class="math inline">\((\gamma, \omega_0, F_0/m, \Omega)\)</span>. After non-dimensionalization only <strong>two</strong> remain:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Formula</th>
+<th>Physical meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Damping ratio <span class="math inline">\(\zeta\)</span></td>
+<td><span class="math inline">\(\gamma/\omega_0\)</span></td>
+<td>Ratio of damping rate to natural frequency</td>
+</tr>
+<tr class="even">
+<td>Frequency ratio <span class="math inline">\(\nu\)</span></td>
+<td><span class="math inline">\(\Omega/\omega_0\)</span></td>
+<td>Ratio of driving frequency to natural frequency</td>
+</tr>
+</tbody>
+</table>
+<p>The forcing amplitude <span class="math inline">\(F_0/m\)</span> and natural frequency <span class="math inline">\(\omega_0\)</span> have been absorbed entirely into the scales <span class="math inline">\(\mathcal{X}\)</span> and <span class="math inline">\(\mathcal{T}\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Resonance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The dimensionless equation makes resonance transparent: the system is driven at its natural frequency when <span class="math inline">\(\nu = \Omega/\omega_0 = 1\)</span>. The concept of resonance is a statement about the <strong>ratio</strong> of frequencies, not their individual values — a fact that non-dimensionalization makes explicit.</p>
+</div>
+</div>
+<p>The three classical damping regimes are determined entirely by <span class="math inline">\(\zeta\)</span>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(\zeta\)</span></th>
+<th>Regime</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(0 &lt; \zeta &lt; 1\)</span></td>
+<td>Underdamped</td>
+<td>Oscillatory decay toward steady state</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\zeta = 1\)</span></td>
+<td>Critically damped</td>
+<td>Fastest non-oscillatory return to equilibrium</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\zeta &gt; 1\)</span></td>
+<td>Overdamped</td>
+<td>Slow exponential return, no oscillation</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="steady-state-amplitude-and-phase" class="level3">
+<h3 class="anchored" data-anchor-id="steady-state-amplitude-and-phase">Steady-State Amplitude and Phase</h3>
+<p>For the non-dimensionalized driven oscillator, the <strong>steady-state</strong> (particular) solution has the form <span class="math display">\[
+u_p(\tau) = R(\nu,\zeta)\cos(\nu\tau - \phi),
+\]</span> where the <strong>amplitude response function</strong> and <strong>phase</strong> are <span class="math display">\[
+R(\nu,\zeta) = \frac{1}{\sqrt{(1-\nu^2)^2 + 4\zeta^2\nu^2}}, \qquad
+\phi = \arctan\!\left(\frac{2\zeta\nu}{1-\nu^2}\right).
+\]</span></p>
+<div id="cell-fig-resonance" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nu_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dv">800</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>zeta_list <span class="op">=</span> [<span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.plasma(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.85</span>, <span class="bu">len</span>(zeta_list)))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zeta, color <span class="kw">in</span> <span class="bu">zip</span>(zeta_list, colors):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    R <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> np.sqrt((<span class="dv">1</span> <span class="op">-</span> nu_vals<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> zeta<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> nu_vals<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(nu_vals, R, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span>color, label<span class="op">=</span><span class="vs">fr'</span><span class="dv">$\z</span><span class="vs">eta = </span><span class="sc">{</span>zeta<span class="sc">}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">1</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="ch">\n</span><span class="vs">u = 1</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">resonance</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'Frequency ratio </span><span class="dv">$</span><span class="ch">\n</span><span class="vs">u = </span><span class="er">\</span><span class="vs">Omega/</span><span class="er">\</span><span class="vs">omega_0</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'Amplitude </span><span class="dv">$</span><span class="vs">R</span><span class="kw">(</span><span class="ch">\n</span><span class="vs">u,</span><span class="dv">\z</span><span class="vs">eta</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Amplitude Response of the Dimensionless Forced Oscillator'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">7</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-resonance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-resonance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_01_files/figure-html/fig-resonance-output-1.png" width="1183" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resonance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Steady-state amplitude response <span class="math inline">\(R(\nu, \zeta)\)</span> of the dimensionless forced oscillator as a function of the frequency ratio <span class="math inline">\(\nu = \Omega/\omega_0\)</span> for several values of the damping ratio <span class="math inline">\(\zeta\)</span>. The peak shifts toward <span class="math inline">\(\nu=1\)</span> as damping decreases, and the response diverges as <span class="math inline">\(\zeta \to 0\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-curves-in-the-dimensionless-variables" class="level3">
+<h3 class="anchored" data-anchor-id="solution-curves-in-the-dimensionless-variables">Solution Curves in the Dimensionless Variables</h3>
+<p>The following plot shows full numerical solutions (transient + steady state) of the dimensionless ODE for several damping ratios at the resonant driving frequency <span class="math inline">\(\nu = 1\)</span>.</p>
+<div id="cell-fig-oscillator-nondim" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forced_osc(tau, y, zeta, nu):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    u, v <span class="op">=</span> y</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [v, np.cos(nu <span class="op">*</span> tau) <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> zeta <span class="op">*</span> v <span class="op">-</span> u]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>tau_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">60</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>tau_eval <span class="op">=</span> np.linspace(<span class="op">*</span>tau_span, <span class="dv">3000</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>zeta_list2 <span class="op">=</span> [<span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>]</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>colors2 <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.85</span>, <span class="bu">len</span>(zeta_list2)))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zeta, color <span class="kw">in</span> <span class="bu">zip</span>(zeta_list2, colors2):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(forced_osc, tau_span, [<span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                    args<span class="op">=</span>(zeta, <span class="fl">1.0</span>), t_eval<span class="op">=</span>tau_eval, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], lw<span class="op">=</span><span class="fl">1.5</span>, color<span class="op">=</span>color, label<span class="op">=</span><span class="vs">fr'</span><span class="dv">$\z</span><span class="vs">eta=</span><span class="sc">{</span>zeta<span class="sc">}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">au = </span><span class="er">\</span><span class="vs">omega_0 t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">u</span><span class="kw">(</span><span class="ch">\t</span><span class="vs">au</span><span class="kw">)</span><span class="vs"> = x / </span><span class="dv">\m</span><span class="vs">athcal{X}</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r'Dimensionless Forced Oscillator at Resonance </span><span class="kw">(</span><span class="dv">$</span><span class="ch">\n</span><span class="vs">u=1</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-oscillator-nondim" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-oscillator-nondim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_01_files/figure-html/fig-oscillator-nondim-output-1.png" width="1482" height="581" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-oscillator-nondim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Solutions of the dimensionless forced oscillator <span class="math inline">\(u'' + 2\zeta u' + u = \cos(\tau)\)</span> (resonant driving, <span class="math inline">\(\nu=1\)</span>) for several damping ratios <span class="math inline">\(\zeta\)</span>. Initial conditions <span class="math inline">\(u(0)=0\)</span>, <span class="math inline">\(u'(0)=0\)</span>. As <span class="math inline">\(\zeta\)</span> decreases the transient grows larger and decays more slowly.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>The table below collects the key results from both examples.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 35%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ODE</th>
+<th style="text-align: center;">Dimensional parameters</th>
+<th>Dimensionless variables</th>
+<th>Dimensionless groups</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Logistic growth</td>
+<td style="text-align: center;"><span class="math inline">\(r,\; K,\; P_0\)</span></td>
+<td><span class="math inline">\(u = P/K\)</span>, <span class="math inline">\(\;\tau = rt\)</span></td>
+<td><span class="math inline">\(u_0 = P_0/K\)</span></td>
+</tr>
+<tr class="even">
+<td>Forced oscillator</td>
+<td style="text-align: center;"><span class="math inline">\(\gamma,\;\omega_0,\;F_0/m,\;\Omega\)</span></td>
+<td><span class="math inline">\(u = x\omega_0^2/(F_0/m)\)</span>, <span class="math inline">\(\;\tau=\omega_0 t\)</span></td>
+<td><span class="math inline">\(\zeta = \gamma/\omega_0\)</span>, <span class="math inline">\(\;\nu = \Omega/\omega_0\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>General Lessons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Parameters are absorbed into scales.</strong> Characteristic scales are built from the parameters themselves, so those parameters disappear from the rescaled equation.</li>
+<li><strong>Fewer parameters means fewer cases to analyze.</strong> The forced oscillator went from four parameters to two; its entire behavior is catalogued by varying just <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\nu\)</span>.</li>
+<li><strong>Natural scales reveal dominant physics.</strong> The time scale <span class="math inline">\(1/\omega_0\)</span> says the oscillator “thinks in units of its natural period.” The amplitude scale <span class="math inline">\((F_0/m)/\omega_0^2\)</span> says the oscillator measures displacement relative to its static deflection.</li>
+<li><strong>Non-dimensionalization is not unique.</strong> Different choices of scale are possible and may be more convenient for different regimes. The skill lies in choosing scales that make the dimensionless groups physically meaningful and of order one.</li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="a2c29d1f" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
