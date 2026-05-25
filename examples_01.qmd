@@ -1,0 +1,219 @@
+---
+title: "Showing a Function is a Solution"
+jupyter: diffeq_py
+license: "CC BY-NC-SA 4.0"
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# This is a code cell that imports the necessary libraries for our session.
+import numpy as np                        # NumPy for numerical computations
+import scipy as sp                        # SciPy for scientific computing
+import sympy as sym                       # SymPy for symbolic mathematics
+import matplotlib as mpl                  # Matplotlib for plotting
+import matplotlib.pyplot as plt           # Matplotlib pyplot interface
+from scipy.integrate import solve_ivp     # ODE solver
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+In this document, we will work through the details of showing that a particular function solves a particular differential equation. This is a common task in the study of differential equations, and it involves verifying that the function satisfies the equation when substituted into it.
+
+## Example 1
+
+Here we will show both "by hand" and using SymPy that the function $x(t) = \frac{1}{1+Ae^{-t}}$ is a solution to the ODE $\frac{dx}{dt} = x(1-x)$.
+
+### By Hand
+
+We want to verify that
+$$
+x(t) = \frac{1}{1 + Ae^{-t}}
+$$
+satisfies $\dfrac{dx}{dt} = x(1-x)$ for every value of the constant $A$.
+
+**Step 1 — Compute the left-hand side $\dfrac{dx}{dt}$.**
+
+Write $x(t) = \bigl(1 + Ae^{-t}\bigr)^{-1}$ and apply the chain rule:
+$$
+\frac{dx}{dt} = -\bigl(1 + Ae^{-t}\bigr)^{-2} \cdot \frac{d}{dt}\!\left(Ae^{-t}\right)
+= -\frac{-Ae^{-t}}{\bigl(1+Ae^{-t}\bigr)^{2}}
+= \frac{Ae^{-t}}{\bigl(1+Ae^{-t}\bigr)^{2}}.
+$$
+
+**Step 2 — Compute the right-hand side $x(1-x)$.**
+
+First observe that
+$$
+1 - x(t) = 1 - \frac{1}{1+Ae^{-t}} = \frac{1 + Ae^{-t} - 1}{1+Ae^{-t}} = \frac{Ae^{-t}}{1+Ae^{-t}}.
+$$
+Therefore
+$$
+x(1-x) = \frac{1}{1+Ae^{-t}} \cdot \frac{Ae^{-t}}{1+Ae^{-t}} = \frac{Ae^{-t}}{\bigl(1+Ae^{-t}\bigr)^{2}}.
+$$
+
+**Step 3 — Compare.**
+
+$$
+\frac{dx}{dt} = \frac{Ae^{-t}}{\bigl(1+Ae^{-t}\bigr)^{2}} = x(1-x). \checkmark
+$$
+
+Since both sides are identical for every constant $A$ and every $t$, the function $x(t) = \dfrac{1}{1+Ae^{-t}}$ is indeed a solution to $\dfrac{dx}{dt} = x(1-x)$.
+
+::: {.callout-note}
+Because $A$ is an arbitrary constant, this is actually a **one-parameter family** of solutions — the general solution of this first-order ODE.  A specific value of $A$ is selected by imposing an initial condition.
+:::
+
+**Step 4 — Apply the initial condition $x(0) = x_0$.**
+
+Setting $t = 0$:
+$$
+x(0) = \frac{1}{1 + A e^{0}} = \frac{1}{1+A} = x_0.
+$$
+Solving for $A$:
+$$
+1 + A = \frac{1}{x_0} \quad \Longrightarrow \quad A = \frac{1}{x_0} - 1 = \frac{1-x_0}{x_0}.
+$$
+
+Substituting back and simplifying:
+$$
+x(t) = \frac{1}{1 + \dfrac{1-x_0}{x_0}\,e^{-t}}
+= \frac{x_0}{x_0 + (1-x_0)\,e^{-t}}.
+$$
+
+The solution to the initial value problem
+$$
+\frac{dx}{dt} = x(1-x), \qquad x(0) = x_0
+$$
+is therefore
+$$
+\boxed{x(t) = \frac{x_0}{x_0 + (1-x_0)\,e^{-t}}}.
+$$
+
+::: {.callout-tip}
+**Long-run behavior.** Since $e^{-t} \to 0$ as $t \to \infty$, we have $x(t) \to 1$ for any $x_0 \in (0, 1)$.  The constant solution $x = 1$ is a **stable equilibrium**.  Likewise $x = 0$ is an **unstable equilibrium**: solutions starting slightly above zero still move away toward $x = 1$.
+:::
+
+### Using SymPy
+
+We now confirm the above calculation symbolically using [SymPy](https://www.sympy.org/).
+
+**Define the symbols and the candidate solution.**
+
+```{python}
+t, A, x0 = sym.symbols('t A x_0', real=True)
+
+x = sym.Rational(1, 1) / (1 + A * sym.exp(-t))
+
+from IPython.display import Math, display
+display(Math(r'x(t) = ' + sym.latex(x)))
+```
+
+**Verify that $\dfrac{dx}{dt} = x(1-x)$.**
+
+We compute both sides and subtract; if SymPy returns $0$ the identity holds.
+
+```{python}
+lhs = sym.diff(x, t)
+rhs = x * (1 - x)
+
+residual = sym.simplify(lhs - rhs)
+
+print("LHS  (dx/dt)  =", sym.simplify(lhs))
+print("RHS  (x(1-x)) =", sym.simplify(rhs))
+print("LHS - RHS     =", residual)
+```
+
+::: {.callout-note}
+SymPy returns `0` for the residual, confirming algebraically that $x(t) = \dfrac{1}{1+Ae^{-t}}$ satisfies the ODE.
+:::
+
+**Solve for $A$ from the initial condition $x(0) = x_0$.**
+
+```{python}
+ic_eq = sym.Eq(x.subs(t, 0), x0)
+print("Initial condition equation:", ic_eq)
+
+A_val = sym.solve(ic_eq, A)[0]
+print("A =", A_val)
+```
+
+**Write out the particular solution and simplify.**
+
+```{python}
+x_particular = sym.simplify(x.subs(A, A_val))
+print("Particular solution: x(t) =", x_particular)
+
+display(Math(r'x(t) = ' + sym.latex(x_particular)))
+```
+
+**Check once more that the particular solution satisfies the ODE.**
+
+```{python}
+lhs_p = sym.diff(x_particular, t)
+rhs_p = x_particular * (1 - x_particular)
+residual_p = sym.simplify(lhs_p - rhs_p)
+print("Residual for particular solution:", residual_p)
+```
+
+### Solution Curves for Various Initial Conditions
+
+The plot below shows solution curves of the IVP
+$$
+\frac{dx}{dt} = x(1-x), \qquad x(0) = x_0
+$$
+for a range of initial values $x_0$.  The formula used is $x(t) = \dfrac{x_0}{x_0 + (1-x_0)e^{-t}}$.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-logistic-ivp
+#| fig-cap: "Solutions of $dx/dt = x(1-x)$ for various initial conditions $x_0$. All solutions with $x_0 \\in (0,1)$ increase toward the stable equilibrium $x=1$ (upper dashed line), while solutions with $x_0 > 1$ decrease toward it. The unstable equilibrium $x=0$ (lower dashed line) repels nearby solutions."
+
+t_vals = np.linspace(-3, 6, 500)
+
+# Initial conditions: below 0, near 0, spread through (0,1), above 1
+x0_list = [-0.3, 0.02, 0.1, 0.3, 0.5, 0.7, 0.9, 0.98, 1.5, 2.5]
+
+cmap = plt.cm.RdYlBu
+colors = cmap(np.linspace(0.05, 0.95, len(x0_list)))
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+for x0_val, color in zip(x0_list, colors):
+    # Avoid division by zero when x0 = 0 or x0 = 1
+    denom = x0_val + (1 - x0_val) * np.exp(-t_vals)
+    # Mask near-zero denominators for display stability
+    with np.errstate(divide='ignore', invalid='ignore'):
+        x_sol = np.where(np.abs(denom) > 1e-10, x0_val / denom, np.nan)
+    ax.plot(t_vals, x_sol, color=color, lw=2,
+            label=f'$x_0 = {x0_val}$')
+
+# Equilibria
+ax.axhline(1, color='black', linestyle='--', lw=1.2, label='Stable eq. $x=1$')
+ax.axhline(0, color='gray',  linestyle='--', lw=1.2, label='Unstable eq. $x=0$')
+
+ax.set_ylim(-0.6, 3.0)
+ax.set_xlabel('$t$', fontsize=13)
+ax.set_ylabel('$x(t)$', fontsize=13)
+ax.set_title(r'Solutions of $\dfrac{dx}{dt} = x(1-x)$ for various $x_0$', fontsize=13)
+ax.legend(fontsize=8, ncol=2, loc='upper left')
+plt.tight_layout()
+plt.show()
+```
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys # sys for system-specific parameters and functions
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
