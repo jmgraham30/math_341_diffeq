@@ -129,6 +129,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -416,53 +445,682 @@ div.csl-indent {
 </header>
 
 
-<div id="84f1c243" class="cell" data-execution_count="1">
+<div id="3bed6291" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># NumPy for numerical computations</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy <span class="im">as</span> sp <span class="co"># SciPy for scientific computing</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym <span class="co"># SymPy for symbolic mathematics</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl <span class="co"># Matplotlib for plotting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np                        <span class="co"># NumPy for numerical computations</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy <span class="im">as</span> sp                        <span class="co"># SciPy for scientific computing</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym                       <span class="co"># SymPy for symbolic mathematics</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl                  <span class="co"># Matplotlib for plotting</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt           <span class="co"># Matplotlib pyplot interface</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp     <span class="co"># ODE solver</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="goals" class="level2">
 <h2 class="anchored" data-anchor-id="goals">Goals</h2>
 <p>In this session, we will cover the following topics:</p>
 <ol type="1">
-<li><p>Define the notion of a differential equation and what is means to have a solution with an emphasis on the case of ordinary differential equations (ODEs).</p></li>
+<li><p>Define the notion of a differential equation and what it means to have a solution, with an emphasis on the case of ordinary differential equations (ODEs).</p></li>
+<li><p>Introduce the classification of ODEs by order, linearity, homogeneity, autonomy, and coefficient type.</p></li>
 <li><p>Introduce the concept of an initial value problem (IVP).</p></li>
 <li><p>Learn about some common situations where ODEs arise in applications.</p></li>
 </ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This material corresponds to <strong>Section 1.1</strong> of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>.</p>
+</div>
+</div>
 </section>
 <section id="the-concept-of-a-differential-equation" class="level2">
 <h2 class="anchored" data-anchor-id="the-concept-of-a-differential-equation">The Concept of a Differential Equation</h2>
 <section id="essential-notation-and-terminology" class="level3">
 <h3 class="anchored" data-anchor-id="essential-notation-and-terminology">Essential Notation and Terminology</h3>
+<p>Informally, a <strong><a href="https://en.wikipedia.org/wiki/Differential_equation">differential equation</a></strong> is any equation that involves an unknown function together with one or more of its derivatives. The goal is not to find an unknown <em>number</em> (as in an algebraic equation like <span class="math inline">\(x^2 - 4 = 0\)</span>) but to find an unknown <em>function</em> that satisfies the equation.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Solutions to differential equations are functions, not numbers.</strong></p>
+</div>
+</div>
+<p>For example, the equation <span class="math display">\[
+\frac{dy}{dx} = y
+\]</span> asks: <em>what function <span class="math inline">\(y(x)\)</span> equals its own derivative?</em> The answer is <span class="math inline">\(y(x) = Ce^{x}\)</span> for any constant <span class="math inline">\(C\)</span>, since <span class="math inline">\((Ce^x)' = Ce^x\)</span>.</p>
+<p><strong>Ordinary vs.&nbsp;Partial Differential Equations.</strong> The nature of the unknown function’s domain leads to the first major distinction:</p>
+<ul>
+<li><p>An <strong><a href="https://en.wikipedia.org/wiki/Ordinary_differential_equation">ordinary differential equation (ODE)</a></strong> involves a function of a <em>single</em> independent variable and its ordinary derivatives. For example, if <span class="math inline">\(x = x(t)\)</span> describes the position of a mass at time <span class="math inline">\(t\)</span>, then <span class="math inline">\(\ddot{x} = -\omega^2 x\)</span> is an ODE. Note that we sometimes use the notation <span class="math inline">\(\dot{x}\)</span> for time derivatives.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
+<li><p>A <strong><a href="https://en.wikipedia.org/wiki/Partial_differential_equation">partial differential equation (PDE)</a></strong> involves a function of <em>several</em> independent variables and its partial derivatives. For example, the <a href="https://en.wikipedia.org/wiki/Heat_equation">heat equation</a> <span class="math inline">\(u_t = k\,u_{xx}\)</span>, where <span class="math inline">\(u = u(x,t)\)</span> is a temperature field, is a PDE.</p></li>
+</ul>
+<p>In this course we focus exclusively on <strong>ODEs</strong>.</p>
+<hr>
+<p><strong>Classification of ODEs.</strong> Once we know we are dealing with an ODE, we further classify it along several axes. Suppose the unknown is <span class="math inline">\(y\)</span> and the independent variable is <span class="math inline">\(t\)</span>.</p>
+<p><strong>Order.</strong> The <strong><a href="https://en.wikipedia.org/wiki/Ordinary_differential_equation#Definitions">order</a></strong> of an ODE is the order of the highest derivative that appears.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Equation</th>
+<th>Order</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y' = ky\)</span></td>
+<td>1st</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y'' + \omega^2 y = 0\)</span></td>
+<td>2nd</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(y''' - y'' + y = \sin t\)</span></td>
+<td>3rd</td>
+</tr>
+</tbody>
+</table>
+<p>A general <span class="math inline">\(n\)</span>th-order ODE can be written as <span class="math display">\[
+F\!\left(t,\, y,\, y',\, y'',\, \ldots,\, y^{(n)}\right) = 0,
+\]</span> or, if it can be solved for the highest derivative, <span class="math display">\[
+y^{(n)} = f\!\left(t,\, y,\, y',\, \ldots,\, y^{(n-1)}\right).
+\]</span></p>
+<p><strong>Linearity.</strong> An ODE is <strong><a href="https://en.wikipedia.org/wiki/Linear_differential_equation">linear</a></strong> if it can be written as <span class="math display">\[
+a_n(t)\,y^{(n)} + a_{n-1}(t)\,y^{(n-1)} + \cdots + a_1(t)\,y' + a_0(t)\,y = g(t),
+\]</span> where the coefficient functions <span class="math inline">\(a_k(t)\)</span> and the forcing term <span class="math inline">\(g(t)\)</span> depend only on the independent variable <span class="math inline">\(t\)</span>, <em>not</em> on <span class="math inline">\(y\)</span> or any of its derivatives. An ODE that cannot be put in this form is <strong>nonlinear</strong>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Equation</th>
+<th>Linear?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y'' + 3y' - 2y = e^t\)</span></td>
+<td>Yes</td>
+<td>Coefficients depend only on <span class="math inline">\(t\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y'' + \sin(y) = 0\)</span></td>
+<td>No</td>
+<td><span class="math inline">\(\sin(y)\)</span> is nonlinear in <span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(y' = y^2\)</span></td>
+<td>No</td>
+<td><span class="math inline">\(y^2\)</span> is nonlinear in <span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t^2 y'' + ty' + y = 0\)</span></td>
+<td>Yes</td>
+<td>Coefficients <span class="math inline">\(t^2, t, 1\)</span> depend only on <span class="math inline">\(t\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Homogeneity.</strong> A linear ODE is <strong><a href="https://en.wikipedia.org/wiki/Homogeneous_differential_equation">homogeneous</a></strong> when the forcing term is identically zero, <span class="math inline">\(g(t) \equiv 0\)</span>: <span class="math display">\[
+a_n(t)\,y^{(n)} + \cdots + a_0(t)\,y = 0.
+\]</span> If <span class="math inline">\(g(t) \not\equiv 0\)</span> the equation is called <strong>inhomogeneous</strong> (or <em>nonhomogeneous</em>).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The homogeneous/inhomogeneous distinction matters enormously for solution methods: the general solution of an inhomogeneous linear ODE is a <em>particular</em> solution plus the general solution of the corresponding homogeneous equation.</p>
+</div>
+</div>
+<p><strong>Constant vs.&nbsp;Variable Coefficients.</strong> A linear ODE has <strong>constant coefficients</strong> when each <span class="math inline">\(a_k(t)\)</span> is a constant; otherwise it has <strong>variable (non-constant) coefficients</strong>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Equation</th>
+<th>Constant Coeff.?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y'' - 4y' + 4y = 0\)</span></td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t^2 y'' + ty' - y = 0\)</span></td>
+<td>No (<span class="math inline">\(a_k\)</span> depend on <span class="math inline">\(t\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Autonomy.</strong> An ODE is <strong><a href="https://en.wikipedia.org/wiki/Autonomous_system_(mathematics)">autonomous</a></strong> if the independent variable <span class="math inline">\(t\)</span> does not appear explicitly on the right-hand side: <span class="math display">\[
+y' = f(y) \quad \text{(autonomous)}, \qquad y' = f(t, y) \quad \text{(non-autonomous)}.
+\]</span> Autonomous equations arise naturally in population models and physical systems where the “rules” do not change over time.</p>
+<hr>
+<p><strong>Examples.</strong> Let us practice classifying a handful of equations.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 1 — The Logistic Equation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\frac{dP}{dt} = rP\!\left(1 - \frac{P}{K}\right)
+\]</span> This is a <strong>1st-order, nonlinear, autonomous</strong> ODE. (It is nonlinear because of the <span class="math inline">\(P^2\)</span> term hidden in the product.) Here, <span class="math inline">\(P(t)\)</span> is the unknown function while <span class="math inline">\(r\)</span> and <span class="math inline">\(K\)</span> are <em>parameters</em>. This ODE, called the logistic growth equation models population growth with a carrying capacity <span class="math inline">\(K\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 2 — The Simple Harmonic Oscillator
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\frac{d^2x}{dt^2} + \omega^2 x = 0
+\]</span> This is a <strong>2nd-order, linear, homogeneous, autonomous</strong> ODE with <strong>constant coefficients</strong>. Note that <span class="math inline">\(\omega\)</span> is a constant parameter, not a function of <span class="math inline">\(t\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 3 — A Driven Oscillator
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\frac{d^2x}{dt^2} + 2\gamma\frac{dx}{dt} + \omega^2 x = F_0\cos(\Omega t)
+\]</span> This is a <strong>2nd-order, linear, inhomogeneous, non-autonomous</strong> ODE with <strong>constant coefficients</strong>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 4 — Euler’s Equation (Variable Coefficients)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+t^2 y'' + t y' - 4y = 0
+\]</span> This is a <strong>2nd-order, linear, homogeneous</strong> ODE with <strong>variable (non-constant) coefficients</strong>.</p>
+</div>
+</div>
+<hr>
+<p><strong>What does a solution look like?</strong> A <strong>solution</strong> of an ODE on an interval <span class="math inline">\(I\)</span> is a function <span class="math inline">\(y = \phi(t)\)</span> that:</p>
+<ol type="1">
+<li>is differentiable (as many times as required by the order of the ODE) on <span class="math inline">\(I\)</span>, and<br>
+</li>
+<li>satisfies the equation for every <span class="math inline">\(t \in I\)</span>.</li>
+</ol>
+<p>Because differentiation is a <em>linear</em> operation, ODE solutions often come in families parametrized by one or more arbitrary constants.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 5 — General and Particular Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consider <span class="math inline">\(y' - 2y = 0\)</span>. We can check that <span class="math inline">\(y(t) = Ce^{2t}\)</span> satisfies this for any constant <span class="math inline">\(C\)</span>: <span class="math display">\[
+(Ce^{2t})' - 2(Ce^{2t}) = 2Ce^{2t} - 2Ce^{2t} = 0. \checkmark
+\]</span> This is the <strong>general solution</strong>. If we additionally require <span class="math inline">\(y(0) = 3\)</span>, then <span class="math inline">\(C = 3\)</span> and <span class="math inline">\(y(t) = 3e^{2t}\)</span> is the <strong>particular solution</strong> satisfying that condition.</p>
+</div>
+</div>
+<p>The following plot shows the family of solutions <span class="math inline">\(y(t)=Ce^{2t}\)</span> for several values of <span class="math inline">\(C\)</span>.</p>
+<div id="cell-fig-family" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="fl">1.2</span>, <span class="dv">300</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.coolwarm(np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">9</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>C_vals <span class="op">=</span> [<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="fl">1.5</span>, <span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C, color <span class="kw">in</span> <span class="bu">zip</span>(C_vals, colors):</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> <span class="ss">f"$C = </span><span class="sc">{</span>C<span class="sc">}</span><span class="ss">$"</span> <span class="cf">if</span> C <span class="kw">in</span> [<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>] <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    ax.plot(t, C <span class="op">*</span> np.exp(<span class="dv">2</span> <span class="op">*</span> t), color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span>label)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Highlight the particular solution C=3 ... let's use C=1 for visual clarity</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">1</span> <span class="op">*</span> np.exp(<span class="dv">2</span> <span class="op">*</span> t), color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'$C = 1$ (highlighted)'</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$t$"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"$y$"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Solutions </span><span class="dv">$</span><span class="vs">y</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = Ce</span><span class="dv">^</span><span class="vs">{2t}</span><span class="dv">$</span><span class="vs"> of </span><span class="dv">$</span><span class="vs">y' - 2y = 0</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-family" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-family-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_01_files/figure-html/fig-family-output-1.png" width="1034" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-family-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Family of solutions <span class="math inline">\(y(t) = Ce^{2t}\)</span> to the ODE <span class="math inline">\(y' - 2y = 0\)</span>. Each curve corresponds to a different value of <span class="math inline">\(C\)</span>. Specifying an initial condition singles out exactly one curve from the family.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A 1st-order ODE typically has a <strong>one-parameter family</strong> of solutions; a 2nd-order ODE typically has a <strong>two-parameter family</strong>, and so on. Fixing all free constants yields a <strong>particular solution</strong>.</p>
 </section>
 <section id="initial-value-problems" class="level3">
 <h3 class="anchored" data-anchor-id="initial-value-problems">Initial Value Problems</h3>
+<p>In most applications we do not just want <em>any</em> solution—we want the solution whose state at some initial moment matches given data.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Initial Value Problem (IVP)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>first-order initial value problem</strong> consists of a first-order ODE together with a specified value of the solution at an initial time <span class="math inline">\(t_0\)</span>: <span class="math display">\[
+\begin{cases}
+y' = f(t,\, y), \\
+y(t_0) = y_0.
+\end{cases}
+\]</span> More generally, an <strong><span class="math inline">\(n\)</span>th-order IVP</strong> specifies the values of <span class="math inline">\(y\)</span> and its first <span class="math inline">\(n-1\)</span> derivatives at <span class="math inline">\(t_0\)</span>: <span class="math display">\[
+\begin{cases}
+y^{(n)} = f\!\left(t, y, y', \ldots, y^{(n-1)}\right), \\
+y(t_0) = y_0,\quad y'(t_0) = y_1,\quad \ldots,\quad y^{(n-1)}(t_0) = y_{n-1}.
+\end{cases}
+\]</span></p>
+</div>
+</div>
+<p>The initial conditions geometrically select a <strong>single solution curve</strong> from the entire family of curves.</p>
+<p><strong>Existence and Uniqueness.</strong> A natural question is: <em>does</em> an IVP have a solution, and if so, is it <em>unique</em>? A fundamental theorem (the <a href="https://en.wikipedia.org/wiki/Picard%E2%80%93Lindel%C3%B6f_theorem">Picard–Lindelöf theorem</a>) guarantees that if <span class="math inline">\(f\)</span> and <span class="math inline">\(\partial f/\partial y\)</span> are continuous near <span class="math inline">\((t_0, y_0)\)</span>, then the IVP has a unique solution on some interval containing <span class="math inline">\(t_0\)</span>. We will study this in more detail in a later section; for now, the key takeaway is that well-posed physical problems almost always satisfy these conditions.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 6 — Solving an IVP by Hand
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Solve the IVP: <span class="math display">\[
+y' = -3y, \qquad y(0) = 5.
+\]</span></p>
+<p><strong>Solution.</strong> The general solution to <span class="math inline">\(y' = -3y\)</span> is <span class="math inline">\(y(t) = Ce^{-3t}\)</span>. Applying <span class="math inline">\(y(0) = 5\)</span>: <span class="math display">\[
+C e^{0} = 5 \implies C = 5.
+\]</span> The unique solution is <span class="math inline">\(\boxed{y(t) = 5e^{-3t}}\)</span>.</p>
+</div>
+</div>
+<div id="cell-fig-ivp" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C <span class="kw">in</span> np.linspace(<span class="op">-</span><span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">17</span>):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    ax.plot(t, C <span class="op">*</span> np.exp(<span class="op">-</span><span class="dv">3</span> <span class="op">*</span> t), color<span class="op">=</span><span class="st">'lightsteelblue'</span>, lw<span class="op">=</span><span class="fl">0.9</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">5</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="dv">3</span> <span class="op">*</span> t), color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs">=5e</span><span class="dv">^</span><span class="vs">{-3t}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">5</span>, <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">8</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Initial condition $(0, 5)$'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$y$'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"IVP: </span><span class="dv">$</span><span class="vs">y' = -3y</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">y</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=5</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ivp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ivp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_01_files/figure-html/fig-ivp-output-1.png" width="1034" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ivp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The IVP <span class="math inline">\(y'=-3y\)</span>, <span class="math inline">\(y(0)=5\)</span> selects a unique solution curve (bold black) from the family <span class="math inline">\(y(t)=Ce^{-3t}\)</span> (gray). The initial condition is marked with a red dot.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="where-odes-come-from" class="level2">
 <h2 class="anchored" data-anchor-id="where-odes-come-from">Where ODEs Come From</h2>
+<p>Differential equations arise throughout science and engineering wherever a quantity’s <em>rate of change</em> is related to its current state. Below we survey three classical and important sources.</p>
 <section id="classical-mechanics" class="level3">
 <h3 class="anchored" data-anchor-id="classical-mechanics">Classical Mechanics</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Classical_mechanics">Classical mechanics</a></strong> is the branch of physics that studies the motion of objects under the influence of forces. It provides the richest single source of ODEs in undergraduate mathematics. Here we derive ODEs for the simplest mechanical system—the <strong><a href="https://en.wikipedia.org/wiki/Simple_harmonic_oscillator">simple harmonic oscillator (SHO)</a></strong>—from three different but equivalent frameworks. You do not need a physics background to follow the math.</p>
+<hr>
+<section id="newtons-second-law" class="level4">
+<h4 class="anchored" data-anchor-id="newtons-second-law">Newton’s Second Law</h4>
+<p><a href="https://en.wikipedia.org/wiki/Isaac_Newton">Isaac Newton</a>’s second law states that the net force <span class="math inline">\(F\)</span> on an object equals its mass <span class="math inline">\(m\)</span> times its acceleration <span class="math inline">\(a\)</span>: <span class="math display">\[
+F = ma \quad \Longleftrightarrow \quad F = m\ddot{x},
+\]</span> where <span class="math inline">\(x(t)\)</span> denotes position and dots denote time derivatives (<span class="math inline">\(\dot{x} = dx/dt\)</span>, <span class="math inline">\(\ddot{x} = d^2x/dt^2\)</span>).</p>
+<p><strong>Setup.</strong> Attach a mass <span class="math inline">\(m\)</span> to a spring with spring constant <span class="math inline">\(k &gt; 0\)</span>. <a href="https://en.wikipedia.org/wiki/Hooke%27s_law">Hooke’s law</a> says the spring exerts a restoring force <span class="math inline">\(F = -kx\)</span> when the mass is displaced a distance <span class="math inline">\(x\)</span> from equilibrium. Newton’s second law then gives: <span class="math display">\[
+m\ddot{x} = -kx \quad \Longrightarrow \quad \ddot{x} + \omega^2 x = 0, \qquad \omega = \sqrt{k/m}.
+\]</span> This is a <strong>2nd-order, linear, homogeneous, constant-coefficient, autonomous ODE</strong>. Its general solution is <span class="math display">\[
+x(t) = A\cos(\omega t) + B\sin(\omega t),
+\]</span> describing oscillation with <a href="https://en.wikipedia.org/wiki/Angular_frequency">angular frequency</a> <span class="math inline">\(\omega\)</span>.</p>
+<hr>
+</section>
+<section id="the-eulerlagrange-equations" class="level4">
+<h4 class="anchored" data-anchor-id="the-eulerlagrange-equations">The Euler–Lagrange Equations</h4>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Lagrangian_mechanics">Lagrangian formulation</a></strong> of mechanics, developed by <a href="https://en.wikipedia.org/wiki/Joseph-Louis_Lagrange">Joseph-Louis Lagrange</a>, reformulates Newton’s laws in terms of <em>energy</em> rather than force. It is especially powerful for constrained systems.</p>
+<p>Define the <strong>Lagrangian</strong> <span class="math inline">\(L = T - V\)</span>, where <span class="math inline">\(T\)</span> is the kinetic energy and <span class="math inline">\(V\)</span> is the potential energy. The <a href="https://en.wikipedia.org/wiki/Euler%E2%80%93Lagrange_equation">Euler–Lagrange equation</a> for a coordinate <span class="math inline">\(q(t)\)</span> is: <span class="math display">\[
+\frac{d}{dt}\left(\frac{\partial L}{\partial \dot{q}}\right) - \frac{\partial L}{\partial q} = 0.
+\]</span></p>
+<p><strong>For the SHO.</strong> The kinetic and potential energies are: <span class="math display">\[
+T = \tfrac{1}{2}m\dot{x}^2, \qquad V = \tfrac{1}{2}kx^2.
+\]</span> So <span class="math inline">\(L = \tfrac{1}{2}m\dot{x}^2 - \tfrac{1}{2}kx^2\)</span>. Computing the required partial derivatives: <span class="math display">\[
+\frac{\partial L}{\partial \dot{x}} = m\dot{x}, \qquad \frac{\partial L}{\partial x} = -kx.
+\]</span> Substituting into the Euler–Lagrange equation: <span class="math display">\[
+\frac{d}{dt}(m\dot{x}) - (-kx) = 0 \quad \Longrightarrow \quad m\ddot{x} + kx = 0.
+\]</span> We recover exactly the same ODE as before—as expected, since Lagrangian mechanics is equivalent to Newtonian mechanics.</p>
+<hr>
+</section>
+<section id="hamiltons-equations" class="level4">
+<h4 class="anchored" data-anchor-id="hamiltons-equations">Hamilton’s Equations</h4>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Hamiltonian_mechanics">Hamiltonian formulation</a></strong>, developed by <a href="https://en.wikipedia.org/wiki/William_Rowan_Hamilton">William Rowan Hamilton</a>, describes mechanics via the total energy expressed in terms of position <span class="math inline">\(q\)</span> and <strong><a href="https://en.wikipedia.org/wiki/Momentum">momentum</a></strong> <span class="math inline">\(p = m\dot{q}\)</span>. The <strong>Hamiltonian</strong> is: <span class="math display">\[
+H(q, p) = T + V.
+\]</span> Hamilton’s equations are a <em>system</em> of two first-order ODEs: <span class="math display">\[
+\dot{q} = \frac{\partial H}{\partial p}, \qquad \dot{p} = -\frac{\partial H}{\partial q}.
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice that one 2nd-order ODE has been replaced by two 1st-order ODEs. This is a standard and important technique: any <span class="math inline">\(n\)</span>th-order ODE can be converted to a system of <span class="math inline">\(n\)</span> first-order ODEs.</p>
+</div>
+</div>
+<p><strong>For the SHO.</strong> With <span class="math inline">\(q = x\)</span> and <span class="math inline">\(p = m\dot{x}\)</span>: <span class="math display">\[
+H = \frac{p^2}{2m} + \frac{1}{2}kq^2.
+\]</span> Hamilton’s equations give: <span class="math display">\[
+\dot{q} = \frac{\partial H}{\partial p} = \frac{p}{m}, \qquad \dot{p} = -\frac{\partial H}{\partial q} = -kq.
+\]</span> Differentiating the first equation: <span class="math inline">\(\ddot{q} = \dot{p}/m = -kq/m\)</span>, i.e., <span class="math inline">\(\ddot{q} + \omega^2 q = 0\)</span>. Same ODE once more.</p>
+<hr>
+<p><strong>Summary.</strong> All three frameworks—Newton, Lagrange, Hamilton—lead to the same differential equation for the SHO. This illustrates a general principle: <em>the ODE is the fundamental mathematical object encoding the physics, and different frameworks are merely different ways to derive it.</em></p>
+<p>The plot below shows the solution of the SHO IVP and its phase portrait.</p>
+<div id="cell-fig-sho" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">4</span> <span class="op">*</span> np.pi)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="op">*</span>t_span, <span class="dv">500</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sho(t, y):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    x, v <span class="op">=</span> y</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [v, <span class="op">-</span>omega<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> x]</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-domain solution</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(sho, t_span, [<span class="fl">1.0</span>, <span class="fl">0.0</span>], t_eval<span class="op">=</span>t_eval)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'SHO: Position vs. Time'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Phase portrait</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>x_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">400</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>v_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">400</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>X, V <span class="op">=</span> np.meshgrid(x_vals, v_vals)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>DX <span class="op">=</span> V</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>DV <span class="op">=</span> <span class="op">-</span>omega<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> X</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>speed <span class="op">=</span> np.sqrt(DX<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> DV<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>speed[speed <span class="op">==</span> <span class="dv">0</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].streamplot(x_vals, v_vals, DX <span class="op">/</span> speed, DV <span class="op">/</span> speed,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                   color<span class="op">=</span>np.log1p(speed), cmap<span class="op">=</span><span class="st">'Blues'</span>, linewidth<span class="op">=</span><span class="fl">0.7</span>, density<span class="op">=</span><span class="fl">1.3</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Highlight specific trajectory</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ic <span class="kw">in</span> [(<span class="fl">1.0</span>, <span class="fl">0.0</span>), (<span class="fl">1.8</span>, <span class="fl">0.0</span>), (<span class="fl">0.6</span>, <span class="fl">0.0</span>)]:</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> solve_ivp(sho, (<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi), <span class="bu">list</span>(ic), t_eval<span class="op">=</span>np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">300</span>))</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    lw <span class="op">=</span> <span class="fl">2.5</span> <span class="cf">if</span> ic <span class="op">==</span> (<span class="fl">1.0</span>, <span class="fl">0.0</span>) <span class="cf">else</span> <span class="fl">1.2</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'crimson'</span> <span class="cf">if</span> ic <span class="op">==</span> (<span class="fl">1.0</span>, <span class="fl">0.0</span>) <span class="cf">else</span> <span class="st">'steelblue'</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(s.y[<span class="dv">0</span>], s.y[<span class="dv">1</span>], color<span class="op">=</span>color, lw<span class="op">=</span>lw)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$x$'</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r'</span><span class="dv">$\d</span><span class="vs">ot{x}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Phase Portrait'</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="vs">r'Simple Harmonic Oscillator: </span><span class="dv">$\d</span><span class="vs">dot{x}</span><span class="op">+</span><span class="er">\</span><span class="vs">omega</span><span class="dv">^</span><span class="vs">2 x=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="er">\</span><span class="vs">omega=1</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sho" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sho-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_01_files/figure-html/fig-sho-output-1.png" width="1365" height="595" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sho-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Simple harmonic oscillator with <span class="math inline">\(\omega = 1\)</span>, <span class="math inline">\(x(0)=1\)</span>, <span class="math inline">\(v(0)=0\)</span>. Left: position <span class="math inline">\(x(t)\)</span> over time. Right: phase portrait — trajectories in the <span class="math inline">\((x,\dot{x})\)</span> plane. Each closed ellipse is a solution for a different initial condition; the highlighted trajectory corresponds to the given IVP.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Phase_portrait">phase portrait</a></strong> (right panel) is one of the most important visualization tools for ODEs. Each point <span class="math inline">\((x, \dot{x})\)</span> represents a complete <em>state</em> of the oscillator, and the trajectory through that point shows how the state evolves over time. Closed curves correspond to periodic (oscillatory) motion.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="circuits" class="level3">
 <h3 class="anchored" data-anchor-id="circuits">Circuits</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Electrical_network">Electrical circuits</a></strong> provide another major source of ODEs. The fundamental <a href="https://en.wikipedia.org/wiki/Passivity_(engineering)">circuit elements</a> and their voltage-current relationships are:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Symbol</th>
+<th>Voltage–Current Relation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Resistor (<span class="math inline">\(R\)</span>)</td>
+<td><span class="math inline">\(R\)</span></td>
+<td><span class="math inline">\(V_R = R\,I\)</span></td>
+</tr>
+<tr class="even">
+<td>Capacitor (<span class="math inline">\(C\)</span>)</td>
+<td><span class="math inline">\(C\)</span></td>
+<td><span class="math inline">\(I = C\,\dfrac{dV_C}{dt}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Inductor (<span class="math inline">\(L\)</span>)</td>
+<td><span class="math inline">\(L\)</span></td>
+<td><span class="math inline">\(V_L = L\,\dfrac{dI}{dt}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The RLC Circuit.</strong> Consider a series circuit containing a resistor (<span class="math inline">\(R\)</span>), inductor (<span class="math inline">\(L\)</span>), and capacitor (<span class="math inline">\(C\)</span>) driven by a voltage source <span class="math inline">\(E(t)\)</span>. <a href="https://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws">Kirchhoff’s voltage law</a> states that the sum of voltage drops around any closed loop is zero: <span class="math display">\[
+V_L + V_R + V_C = E(t).
+\]</span> With <span class="math inline">\(I = dQ/dt\)</span> where <span class="math inline">\(Q\)</span> is the charge on the capacitor, and <span class="math inline">\(V_C = Q/C\)</span>, this becomes: <span class="math display">\[
+L\frac{d^2Q}{dt^2} + R\frac{dQ}{dt} + \frac{Q}{C} = E(t).
+\]</span></p>
+<p>This is a <strong>2nd-order, linear ODE</strong> with constant coefficients — <em>mathematically identical</em> in form to the damped driven harmonic oscillator! This deep analogy between mechanical and electrical systems is one of the most beautiful and useful facts in applied mathematics.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Mechanical</th>
+<th>Electrical</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mass <span class="math inline">\(m\)</span></td>
+<td>Inductance <span class="math inline">\(L\)</span></td>
+</tr>
+<tr class="even">
+<td>Damping <span class="math inline">\(b\)</span></td>
+<td>Resistance <span class="math inline">\(R\)</span></td>
+</tr>
+<tr class="odd">
+<td>Spring constant <span class="math inline">\(k\)</span></td>
+<td><span class="math inline">\(1/C\)</span></td>
+</tr>
+<tr class="even">
+<td>Applied force <span class="math inline">\(F(t)\)</span></td>
+<td>EMF <span class="math inline">\(E(t)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Displacement <span class="math inline">\(x\)</span></td>
+<td>Charge <span class="math inline">\(Q\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>For an <strong>RC circuit</strong> (no inductor, no driving voltage) the ODE reduces to a simple 1st-order equation: <span class="math display">\[
+R\frac{dQ}{dt} + \frac{Q}{C} = 0 \quad \Longrightarrow \quad \frac{dQ}{dt} = -\frac{Q}{RC}.
+\]</span> This is the same exponential decay equation as radioactive decay.</p>
+<div id="cell-fig-rc" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tau_vals <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">2.0</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">300</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tau <span class="kw">in</span> tau_vals:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ax.plot(t, np.exp(<span class="op">-</span>t <span class="op">/</span> tau), lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">fr'</span><span class="dv">$</span><span class="ch">\t</span><span class="vs">au = RC = </span><span class="sc">{</span>tau<span class="sc">}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">1</span><span class="op">/</span>np.e, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">Q/Q_0 = 1/e</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$Q(t)/Q_0$'</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'RC Circuit Discharge: $Q(t) = Q_0 e^{-t/RC}$'</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-rc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_01_files/figure-html/fig-rc-output-1.png" width="1031" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Discharge of an RC circuit: <span class="math inline">\(Q(t)=Q_0 e^{-t/\tau}\)</span> where <span class="math inline">\(\tau=RC\)</span> is the time constant. The charge decays to <span class="math inline">\(1/e \approx 36.8\%\)</span> of its initial value after one time constant.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="population-dynamics" class="level3">
 <h3 class="anchored" data-anchor-id="population-dynamics">Population Dynamics</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Mathematical_and_theoretical_biology">Mathematical biology</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Mathematical_ecology">ecology</a></strong> use ODEs to model how populations change over time.</p>
+<p><strong>Exponential Growth / Malthusian Model.</strong> The simplest model: a population <span class="math inline">\(P(t)\)</span> grows at a rate proportional to its current size, <span class="math display">\[
+\frac{dP}{dt} = rP, \qquad P(0) = P_0.
+\]</span> The solution <span class="math inline">\(P(t) = P_0 e^{rt}\)</span> predicts unbounded growth (if <span class="math inline">\(r &gt; 0\)</span>) or extinction (if <span class="math inline">\(r &lt; 0\)</span>). This model was proposed by <a href="https://en.wikipedia.org/wiki/Thomas_Robert_Malthus">Thomas Malthus</a> in 1798.</p>
+<p><strong>Logistic Growth.</strong> Unbounded growth is unrealistic. <a href="https://en.wikipedia.org/wiki/Pierre_Fran%C3%A7ois_Verhulst">Pierre François Verhulst</a> proposed (1838) adding a <em>carrying capacity</em> <span class="math inline">\(K\)</span> that limits growth: <span class="math display">\[
+\frac{dP}{dt} = rP\!\left(1 - \frac{P}{K}\right), \qquad P(0) = P_0.
+\]</span> This is the <strong><a href="https://en.wikipedia.org/wiki/Logistic_function#In_ecology:_modeling_population_growth">logistic equation</a></strong>, a 1st-order nonlinear autonomous ODE. Its exact solution is: <span class="math display">\[
+P(t) = \frac{K}{1 + \left(\dfrac{K}{P_0} - 1\right)e^{-rt}}.
+\]</span> As <span class="math inline">\(t \to \infty\)</span>, <span class="math inline">\(P(t) \to K\)</span> regardless of the initial population (as long as <span class="math inline">\(P_0 &gt; 0\)</span>).</p>
+<div id="cell-fig-logistic" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r, K <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">100.0</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">400</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> P0 <span class="kw">in</span> [<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">120</span>, <span class="dv">150</span>]:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    P <span class="op">=</span> K <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> (K <span class="op">/</span> P0 <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.exp(<span class="op">-</span>r <span class="op">*</span> t))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    ax.plot(t, P, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$P_0 = </span><span class="sc">{</span>P0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ax.axhline(K, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f'Carrying capacity $K=</span><span class="sc">{</span>K<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$P(t)$'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Logistic Growth'</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-logistic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logistic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_01_files/figure-html/fig-logistic-output-1.png" width="1032" height="735" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logistic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Logistic growth (<span class="math inline">\(r=1\)</span>, <span class="math inline">\(K=100\)</span>) from several initial conditions. All trajectories converge to the carrying capacity <span class="math inline">\(K=100\)</span> (dashed line), illustrating the stability of the equilibrium.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice in the plot above that solutions starting <em>above</em> <span class="math inline">\(K\)</span> decrease toward it, while solutions starting <em>below</em> <span class="math inline">\(K\)</span> increase toward it. The value <span class="math inline">\(P = K\)</span> is a <strong>stable equilibrium</strong> of the logistic equation. We will study equilibria and their stability in detail later in the course.</p>
+</div>
+</div>
+<p><strong>Predator–Prey Dynamics.</strong> When two species interact, we need a <em>system</em> of ODEs. The classical <a href="https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations">Lotka–Volterra equations</a> model the dynamics of a prey species <span class="math inline">\(x\)</span> and a predator species <span class="math inline">\(y\)</span>: <span class="math display">\[
+\frac{dx}{dt} = \alpha x - \beta x y, \qquad \frac{dy}{dt} = \delta x y - \gamma y.
+\]</span> This system is nonlinear and has no closed-form solution in general, but exhibits fascinating oscillatory behavior that we will encounter when we study systems of ODEs.</p>
+<hr>
 </section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
-
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-logan2015first" class="csl-entry" role="listitem">
+Logan, J David. 2015. <em>A First Course in Differential Equations Third Edition</em>.
+</div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -471,14 +1129,14 @@ div.csl-indent {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="fc61c796" class="cell" data-execution_count="2">
+<div id="f12c08d1" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
@@ -500,7 +1158,13 @@ matplotlib==3.10.8</code></pre>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>There are several common notations for derivatives. <strong>Leibniz notation</strong> writes <span class="math inline">\(\frac{dy}{dx}\)</span> or <span class="math inline">\(\frac{d^2y}{dx^2}\)</span> for ordinary derivatives. <strong>Prime (Lagrange) notation</strong> writes <span class="math inline">\(y'\)</span>, <span class="math inline">\(y''\)</span>, <span class="math inline">\(y'''\)</span> for successive derivatives with respect to the independent variable. <strong>Dot (Newton) notation</strong> writes <span class="math inline">\(\dot{x}\)</span>, <span class="math inline">\(\ddot{x}\)</span> for first and second derivatives with respect to <em>time</em>, and is common in mechanics. <strong>Subscript notation</strong> writes <span class="math inline">\(u_x\)</span>, <span class="math inline">\(u_{xx}\)</span> for partial derivatives, common in PDEs. <strong>Operator (Euler) notation</strong> writes <span class="math inline">\(Dy\)</span>, <span class="math inline">\(D^2y\)</span> where <span class="math inline">\(D = d/dx\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
