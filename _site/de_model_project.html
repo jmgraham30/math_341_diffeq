@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jason M. Graham">
+<meta name="dcterms.date" content="2026-01-01">
+
+<title>DE Model Project – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e14cfaa651a2b1e5413afab38cf38831.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sec-overview" id="toc-sec-overview" class="nav-link active" data-scroll-target="#sec-overview"><span class="header-section-number">1</span> Overview</a></li>
+  <li><a href="#sec-goals" id="toc-sec-goals" class="nav-link" data-scroll-target="#sec-goals"><span class="header-section-number">2</span> Learning Goals</a></li>
+  <li><a href="#sec-what" id="toc-sec-what" class="nav-link" data-scroll-target="#sec-what"><span class="header-section-number">3</span> What to Do</a>
+  <ul class="collapse">
+  <li><a href="#sec-topic" id="toc-sec-topic" class="nav-link" data-scroll-target="#sec-topic"><span class="header-section-number">3.1</span> Choose a Topic</a></li>
+  <li><a href="#sec-format" id="toc-sec-format" class="nav-link" data-scroll-target="#sec-format"><span class="header-section-number">3.2</span> Create a Poster or Slide Deck</a></li>
+  <li><a href="#sec-elements" id="toc-sec-elements" class="nav-link" data-scroll-target="#sec-elements"><span class="header-section-number">3.3</span> Required Elements</a></li>
+  <li><a href="#sec-computation" id="toc-sec-computation" class="nav-link" data-scroll-target="#sec-computation"><span class="header-section-number">3.4</span> Optional Computational Component</a></li>
+  </ul></li>
+  <li><a href="#sec-timeline" id="toc-sec-timeline" class="nav-link" data-scroll-target="#sec-timeline"><span class="header-section-number">4</span> Timeline &amp; Milestones</a></li>
+  <li><a href="#sec-proposal" id="toc-sec-proposal" class="nav-link" data-scroll-target="#sec-proposal"><span class="header-section-number">5</span> Topic Proposal Guidelines</a></li>
+  <li><a href="#sec-rubric" id="toc-sec-rubric" class="nav-link" data-scroll-target="#sec-rubric"><span class="header-section-number">6</span> Rubric</a></li>
+  <li><a href="#sec-grades" id="toc-sec-grades" class="nav-link" data-scroll-target="#sec-grades"><span class="header-section-number">7</span> Score-to-Grade Conversion</a></li>
+  <li><a href="#sec-honesty" id="toc-sec-honesty" class="nav-link" data-scroll-target="#sec-honesty"><span class="header-section-number">8</span> Academic Honesty &amp; Use of AI</a>
+  <ul class="collapse">
+  <li><a href="#academic-honesty" id="toc-academic-honesty" class="nav-link" data-scroll-target="#academic-honesty"><span class="header-section-number">8.1</span> Academic Honesty</a></li>
+  <li><a href="#use-of-ai" id="toc-use-of-ai" class="nav-link" data-scroll-target="#use-of-ai"><span class="header-section-number">8.2</span> Use of AI</a></li>
+  </ul></li>
+  <li><a href="#sec-submission" id="toc-sec-submission" class="nav-link" data-scroll-target="#sec-submission"><span class="header-section-number">9</span> Submission Instructions</a></li>
+  <li><a href="#sec-help" id="toc-sec-help" class="nav-link" data-scroll-target="#sec-help"><span class="header-section-number">10</span> Getting Help</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">DE Model Project</h1>
+<p class="subtitle lead">Guidelines &amp; Rubric · MATH 341 Differential Equations · Fall 2026</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jason M. Graham </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 1, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+/* ── Color variables ─────────────────────────────────────── */
+:root {
+  --scranton:      #4B2E83;
+  --gold:          #C99700;
+  --light-purple:  #EDE8F5;
+  --light-gold:    #FDF6DC;
+  --row-gray:      #F2F2F2;
+  --score-green:   #D9EAD3;
+  --score-yellow:  #FFF2CC;
+  --score-orange:  #FCE5CD;
+  --score-red:     #F4CCCC;
+  --dark:          #1A1A1A;
+}
+
+/* ── Page header banner ──────────────────────────────────── */
+.title-banner {
+  background: var(--scranton);
+  color: white;
+  padding: 1.4rem 1.8rem 1.2rem;
+  border-radius: 4px;
+  margin-bottom: 1.6rem;
+}
+.title-banner .course-label {
+  font-size: 0.85rem;
+  color: #c8b8e8;
+  margin-bottom: 0.3rem;
+}
+.title-banner h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.3rem;
+  border: none;
+}
+.title-banner .subtitle {
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+/* ── Section headings ────────────────────────────────────── */
+h2.anchored {
+  background: var(--scranton);
+  color: white !important;
+  padding: 0.45rem 0.8rem;
+  border-radius: 3px;
+  margin-top: 2rem;
+}
+h2.anchored .header-section-number {
+  color: var(--gold);
+}
+h3.anchored {
+  color: var(--scranton);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 3px;
+}
+
+/* ── TOC ─────────────────────────────────────────────────── */
+#TOC a { color: var(--scranton); }
+#TOC a:hover { color: var(--gold); }
+
+/* ── Tables ─────────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+  margin: 1rem 0 1.5rem;
+}
+th {
+  background: var(--scranton);
+  color: white;
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 0.5rem 0.7rem;
+  vertical-align: top;
+  border: 1px solid #ddd;
+}
+tr.score-green td  { background: var(--score-green);  }
+tr.score-yellow td { background: var(--score-yellow); }
+tr.score-orange td { background: var(--score-orange); }
+tr.score-red td    { background: var(--score-red);    }
+tr.row-purple td   { background: var(--light-purple); }
+tr.row-gold td     { background: var(--light-gold);   }
+tr.row-gray td     { background: var(--row-gray);     }
+tr.total-row td    { background: var(--scranton); color: white; font-weight: 600; }
+tr.total-row td:last-child { background: var(--gold); color: var(--dark); }
+
+/* ── Footer rule ─────────────────────────────────────────── */
+.doc-footer {
+  margin-top: 3rem;
+  padding-top: 0.6rem;
+  border-top: 2px solid var(--gold);
+  text-align: center;
+  font-size: 0.82rem;
+  color: #888;
+}
+</style>
+<section id="sec-overview" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-overview"><span class="header-section-number">1</span> Overview</h2>
+<p>Differential equations are one of the most powerful tools humans have developed for understanding the natural and social world. Almost every field—from biology and chemistry to economics, engineering, and sociology—relies on differential equation models to describe how things change. The <strong>DE Modeling Project</strong> asks you to find and explain one such model that connects to something you care about.</p>
+<p>This is a low-stakes, high-curiosity assignment (5% of your overall course grade). The goal is not to push you through difficult calculations, but to help you see differential equations <em>in the wild</em> and practice explaining mathematical ideas clearly. Think of it as a scientific communication exercise: you are translating a real-world phenomenon into the language of differential equations for an audience of your peers.</p>
+</section>
+<section id="sec-goals" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-goals"><span class="header-section-number">2</span> Learning Goals</h2>
+<p>By completing this project you will:</p>
+<ul>
+<li>Identify a real-world phenomenon that is naturally described by a differential equation.</li>
+<li>Correctly state the differential equation (or system) associated with that phenomenon.</li>
+<li>Define all variables and parameters in the model.</li>
+<li>Interpret what the differential equation says qualitatively about the behavior of the phenomenon.</li>
+<li>Communicate mathematical and scientific ideas clearly to a general audience.</li>
+</ul>
+</section>
+<section id="sec-what" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-what"><span class="header-section-number">3</span> What to Do</h2>
+<section id="sec-topic" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="sec-topic"><span class="header-section-number">3.1</span> Choose a Topic</h3>
+<p>Pick any real-world phenomenon that is modeled by a differential equation or a system of differential equations. The topic should be one that genuinely interests you—it might connect to your major, a hobby, a current event, or just something you are curious about. There are no restrictions on field or subject matter, provided a differential equation is meaningfully involved.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Need inspiration? Here are some example directions --- not a required list.">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Need inspiration? Here are some example directions — not a required list.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Biology &amp; medicine:</strong> population growth, disease spread (SIR model), pharmacokinetics, neuron firing, tumor growth.</li>
+<li><strong>Physics &amp; engineering:</strong> Newton’s law of cooling, spring-mass oscillators, RC/RL circuits, fluid flow, orbital mechanics.</li>
+<li><strong>Chemistry:</strong> reaction kinetics, radioactive decay chains.</li>
+<li><strong>Economics &amp; finance:</strong> supply-and-demand dynamics, capital growth (Solow model), option pricing.</li>
+<li><strong>Ecology:</strong> predator-prey dynamics (Lotka–Volterra), logistic growth with harvesting.</li>
+<li><strong>Social science &amp; other:</strong> rumor/information spread, traffic flow, arms race models.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="sec-format" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="sec-format"><span class="header-section-number">3.2</span> Create a Poster or Slide Deck</h3>
+<p>Your final product will be either:</p>
+<ul>
+<li>A <strong>poster</strong> — a single-page document (PDF) formatted to be read as a self-contained display, <em>or</em></li>
+<li>A <strong>slide deck</strong> — a set of slides (PDF, <code>.pptx</code>, or <code>.key</code>) containing approximately 5–8 slides.</li>
+</ul>
+<p>Choose whichever format you prefer. Both are equally acceptable. Regardless of format, your work must address all five elements described below.</p>
+</section>
+<section id="sec-elements" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="sec-elements"><span class="header-section-number">3.3</span> Required Elements</h3>
+<p>Your poster or slide deck must clearly address the following five elements. These correspond directly to the rubric criteria in <a href="#sec-rubric" class="quarto-xref">Section&nbsp;6</a>.</p>
+<section id="element-1-context-motivation" class="level4" data-number="3.3.1">
+<h4 data-number="3.3.1" class="anchored" data-anchor-id="element-1-context-motivation"><span class="header-section-number">3.3.1</span> Element 1 — Context &amp; Motivation</h4>
+<p>Describe the real-world phenomenon. What is happening? Why is it interesting or important? Make it clear to the reader why a differential equation is a natural mathematical tool for studying this phenomenon.</p>
+</section>
+<section id="element-2-the-differential-equation" class="level4" data-number="3.3.2">
+<h4 data-number="3.3.2" class="anchored" data-anchor-id="element-2-the-differential-equation"><span class="header-section-number">3.3.2</span> Element 2 — The Differential Equation</h4>
+<p>State the differential equation (or system) explicitly. Define every variable and every parameter. Identify the type of differential equation (for example: <em>first-order linear</em>, <em>autonomous system</em>, <em>second-order constant-coefficient</em>). You do not need to derive the equation from first principles, but you should be able to describe informally where it comes from.</p>
+</section>
+<section id="element-3-interpretation-insight" class="level4" data-number="3.3.3">
+<h4 data-number="3.3.3" class="anchored" data-anchor-id="element-3-interpretation-insight"><span class="header-section-number">3.3.3</span> Element 3 — Interpretation &amp; Insight</h4>
+<p>What does the differential equation tell us about the phenomenon? Discuss the qualitative behavior: Does the solution grow or decay? Are there equilibria? Does the system oscillate? Connect the mathematical behavior back to the real-world meaning. You do not need to solve the equation analytically, but you should describe what solutions look like and what they represent.</p>
+</section>
+<section id="element-4-sources" class="level4" data-number="3.3.4">
+<h4 data-number="3.3.4" class="anchored" data-anchor-id="element-4-sources"><span class="header-section-number">3.3.4</span> Element 4 — Sources</h4>
+<p>Cite at least two credible sources. Appropriate sources include textbooks, peer-reviewed articles, and reputable reference sites (e.g., university lecture notes, scientific databases). Wikipedia is acceptable as a starting point but should not be your only source. Include full references in a format of your choice (APA, MLA, or any standard citation style).</p>
+</section>
+<section id="element-5-clarity-presentation" class="level4" data-number="3.3.5">
+<h4 data-number="3.3.5" class="anchored" data-anchor-id="element-5-clarity-presentation"><span class="header-section-number">3.3.5</span> Element 5 — Clarity &amp; Presentation</h4>
+<p>Your work should be well-organized and easy to follow. Use correct mathematical notation. Label figures and diagrams if you include them. Write in a way that a classmate with a calculus background—but who has not yet seen your specific model—could read and understand.</p>
+</section>
+</section>
+<section id="sec-computation" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="sec-computation"><span class="header-section-number">3.4</span> Optional Computational Component</h3>
+<p>You are encouraged but not required to include a computational element such as a numerical solution plot, a phase portrait, or a simulation generated with Python, SageMath, or another tool. If you include computational work, briefly describe what you computed and what the output shows. Refer to the <a href="https://math341diffeq.netlify.app/py_tutorial">Python Reference</a> page on the course website for examples.</p>
+</section>
+</section>
+<section id="sec-timeline" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-timeline"><span class="header-section-number">4</span> Timeline &amp; Milestones</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">When</th>
+<th data-quarto-table-cell-role="th">Milestone</th>
+<th data-quarto-table-cell-role="th">What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-purple odd">
+<td><strong>Week 7</strong><br>
+<span class="small">approx. Oct. 21</span></td>
+<td>Topic Proposal due</td>
+<td>Submit a 1-paragraph proposal (see <a href="#sec-proposal">Section 5</a>). Approval or feedback returned within one week.</td>
+</tr>
+<tr class="row-gray even">
+<td>Weeks 8–12</td>
+<td>Work period</td>
+<td>Develop your poster or slide deck. Office hours are available for feedback on drafts.</td>
+</tr>
+<tr class="row-gold odd">
+<td><strong>Week 12/13</strong><br>
+<span class="small">approx. Nov. 14</span></td>
+<td>Final submission due</td>
+<td>Submit your completed poster (PDF) or slide deck (PDF, <code>.pptx</code>, or <code>.key</code>) via the course LMS.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sec-proposal" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-proposal"><span class="header-section-number">5</span> Topic Proposal Guidelines</h2>
+<p>Submit a short proposal (one paragraph, roughly 100–200 words) via the course LMS by the Week 7 deadline. Your proposal should answer the following questions:</p>
+<ol type="1">
+<li>What phenomenon are you going to model?</li>
+<li>What differential equation (or type of differential equation) is involved?</li>
+<li>Why did you choose this topic?</li>
+<li>What sources do you plan to consult?</li>
+</ol>
+<p>Your proposal will be reviewed and returned with one of three responses:</p>
+<ul>
+<li><strong>Approved</strong> — proceed as planned.</li>
+<li><strong>Approved with suggestions</strong> — your topic is fine; feedback is offered to help you focus or strengthen the project.</li>
+<li><strong>Needs revision</strong> — your topic needs adjustment (e.g., a differential equation is not clearly involved). You will receive specific guidance and must resubmit within one week.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Important note on topic uniqueness">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Important note on topic uniqueness
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Topics are first-come, first-served within the class. Once a topic is approved for one student, no other student may choose the identical model (for example, only one student may do the basic SIR epidemic model). Distinct variants or applications of a model are fine—the goal is simply to ensure variety across the class.</p>
+</div>
+</div>
+</section>
+<section id="sec-rubric" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-rubric"><span class="header-section-number">6</span> Rubric</h2>
+<p>Each of the five elements is scored on a 4-point scale. The total score is out of 20 points, which is then converted to the 5% weight in the overall course grade.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="width: 14%">Criterion</th>
+<th data-quarto-table-cell-role="th" style="width: 22%">Excellent (4)</th>
+<th data-quarto-table-cell-role="th" style="width: 22%">Proficient (3)</th>
+<th data-quarto-table-cell-role="th" style="width: 22%">Developing (2)</th>
+<th data-quarto-table-cell-role="th" style="width: 20%">Incomplete (1)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="score-green odd">
+<td><strong>1. Context &amp; Motivation</strong></td>
+<td>The real-world phenomenon is clearly identified and explained. The reader understands why a DE naturally arises here. The motivation is compelling and well-situated.</td>
+<td>The phenomenon is identified and the connection to DEs is explained, but motivation could be more thorough or precise.</td>
+<td>The phenomenon is mentioned but the connection to DEs is vague or superficial.</td>
+<td>The real-world context is missing, unclear, or unrelated to differential equations.</td>
+</tr>
+<tr class="score-yellow even">
+<td><strong>2. The Differential Equation</strong></td>
+<td>The DE (or DE model) is stated clearly and correctly. Variables and parameters are defined. The type of DE is identified (e.g., first-order, linear, autonomous).</td>
+<td>The DE is stated and variables are mostly defined, but some details (parameter meaning, type) are missing.</td>
+<td>A DE is presented but contains errors, or variables/parameters are undefined.</td>
+<td>No DE is stated, or what is presented is not a recognizable differential equation.</td>
+</tr>
+<tr class="score-orange odd">
+<td><strong>3. Interpretation &amp; Insight</strong></td>
+<td>The student clearly explains what the DE says about the phenomenon. Qualitative behavior (e.g., growth, decay, oscillation, equilibria) is discussed and connected to reality.</td>
+<td>Some interpretation is given but it is incomplete, or the connection back to the real-world phenomenon is thin.</td>
+<td>Interpretation is present but largely superficial or contains misconceptions.</td>
+<td>Little or no interpretation of the DE in context is provided.</td>
+</tr>
+<tr class="score-green even">
+<td><strong>4. Sources &amp; Accuracy</strong></td>
+<td>At least two credible sources are cited. All mathematical and factual claims are accurate. Sources are appropriate (textbooks, peer-reviewed articles, or reputable reference sites).</td>
+<td>Sources are cited but one is weak, or minor inaccuracies are present that do not undermine the main claims.</td>
+<td>Sources are present but insufficient, poorly cited, or factual errors are significant.</td>
+<td>No sources are cited, or the work contains major factual or mathematical errors.</td>
+</tr>
+<tr class="score-yellow odd">
+<td><strong>5. Clarity &amp; Presentation</strong></td>
+<td>The poster or slide deck is well-organized and visually clear. Mathematical notation is used correctly. The audience can follow the narrative without confusion.</td>
+<td>Generally clear and organized, with minor lapses in notation, layout, or flow.</td>
+<td>Some sections are unclear or disorganized, or mathematical notation is used inconsistently.</td>
+<td>The work is difficult to follow, poorly organized, or mathematical notation is largely absent or incorrect.</td>
+</tr>
+<tr class="total-row even">
+<td colspan="4" style="text-align: right; padding-right: 1rem;">Total Score</td>
+<td style="text-align: center; font-size: 1.1rem;">&nbsp;/ 20</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sec-grades" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-grades"><span class="header-section-number">7</span> Score-to-Grade Conversion</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; width: 10%;">Score</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; width: 10%;">Grade</th>
+<th data-quarto-table-cell-role="th">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="score-green odd">
+<td style="text-align: center;"><strong>18–20</strong></td>
+<td style="text-align: center;"><strong>A</strong></td>
+<td>Excellent work — the model is clearly situated, the DE is correctly stated, variables are defined, and real-world implications are thoughtfully interpreted.</td>
+</tr>
+<tr class="score-yellow even">
+<td style="text-align: center;"><strong>15–17</strong></td>
+<td style="text-align: center;"><strong>B</strong></td>
+<td>Solid work — the model is well-chosen and mostly explained, with only minor gaps in depth or clarity.</td>
+</tr>
+<tr class="score-orange odd">
+<td style="text-align: center;"><strong>12–14</strong></td>
+<td style="text-align: center;"><strong>C</strong></td>
+<td>Adequate work — the basic elements are present but the treatment is superficial or contains notable gaps.</td>
+</tr>
+<tr class="score-red even">
+<td style="text-align: center;"><strong>&lt; 12</strong></td>
+<td style="text-align: center;"><strong>D/F</strong></td>
+<td>Work does not meet the minimum standards for one or more criteria.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sec-honesty" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="sec-honesty"><span class="header-section-number">8</span> Academic Honesty &amp; Use of AI</h2>
+<section id="academic-honesty" class="level3" data-number="8.1">
+<h3 data-number="8.1" class="anchored" data-anchor-id="academic-honesty"><span class="header-section-number">8.1</span> Academic Honesty</h3>
+<p>This is an individual assignment. All written content and explanations must be your own. You may consult sources freely (and must cite them), but you may not copy text from sources into your submission. Copying without attribution constitutes plagiarism and is subject to the University’s Academic Code of Honesty.</p>
+</section>
+<section id="use-of-ai" class="level3" data-number="8.2">
+<h3 data-number="8.2" class="anchored" data-anchor-id="use-of-ai"><span class="header-section-number">8.2</span> Use of AI</h3>
+<p>The course AI policy (see syllabus) applies to this project. You may use AI tools for tasks such as locating references, checking notation, or getting feedback on the clarity of your writing. You may not use AI to generate the substantive content of your project—the identification of your model, the explanation of what the differential equation says, and the interpretation of its behavior must reflect your own understanding.</p>
+<p>You should be able to explain every claim and equation in your submission independently and in detail. If you use AI assistance, note briefly how you used it (a one-sentence acknowledgment at the end of your submission is sufficient).</p>
+</section>
+</section>
+<section id="sec-submission" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="sec-submission"><span class="header-section-number">9</span> Submission Instructions</h2>
+<ul>
+<li>Submit your work via the course learning management system by the posted deadline.</li>
+<li>Posters must be submitted as a PDF.</li>
+<li>Slide decks may be submitted as PDF, <code>.pptx</code>, or <code>.key</code>.</li>
+<li>File name: use the format <code>LastName_DEProject</code> (e.g., <code>Smith_DEProject.pdf</code>).</li>
+<li>Late submissions will be accepted up to 48 hours after the deadline with a 10% per-day deduction. Extensions must be requested by email at least 24 hours before the deadline.</li>
+</ul>
+</section>
+<section id="sec-help" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="sec-help"><span class="header-section-number">10</span> Getting Help</h2>
+<p>You are encouraged to visit office hours at any stage of the project — to discuss topic ideas, get feedback on a draft, or ask questions about the mathematics. The Writing Center (see syllabus) is also a valuable resource for feedback on clarity and organization.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Office hours (Fall 2026)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Office hours (Fall 2026)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wednesdays and Fridays 10:00–11:30 am, LSC 319A. Additional appointments available by email: <a href="mailto:jason.graham@scranton.edu">jason.graham@scranton.edu</a>.</p>
+</div>
+</div>
+<div class="doc-footer">
+  MATH 341 · University of Scranton · Fall 2026 · DE Modeling Project
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
