@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Bernoulli Equations – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#historical-background" id="toc-historical-background" class="nav-link active" data-scroll-target="#historical-background">Historical Background</a></li>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#the-leibniz-substitution" id="toc-the-leibniz-substitution" class="nav-link" data-scroll-target="#the-leibniz-substitution">The Leibniz Substitution</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples">Worked Examples</a>
+  <ul class="collapse">
+  <li><a href="#sec-ex1" id="toc-sec-ex1" class="nav-link" data-scroll-target="#sec-ex1">Example 1 — <span class="math inline">\(x' = x + x^2 e^t\)</span></a></li>
+  <li><a href="#sec-ex2" id="toc-sec-ex2" class="nav-link" data-scroll-target="#sec-ex2">Example 2 — <span class="math inline">\(x' = ax + bx^3\)</span> (Constant Coefficients)</a></li>
+  <li><a href="#sec-logistic" id="toc-sec-logistic" class="nav-link" data-scroll-target="#sec-logistic">Example 3 — The Logistic Equation as a Bernoulli Equation</a></li>
+  <li><a href="#example-4-sympy-solving-bernoulli-equations-symbolically" id="toc-example-4-sympy-solving-bernoulli-equations-symbolically" class="nav-link" data-scroll-target="#example-4-sympy-solving-bernoulli-equations-symbolically">Example 4 — SymPy: Solving Bernoulli Equations Symbolically</a></li>
+  </ul></li>
+  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications">Applications</a>
+  <ul class="collapse">
+  <li><a href="#population-dynamics-harvesting-model" id="toc-population-dynamics-harvesting-model" class="nav-link" data-scroll-target="#population-dynamics-harvesting-model">Population Dynamics — Harvesting Model</a></li>
+  <li><a href="#fluid-dynamics-torricellis-law" id="toc-fluid-dynamics-torricellis-law" class="nav-link" data-scroll-target="#fluid-dynamics-torricellis-law">Fluid Dynamics — Torricelli’s Law</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bernoulli Equations</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="091bfb25" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>This section discusses <strong><a href="https://en.wikipedia.org/wiki/Bernoulli_differential_equation">Bernoulli equations</a></strong>, a class of nonlinear first-order ODEs that can be transformed into a linear equation by a clever substitution. They arise naturally in population dynamics, fluid mechanics, and mathematical biology, and provide an important example of how a <em>nonlinear</em> ODE can sometimes be solved exactly by reducing it to a <em>linear</em> one. The material here supplements Exercises 14–15 in Section 1.4.1 of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>.</p>
+<hr>
+<section id="historical-background" class="level2">
+<h2 class="anchored" data-anchor-id="historical-background">Historical Background</h2>
+<p>The Bernoulli equation bears the name of the Swiss mathematician <strong><a href="https://en.wikipedia.org/wiki/Jacob_Bernoulli">Jacob Bernoulli</a></strong> (1655–1705), who posed the problem in 1695. It was solved independently and almost simultaneously by his younger brother <strong><a href="https://en.wikipedia.org/wiki/Johann_Bernoulli">Johann Bernoulli</a></strong> (1667–1748) and by <strong><a href="https://en.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz">Gottfried Wilhelm Leibniz</a></strong> (1646–1716).</p>
+<p>Leibniz’s approach — a substitution that reduces the nonlinear equation to a linear one — is exactly what we use today. The episode is historically notable because it was one of the first demonstrations that a class of <em>nonlinear</em> ODEs could be solved in closed form by a systematic technique, not just by inspection.</p>
+<p>The two Bernoulli brothers were towering figures in early calculus. Jacob contributed the <a href="https://en.wikipedia.org/wiki/Law_of_large_numbers">law of large numbers</a> in probability and the study of the <a href="https://en.wikipedia.org/wiki/Catenary">catenary</a> (the curve of a hanging chain); Johann taught <a href="https://en.wikipedia.org/wiki/Guillaume_de_l%27H%C3%B4pital">Guillaume de l’Hôpital</a> and later became the mentor of <a href="https://en.wikipedia.org/wiki/Leonhard_Euler">Leonhard Euler</a>. The family produced no fewer than eight notable mathematicians across three generations.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The term “Bernoulli equation” can refer to two entirely different results: this ODE, and also the <em>Bernoulli principle</em> in fluid dynamics (pressure–velocity trade-off in a flowing fluid), named after Jacob’s nephew <strong><a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli">Daniel Bernoulli</a></strong> (1700–1782). They are unrelated beyond the family name.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="definition" class="level2">
+<h2 class="anchored" data-anchor-id="definition">Definition</h2>
+<p>A <strong>Bernoulli equation</strong> is a first-order ODE of the form <span class="math display">\[
+x' = a(t)\,x + g(t)\,x^n, \tag{B}
+\]</span> where <span class="math inline">\(a(t)\)</span> and <span class="math inline">\(g(t)\)</span> are continuous functions of <span class="math inline">\(t\)</span> and <span class="math inline">\(n\)</span> is a real constant.</p>
+<p><strong>Special cases.</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Value of <span class="math inline">\(n\)</span></th>
+<th>Character</th>
+<th>Reduces to</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(n = 0\)</span></td>
+<td>Linear</td>
+<td><span class="math inline">\(x' = a(t)x + g(t)\)</span> directly</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(n = 1\)</span></td>
+<td>Linear (separable)</td>
+<td><span class="math inline">\(x' = [a(t)+g(t)]x\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(n \neq 0, 1\)</span></td>
+<td>Nonlinear</td>
+<td>Linear after substitution</td>
+</tr>
+</tbody>
+</table>
+<p>The interesting and non-trivial case is <span class="math inline">\(n \neq 0, 1\)</span>, which is genuinely nonlinear.</p>
+<hr>
+</section>
+<section id="the-leibniz-substitution" class="level2">
+<h2 class="anchored" data-anchor-id="the-leibniz-substitution">The Leibniz Substitution</h2>
+<p>The key observation is that the substitution <span class="math display">\[
+y = x^{1-n}
+\]</span> transforms (B) into a <em>linear</em> ODE for <span class="math inline">\(y(t)\)</span>.</p>
+<p><strong>Derivation.</strong> Assume <span class="math inline">\(x \neq 0\)</span> and differentiate <span class="math inline">\(y = x^{1-n}\)</span>: <span class="math display">\[
+y' = (1-n)\,x^{-n}\,x'.
+\]</span> Substituting <span class="math inline">\(x' = a(t)x + g(t)x^n\)</span> from (B): <span class="math display">\[
+y' = (1-n)\,x^{-n}\bigl[a(t)x + g(t)x^n\bigr]
+   = (1-n)\,a(t)\,x^{1-n} + (1-n)\,g(t).
+\]</span> Since <span class="math inline">\(x^{1-n} = y\)</span> this becomes: <span class="math display">\[
+\boxed{y' - (1-n)\,a(t)\,y = (1-n)\,g(t).} \tag{L}
+\]</span> This is a <strong>first-order linear ODE</strong> in <span class="math inline">\(y\)</span>, solvable by the integrating factor method. Once <span class="math inline">\(y(t)\)</span> is found, the solution to (B) is recovered by <span class="math display">\[
+x(t) = y(t)^{1/(1-n)}.
+\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Summary of the Method
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Identify <span class="math inline">\(n\)</span>, <span class="math inline">\(a(t)\)</span>, <span class="math inline">\(g(t)\)</span> in <span class="math inline">\(x' = a(t)x + g(t)x^n\)</span>.</li>
+<li>Substitute <span class="math inline">\(y = x^{1-n}\)</span> to obtain the linear ODE <span class="math inline">\(y' - (1-n)a(t)y = (1-n)g(t)\)</span>.</li>
+<li>Solve for <span class="math inline">\(y(t)\)</span> using an integrating factor.</li>
+<li>Recover <span class="math inline">\(x(t) = y^{1/(1-n)}\)</span>.</li>
+<li>Append any solution <span class="math inline">\(x \equiv 0\)</span> that was lost by assuming <span class="math inline">\(x \neq 0\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>The trivial solution.</strong> Dividing by <span class="math inline">\(x^n\)</span> in step 2 requires <span class="math inline">\(x \neq 0\)</span>. But <span class="math inline">\(x(t) \equiv 0\)</span> always satisfies (B) (substitute and check). The general family from step 3 may or may not include it as a limiting case; it should always be stated separately.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="worked-examples" class="level2">
+<h2 class="anchored" data-anchor-id="worked-examples">Worked Examples</h2>
+<section id="sec-ex1" class="level3">
+<h3 class="anchored" data-anchor-id="sec-ex1">Example 1 — <span class="math inline">\(x' = x + x^2 e^t\)</span></h3>
+<p>Here <span class="math inline">\(n = 2\)</span>, <span class="math inline">\(a(t) = 1\)</span>, <span class="math inline">\(g(t) = e^t\)</span>.</p>
+<p><strong>Step 1.</strong> Substitute <span class="math inline">\(y = x^{1-2} = x^{-1}\)</span>.</p>
+<p><strong>Step 2.</strong> The linear ODE (L) is: <span class="math display">\[
+y' - (1-2)(1)\,y = (1-2)\,e^t \quad\Longrightarrow\quad y' + y = -e^t.
+\]</span></p>
+<p><strong>Step 3.</strong> Integrating factor: <span class="math inline">\(\mu = e^t\)</span>. <span class="math display">\[
+(ye^t)' = -e^{2t} \quad\Longrightarrow\quad ye^t = -\tfrac{1}{2}e^{2t} + C
+\quad\Longrightarrow\quad y = -\tfrac{1}{2}e^t + Ce^{-t}.
+\]</span></p>
+<p><strong>Step 4.</strong> <span class="math inline">\(x = y^{-1}\)</span>: <span class="math display">\[
+\boxed{x(t) = \frac{1}{Ce^{-t} - \tfrac{1}{2}e^t} = \frac{2e^t}{2C - e^{2t}}.}
+\]</span></p>
+<p>Also <span class="math inline">\(x(t) \equiv 0\)</span> is a solution.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Finite-time blow-up.</strong> The denominator <span class="math inline">\(2C - e^{2t}\)</span> vanishes at <span class="math inline">\(t^* = \tfrac{1}{2}\ln(2C)\)</span>. This means solutions blow up to <span class="math inline">\(\pm\infty\)</span> in finite time — a hallmark of nonlinear ODEs that linear equations never exhibit. For an initial condition <span class="math inline">\(x(0) = x_0 &gt; 0\)</span>, we get <span class="math inline">\(C = 1/x_0 + 1/2\)</span> and the blow-up time is <span class="math inline">\(t^* = \tfrac{1}{2}\ln(2/x_0 + 1)\)</span>. Smaller <span class="math inline">\(x_0\)</span> gives later blow-up; larger <span class="math inline">\(x_0\)</span> blows up sooner.</p>
+</div>
+</div>
+<div id="cell-fig-ex1" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> x_ex1_closed(t, x0):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    C <span class="op">=</span> <span class="fl">1.0</span><span class="op">/</span>x0 <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    denom <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>C <span class="op">-</span> np.exp(<span class="dv">2</span><span class="op">*</span>t)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.where(denom <span class="op">&gt;</span> <span class="fl">0.01</span>, <span class="dv">2</span><span class="op">*</span>np.exp(t)<span class="op">/</span>denom, np.nan)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>f_b <span class="op">=</span> <span class="kw">lambda</span> t, x: [x[<span class="dv">0</span>]<span class="op">*</span>(<span class="dv">1</span> <span class="op">+</span> x[<span class="dv">0</span>]<span class="op">*</span>np.exp(t))]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.15</span>, <span class="fl">0.85</span>, <span class="dv">4</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>x0_vals <span class="op">=</span> [<span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>]</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, color <span class="kw">in</span> <span class="bu">zip</span>(x0_vals, colors):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    C <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>x0 <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    t_blow <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>np.log(<span class="dv">2</span><span class="op">*</span>C)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    t_safe <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_blow <span class="op">-</span> <span class="fl">0.05</span>, <span class="dv">400</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Closed-form</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    x_clo <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>np.exp(t_safe)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>C <span class="op">-</span> np.exp(<span class="dv">2</span><span class="op">*</span>t_safe))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_safe, x_clo, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0<span class="sc">}</span><span class="ss">$, $t^*=</span><span class="sc">{</span>t_blow<span class="sc">:.2f}</span><span class="ss">$'</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Numerical check (dots)</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f_b, (<span class="dv">0</span>, t_blow<span class="op">-</span><span class="fl">0.08</span>), [x0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    t_dots <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_blow<span class="op">-</span><span class="fl">0.12</span>, <span class="dv">12</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_dots, sol.sol(t_dots)[<span class="dv">0</span>], <span class="st">'o'</span>, color<span class="op">=</span>color, markersize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Blow-up marker</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    ax.axvline(t_blow, color<span class="op">=</span>color, linestyle<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">20</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x' = x </span><span class="op">+</span><span class="vs"> x</span><span class="dv">^</span><span class="vs">2 e</span><span class="dv">^</span><span class="vs">t</span><span class="dv">$</span><span class="vs">: finite-time blow-up"</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_02_files/figure-html/fig-ex1-output-1.png" width="1182" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Solutions of <span class="math inline">\(x' = x + x^2 e^t\)</span> from several initial conditions <span class="math inline">\(x_0 &gt; 0\)</span>. Each solution blows up at <span class="math inline">\(t^* = \frac{1}{2}\ln(2/x_0+1)\)</span> (marked with a vertical dashed line). The closed-form solution (solid) agrees perfectly with the numerical ODE solve (dots).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-ex2" class="level3">
+<h3 class="anchored" data-anchor-id="sec-ex2">Example 2 — <span class="math inline">\(x' = ax + bx^3\)</span> (Constant Coefficients)</h3>
+<p>Here <span class="math inline">\(n = 3\)</span>, <span class="math inline">\(a(t) = a\)</span> (constant), <span class="math inline">\(g(t) = b\)</span> (constant). This equation arises in nonlinear oscillation theory, optics (<a href="https://en.wikipedia.org/wiki/Kerr_effect">Kerr effect</a>), and population models.</p>
+<p><strong>Step 1.</strong> Substitute <span class="math inline">\(y = x^{1-3} = x^{-2}\)</span>.</p>
+<p><strong>Step 2.</strong> The linear ODE: <span class="math display">\[
+y' - (1-3)a\,y = (1-3)b \quad\Longrightarrow\quad y' + 2ay = -2b.
+\]</span></p>
+<p><strong>Step 3.</strong> Integrating factor: <span class="math inline">\(\mu = e^{2at}\)</span>. <span class="math display">\[
+(ye^{2at})' = -2b\,e^{2at}
+\quad\Longrightarrow\quad
+y = -\frac{b}{a} + \left(y_0 + \frac{b}{a}\right)e^{-2at},
+\]</span> where <span class="math inline">\(y_0 = x_0^{-2} = 1/x(0)^2\)</span>.</p>
+<p><strong>Step 4.</strong> <span class="math inline">\(x = y^{-1/2}\)</span>: <span class="math display">\[
+\boxed{x(t) = \frac{1}{\displaystyle\sqrt{-\frac{b}{a} + \!\left(\frac{1}{x_0^2}+\frac{b}{a}\right)e^{-2at}}}.}
+\]</span></p>
+<p><strong>Equilibria</strong> (setting <span class="math inline">\(x' = 0\)</span> for non-zero <span class="math inline">\(x\)</span>): <span class="math inline">\(ax + bx^3 = x(a+bx^2) = 0\)</span>, giving <span class="math inline">\(x = 0\)</span> and <span class="math inline">\(x = \pm\sqrt{-a/b}\)</span> (real only when <span class="math inline">\(a/b &lt; 0\)</span>).</p>
+<p>When <span class="math inline">\(a &gt; 0\)</span> and <span class="math inline">\(b &lt; 0\)</span> (so <span class="math inline">\(-b/a &gt; 0\)</span>), there is a non-zero equilibrium <span class="math inline">\(x_{\text{eq}} = \sqrt{-a/b}\)</span> that acts as an attractor for <span class="math inline">\(x &gt; 0\)</span>.</p>
+<div id="cell-fig-ex2" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a_val, b_val <span class="op">=</span> <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">0.5</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x_eq <span class="op">=</span> np.sqrt(<span class="op">-</span>a_val <span class="op">/</span> b_val)   <span class="co"># = sqrt(2)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> x_ex2_closed(t, x0, a, b):</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    y0 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> x0<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    y_t <span class="op">=</span> <span class="op">-</span>b<span class="op">/</span>a <span class="op">+</span> (y0 <span class="op">+</span> b<span class="op">/</span>a)<span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>a<span class="op">*</span>t)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> np.sqrt(np.<span class="bu">abs</span>(y_t)) <span class="op">*</span> np.sign(x0)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>f_e <span class="op">=</span> <span class="kw">lambda</span> t, x: [a_val<span class="op">*</span>x[<span class="dv">0</span>] <span class="op">+</span> b_val<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">3</span>]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.plasma(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.85</span>, <span class="dv">6</span>))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>x0_vals <span class="op">=</span> [<span class="fl">0.3</span>, <span class="fl">0.7</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">400</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, color <span class="kw">in</span> <span class="bu">zip</span>(x0_vals, colors):</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    x_clo <span class="op">=</span> x_ex2_closed(t_plot, x0, a_val, b_val)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, x_clo, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.2</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>ax.axhline(x_eq, color<span class="op">=</span><span class="st">'seagreen'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$x_</span><span class="ch">{{\\</span><span class="ss">rm eq</span><span class="ch">}}</span><span class="ss">=</span><span class="ch">\\</span><span class="ss">sqrt</span><span class="ch">{{</span><span class="ss">2</span><span class="ch">}}\\</span><span class="ss">approx</span><span class="sc">{</span>x_eq<span class="sc">:.3f}</span><span class="ss">$ (stable)'</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>,    color<span class="op">=</span><span class="st">'crimson'</span>,  ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'$x=0$ (unstable)'</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x' = x - 0</span><span class="dv">.</span><span class="vs">5</span><span class="ch">\,</span><span class="vs">x</span><span class="dv">^</span><span class="vs">3</span><span class="dv">$</span><span class="vs">: convergence to stable equilibrium"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="fl">3.5</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_02_files/figure-html/fig-ex2-output-1.png" width="1182" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Solutions of <span class="math inline">\(x' = x - 0.5x^3\)</span> (<span class="math inline">\(a=1\)</span>, <span class="math inline">\(b=-0.5\)</span>) from several initial conditions. The non-zero equilibrium <span class="math inline">\(x_{\rm eq} = \sqrt{2} \approx 1.414\)</span> (dashed green) is stable: all solutions with <span class="math inline">\(x_0&gt;0\)</span> converge to it. The trivial equilibrium <span class="math inline">\(x=0\)</span> (dashed red) is unstable.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-logistic" class="level3">
+<h3 class="anchored" data-anchor-id="sec-logistic">Example 3 — The Logistic Equation as a Bernoulli Equation</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Logistic_function#In_ecology:_modeling_population_growth">logistic equation</a> <span class="math display">\[
+x' = rx\!\left(1 - \frac{x}{K}\right) = rx - \frac{r}{K}x^2
+\]</span> is a Bernoulli equation with <span class="math inline">\(n = 2\)</span>, <span class="math inline">\(a(t) = r\)</span>, <span class="math inline">\(g(t) = -r/K\)</span>.</p>
+<p><strong>Substitution</strong> <span class="math inline">\(y = x^{-1}\)</span> gives: <span class="math display">\[
+y' + ry = \frac{r}{K},
+\]</span> a linear ODE with constant coefficients. The integrating factor is <span class="math inline">\(e^{rt}\)</span>: <span class="math display">\[
+(ye^{rt})' = \frac{r}{K}e^{rt}
+\quad\Longrightarrow\quad
+y = \frac{1}{K} + Ce^{-rt}.
+\]</span> Applying <span class="math inline">\(y(0) = 1/x_0\)</span>: <span class="math display">\[
+C = \frac{1}{x_0} - \frac{1}{K} = \frac{K - x_0}{Kx_0},
+\]</span> and recovering <span class="math inline">\(x = 1/y\)</span>: <span class="math display">\[
+x(t) = \frac{1}{1/K + Ce^{-rt}} = \frac{K}{1 + (K/x_0 - 1)e^{-rt}},
+\]</span> which is exactly the familiar logistic solution — now derived via the Bernoulli substitution as an alternative to partial fractions.</p>
+<div id="cell-fig-logistic-bernoulli" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>r_val, K_val <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">5.0</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logistic_closed(t, x0, r, K):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> K <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> (K<span class="op">/</span>x0 <span class="op">-</span> <span class="dv">1</span>)<span class="op">*</span>np.exp(<span class="op">-</span>r<span class="op">*</span>t))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>f_log <span class="op">=</span> <span class="kw">lambda</span> t, x: [r_val<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> x[<span class="dv">0</span>]<span class="op">/</span>K_val)]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.coolwarm(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="dv">5</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>x0_vals <span class="op">=</span> [<span class="fl">0.3</span>, <span class="fl">1.0</span>, <span class="fl">3.0</span>, <span class="fl">6.0</span>, <span class="fl">9.0</span>]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>t_plot  <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">400</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, color <span class="kw">in</span> <span class="bu">zip</span>(x0_vals, colors):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    x_clo <span class="op">=</span> logistic_closed(t_plot, x0, r_val, K_val)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, x_clo, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.2</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f_log, (<span class="dv">0</span>, <span class="dv">8</span>), [x0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    t_dots <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">15</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_dots, sol.sol(t_dots)[<span class="dv">0</span>], <span class="st">'o'</span>, color<span class="op">=</span>color, markersize<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>ax.axhline(K_val, color<span class="op">=</span><span class="st">'black'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="ss">f'$K=</span><span class="sc">{</span>K_val<span class="sc">}</span><span class="ss">$ (carrying capacity)'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Logistic ODE via Bernoulli substitution </span><span class="kw">(</span><span class="dv">$</span><span class="vs">r=1</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">K=5</span><span class="dv">$</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-logistic-bernoulli" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logistic-bernoulli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_02_files/figure-html/fig-logistic-bernoulli-output-1.png" width="1182" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logistic-bernoulli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Logistic growth (<span class="math inline">\(r=1\)</span>, <span class="math inline">\(K=5\)</span>) solved via the Bernoulli substitution. The closed-form solution (solid) is compared to a direct numerical solve (dots) for four initial conditions. All solutions converge to the carrying capacity <span class="math inline">\(K=5\)</span> (dashed).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-4-sympy-solving-bernoulli-equations-symbolically" class="level3">
+<h3 class="anchored" data-anchor-id="example-4-sympy-solving-bernoulli-equations-symbolically">Example 4 — SymPy: Solving Bernoulli Equations Symbolically</h3>
+<p>SymPy’s <code>dsolve</code> recognises Bernoulli equations automatically. Below we verify all three preceding examples symbolically and display the results in typeset LaTeX.</p>
+<div id="e9ed52cc" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x_sym <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>cases <span class="op">=</span> {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"x' = x </span><span class="op">+</span><span class="vs"> x</span><span class="dv">^</span><span class="vs">2 e</span><span class="dv">^</span><span class="vs">t </span><span class="er">\</span><span class="vs">quad </span><span class="kw">(</span><span class="vs">n=2</span><span class="kw">)</span><span class="vs">"</span>:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        sym.Eq(x_sym(t_sym).diff(t_sym),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>               x_sym(t_sym) <span class="op">+</span> x_sym(t_sym)<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.exp(t_sym)),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"x' = ax </span><span class="op">+</span><span class="vs"> bx</span><span class="dv">^</span><span class="vs">3 </span><span class="er">\</span><span class="vs">quad </span><span class="kw">(</span><span class="vs">n=3, </span><span class="ch">\t</span><span class="vs">ext{ constants } a,b</span><span class="kw">)</span><span class="vs">"</span>:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        sym.Eq(x_sym(t_sym).diff(t_sym),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>               sym.Symbol(<span class="st">'a'</span>)<span class="op">*</span>x_sym(t_sym)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>               <span class="op">+</span> sym.Symbol(<span class="st">'b'</span>)<span class="op">*</span>x_sym(t_sym)<span class="op">**</span><span class="dv">3</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"</span><span class="ch">\t</span><span class="vs">ext{Logistic: } x' = rx</span><span class="kw">(</span><span class="vs">1-x/K</span><span class="kw">)</span><span class="vs"> </span><span class="er">\</span><span class="vs">quad </span><span class="kw">(</span><span class="vs">n=2</span><span class="kw">)</span><span class="vs">"</span>:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        sym.Eq(x_sym(t_sym).diff(t_sym),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>               sym.Symbol(<span class="st">'r'</span>)<span class="op">*</span>x_sym(t_sym)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>               <span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> x_sym(t_sym)<span class="op">/</span>sym.Symbol(<span class="st">'K'</span>))),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, ode <span class="kw">in</span> cases.items():</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"ODE: $</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">$"</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> sym.dsolve(ode, x_sym(t_sym))</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(sol, <span class="bu">list</span>):</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> s <span class="kw">in</span> sol:</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            display(Math(<span class="vs">r"x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(s.rhs)))</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        display(Math(<span class="vs">r"x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(sol.rhs)))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>ODE: $x' = x + x^2 e^t \quad (n=2)$</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x(t) = \frac{2 e^{t}}{C_{1} - e^{2 t}}\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ODE: $x' = ax + bx^3 \quad (n=3, \text{ constants } a,b)$</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x(t) = \sqrt{\frac{a e^{2 a \left(C_{1} + t\right)}}{b \left(1 - e^{2 a \left(C_{1} + t\right)}\right)}}\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x(t) = - \sqrt{- \frac{a e^{2 a \left(C_{1} + t\right)}}{b \left(e^{2 a \left(C_{1} + t\right)} - 1\right)}}\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ODE: $\text{Logistic: } x' = rx(1-x/K) \quad (n=2)$</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x(t) = \frac{K e^{C_{1} K + r t}}{e^{C_{1} K + r t} - 1}\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="applications" class="level2">
+<h2 class="anchored" data-anchor-id="applications">Applications</h2>
+<section id="population-dynamics-harvesting-model" class="level3">
+<h3 class="anchored" data-anchor-id="population-dynamics-harvesting-model">Population Dynamics — Harvesting Model</h3>
+<p>A common extension of logistic growth adds constant <strong>harvesting</strong> (fishing, hunting, or predation at a fixed rate <span class="math inline">\(h\)</span>): <span class="math display">\[
+x' = rx\!\left(1 - \frac{x}{K}\right) - h.
+\]</span> This is no longer a Bernoulli equation (the constant <span class="math inline">\(-h\)</span> term breaks the <span class="math inline">\(a(t)x + g(t)x^n\)</span> structure), but it is a close relative worth examining alongside the logistic model. The Bernoulli substitution can be applied to the pure logistic part as a first step in perturbation or numerical approaches.</p>
+<p>The critical harvesting rate is <span class="math inline">\(h_c = rK/4\)</span>: above this threshold no positive equilibrium exists and the population collapses to extinction.</p>
+<div id="cell-fig-harvest" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>r_val, K_val <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">8.0</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>h_c <span class="op">=</span> r_val <span class="op">*</span> K_val <span class="op">/</span> <span class="dv">4</span>   <span class="co"># = 2.0</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">20</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">500</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Sub-critical</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> h, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>], plt.cm.Blues(np.linspace(<span class="fl">0.4</span>, <span class="fl">0.85</span>, <span class="dv">3</span>))):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> <span class="kw">lambda</span> t, x, h<span class="op">=</span>h: [r_val<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> x[<span class="dv">0</span>]<span class="op">/</span>K_val) <span class="op">-</span> h]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f, t_span, [<span class="fl">2.0</span>], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$h=</span><span class="sc">{</span>h<span class="sc">}</span><span class="ss">$ (sub-critical)'</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Critical</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>f_crit <span class="op">=</span> <span class="kw">lambda</span> t, x: [r_val<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> x[<span class="dv">0</span>]<span class="op">/</span>K_val) <span class="op">-</span> h_c]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>sol_c <span class="op">=</span> solve_ivp(f_crit, t_span, [<span class="fl">2.0</span>], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>ax.plot(sol_c.t, np.clip(sol_c.y[<span class="dv">0</span>], <span class="dv">0</span>, K_val), color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f'$h=h_c=</span><span class="sc">{</span>h_c<span class="sc">}</span><span class="ss">$ (critical)'</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Super-critical</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> h, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="fl">2.5</span>, <span class="fl">3.5</span>], plt.cm.Reds(np.linspace(<span class="fl">0.5</span>, <span class="fl">0.85</span>, <span class="dv">2</span>))):</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> <span class="kw">lambda</span> t, x, h<span class="op">=</span>h: [r_val<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> x[<span class="dv">0</span>]<span class="op">/</span>K_val) <span class="op">-</span> h]</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f, t_span, [<span class="fl">2.0</span>], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>                    events<span class="op">=</span><span class="kw">lambda</span> t, y: y[<span class="dv">0</span>])</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    y_plot <span class="op">=</span> np.clip(sol.y[<span class="dv">0</span>], <span class="dv">0</span>, K_val)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, y_plot, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$h=</span><span class="sc">{</span>h<span class="sc">}</span><span class="ss">$ (super-critical)'</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Population $x(t)$'</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r'Logistic with harvesting: </span><span class="dv">$</span><span class="vs">x</span><span class="er">\</span><span class="vs">prime = rx</span><span class="kw">(</span><span class="vs">1-x/K</span><span class="kw">)</span><span class="vs"> - h</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x_0=2</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">0.3</span>, K_val <span class="op">+</span> <span class="fl">0.5</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-harvest" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-harvest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_02_files/figure-html/fig-harvest-output-1.png" width="1183" height="734" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-harvest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Logistic growth with harvesting (<span class="math inline">\(r=1\)</span>, <span class="math inline">\(K=8\)</span>). Sub-critical harvesting (<span class="math inline">\(h &lt; h_c = 2\)</span>, blue shades) leads to a stable positive equilibrium; super-critical harvesting (<span class="math inline">\(h &gt; h_c\)</span>, red shades) drives the population to extinction. The critical case <span class="math inline">\(h=h_c=2\)</span> is shown in green.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="fluid-dynamics-torricellis-law" class="level3">
+<h3 class="anchored" data-anchor-id="fluid-dynamics-torricellis-law">Fluid Dynamics — Torricelli’s Law</h3>
+<p><a href="https://en.wikipedia.org/wiki/Torricelli%27s_law">Torricelli’s law</a> describes how the height <span class="math inline">\(h(t)\)</span> of water in a draining tank changes over time. For a cylindrical tank of cross-sectional area <span class="math inline">\(A\)</span> with a circular drain of area <span class="math inline">\(a\)</span> at the bottom: <span class="math display">\[
+A\,\frac{dh}{dt} = -a\sqrt{2g\,h},
+\]</span> where <span class="math inline">\(g = 9.81\)</span> m/s² is gravitational acceleration. Rearranging: <span class="math display">\[
+\frac{dh}{dt} = -\frac{a\sqrt{2g}}{A}\,h^{1/2}.
+\]</span> This is a Bernoulli equation with <span class="math inline">\(n = 1/2\)</span>, <span class="math inline">\(a(t) = 0\)</span>, <span class="math inline">\(g(t) = -a\sqrt{2g}/A\)</span>.</p>
+<p>The substitution <span class="math inline">\(y = h^{1/2}\)</span> (or equivalently direct separation) gives the exact solution: <span class="math display">\[
+h(t) = \left(\sqrt{h_0} - \frac{a\sqrt{2g}}{2A}\,t\right)^{\!2},
+\]</span> and the tank empties at <span class="math inline">\(t^* = 2A\sqrt{h_0}/(a\sqrt{2g})\)</span>.</p>
+<div id="cell-fig-torricelli" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>g_val <span class="op">=</span> <span class="fl">9.81</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>A_tank <span class="op">=</span> <span class="fl">0.5</span>    <span class="co"># m^2  (tank cross-section)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>a_drain <span class="op">=</span> <span class="fl">0.01</span>  <span class="co"># m^2  (drain area)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>h0 <span class="op">=</span> <span class="fl">2.0</span>        <span class="co"># m    (initial height)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> a_drain <span class="op">*</span> np.sqrt(<span class="dv">2</span><span class="op">*</span>g_val) <span class="op">/</span> A_tank   <span class="co"># coefficient</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>t_empty <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.sqrt(h0) <span class="op">/</span> alpha</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_empty, <span class="dv">400</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Closed-form</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>h_closed <span class="op">=</span> (np.sqrt(h0) <span class="op">-</span> alpha<span class="op">/</span><span class="dv">2</span> <span class="op">*</span> t_plot)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>f_tor <span class="op">=</span> <span class="kw">lambda</span> t, h: [<span class="op">-</span>alpha <span class="op">*</span> np.sqrt(<span class="bu">max</span>(h[<span class="dv">0</span>], <span class="dv">0</span>))]</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>sol_tor <span class="op">=</span> solve_ivp(f_tor, (<span class="dv">0</span>, t_empty), [h0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>t_dots <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_empty<span class="op">*</span><span class="fl">0.98</span>, <span class="dv">20</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>h_dots <span class="op">=</span> sol_tor.sol(t_dots)[<span class="dv">0</span>]</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, h_closed, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Closed form'</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots, h_dots, <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Numerical solve'</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>ax.axvline(t_empty, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.5</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="ss">f'$t^* = </span><span class="sc">{</span>t_empty<span class="sc">:.1f}</span><span class="ss">$ s (tank empty)'</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Time $t$ (s)'</span>)</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Water height $h(t)$ (m)'</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Torricelli's Law — Draining Tank (Bernoulli, $n=1/2$)"</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, h0 <span class="op">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-torricelli" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-torricelli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_02_files/figure-html/fig-torricelli-output-1.png" width="1183" height="656" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-torricelli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Torricelli’s law: water height <span class="math inline">\(h(t)\)</span> in a draining cylindrical tank (<span class="math inline">\(A=0.5\)</span> m², <span class="math inline">\(a=0.01\)</span> m², <span class="math inline">\(h_0=2\)</span> m). The closed-form parabolic solution (solid blue) agrees with the numerical solve (red dots). The tank empties at <span class="math inline">\(t^* \approx 201\)</span> s.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>The table below collects the key facts about Bernoulli equations.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Form</strong></td>
+<td><span class="math inline">\(x' = a(t)x + g(t)x^n\)</span>, <span class="math inline">\(n \neq 0,1\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Substitution</strong></td>
+<td><span class="math inline">\(y = x^{1-n}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Reduced equation</strong></td>
+<td><span class="math inline">\(y' - (1-n)a(t)y = (1-n)g(t)\)</span> — linear!</td>
+</tr>
+<tr class="even">
+<td><strong>Solution</strong></td>
+<td>Solve for <span class="math inline">\(y\)</span> by integrating factor; then <span class="math inline">\(x = y^{1/(1-n)}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Trivial solution</strong></td>
+<td><span class="math inline">\(x \equiv 0\)</span> always satisfies (B); verify separately</td>
+</tr>
+<tr class="even">
+<td><strong>Blow-up</strong></td>
+<td>Nonlinear terms (<span class="math inline">\(n &gt; 1\)</span>) can cause finite-time blow-up</td>
+</tr>
+<tr class="odd">
+<td><strong>Key examples</strong></td>
+<td>Logistic growth, draining tanks, nonlinear oscillations</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Connection to the Logistic Equation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The logistic ODE <span class="math inline">\(x' = rx(1-x/K)\)</span> is the most important Bernoulli equation in applications. Writing it as <span class="math inline">\(x' = rx - (r/K)x^2\)</span> immediately reveals the Bernoulli structure with <span class="math inline">\(n=2\)</span>. The Bernoulli substitution <span class="math inline">\(y = x^{-1}\)</span> converts it to a simple linear ODE <span class="math inline">\(y' + ry = r/K\)</span> that can be solved by inspection — arguably the most elegant derivation of the logistic solution.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-logan2015first" class="csl-entry" role="listitem">
+Logan, J David. 2015. <em>A First Course in Differential Equations Third Edition</em>.
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="e13c732b" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
