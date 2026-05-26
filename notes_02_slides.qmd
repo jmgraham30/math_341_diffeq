@@ -1,0 +1,665 @@
+---
+title: "First-Order Equations"
+subtitle: "MATH 341 — Notes 2"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    chalkboard: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 2"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import scipy as sp
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp, quad
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+
+def slope_field(f, t_range, x_range, n=20, ax=None, color='steelblue', alpha=0.7):
+    if ax is None:
+        fig, ax = plt.subplots()
+    t_vals = np.linspace(*t_range, n)
+    x_vals = np.linspace(*x_range, n)
+    T, X = np.meshgrid(t_vals, x_vals)
+    dT = np.ones_like(T)
+    dX = f(T, X)
+    norm = np.sqrt(dT**2 + dX**2)
+    norm[norm == 0] = 1
+    ax.quiver(T, X, dT / norm, dX / norm,
+              angles='xy', scale=n * 0.8, width=0.003,
+              color=color, alpha=alpha, headlength=3, headwidth=3)
+    ax.set_xlabel('$t$'); ax.set_ylabel('$x$')
+    return ax
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover Today
+
+:::: {.columns}
+::: {.column width="60%"}
+1. **Slope fields** — the geometric interpretation of a first-order ODE
+
+2. **Nullclines and isoclines** — reading qualitative behavior without solving
+
+3. **Separation of variables** — solving separable first-order ODEs
+
+4. **Integrating factors** — solving first-order linear ODEs
+
+5. **Applications** — Newton's cooling, RC circuits, chemical reactors
+:::
+::: {.column width="40%"}
+::: {.callout-note}
+Sections **1.1.3, 1.3, and 1.4** of @logan2015first.
+:::
+:::
+::::
+
+
+# Slope Fields {background-color="#2c3e50"}
+
+## The Geometric Idea
+
+For a first-order ODE $x' = f(t, x)$, at every point $(t, x)$ in the plane the ODE prescribes the **slope** that any solution curve through that point must have.
+
+. . .
+
+A **[slope field](https://en.wikipedia.org/wiki/Slope_field)** (direction field) is the picture formed by drawing a short line segment with slope $f(t,x)$ at each point of a grid.
+
+::: {.callout-important}
+A slope field visualizes the ODE *before* any solution is found. Solution curves are everywhere tangent to the field.
+:::
+
+. . .
+
+**Calculus vs. Differential Equations**
+
+| | Given | Find |
+|---|---|---|
+| Calculus | function $x(t)$ | slopes $x'(t)$ |
+| Diff. Eq. | slopes $f(t,x)$ | function $x(t)$ |
+
+
+## Nullclines and Isoclines
+
+**[Nullclines](https://en.wikipedia.org/wiki/Nullcline)** — where $f(t,x) = 0$, i.e., where the slope field is **horizontal**.
+
+- Solutions have zero slope on a nullcline and may change from increasing to decreasing across it.
+- For an **autonomous** ODE $x'=f(x)$: nullclines are horizontal lines $x=c$ where $f(c)=0$, which are exactly the **equilibrium solutions**.
+
+. . .
+
+**Isoclines** — where $f(t,x) = k$ for a fixed constant $k$.
+
+- Along an isocline every solution curve has slope $k$.
+- Sketching several isoclines gives a rapid picture of the slope field's organization.
+
+. . .
+
+::: {.callout-tip}
+For an autonomous ODE $x'=f(x)$: the slope is **constant** along every horizontal line $x=c$, making the slope field especially easy to read.
+:::
+
+
+## Python: The `slope_field` Helper
+
+```{python}
+#| echo: true
+#| code-fold: false
+
+def slope_field(f, t_range, x_range, n=20, ax=None, color='steelblue', alpha=0.7):
+    """Draw slope field for x' = f(t,x) using normalized quiver arrows."""
+    if ax is None:
+        fig, ax = plt.subplots()
+    T, X = np.meshgrid(np.linspace(*t_range, n), np.linspace(*x_range, n))
+    dT, dX = np.ones_like(T), f(T, X)
+    norm = np.sqrt(dT**2 + dX**2); norm[norm == 0] = 1
+    ax.quiver(T, X, dT/norm, dX/norm, angles='xy', scale=n*0.8,
+              width=0.003, color=color, alpha=alpha, headlength=3, headwidth=3)
+    ax.set_xlabel('$t$'); ax.set_ylabel('$x$')
+    return ax
+```
+
+Key ideas:
+- `np.meshgrid` creates the $(t,x)$ grid
+- `dX = f(T, X)` evaluates the slope at every grid point
+- Arrows are **normalized** to equal length so large slopes don't dominate
+
+
+## Example 1 — $x' = -x + 2t$
+
+**Non-autonomous linear ODE** (Logan Example 1.5)
+
+- Nullcline: $f=0 \Rightarrow x = 2t$ (slope-2 line)
+- Above nullcline: $f < 0$, slopes negative
+- Below nullcline: $f > 0$, slopes positive
+
+```{python}
+#| label: fig-sf-linear-slides
+#| fig-height: 3.8
+
+f1 = lambda t, x: -x + 2*t
+fig, ax = plt.subplots(figsize=(8, 3.6))
+slope_field(f1, (-1, 4), (-4, 8), n=22, ax=ax)
+t_eval = np.linspace(-1, 4, 400)
+for x0 in [-3, -1, 0, 2, 4, 6, 7.5]:
+    sol = solve_ivp(f1, (-1, 4), [x0], t_eval=t_eval, max_step=0.05)
+    ax.plot(sol.t, sol.y[0], color='steelblue', lw=1.8)
+t_nc = np.linspace(-1, 4, 200)
+ax.plot(t_nc, 2*t_nc, 'r--', lw=2, label='Nullcline $x=2t$')
+ax.set_xlim(-1, 4); ax.set_ylim(-4, 8)
+ax.set_title(r"Slope field: $x' = -x + 2t$"); ax.legend()
+plt.tight_layout(); plt.show()
+```
+
+
+## Example 2 — Autonomous: $x' = x(1 - x/4)$
+
+Equilibria at $x=0$ (unstable) and $x=4$ (stable). Slope is **constant on horizontal lines**.
+
+```{python}
+#| label: fig-sf-auto-slides
+#| fig-height: 3.8
+
+f2 = lambda t, x: x * (1 - x / 4)
+fig, ax = plt.subplots(figsize=(8, 3.6))
+slope_field(f2, (0, 8), (-1, 6.5), n=22, ax=ax)
+t_eval = np.linspace(0, 8, 400)
+for x0 in [0.2, 0.5, 1, 2, 3, 4.5, 6]:
+    sol = solve_ivp(f2, (0, 8), [x0], t_eval=t_eval, max_step=0.05)
+    ax.plot(sol.t, sol.y[0], color='steelblue', lw=1.8)
+ax.axhline(0, color='crimson', ls='--', lw=1.8, label='$x=0$ (unstable)')
+ax.axhline(4, color='seagreen', ls='--', lw=1.8, label='$x=4$ (stable)')
+ax.set_title(r"Slope field: $x' = x(1-x/4)$"); ax.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+::: {.callout-tip}
+Sign of $f(x)$: solutions **increase** where $f>0$, **decrease** where $f<0$. This is the foundation of phase-line analysis.
+:::
+
+
+## Example 3 — Nonlinear: $x' = x(x-t)$
+
+**Two nullclines:** $x=0$ (equilibrium solution) and $x=t$ (not a solution).
+
+```{python}
+#| label: fig-sf-nonlinear-slides
+#| fig-height: 3.8
+
+f3 = lambda t, x: x * (x - t)
+fig, ax = plt.subplots(figsize=(8, 3.6))
+slope_field(f3, (-1, 4), (-3, 4.5), n=22, ax=ax)
+t_eval = np.linspace(-1, 4, 600)
+for x0 in [2.0, 0.5, -1.5, 3.5]:
+    try:
+        sol = solve_ivp(f3, (-1, 4), [x0], t_eval=t_eval, max_step=0.02)
+        ax.plot(sol.t, np.clip(sol.y[0], -4, 5), color='steelblue', lw=1.8)
+    except Exception:
+        pass
+t_nc = np.linspace(-1, 4, 200)
+ax.axhline(0, color='crimson', ls='--', lw=1.8, label='Nullcline $x=0$')
+ax.plot(t_nc, t_nc, color='darkorange', ls='--', lw=1.8, label='Nullcline $x=t$')
+for txt, pos in [(r"$x'>0$",(2,-1.8)),(r"$x'<0$",(2,0.6)),(r"$x'>0$",(0.5,2.5)),(r"$x'<0$",(-0.5,-1.5))]:
+    ax.text(*pos, txt, fontsize=9, ha='center')
+ax.set_xlim(-1,4); ax.set_ylim(-3,4.5)
+ax.set_title(r"Slope field: $x' = x(x-t)$"); ax.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+
+# Separable Equations {background-color="#2c3e50"}
+
+## Definition and Recipe
+
+An ODE is **[separable](https://en.wikipedia.org/wiki/Separation_of_variables#Ordinary_differential_equations_(ODE))** if it factors as
+$$x' = f(x)\,g(t).$$
+
+**Separation of variables:** divide by $f(x)$, then integrate both sides:
+
+$$\frac{1}{f(x)}\,dx = g(t)\,dt \quad\Longrightarrow\quad \int\frac{1}{f(x)}\,dx = \int g(t)\,dt + C.$$
+
+. . .
+
+::: {.callout-important}
+## Recipe
+Write $\dfrac{1}{f(x)}\,dx = g(t)\,dt$ and integrate directly. The result is a one-parameter family of **integral curves** $\phi(t,x)=C$.
+:::
+
+. . .
+
+::: {.callout-tip}
+## IVP Definite-Integral Form
+$$\int_{x_0}^{x}\frac{1}{f(y)}\,dy = \int_{t_0}^{t} g(s)\,ds$$
+No constant needed — the initial condition is already built in.
+:::
+
+
+## Example 4 — Exponential Growth/Decay
+
+$$\frac{dx}{dt} = rx, \quad r \text{ constant}$$
+
+**Separate:** $\dfrac{1}{x}\,dx = r\,dt$
+
+**Integrate:** $\ln|x| = rt + C \;\Rightarrow\; \boxed{x(t) = Ce^{rt}}$
+
+With $x(0)=x_0$: $x(t) = x_0 e^{rt}$.
+
+. . .
+
+**SymPy verification:**
+
+```{python}
+#| echo: true
+t, r, x0_sym = sym.symbols('t r x_0', real=True, positive=True)
+x = sym.Function('x')
+ode = sym.Eq(x(t).diff(t), r * x(t))
+sol_ivp = sym.dsolve(ode, x(t), ics={x(0): x0_sym})
+display(Math(sym.latex(sol_ivp)))
+```
+
+
+## Example 5 — The Logistic Equation
+
+$$\frac{dx}{dt} = rx\!\left(1-\frac{x}{K}\right), \quad x(0)=x_0$$
+
+**Partial fractions:** $\dfrac{1}{x(K-x)} = \dfrac{1/K}{x}+\dfrac{1/K}{K-x}$
+
+**Integrate:**
+$$\frac{1}{K}\ln\!\left|\frac{x}{K-x}\right| = \frac{r}{K}t + C_1 \;\Rightarrow\; \frac{x}{K-x} = Ce^{rt}$$
+
+**Solve and apply IC:**
+$$\boxed{x(t) = \frac{K}{1+\!\left(\dfrac{K}{x_0}-1\right)e^{-rt}}}$$
+
+. . .
+
+```{python}
+#| echo: true
+t_s, r_s, K_s, x0_s = sym.symbols('t r K x_0', positive=True)
+x_s = sym.Function('x')
+logistic_ode = sym.Eq(x_s(t_s).diff(t_s), r_s*x_s(t_s)*(1 - x_s(t_s)/K_s))
+sol_log = sym.dsolve(logistic_ode, x_s(t_s), ics={x_s(0): x0_s})
+display(Math(sym.latex(sol_log)))
+```
+
+
+## Example 6 — Non-Elementary Integral
+
+$$\frac{dx}{dt} = \frac{2\sqrt{x}\,e^{-t}}{t}, \quad x(1)=4 \qquad \text{(Logan Ex. 1.18)}$$
+
+**Separate and integrate** (definite form):
+$$\int_4^x \frac{dy}{2\sqrt{y}} = \int_1^t \frac{e^{-s}}{s}\,ds \;\Rightarrow\; \sqrt{x}-2 = \int_1^t\frac{e^{-s}}{s}\,ds$$
+
+Right-hand side has **no elementary form** — but can be plotted numerically:
+$$x(t) = \left(\int_1^t\frac{e^{-s}}{s}\,ds + 2\right)^{\!2}$$
+
+```{python}
+#| label: fig-nonclosed-slides
+#| fig-height: 2.8
+
+def x_formula(t_val):
+    integral, _ = quad(lambda s: np.exp(-s)/s, 1, t_val)
+    return (integral + 2)**2
+
+t_plot = np.linspace(1, 5, 300)
+x_plot = np.array([x_formula(tv) for tv in t_plot])
+f_ode = lambda t, x: 2*np.sqrt(max(x[0],0))*np.exp(-t)/t
+sol_check = solve_ivp(f_ode, (1,5), [4.0], t_eval=t_plot, max_step=0.02)
+fig, ax = plt.subplots(figsize=(7, 2.6))
+ax.plot(t_plot, x_plot, color='steelblue', lw=2.5, label='Integral formula')
+ax.plot(sol_check.t[::15], sol_check.y[0][::15], 'ro', markersize=5, label='Numerical check')
+ax.plot(1, 4, 'k*', markersize=10, label='IC $(1,4)$')
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$'); ax.legend(fontsize=8)
+plt.tight_layout(); plt.show()
+```
+
+
+## Singular Solutions
+
+Separating variables requires dividing by $f(x)$ — only valid when $f(x) \neq 0$.
+
+Any root $f(c)=0$ gives a constant solution $x(t)\equiv c$ that **may not** appear in the general family for any value of $C$.  Such a solution is called a **[singular solution](https://en.wikipedia.org/wiki/Singular_solution)**.
+
+. . .
+
+::: {.callout-note}
+## Example 7
+The ODE $x' = 6t(x-1)^{2/3}$ has general solution $x(t) = 1+(t^2+C)^3$.
+
+But $x(t)\equiv 1$ also satisfies the ODE: $\;x'=0\;$ and $\;6t(1-1)^{2/3}=0$. ✓
+
+No choice of $C$ recovers $x=1$ from the general family — it is a **singular solution**.
+:::
+
+. . .
+
+::: {.callout-tip}
+Always check whether setting $f(x)=0$ produces additional constant solutions when using separation of variables.
+:::
+
+
+# Linear Equations {background-color="#2c3e50"}
+
+## Normal Form and Integrating Factor
+
+A **[first-order linear ODE](https://en.wikipedia.org/wiki/Linear_differential_equation#First-order_linear_differential_equations)** in **normal form**:
+$$x' + p(t)\,x = q(t)$$
+
+- $q(t)\equiv 0$: **homogeneous**; otherwise **inhomogeneous**
+- $q(t)$ is called the **forcing term** or source term
+
+. . .
+
+**Key trick:** multiply by the **[integrating factor](https://en.wikipedia.org/wiki/Integrating_factor)** $\mu(t) = e^{P(t)}$, where $P(t)=\int p(t)\,dt$:
+
+$$\mu(t)\bigl(x' + p(t)x\bigr) = \bigl(\mu(t)\,x\bigr)'$$
+
+So the ODE becomes $\bigl(\mu x\bigr)' = \mu\,q(t)$ — a total derivative on the left. Integrate and divide by $\mu$:
+
+$$\boxed{x(t) = e^{-P(t)}\int e^{P(t)}\,q(t)\,dt + Ce^{-P(t)}}$$
+
+
+## Four-Step Procedure
+
+::: {.callout-important}
+## Algorithm
+**Step 1.** Write the ODE in normal form: $x' + p(t)x = q(t)$.
+
+**Step 2.** Compute the integrating factor: $\mu(t) = e^{\int p(t)\,dt}$.
+
+**Step 3.** Multiply through: $\bigl(\mu x\bigr)' = \mu\,q(t)$.
+
+**Step 4.** Integrate both sides, divide by $\mu$, apply the IC.
+:::
+
+. . .
+
+## Structure Theorem
+
+The general solution splits as $x(t) = x_h(t) + x_p(t)$:
+
+| Part | Formula | Role |
+|---|---|---|
+| Homogeneous (transient) | $x_h = Ce^{-P(t)}$ | carries IC; decays if $P\to\infty$ |
+| Particular (steady state) | $x_p = e^{-P(t)}\int q(t)e^{P(t)}dt$ | driven by forcing $q(t)$ |
+
+
+## Example 8 — $x' + \tfrac{1}{t}x = 1$
+
+$p(t)=1/t$, $\;q(t)=1$
+
+. . .
+
+**Step 2.** $\mu = e^{\int(1/t)dt} = e^{\ln t} = t$
+
+**Step 3.** $(tx)' = t$
+
+**Step 4.** $tx = \tfrac{1}{2}t^2 + C \;\Rightarrow\; x(t) = \dfrac{t}{2} + \dfrac{C}{t}$
+
+With $x(1)=3$: $\;\tfrac{1}{2}+C=3 \;\Rightarrow\; C=\tfrac{5}{2}$, so $\;x(t)=\dfrac{t}{2}+\dfrac{5}{2t}$.
+
+```{python}
+#| label: fig-linear1-slides
+#| fig-height: 2.8
+
+t_plot = np.linspace(0.2, 5, 400)
+fig, ax = plt.subplots(figsize=(7, 2.6))
+for C_val in np.linspace(-6, 6, 13):
+    ax.plot(t_plot, t_plot/2 + C_val/t_plot, color='lightsteelblue', lw=0.9, alpha=0.8)
+ax.plot(t_plot, t_plot/2 + 2.5/t_plot, color='steelblue', lw=2.5, label=r'$C=5/2$, $x(1)=3$')
+ax.plot(1, 3, 'ro', markersize=8, zorder=5, label='IC $(1,3)$')
+ax.set_ylim(-4, 8); ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"$x' + x/t = 1$: solution family"); ax.legend(fontsize=8)
+plt.tight_layout(); plt.show()
+```
+
+
+## Example 9 — $x' + 2x = \sin t$
+
+$p(t)=2$, $\;q(t)=\sin t$
+
+**Integrating factor:** $\mu = e^{2t}$
+
+$(xe^{2t})' = e^{2t}\sin t$
+
+**Integrate by parts:**
+$$\int e^{2t}\sin t\,dt = e^{2t}\!\left(\tfrac{2}{5}\sin t - \tfrac{1}{5}\cos t\right) + C$$
+
+**General solution:**
+$$x(t) = \underbrace{\frac{2}{5}\sin t - \frac{1}{5}\cos t}_{x_p \;\text{(steady state)}} + \underbrace{Ce^{-2t}}_{x_h \;\text{(transient)}}$$
+
+```{python}
+#| label: fig-linear2-slides
+#| fig-height: 2.6
+
+t_plot = np.linspace(0, 8, 500)
+xp = 0.4*np.sin(t_plot) - 0.2*np.cos(t_plot)
+fig, ax = plt.subplots(figsize=(8, 2.4))
+for C_val in [-3,-2,-1,0,1,2,3]:
+    ax.plot(t_plot, xp + C_val*np.exp(-2*t_plot), color='steelblue', lw=1.5, alpha=0.8)
+ax.plot(t_plot, xp, 'k--', lw=2.2, label=r'Steady state $x_p$')
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$'); ax.set_ylim(-4,4)
+ax.set_title(r"$x' + 2x = \sin t$: transient decay to steady state"); ax.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+
+# Applications {background-color="#2c3e50"}
+
+## Three Applications of First-Order Linear ODEs
+
+All three applications below share the same mathematical structure:
+
+$$x' + p\,x = q(t) \quad\Longrightarrow\quad x(t) = x_{\infty} + (x_0 - x_{\infty})\,e^{-pt}$$
+
+::: {.incremental}
+1. 🌡️ **Newton's Law of Cooling** — $T' + hT = hT_e$
+2. ⚡ **RC Circuit** — $Q' + \tfrac{1}{RC}Q = \tfrac{E(t)}{R}$
+3. 🧪 **Chemical Reactor (Chemostat)** — $C' + \tfrac{q}{V}C = \tfrac{q}{V}C_{\text{in}}$
+:::
+
+
+# Newton's Law of Cooling {background-color="#1a5276"}
+
+## Derivation and Solution
+
+**[Newton's law of cooling](https://en.wikipedia.org/wiki/Newton%27s_law_of_cooling):** rate of temperature change is proportional to the temperature difference with the environment:
+$$\frac{dT}{dt} = -h(T - T_e), \quad T(0)=T_0, \quad h>0$$
+
+In normal form: $T' + hT = hT_e$
+
+**Integrating factor:** $\mu = e^{ht}$
+
+$(Te^{ht})' = hT_e e^{ht}$
+
+$$\boxed{T(t) = T_e + (T_0 - T_e)\,e^{-ht}}$$
+
+. . .
+
+As $t\to\infty$: $T(t)\to T_e$ — **stable equilibrium** at ambient temperature.
+
+
+## Cooling Curves and Forensics
+
+```{python}
+#| label: fig-cooling-slides
+#| fig-height: 3.5
+
+h_val, Te = 0.5, 20.0
+t_plot = np.linspace(0, 10, 300)
+fig, ax = plt.subplots(figsize=(7, 3.3))
+for T0 in [0, 5, 10, 40, 60, 80, 100]:
+    T_sol = Te + (T0 - Te)*np.exp(-h_val*t_plot)
+    ax.plot(t_plot, T_sol, lw=2, label=f'$T_0={T0}°C$' if T0 in [0,40,100] else None)
+ax.axhline(Te, color='black', ls='--', lw=1.5, label=f'$T_e={int(Te)}°C$')
+ax.set_xlabel('Time (hours)'); ax.set_ylabel('Temp (°C)')
+ax.set_title(r"Newton's Law of Cooling, $h=0.5$"); ax.legend(fontsize=8)
+plt.tight_layout(); plt.show()
+```
+
+::: {.callout-note}
+## Forensic Application
+A body at $37°C$ found in a $20°C$ room: two temperature readings at known times determine $h$, then the equation $T(t_{\text{death}}) = 37°C$ recovers the time of death.
+:::
+
+
+## Variable Ambient Temperature
+
+If the environment is not constant but $Q(t)$, the ODE becomes:
+$$T' + hT = hQ(t)$$
+
+General solution via integrating factor:
+$$T(t) = Ce^{-ht} + e^{-ht}\int_0^t hQ(s)\,e^{hs}\,ds$$
+
+This integral form arises whenever the forcing is time-varying — the same structure appears in circuits and reactors.
+
+
+# The RC Circuit {background-color="#1a5276"}
+
+## Governing ODE
+
+An **[RC circuit](https://en.wikipedia.org/wiki/RC_circuit)** with resistance $R$, capacitance $C$, and voltage source $E(t)$:
+
+$$R\,Q' + \frac{Q}{C} = E(t) \quad\Longrightarrow\quad Q' + \frac{1}{RC}\,Q = \frac{E(t)}{R}$$
+
+Integrating factor $\mu = e^{t/(RC)}$ gives:
+$$Q(t) = e^{-t/(RC)}\int_0^t \frac{E(s)}{R}\,e^{s/(RC)}\,ds + Q_0\,e^{-t/(RC)}$$
+
+. . .
+
+**Time constant** $\tau = RC$:
+
+| $\tau$ small | $\tau$ large |
+|:---:|:---:|
+| Fast charge/discharge | Slow charge/discharge |
+
+Current: $I(t) = Q'(t)$
+
+
+## Piecewise Forcing (Logan Ex. 1.29)
+
+$R=1$, $C=1/2$ ($\tau=1/2$), $Q(0)=0$, $E(t) = 1$ for $0\leq t<2$, else $0$.
+
+Piece-by-piece with **matching** at $t=2$:
+
+$$Q_1(t) = \tfrac{1}{2}(1-e^{-2t}), \quad 0\leq t<2$$
+$$Q_2(t) = \tfrac{1}{2}(1-e^{-4})\,e^{-2(t-2)}, \quad t\geq 2$$
+
+```{python}
+#| label: fig-rc-slides
+#| fig-height: 3.0
+
+t1 = np.linspace(0, 2, 300); t2 = np.linspace(2, 6, 300)
+Q1 = 0.5*(1 - np.exp(-2*t1))
+Q_sw = 0.5*(1 - np.exp(-4))
+Q2 = Q_sw*np.exp(-2*(t2-2))
+I1 = np.gradient(Q1, t1); I2 = np.gradient(Q2, t2)
+fig, axes = plt.subplots(1, 2, figsize=(9, 2.8))
+axes[0].plot(t1, Q1, color='steelblue', lw=2); axes[0].plot(t2, Q2, color='steelblue', lw=2)
+axes[0].axvline(2, color='gray', ls=':', lw=1.2)
+axes[0].set_xlabel('$t$'); axes[0].set_ylabel('$Q(t)$'); axes[0].set_title('Charge')
+axes[1].plot(t1, I1, color='crimson', lw=2); axes[1].plot(t2, I2, color='crimson', lw=2)
+axes[1].axvline(2, color='gray', ls=':', lw=1.2, label='Switch off')
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$I(t)$'); axes[1].set_title('Current')
+axes[1].legend(fontsize=8)
+plt.suptitle('RC Circuit: $R=1$, $C=1/2$', fontsize=10)
+plt.tight_layout(); plt.show()
+```
+
+
+## Mechanical–Electrical Analogy
+
+The RC and Newton's cooling equations are **mathematically identical**:
+
+| Newton's Cooling | RC Circuit |
+|:---:|:---:|
+| $T' + hT = hT_e(t)$ | $Q' + \tfrac{1}{RC}Q = \tfrac{E(t)}{R}$ |
+| Temperature $T$ | Charge $Q$ |
+| Heat loss coeff. $h$ | $1/(RC)$ |
+| Ambient temp. $T_e(t)$ | $E(t)/R$ |
+
+. . .
+
+::: {.callout-tip}
+The same transient + steady-state structure governs both. Understanding one system gives insight into the other — a powerful example of mathematical unification.
+:::
+
+
+# Chemical Reactor {background-color="#1a5276"}
+
+## The Chemostat Model
+
+A well-mixed tank of volume $V$: chemical at concentration $C(t)$, inflow $C_{\text{in}}$ at rate $q$, outflow at same rate.
+
+**Mass balance** (rate in $-$ rate out):
+$$V\,C' = q\,C_{\text{in}} - q\,C \;\Rightarrow\; C' + \frac{q}{V}\,C = \frac{q}{V}\,C_{\text{in}}$$
+
+With $C(0)=C_0$:
+$$\boxed{C(t) = C_{\text{in}} + (C_0 - C_{\text{in}})\,e^{-qt/V}}$$
+
+As $t\to\infty$: $C(t)\to C_{\text{in}}$ — **stable equilibrium** at inflow concentration.
+
+```{python}
+#| label: fig-chemostat-slides
+#| fig-height: 2.8
+
+V_val, q_vol, C_in = 100.0, 0.5, 0.2
+t_plot = np.linspace(0, 600, 500)
+fig, ax = plt.subplots(figsize=(7, 2.6))
+for C0 in [0, 0.05, 0.1, 0.3, 0.5, 0.8, 1.0]:
+    C_sol = C_in + (C0-C_in)*np.exp(-q_vol/V_val*t_plot)
+    ax.plot(t_plot, C_sol, lw=2, label=f'$C_0={C0}$' if C0 in [0,0.5,1.0] else None)
+ax.axhline(C_in, color='black', ls='--', lw=1.5, label=f'$C_{{\\rm in}}={C_in}$')
+ax.set_xlabel('Time (min)'); ax.set_ylabel('Concentration'); ax.set_title('Chemostat')
+ax.legend(fontsize=8); plt.tight_layout(); plt.show()
+```
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- A **slope field** visualizes $x'=f(t,x)$ geometrically. **Nullclines** ($f=0$) and **isoclines** ($f=k$) organize the field and identify equilibria.
+
+- An ODE is **separable** if $x' = f(x)g(t)$. Write $\frac{dx}{f(x)} = g(t)\,dt$ and integrate. Watch for **singular solutions** at roots of $f$.
+
+- A **first-order linear ODE** $x'+p(t)x=q(t)$ is solved by the **integrating factor** $\mu=e^{\int p\,dt}$. The solution always decomposes as **transient** ($x_h$) + **steady state** ($x_p$).
+
+- **Newton's cooling**, **RC circuits**, and **chemostats** are all governed by the same first-order linear ODE — same structure, same solution formula, different physical interpretations.
+:::
+
+. . .
+
+::: {.callout-note}
+**Next:** One-dimensional dynamical systems, equilibria and stability — Logan §1.5.
+:::
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
