@@ -129,6 +129,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -321,8 +350,16 @@ div.csl-indent {
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./py_tutorial.html"> 
-<span class="menu-text">Python Tutorial</span></a>
+<span class="menu-text">Python Reference</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -376,7 +413,38 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#references" id="toc-references" class="nav-link active" data-scroll-target="#references">References</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#slope-fields" id="toc-slope-fields" class="nav-link" data-scroll-target="#slope-fields">Slope Fields</a>
+  <ul class="collapse">
+  <li><a href="#the-geometric-idea" id="toc-the-geometric-idea" class="nav-link" data-scroll-target="#the-geometric-idea">The Geometric Idea</a></li>
+  <li><a href="#nullclines-and-isoclines" id="toc-nullclines-and-isoclines" class="nav-link" data-scroll-target="#nullclines-and-isoclines">Nullclines and Isoclines</a></li>
+  <li><a href="#python-drawing-slope-fields" id="toc-python-drawing-slope-fields" class="nav-link" data-scroll-target="#python-drawing-slope-fields">Python: Drawing Slope Fields</a></li>
+  <li><a href="#example-1-x--x-2t" id="toc-example-1-x--x-2t" class="nav-link" data-scroll-target="#example-1-x--x-2t">Example 1 — <span class="math inline">\(x' = -x + 2t\)</span></a></li>
+  <li><a href="#example-2-autonomous-ode-x-x1---x4" id="toc-example-2-autonomous-ode-x-x1---x4" class="nav-link" data-scroll-target="#example-2-autonomous-ode-x-x1---x4">Example 2 — Autonomous ODE: <span class="math inline">\(x' = x(1 - x/4)\)</span></a></li>
+  <li><a href="#example-3-nonlinear-ode-x-xx---t" id="toc-example-3-nonlinear-ode-x-xx---t" class="nav-link" data-scroll-target="#example-3-nonlinear-ode-x-xx---t">Example 3 — Nonlinear ODE: <span class="math inline">\(x' = x(x - t)\)</span></a></li>
+  </ul></li>
+  <li><a href="#separable-equations" id="toc-separable-equations" class="nav-link" data-scroll-target="#separable-equations">Separable Equations</a>
+  <ul class="collapse">
+  <li><a href="#definition-and-method" id="toc-definition-and-method" class="nav-link" data-scroll-target="#definition-and-method">Definition and Method</a></li>
+  <li><a href="#example-4-exponential-growthdecay" id="toc-example-4-exponential-growthdecay" class="nav-link" data-scroll-target="#example-4-exponential-growthdecay">Example 4 — Exponential Growth/Decay</a></li>
+  <li><a href="#example-5-the-logistic-equation" id="toc-example-5-the-logistic-equation" class="nav-link" data-scroll-target="#example-5-the-logistic-equation">Example 5 — The Logistic Equation</a></li>
+  <li><a href="#example-6-a-separable-equation-with-a-non-closed-form-integral" id="toc-example-6-a-separable-equation-with-a-non-closed-form-integral" class="nav-link" data-scroll-target="#example-6-a-separable-equation-with-a-non-closed-form-integral">Example 6 — A Separable Equation with a Non-Closed-Form Integral</a></li>
+  <li><a href="#singular-solutions" id="toc-singular-solutions" class="nav-link" data-scroll-target="#singular-solutions">Singular Solutions</a></li>
+  </ul></li>
+  <li><a href="#linear-equations" id="toc-linear-equations" class="nav-link" data-scroll-target="#linear-equations">Linear Equations</a>
+  <ul class="collapse">
+  <li><a href="#normal-form-and-the-integrating-factor-method" id="toc-normal-form-and-the-integrating-factor-method" class="nav-link" data-scroll-target="#normal-form-and-the-integrating-factor-method">Normal Form and the Integrating Factor Method</a></li>
+  <li><a href="#structure-theorem" id="toc-structure-theorem" class="nav-link" data-scroll-target="#structure-theorem">Structure Theorem</a></li>
+  <li><a href="#example-8-x-tfrac1tx-1" id="toc-example-8-x-tfrac1tx-1" class="nav-link" data-scroll-target="#example-8-x-tfrac1tx-1">Example 8 — <span class="math inline">\(x' + \tfrac{1}{t}x = 1\)</span></a></li>
+  <li><a href="#example-9-x-2x-sin-t" id="toc-example-9-x-2x-sin-t" class="nav-link" data-scroll-target="#example-9-x-2x-sin-t">Example 9 — <span class="math inline">\(x' + 2x = \sin t\)</span></a></li>
+  </ul></li>
+  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications">Applications</a>
+  <ul class="collapse">
+  <li><a href="#newtons-law-of-cooling" id="toc-newtons-law-of-cooling" class="nav-link" data-scroll-target="#newtons-law-of-cooling">Newton’s Law of Cooling</a></li>
+  <li><a href="#the-rc-circuit" id="toc-the-rc-circuit" class="nav-link" data-scroll-target="#the-rc-circuit">The RC Circuit</a></li>
+  <li><a href="#chemical-mixture-chemostat" id="toc-chemical-mixture-chemostat" class="nav-link" data-scroll-target="#chemical-mixture-chemostat">Chemical Mixture (Chemostat)</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -387,7 +455,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Notes 2</h1>
-<p class="subtitle lead">FIrst-Order Equations</p>
+<p class="subtitle lead">First-Order Equations</p>
 </div>
 
 
@@ -404,23 +472,796 @@ div.csl-indent {
 </header>
 
 
-<div id="9c904ff1" class="cell" data-execution_count="1">
+<div id="40ec4d57" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># NumPy for numerical computations</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy <span class="im">as</span> sp <span class="co"># SciPy for scientific computing</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym <span class="co"># SymPy for symbolic mathematics</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl <span class="co"># Matplotlib for plotting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np                        <span class="co"># NumPy for numerical computations</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy <span class="im">as</span> sp                        <span class="co"># SciPy for scientific computing</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym                       <span class="co"># SymPy for symbolic mathematics</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl                  <span class="co"># Matplotlib for plotting</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt           <span class="co"># Matplotlib pyplot interface</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp     <span class="co"># ODE solver</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
-
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<p>In this session, we will cover the following topics:</p>
+<ol type="1">
+<li><p>Define the notion of a first-order ODE and explain the slope-field concept as its geometric interpretation.</p></li>
+<li><p>Use slope fields, nullclines, and isoclines to sketch qualitative solution behavior without solving.</p></li>
+<li><p>Review the method of <strong>separation of variables</strong> for separable first-order equations.</p></li>
+<li><p>Study the class of <strong>first-order linear ODEs</strong> and introduce the method of <strong>integrating factors</strong>.</p></li>
+<li><p>Examine applications: Newton’s law of cooling (heat transfer) and RC circuits.</p></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This material corresponds to <strong>Sections 1.1.3, 1.3, and 1.4</strong> of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>.</p>
+</div>
+</div>
+</section>
+<section id="slope-fields" class="level2">
+<h2 class="anchored" data-anchor-id="slope-fields">Slope Fields</h2>
+<section id="the-geometric-idea" class="level3">
+<h3 class="anchored" data-anchor-id="the-geometric-idea">The Geometric Idea</h3>
+<p>A first-order ODE of the form <span class="math display">\[
+x' = f(t, x)
+\]</span> has a natural geometric interpretation. At any point <span class="math inline">\((t, x)\)</span> in the plane, the ODE tells us the <em>slope</em> <span class="math inline">\(x'(t) = f(t, x(t))\)</span> that a solution curve passing through that point must have. If we draw a short line segment at each point with the prescribed slope, the collection of all such segments is called the <strong><a href="https://en.wikipedia.org/wiki/Slope_field">slope field</a></strong> (or <strong>direction field</strong>) of the equation.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A slope field is a visualization of the ODE itself — before any solution has been found. Solution curves are precisely those curves that are everywhere tangent to the slope-field segments through which they pass.</p>
+</div>
+</div>
+<p>In calculus, we are given a function and asked to find its derivative (slopes). Differential equations reverse this: we are <em>given</em> the slopes and asked to recover the function.</p>
+<hr>
+</section>
+<section id="nullclines-and-isoclines" class="level3">
+<h3 class="anchored" data-anchor-id="nullclines-and-isoclines">Nullclines and Isoclines</h3>
+<p>Two families of curves are especially useful for reading a slope field:</p>
+<p><strong><a href="https://en.wikipedia.org/wiki/Nullcline">Nullclines</a>.</strong> The set of points <span class="math inline">\((t, x)\)</span> where <span class="math inline">\(f(t, x) = 0\)</span>, i.e., where the slope field is <em>horizontal</em>. Along a nullcline the solution curves have zero slope; in crossing a nullcline, solutions may change from increasing to decreasing (or vice versa). For an <strong>autonomous</strong> ODE <span class="math inline">\(x' = f(x)\)</span>, the nullclines are horizontal lines <span class="math inline">\(x = c\)</span> where <span class="math inline">\(f(c) = 0\)</span>, and these are precisely the <strong>equilibrium</strong> (constant) solutions.</p>
+<p><strong>Isoclines.</strong> The set of points <span class="math inline">\((t, x)\)</span> where <span class="math inline">\(f(t, x) = k\)</span> for a fixed constant <span class="math inline">\(k\)</span>. Along an isocline all solution curves have the same slope <span class="math inline">\(k\)</span>. Plotting several isoclines gives a rapid sketch of how the slope field is organized.</p>
+<hr>
+</section>
+<section id="python-drawing-slope-fields" class="level3">
+<h3 class="anchored" data-anchor-id="python-drawing-slope-fields">Python: Drawing Slope Fields</h3>
+<p>Python’s <code>matplotlib.pyplot.quiver</code> function makes it straightforward to draw slope fields. The idea is to create a grid of <span class="math inline">\((t, x)\)</span> points, evaluate <span class="math inline">\(f(t, x)\)</span> at each point, and draw a unit-length arrow in the direction <span class="math inline">\((1, f(t,x))\)</span> (normalized so all arrows have equal length).</p>
+<p>A reusable helper function:</p>
+<div id="81206b6f" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slope_field(f, t_range, x_range, n<span class="op">=</span><span class="dv">20</span>, ax<span class="op">=</span><span class="va">None</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Draw the slope field for x' = f(t, x).</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">    f        : callable  f(t, x) — the right-hand side of the ODE</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    t_range  : (t_min, t_max)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    x_range  : (x_min, x_max)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">    n        : grid resolution (n x n arrows)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">    ax       : matplotlib Axes (creates one if None)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">    color    : arrow color</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">    alpha    : arrow transparency</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ax <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    t_vals <span class="op">=</span> np.linspace(<span class="op">*</span>t_range, n)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    x_vals <span class="op">=</span> np.linspace(<span class="op">*</span>x_range, n)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    T, X <span class="op">=</span> np.meshgrid(t_vals, x_vals)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    dT <span class="op">=</span> np.ones_like(T)          <span class="co"># dt component always 1</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    dX <span class="op">=</span> f(T, X)                  <span class="co"># dx component = f(t, x)</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize arrow lengths for visual clarity</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    norm <span class="op">=</span> np.sqrt(dT<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> dX<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    norm[norm <span class="op">==</span> <span class="dv">0</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    ax.quiver(T, X, dT <span class="op">/</span> norm, dX <span class="op">/</span> norm,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>              angles<span class="op">=</span><span class="st">'xy'</span>, scale<span class="op">=</span>n <span class="op">*</span> <span class="fl">0.8</span>, width<span class="op">=</span><span class="fl">0.003</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>              color<span class="op">=</span>color, alpha<span class="op">=</span>alpha, headlength<span class="op">=</span><span class="dv">3</span>, headwidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x$'</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<hr>
+</section>
+<section id="example-1-x--x-2t" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-x--x-2t">Example 1 — <span class="math inline">\(x' = -x + 2t\)</span></h3>
+<p>This is Example 1.5 in <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>. The right-hand side is <span class="math inline">\(f(t, x) = -x + 2t\)</span>.</p>
+<ul>
+<li><strong>Nullcline:</strong> <span class="math inline">\(f = 0 \Rightarrow x = 2t\)</span> (a line of slope 2).</li>
+<li><strong>Above</strong> the nullcline (<span class="math inline">\(x &gt; 2t\)</span>): <span class="math inline">\(f &lt; 0\)</span>, slopes negative (solutions decreasing).</li>
+<li><strong>Below</strong> the nullcline (<span class="math inline">\(x &lt; 2t\)</span>): <span class="math inline">\(f &gt; 0\)</span>, slopes positive (solutions increasing).</li>
+</ul>
+<div id="cell-fig-sf-linear" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> <span class="kw">lambda</span> t, x: <span class="op">-</span>x <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>t</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>slope_field(f1, (<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), (<span class="op">-</span><span class="dv">4</span>, <span class="dv">8</span>), n<span class="op">=</span><span class="dv">22</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Several solution curves via solve_ivp</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">400</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0 <span class="kw">in</span> [<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="fl">7.5</span>]:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f1, (<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), [x0], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Nullcline x = 2t</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>t_nc <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">200</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>ax.plot(t_nc, <span class="dv">2</span><span class="op">*</span>t_nc, <span class="st">'r--'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="st">'Nullcline $x = 2t$'</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>)<span class="op">;</span> ax.set_ylim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">8</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Slope field: </span><span class="dv">$</span><span class="vs">x' = -x </span><span class="op">+</span><span class="vs"> 2t</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sf-linear" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sf-linear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-sf-linear-output-1.png" width="1034" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sf-linear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Slope field for <span class="math inline">\(x' = -x + 2t\)</span> with several solution curves (blue) and the nullcline <span class="math inline">\(x = 2t\)</span> (red dashed). Solutions appear to converge toward the line <span class="math inline">\(x = 2t - 2\)</span> — the particular solution that satisfies the ODE for all <span class="math inline">\(t\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-2-autonomous-ode-x-x1---x4" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-autonomous-ode-x-x1---x4">Example 2 — Autonomous ODE: <span class="math inline">\(x' = x(1 - x/4)\)</span></h3>
+<p>For an autonomous ODE <span class="math inline">\(x' = f(x)\)</span>, the slope field has a particularly simple structure: the slope is <em>constant</em> along each horizontal line <span class="math inline">\(x = c\)</span>. The nullclines are horizontal, and where <span class="math inline">\(f(c) = 0\)</span> the line <span class="math inline">\(x = c\)</span> is itself a constant (equilibrium) solution.</p>
+<p>Here <span class="math inline">\(f(x) = x(1 - x/4)\)</span>. Setting <span class="math inline">\(f(x) = 0\)</span> gives equilibria <span class="math inline">\(x = 0\)</span> (unstable) and <span class="math inline">\(x = 4\)</span> (stable).</p>
+<div id="cell-fig-sf-auto" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> <span class="kw">lambda</span> t, x: x <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x <span class="op">/</span> <span class="dv">4</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>slope_field(f2, (<span class="dv">0</span>, <span class="dv">8</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="fl">6.5</span>), n<span class="op">=</span><span class="dv">22</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">400</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0 <span class="kw">in</span> [<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">4.5</span>, <span class="dv">6</span>]:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f2, (<span class="dv">0</span>, <span class="dv">8</span>), [x0], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibria</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'crimson'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'$x=0$ (unstable)'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">4</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'$x=4$ (stable)'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Slope field: </span><span class="dv">$</span><span class="vs">x' = x</span><span class="kw">(</span><span class="vs">1 - x/4</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sf-auto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sf-auto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-sf-auto-output-1.png" width="1034" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sf-auto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Slope field for the autonomous ODE <span class="math inline">\(x' = x(1-x/4)\)</span> (logistic-type). Horizontal dashed lines mark the nullclines/equilibria <span class="math inline">\(x=0\)</span> and <span class="math inline">\(x=4\)</span>. All solutions starting with <span class="math inline">\(x_0 &gt; 0\)</span> converge to <span class="math inline">\(x=4\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For any <strong>autonomous</strong> ODE <span class="math inline">\(x' = f(x)\)</span>, you can read off the qualitative behavior of all solutions directly from the <strong>sign</strong> of <span class="math inline">\(f(x)\)</span>: solutions increase where <span class="math inline">\(f(x) &gt; 0\)</span> and decrease where <span class="math inline">\(f(x) &lt; 0\)</span>. This is the basis of the <em>phase-line analysis</em> we will develop in more detail later.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-3-nonlinear-ode-x-xx---t" class="level3">
+<h3 class="anchored" data-anchor-id="example-3-nonlinear-ode-x-xx---t">Example 3 — Nonlinear ODE: <span class="math inline">\(x' = x(x - t)\)</span></h3>
+<p>This is Example 1.6 in <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>. The right-hand side is <span class="math inline">\(f(t, x) = x(x - t) = -tx + x^2\)</span>.</p>
+<ul>
+<li><strong>Nullclines:</strong> <span class="math inline">\(x = 0\)</span> (the <span class="math inline">\(t\)</span>-axis) and <span class="math inline">\(x = t\)</span>. Note that <span class="math inline">\(x(t) = 0\)</span> is a constant solution; <span class="math inline">\(x = t\)</span> is a nullcline but <em>not</em> a solution.</li>
+<li>Four sign regions are separated by the two nullclines; see the plot annotations.</li>
+</ul>
+<div id="cell-fig-sf-nonlinear" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> <span class="kw">lambda</span> t, x: x <span class="op">*</span> (x <span class="op">-</span> t)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>slope_field(f3, (<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), (<span class="op">-</span><span class="dv">3</span>, <span class="fl">4.5</span>), n<span class="op">=</span><span class="dv">22</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">600</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, t0 <span class="kw">in</span> [(<span class="fl">2.0</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="fl">0.5</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="op">-</span><span class="fl">1.5</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="fl">3.5</span>, <span class="op">-</span><span class="dv">1</span>)]:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        sol <span class="op">=</span> solve_ivp(f3, (<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), [x0], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.02</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                        events<span class="op">=</span><span class="kw">lambda</span> t, y: y[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">15</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        ax.plot(sol.t, np.clip(sol.y[<span class="dv">0</span>], <span class="op">-</span><span class="dv">4</span>, <span class="dv">5</span>), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>t_nc <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">200</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'crimson'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="st">'Nullcline $x=0$'</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>ax.plot(t_nc, t_nc, color<span class="op">=</span><span class="st">'darkorange'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="st">'Nullcline $x=t$'</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Sign annotations</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> txt, pos <span class="kw">in</span> [(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'&gt;0</span><span class="dv">$</span><span class="vs">"</span>, (<span class="dv">2</span>, <span class="op">-</span><span class="fl">1.8</span>)), (<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'&lt;0</span><span class="dv">$</span><span class="vs">"</span>, (<span class="dv">2</span>, <span class="fl">0.6</span>)),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                 (<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'&gt;0</span><span class="dv">$</span><span class="vs">"</span>, (<span class="fl">0.5</span>, <span class="fl">2.5</span>)), (<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'&lt;0</span><span class="dv">$</span><span class="vs">"</span>, (<span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">1.5</span>))]:</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    ax.text(<span class="op">*</span>pos, txt, fontsize<span class="op">=</span><span class="dv">10</span>, ha<span class="op">=</span><span class="st">'center'</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>)<span class="op">;</span> ax.set_ylim(<span class="op">-</span><span class="dv">3</span>, <span class="fl">4.5</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Slope field: </span><span class="dv">$</span><span class="vs">x' = x</span><span class="kw">(</span><span class="vs">x-t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sf-nonlinear" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sf-nonlinear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-sf-nonlinear-output-1.png" width="1034" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sf-nonlinear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Slope field for <span class="math inline">\(x' = x(x-t)\)</span> with nullclines <span class="math inline">\(x=0\)</span> (red) and <span class="math inline">\(x=t\)</span> (orange). Signs of <span class="math inline">\(x'\)</span> in the four regions are annotated. Two approximate solution curves are shown in blue.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="separable-equations" class="level2">
+<h2 class="anchored" data-anchor-id="separable-equations">Separable Equations</h2>
+<section id="definition-and-method" class="level3">
+<h3 class="anchored" data-anchor-id="definition-and-method">Definition and Method</h3>
+<p>A first-order ODE is <strong><a href="https://en.wikipedia.org/wiki/Separation_of_variables#Ordinary_differential_equations_(ODE)">separable</a></strong> if it can be written in the form <span class="math display">\[
+x' = f(x)\,g(t),
+\]</span> so that the right-hand side factors into a product of a function of <span class="math inline">\(x\)</span> alone and a function of <span class="math inline">\(t\)</span> alone.</p>
+<p>The solution method — <strong>separation of variables</strong> — proceeds as follows. Writing <span class="math inline">\(x' = dx/dt\)</span> and dividing by <span class="math inline">\(f(x)\)</span>: <span class="math display">\[
+\frac{1}{f(x)}\frac{dx}{dt} = g(t).
+\]</span> Integrating both sides with respect to <span class="math inline">\(t\)</span> and using the substitution <span class="math inline">\(dx = (dx/dt)\,dt\)</span>: <span class="math display">\[
+\boxed{\int \frac{1}{f(x)}\,dx = \int g(t)\,dt + C.}
+\]</span> After computing the two integrals we obtain a one-parameter family of <strong>integral curves</strong> <span class="math inline">\(\phi(t, x) = C\)</span> that define the solutions implicitly. If we can solve for <span class="math inline">\(x\)</span> in terms of <span class="math inline">\(t\)</span> we get an explicit solution; otherwise the solution is expressed implicitly.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Recipe.</strong> For <span class="math inline">\(\dfrac{dx}{dt} = f(x)g(t)\)</span>, simply write <span class="math display">\[
+\frac{1}{f(x)}\,dx = g(t)\,dt
+\]</span> and integrate both sides directly — there is no need to go through the intermediate step of integrating with respect to <span class="math inline">\(t\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definite-integral form.</strong> For an IVP with <span class="math inline">\(x(t_0) = x_0\)</span> it is often cleaner to integrate with definite integrals: <span class="math display">\[
+\int_{x_0}^{x} \frac{1}{f(y)}\,dy = \int_{t_0}^{t} g(s)\,ds.
+\]</span> No constant of integration is needed because the initial condition is already built in.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-4-exponential-growthdecay" class="level3">
+<h3 class="anchored" data-anchor-id="example-4-exponential-growthdecay">Example 4 — Exponential Growth/Decay</h3>
+<p>The equation <span class="math inline">\(\dfrac{dx}{dt} = rx\)</span> (where <span class="math inline">\(r\)</span> is a constant) is separable with <span class="math inline">\(f(x) = x\)</span> and <span class="math inline">\(g(t) = r\)</span>. Separating: <span class="math display">\[
+\frac{1}{x}\,dx = r\,dt \quad\Longrightarrow\quad \ln|x| = rt + C \quad\Longrightarrow\quad x(t) = Ce^{rt}.
+\]</span> This is the fundamental <strong><a href="https://en.wikipedia.org/wiki/Exponential_growth">exponential growth/decay</a></strong> model. Applied to a population with <span class="math inline">\(x(0) = x_0\)</span> it gives <span class="math inline">\(x(t) = x_0 e^{rt}\)</span>.</p>
+<p>Let us verify this with SymPy.</p>
+<div id="68f83622" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>t, r, C, x0 <span class="op">=</span> sym.symbols(<span class="st">'t r C x_0'</span>, real<span class="op">=</span><span class="va">True</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ode <span class="op">=</span> sym.Eq(x(t).diff(t), r <span class="op">*</span> x(t))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> sym.dsolve(ode, x(t))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"General solution:"</span>, sol)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>sol_ivp <span class="op">=</span> sym.dsolve(ode, x(t), ics<span class="op">=</span>{x(<span class="dv">0</span>): x0})</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"IVP solution (x(0)=x0):"</span>, sol_ivp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>General solution: Eq(x(t), C1*exp(r*t))
+IVP solution (x(0)=x0): Eq(x(t), x_0*exp(r*t))</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-5-the-logistic-equation" class="level3">
+<h3 class="anchored" data-anchor-id="example-5-the-logistic-equation">Example 5 — The Logistic Equation</h3>
+<p><span class="math display">\[
+\frac{dx}{dt} = rx\!\left(1 - \frac{x}{K}\right), \qquad x(0) = x_0.
+\]</span></p>
+<p><strong>Separating variables</strong> and using partial fractions: <span class="math display">\[
+\frac{1}{x(K-x)}\,dx = \frac{r}{K}\,dt.
+\]</span> Partial fractions: <span class="math inline">\(\dfrac{1}{x(K-x)} = \dfrac{1/K}{x} + \dfrac{1/K}{K-x}\)</span>. Integrating: <span class="math display">\[
+\frac{1}{K}\ln\left|\frac{x}{K-x}\right| = \frac{r}{K}\,t + C_1 \quad\Longrightarrow\quad \frac{x}{K-x} = Ce^{rt}.
+\]</span> Solving for <span class="math inline">\(x\)</span> and applying <span class="math inline">\(x(0) = x_0\)</span>: <span class="math display">\[
+\boxed{x(t) = \frac{K}{1 + \left(\dfrac{K}{x_0} - 1\right)e^{-rt}}.}
+\]</span></p>
+<div id="1d22caa6" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>t_s, r_s, K_s, x0_s <span class="op">=</span> sym.symbols(<span class="st">'t r K x_0'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x_s <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>logistic_ode <span class="op">=</span> sym.Eq(x_s(t_s).diff(t_s), r_s <span class="op">*</span> x_s(t_s) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x_s(t_s) <span class="op">/</span> K_s))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>sol_logistic <span class="op">=</span> sym.dsolve(logistic_ode, x_s(t_s), ics<span class="op">=</span>{x_s(<span class="dv">0</span>): x0_s})</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logistic IVP solution:"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(sol_logistic)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Logistic IVP solution:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x{\left(t \right)} = - \frac{K x_{0} e^{r t}}{\left(K - x_{0}\right) \left(- \frac{x_{0} e^{r t}}{K - x_{0}} - 1\right)}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-6-a-separable-equation-with-a-non-closed-form-integral" class="level3">
+<h3 class="anchored" data-anchor-id="example-6-a-separable-equation-with-a-non-closed-form-integral">Example 6 — A Separable Equation with a Non-Closed-Form Integral</h3>
+<p>Consider the IVP (Example 1.18 in <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>): <span class="math display">\[
+\frac{dx}{dt} = \frac{2\sqrt{x}\,e^{-t}}{t}, \qquad x(1) = 4.
+\]</span> Separating: <span class="math inline">\(\dfrac{dx}{2\sqrt{x}} = \dfrac{e^{-t}}{t}\,dt\)</span>. Integrating from the initial condition: <span class="math display">\[
+\int_4^x \frac{dy}{2\sqrt{y}} = \int_1^t \frac{e^{-s}}{s}\,ds \quad\Longrightarrow\quad \sqrt{x} - 2 = \int_1^t \frac{e^{-s}}{s}\,ds.
+\]</span> The right-hand side cannot be expressed in terms of elementary functions. The solution is therefore written implicitly as <span class="math display">\[
+x(t) = \left(\int_1^t \frac{e^{-s}}{s}\,ds + 2\right)^{\!2}.
+\]</span> Despite its complicated appearance, it is easy to plot numerically.</p>
+<div id="cell-fig-nonclosed" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> x_formula(t_val):</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    integral, _ <span class="op">=</span> quad(<span class="kw">lambda</span> s: np.exp(<span class="op">-</span>s) <span class="op">/</span> s, <span class="dv">1</span>, t_val)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (integral <span class="op">+</span> <span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">300</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>x_plot <span class="op">=</span> np.array([x_formula(tv) <span class="cf">for</span> tv <span class="kw">in</span> t_plot])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Cross-check with direct ODE solve</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>f_ode <span class="op">=</span> <span class="kw">lambda</span> t, x: <span class="dv">2</span> <span class="op">*</span> np.sqrt(<span class="bu">max</span>(x[<span class="dv">0</span>], <span class="dv">0</span>)) <span class="op">*</span> np.exp(<span class="op">-</span>t) <span class="op">/</span> t</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>sol_check <span class="op">=</span> solve_ivp(f_ode, (<span class="dv">1</span>, <span class="dv">5</span>), [<span class="fl">4.0</span>], t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, x_plot, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Integral formula'</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>ax.plot(sol_check.t[::<span class="dv">15</span>], sol_check.y[<span class="dv">0</span>][::<span class="dv">15</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical ODE solve'</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">1</span>, <span class="dv">4</span>, <span class="st">'k*'</span>, markersize<span class="op">=</span><span class="dv">10</span>, label<span class="op">=</span><span class="st">'IC $(1, 4)$'</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x' = 2</span><span class="dv">\s</span><span class="vs">qrt{x}</span><span class="ch">\,</span><span class="vs">e</span><span class="dv">^</span><span class="vs">{-t}/t</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=4</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-nonclosed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nonclosed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-nonclosed-output-1.png" width="1032" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nonclosed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Solution to the IVP <span class="math inline">\(x' = 2\sqrt{x}\,e^{-t}/t\)</span>, <span class="math inline">\(x(1)=4\)</span>, expressed via a non-elementary integral. The solid blue curve shows the formula; the red dots confirm it by comparing with a direct numerical ODE solve.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="singular-solutions" class="level3">
+<h3 class="anchored" data-anchor-id="singular-solutions">Singular Solutions</h3>
+<p>Separating variables requires dividing by <span class="math inline">\(f(x)\)</span>, which is only valid when <span class="math inline">\(f(x) \neq 0\)</span>. Any value <span class="math inline">\(x = c\)</span> with <span class="math inline">\(f(c) = 0\)</span> yields a constant solution <span class="math inline">\(x(t) \equiv c\)</span> that may not be obtainable from the general family by any choice of <span class="math inline">\(C\)</span> — a <strong><a href="https://en.wikipedia.org/wiki/Singular_solution">singular solution</a></strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 7 — Singular Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The ODE <span class="math inline">\(x' = 6t(x-1)^{2/3}\)</span> has the general solution <span class="math inline">\(x(t) = 1 + (t^2 + C)^3\)</span>. But <span class="math inline">\(x(t) \equiv 1\)</span> also satisfies the ODE (check: <span class="math inline">\(x' = 0\)</span> and <span class="math inline">\(6t(1-1)^{2/3} = 0\)</span> ✓), and <em>no</em> choice of <span class="math inline">\(C\)</span> in the general family gives <span class="math inline">\(x(t) = 1\)</span>. So <span class="math inline">\(x = 1\)</span> is a singular solution.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="linear-equations" class="level2">
+<h2 class="anchored" data-anchor-id="linear-equations">Linear Equations</h2>
+<section id="normal-form-and-the-integrating-factor-method" class="level3">
+<h3 class="anchored" data-anchor-id="normal-form-and-the-integrating-factor-method">Normal Form and the Integrating Factor Method</h3>
+<p>A <strong><a href="https://en.wikipedia.org/wiki/Linear_differential_equation#First-order_linear_differential_equations">first-order linear ODE</a></strong> in <strong>normal form</strong> is <span class="math display">\[
+x' + p(t)\,x = q(t). \tag{1}
+\]</span> The function <span class="math inline">\(q(t)\)</span> is called the <strong>forcing term</strong> (or source term). If <span class="math inline">\(q \equiv 0\)</span> the equation is <strong>homogeneous</strong>; otherwise it is <strong>inhomogeneous</strong> (nonhomogeneous).</p>
+<p>The key algebraic trick is to multiply both sides of (1) by the <strong><a href="https://en.wikipedia.org/wiki/Integrating_factor">integrating factor</a></strong> <span class="math display">\[
+\mu(t) = e^{\int p(t)\,dt} = e^{P(t)}, \qquad P(t) = \int p(t)\,dt.
+\]</span> By the product rule and the chain rule, <span class="math display">\[
+\mu(t)\bigl(x' + p(t)x\bigr) = \bigl(\mu(t)\,x\bigr)',
+\]</span> so equation (1) becomes <span class="math display">\[
+\bigl(\mu(t)\,x\bigr)' = \mu(t)\,q(t).
+\]</span> Integrating both sides and dividing by <span class="math inline">\(\mu(t)\)</span> gives the <strong>general solution</strong>: <span class="math display">\[
+\boxed{x(t) = e^{-P(t)}\int e^{P(t)}\,q(t)\,dt + Ce^{-P(t)}.}
+\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Four-Step Procedure
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Write the ODE in normal form: <span class="math inline">\(x' + p(t)x = q(t)\)</span>.</li>
+<li>Compute <span class="math inline">\(\mu(t) = e^{\int p(t)\,dt}\)</span>.</li>
+<li>Multiply through: <span class="math inline">\(\bigl(\mu x\bigr)' = \mu\,q(t)\)</span>.</li>
+<li>Integrate both sides, divide by <span class="math inline">\(\mu\)</span>, apply the initial condition.</li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+<section id="structure-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="structure-theorem">Structure Theorem</h3>
+<p>The general solution of the inhomogeneous linear equation decomposes as <span class="math display">\[
+x(t) = x_h(t) + x_p(t),
+\]</span> where: - <span class="math inline">\(x_h(t) = Ce^{-P(t)}\)</span> is the general solution of the <strong>homogeneous</strong> equation <span class="math inline">\(x' + p(t)x = 0\)</span>, and - <span class="math inline">\(x_p(t) = e^{-P(t)}\int q(t)\,e^{P(t)}\,dt\)</span> is a <strong>particular solution</strong> of the inhomogeneous equation.</p>
+<p>The homogeneous part <span class="math inline">\(x_h\)</span> carries the initial condition (through <span class="math inline">\(C\)</span>) and is often called the <strong>transient</strong>, because if <span class="math inline">\(P(t) \to \infty\)</span> as <span class="math inline">\(t \to \infty\)</span> it decays away. The particular part <span class="math inline">\(x_p\)</span> is driven by <span class="math inline">\(q(t)\)</span> and represents the <strong>steady-state</strong> response.</p>
+<hr>
+</section>
+<section id="example-8-x-tfrac1tx-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-8-x-tfrac1tx-1">Example 8 — <span class="math inline">\(x' + \tfrac{1}{t}x = 1\)</span></h3>
+<p>Here <span class="math inline">\(p(t) = 1/t\)</span> and <span class="math inline">\(q(t) = 1\)</span>.</p>
+<p><strong>Step 1.</strong> Already in normal form.</p>
+<p><strong>Step 2.</strong> <span class="math inline">\(\mu(t) = e^{\int (1/t)\,dt} = e^{\ln t} = t\)</span>.</p>
+<p><strong>Step 3.</strong> <span class="math inline">\((tx)' = t\)</span>.</p>
+<p><strong>Step 4.</strong> Integrate: <span class="math inline">\(tx = \tfrac{1}{2}t^2 + C\)</span>, so <span class="math display">\[
+x(t) = \frac{t}{2} + \frac{C}{t}.
+\]</span></p>
+<p>If we impose <span class="math inline">\(x(1) = 3\)</span>: <span class="math inline">\(\tfrac{1}{2} + C = 3 \Rightarrow C = \tfrac{5}{2}\)</span>, giving <span class="math inline">\(x(t) = \tfrac{t}{2} + \tfrac{5}{2t}\)</span>.</p>
+<div id="cell-fig-linear1" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="fl">0.2</span>, <span class="dv">5</span>, <span class="dv">400</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C_val <span class="kw">in</span> np.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">13</span>):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, t_plot<span class="op">/</span><span class="dv">2</span> <span class="op">+</span> C_val<span class="op">/</span>t_plot, color<span class="op">=</span><span class="st">'lightsteelblue'</span>, lw<span class="op">=</span><span class="fl">0.9</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Particular solution C = 5/2</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, t_plot<span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">2.5</span><span class="op">/</span>t_plot, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">C=5/2</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=3</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">8</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'IC $(1, 3)$'</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">8</span>)<span class="op">;</span> ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x' </span><span class="op">+</span><span class="vs"> x/t = 1</span><span class="dv">$</span><span class="vs">: general solution family"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-linear1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linear1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-linear1-output-1.png" width="1031" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linear1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: General solution <span class="math inline">\(x(t) = t/2 + C/t\)</span> of <span class="math inline">\(x' + x/t = 1\)</span> for several values of <span class="math inline">\(C\)</span> (gray), with the particular solution satisfying <span class="math inline">\(x(1)=3\)</span> highlighted (blue). The initial condition is marked in red.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-9-x-2x-sin-t" class="level3">
+<h3 class="anchored" data-anchor-id="example-9-x-2x-sin-t">Example 9 — <span class="math inline">\(x' + 2x = \sin t\)</span></h3>
+<p>Here <span class="math inline">\(p(t) = 2\)</span> and <span class="math inline">\(q(t) = \sin t\)</span>.</p>
+<p><strong>Integrating factor:</strong> <span class="math inline">\(\mu(t) = e^{2t}\)</span>.</p>
+<p>Multiply through: <span class="math inline">\((xe^{2t})' = e^{2t}\sin t\)</span>.</p>
+<p>Integrate using integration by parts (or a table): <span class="math display">\[
+\int e^{2t}\sin t\,dt = e^{2t}\!\left(\tfrac{2}{5}\sin t - \tfrac{1}{5}\cos t\right) + \text{const}.
+\]</span> Therefore the general solution is <span class="math display">\[
+x(t) = \frac{2}{5}\sin t - \frac{1}{5}\cos t + Ce^{-2t}.
+\]</span></p>
+<p>Let us verify and plot this with SymPy.</p>
+<div class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>t_s <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>x_s <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ode2 <span class="op">=</span> sym.Eq(x_s(t_s).diff(t_s) <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x_s(t_s), sym.sin(t_s))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>gen_sol <span class="op">=</span> sym.dsolve(ode2, x_s(t_s))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"General solution:"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(gen_sol)))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical plot</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">500</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>xp <span class="op">=</span> <span class="fl">0.4</span><span class="op">*</span>np.sin(t_plot) <span class="op">-</span> <span class="fl">0.2</span><span class="op">*</span>np.cos(t_plot)   <span class="co"># particular solution</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C_val <span class="kw">in</span> [<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]:</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    x_sol <span class="op">=</span> xp <span class="op">+</span> C_val <span class="op">*</span> np.exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> t_plot)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, x_sol, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, xp, <span class="st">'k--'</span>, lw<span class="op">=</span><span class="fl">2.2</span>, label<span class="op">=</span><span class="vs">r'Steady state </span><span class="dv">$</span><span class="vs">x_p = </span><span class="ch">\f</span><span class="vs">rac</span><span class="op">{2}{5}</span><span class="dv">\s</span><span class="vs">in t - </span><span class="ch">\f</span><span class="vs">rac</span><span class="op">{1}{5}</span><span class="er">\</span><span class="vs">cos t</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)<span class="op">;</span> ax.set_ylim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x' </span><span class="op">+</span><span class="vs"> 2x = </span><span class="dv">\s</span><span class="vs">in t</span><span class="dv">$</span><span class="vs">: transient decay to steady state"</span>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>General solution:</code></pre>
+</div>
+<div id="fig-linear2" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linear2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="fig-linear2-1" class="cell-output cell-output-display cell-output-markdown quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-linear2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><span class="math inline">\(\displaystyle x{\left(t \right)} = C_{1} e^{- 2 t} + \frac{2 \sin{\left(t \right)}}{5} - \frac{\cos{\left(t \right)}}{5}\)</span></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-linear2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Solutions of <span class="math inline">\(x' + 2x = \sin t\)</span> for various initial conditions. The transient <span class="math inline">\(Ce^{-2t}\)</span> decays quickly and all solutions converge to the same steady-state oscillation <span class="math inline">\(x_p = \frac{2}{5}\sin t - \frac{1}{5}\cos t\)</span> (dashed black).
+</figcaption>
+</figure>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-linear2-2" class="quarto-float quarto-figure quarto-figure-center anchored" height="583" width="1031">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-linear2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-linear2-output-3.png" id="fig-linear2-2" data-ref-parent="fig-linear2" width="1031" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-linear2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-linear2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="applications" class="level2">
+<h2 class="anchored" data-anchor-id="applications">Applications</h2>
+<section id="newtons-law-of-cooling" class="level3">
+<h3 class="anchored" data-anchor-id="newtons-law-of-cooling">Newton’s Law of Cooling</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_cooling">Newton’s law of cooling</a></strong> states that the rate of change of temperature of an object is proportional to the <em>difference</em> between the object’s temperature <span class="math inline">\(T\)</span> and the ambient (environmental) temperature <span class="math inline">\(T_e\)</span>: <span class="math display">\[
+\frac{dT}{dt} = -h(T - T_e), \qquad T(0) = T_0,
+\]</span> where <span class="math inline">\(h &gt; 0\)</span> is the <strong>heat loss coefficient</strong>. This is a <strong>first-order linear ODE</strong> (it is also separable). Writing it in normal form: <span class="math display">\[
+T' + hT = hT_e.
+\]</span> The integrating factor is <span class="math inline">\(\mu = e^{ht}\)</span>, giving <span class="math inline">\((Te^{ht})' = hT_e e^{ht}\)</span>, and integrating: <span class="math display">\[
+T(t) = T_e + (T_0 - T_e)\,e^{-ht}.
+\]</span> As <span class="math inline">\(t \to \infty\)</span>, <span class="math inline">\(T(t) \to T_e\)</span> regardless of <span class="math inline">\(T_0\)</span> — the object reaches thermal equilibrium with its environment. The equilibrium <span class="math inline">\(T = T_e\)</span> is stable.</p>
+<p><strong>Variable ambient temperature.</strong> If <span class="math inline">\(T_e\)</span> is replaced by a time-dependent function <span class="math inline">\(Q(t)\)</span> the ODE becomes <span class="math display">\[
+T' + hT = hQ(t),
+\]</span> whose general solution is <span class="math display">\[
+T(t) = Ce^{-ht} + e^{-ht}\int_0^t hQ(s)\,e^{hs}\,ds.
+\]</span></p>
+<div id="cell-fig-cooling" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>h_val <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Te <span class="op">=</span> <span class="fl">20.0</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">300</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> T0 <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">80</span>, <span class="dv">100</span>]:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    T_sol <span class="op">=</span> Te <span class="op">+</span> (T0 <span class="op">-</span> Te) <span class="op">*</span> np.exp(<span class="op">-</span>h_val <span class="op">*</span> t_plot)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, T_sol, lw<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="ss">f'$T_0 = </span><span class="sc">{</span>T0<span class="sc">}</span><span class="ss">°C$'</span> <span class="cf">if</span> T0 <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">100</span>] <span class="cf">else</span> <span class="va">None</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>ax.axhline(Te, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="ss">f'Equilibrium $T_e = </span><span class="sc">{</span><span class="bu">int</span>(Te)<span class="sc">}</span><span class="ss">°C$'</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Time (hours)'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Temperature (°C)'</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Newton's Law of Cooling, </span><span class="dv">$</span><span class="vs">h=0</span><span class="dv">.</span><span class="vs">5</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-cooling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cooling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-cooling-output-1.png" width="1034" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cooling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Newton’s law of cooling: temperature <span class="math inline">\(T(t) = T_e + (T_0 - T_e)e^{-ht}\)</span> for <span class="math inline">\(T_e = 20^\circ\)</span>C and <span class="math inline">\(h=0.5\)</span> hr<span class="math inline">\(^{-1}\)</span>, starting from several initial temperatures. All curves converge to the equilibrium <span class="math inline">\(T_e = 20^\circ\)</span>C (dashed).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Forensic Application
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One classic application of Newton’s law of cooling is estimating the <strong>time of death</strong> from a body’s temperature. If a body at <span class="math inline">\(37°C\)</span> is found in a <span class="math inline">\(20°C\)</span> room at temperature <span class="math inline">\(T_1\)</span> at time <span class="math inline">\(t_1\)</span>, and later at temperature <span class="math inline">\(T_2\)</span> at time <span class="math inline">\(t_2\)</span>, then <span class="math inline">\(h\)</span> can be estimated from the two measurements, and the time of death recovered by solving <span class="math inline">\(T(t_{\text{death}}) = 37°C\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="the-rc-circuit" class="level3">
+<h3 class="anchored" data-anchor-id="the-rc-circuit">The RC Circuit</h3>
+<p>An <strong><a href="https://en.wikipedia.org/wiki/RC_circuit">RC circuit</a></strong> contains a resistor (<span class="math inline">\(R\)</span>) and a capacitor (<span class="math inline">\(C\)</span>) in series with a voltage source <span class="math inline">\(E(t)\)</span>. Kirchhoff’s voltage law and Ohm’s law give the first-order linear ODE for the charge <span class="math inline">\(Q(t)\)</span> on the capacitor: <span class="math display">\[
+R\,Q' + \frac{Q}{C} = E(t) \quad\Longrightarrow\quad Q' + \frac{1}{RC}\,Q = \frac{E(t)}{R}.
+\]</span> The integrating factor is <span class="math inline">\(\mu = e^{t/(RC)}\)</span>, giving the general solution <span class="math display">\[
+Q(t) = e^{-t/(RC)}\int_0^t \frac{E(s)}{R}\,e^{s/(RC)}\,ds + Q_0\,e^{-t/(RC)},
+\]</span> where <span class="math inline">\(Q_0 = Q(0)\)</span>.</p>
+<p><strong>Current.</strong> Since <span class="math inline">\(I = Q'\)</span>, differentiating gives the current <span class="math inline">\(I(t)\)</span> once <span class="math inline">\(Q(t)\)</span> is known.</p>
+<p>The time constant <span class="math inline">\(\tau = RC\)</span> governs how quickly the circuit charges/discharges:</p>
+<ul>
+<li>Small <span class="math inline">\(\tau\)</span>: fast response.</li>
+<li>Large <span class="math inline">\(\tau\)</span>: slow response.</li>
+</ul>
+<p><strong>Piecewise forcing: switching on then off.</strong> The following example, based on Example 1.29 of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>, shows a circuit with <span class="math inline">\(R=1\)</span>, <span class="math inline">\(C=1/2\)</span> (so <span class="math inline">\(\tau = 1/2\)</span>), <span class="math inline">\(Q(0)=0\)</span>, and <span class="math display">\[
+E(t) = \begin{cases} 1, &amp; 0 \leq t &lt; 2 \\ 0, &amp; t \geq 2. \end{cases}
+\]</span></p>
+<p>For <span class="math inline">\(t &lt; 2\)</span>: <span class="math inline">\(Q' + 2Q = 1\)</span> with <span class="math inline">\(Q(0)=0\)</span> gives <span class="math inline">\(Q_1(t) = \tfrac{1}{2}(1 - e^{-2t})\)</span>.</p>
+<p>For <span class="math inline">\(t \geq 2\)</span>: <span class="math inline">\(Q' + 2Q = 0\)</span> with <span class="math inline">\(Q(2) = Q_1(2)\)</span> gives <span class="math inline">\(Q_2(t) = \tfrac{1}{2}(1 - e^{-4})\,e^{-2(t-2)}\)</span>.</p>
+<div id="cell-fig-rc" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>R_val, C_val <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">0.5</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> R_val <span class="op">*</span> C_val     <span class="co"># = 0.5</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>Q0 <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">300</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> np.linspace(<span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">300</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>Q1 <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> np.exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> t1))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>Q_switch <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> np.exp(<span class="op">-</span><span class="dv">4</span>))           <span class="co"># Q at t=2, matching condition</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>Q2 <span class="op">=</span> Q_switch <span class="op">*</span> np.exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> (t2 <span class="op">-</span> <span class="dv">2</span>))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>I1 <span class="op">=</span> np.gradient(Q1, t1)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>I2 <span class="op">=</span> np.gradient(Q2, t2)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t1, Q1, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t2, Q2, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvline(<span class="dv">2</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$Q(t)$ (coulombs)'</span>)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r'RC Circuit: </span><span class="dv">$</span><span class="vs">R=1</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">C=1/2</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">E</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs">=1</span><span class="dv">$</span><span class="vs"> for </span><span class="dv">$</span><span class="vs">0</span><span class="er">\</span><span class="vs">leq t&lt;2</span><span class="dv">$</span><span class="vs">, else </span><span class="dv">$</span><span class="vs">0</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t1, I1, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t2, I2, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axvline(<span class="dv">2</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">'Switch off at $t=2$'</span>)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$I(t)$ (amperes)'</span>)</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$ (seconds)'</span>)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-rc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-rc-output-1.png" width="1032" height="730" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: RC circuit (<span class="math inline">\(R=1\)</span>, <span class="math inline">\(C=1/2\)</span>) with the voltage source switched on for <span class="math inline">\(0 \le t &lt; 2\)</span> then switched off. Top: charge <span class="math inline">\(Q(t)\)</span>. Bottom: current <span class="math inline">\(I(t) = Q'(t)\)</span>. Both confirm the matching condition at <span class="math inline">\(t=2\)</span> and the characteristic exponential transient with time constant <span class="math inline">\(\tau = RC = 1/2\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The mechanical–electrical analogy noted in Notes 1 now becomes concrete: the RC circuit equation <span class="math inline">\(Q' + Q/(RC) = E(t)/R\)</span> is <em>identical in form</em> to Newton’s law of cooling <span class="math inline">\(T' + hT = hT_e(t)\)</span> with the correspondence <span class="math inline">\(RC \leftrightarrow 1/h\)</span> and <span class="math inline">\(E(t)/R \leftrightarrow hT_e(t)\)</span>. Solutions to both have the same transient + steady-state structure.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="chemical-mixture-chemostat" class="level3">
+<h3 class="anchored" data-anchor-id="chemical-mixture-chemostat">Chemical Mixture (Chemostat)</h3>
+<p>A well-mixed tank (reactor) of constant volume <span class="math inline">\(V\)</span> has a chemical of concentration <span class="math inline">\(C(t)\)</span>. Contaminated inflow at concentration <span class="math inline">\(C_{\text{in}}\)</span> enters at volumetric rate <span class="math inline">\(q\)</span>, and the well-mixed solution exits at the same rate. <strong>Mass balance</strong> (rate of change = rate in <span class="math inline">\(-\)</span> rate out) gives: <span class="math display">\[
+V\,C' = q\,C_{\text{in}} - q\,C \quad\Longrightarrow\quad C' + \frac{q}{V}\,C = \frac{q}{V}\,C_{\text{in}}.
+\]</span> This is a <strong>first-order linear ODE</strong> with <span class="math inline">\(p = q/V\)</span> and <span class="math inline">\(q_{\text{forcing}} = (q/V)C_{\text{in}}\)</span>. The integrating factor is <span class="math inline">\(e^{qt/V}\)</span>, and with <span class="math inline">\(C(0) = C_0\)</span> the solution is <span class="math display">\[
+C(t) = C_{\text{in}} + (C_0 - C_{\text{in}})\,e^{-qt/V}.
+\]</span> As <span class="math inline">\(t \to \infty\)</span>, <span class="math inline">\(C(t) \to C_{\text{in}}\)</span>, the inflow concentration — the equilibrium is stable regardless of the initial concentration.</p>
+<div id="cell-fig-chemostat" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>V_val <span class="op">=</span> <span class="fl">100.0</span>     <span class="co"># m^3</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>q_vol <span class="op">=</span> <span class="fl">0.5</span>       <span class="co"># m^3/min</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>C_in  <span class="op">=</span> <span class="fl">0.2</span>       <span class="co"># kg/m^3</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">600</span>, <span class="dv">500</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C0 <span class="kw">in</span> [<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span>]:</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    C_sol <span class="op">=</span> C_in <span class="op">+</span> (C0 <span class="op">-</span> C_in) <span class="op">*</span> np.exp(<span class="op">-</span>q_vol <span class="op">/</span> V_val <span class="op">*</span> t_plot)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, C_sol, lw<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="ss">f'$C_0=</span><span class="sc">{</span>C0<span class="sc">}</span><span class="ss">$'</span> <span class="cf">if</span> C0 <span class="kw">in</span> [<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>] <span class="cf">else</span> <span class="va">None</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(C_in, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="ss">f'Equilibrium $C_</span><span class="ch">{{\\</span><span class="ss">rm in</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>C_in<span class="sc">}</span><span class="ss">$ kg/m³'</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Time (min)'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Concentration (kg/m³)'</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Chemical Reactor (Chemostat)'</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-chemostat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chemostat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_02_files/figure-html/fig-chemostat-output-1.png" width="1035" height="585" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chemostat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Chemical concentration in a well-mixed tank (<span class="math inline">\(V=100\)</span> m<span class="math inline">\(^3\)</span>, <span class="math inline">\(q=0.5\)</span> m<span class="math inline">\(^3\)</span>/min, <span class="math inline">\(C_{\text{in}} = 0.2\)</span> kg/m<span class="math inline">\(^3\)</span>) for several initial concentrations <span class="math inline">\(C_0\)</span>. All solutions converge to the equilibrium <span class="math inline">\(C_{\text{in}} = 0.2\)</span> (dashed).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-logan2015first" class="csl-entry" role="listitem">
+Logan, J David. 2015. <em>A First Course in Differential Equations Third Edition</em>.
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -429,14 +1270,14 @@ div.csl-indent {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="6a93ccf6" class="cell" data-execution_count="2">
+<div id="50adb455" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
