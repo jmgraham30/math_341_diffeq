@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Linearity and the Principle of Superposition – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-does-linear-mean" id="toc-what-does-linear-mean" class="nav-link active" data-scroll-target="#what-does-linear-mean">What Does “Linear” Mean?</a>
+  <ul class="collapse">
+  <li><a href="#linear-maps" id="toc-linear-maps" class="nav-link" data-scroll-target="#linear-maps">Linear Maps</a></li>
+  <li><a href="#linear-differential-operators" id="toc-linear-differential-operators" class="nav-link" data-scroll-target="#linear-differential-operators">Linear Differential Operators</a></li>
+  </ul></li>
+  <li><a href="#the-principle-of-superposition" id="toc-the-principle-of-superposition" class="nav-link" data-scroll-target="#the-principle-of-superposition">The Principle of Superposition</a></li>
+  <li><a href="#why-superposition-fails-for-nonlinear-equations" id="toc-why-superposition-fails-for-nonlinear-equations" class="nav-link" data-scroll-target="#why-superposition-fails-for-nonlinear-equations">Why Superposition Fails for Nonlinear Equations</a></li>
+  <li><a href="#superposition-for-second-order-linear-odes" id="toc-superposition-for-second-order-linear-odes" class="nav-link" data-scroll-target="#superposition-for-second-order-linear-odes">Superposition for Second-Order Linear ODEs</a>
+  <ul class="collapse">
+  <li><a href="#example-the-simple-harmonic-oscillator" id="toc-example-the-simple-harmonic-oscillator" class="nav-link" data-scroll-target="#example-the-simple-harmonic-oscillator">Example — The Simple Harmonic Oscillator</a></li>
+  </ul></li>
+  <li><a href="#superposition-for-inhomogeneous-equations-1" id="toc-superposition-for-inhomogeneous-equations-1" class="nav-link" data-scroll-target="#superposition-for-inhomogeneous-equations-1">Superposition for Inhomogeneous Equations</a>
+  <ul class="collapse">
+  <li><a href="#decomposing-the-forcing" id="toc-decomposing-the-forcing" class="nav-link" data-scroll-target="#decomposing-the-forcing">Decomposing the Forcing</a></li>
+  <li><a href="#example-driven-oscillator-with-two-frequencies" id="toc-example-driven-oscillator-with-two-frequencies" class="nav-link" data-scroll-target="#example-driven-oscillator-with-two-frequencies">Example — Driven Oscillator with Two Frequencies</a></li>
+  </ul></li>
+  <li><a href="#sympy-verifying-superposition" id="toc-sympy-verifying-superposition" class="nav-link" data-scroll-target="#sympy-verifying-superposition">SymPy: Verifying Superposition</a></li>
+  <li><a href="#superposition-in-physics-and-engineering" id="toc-superposition-in-physics-and-engineering" class="nav-link" data-scroll-target="#superposition-in-physics-and-engineering">Superposition in Physics and Engineering</a>
+  <ul class="collapse">
+  <li><a href="#electrical-circuits-superposition-theorem" id="toc-electrical-circuits-superposition-theorem" class="nav-link" data-scroll-target="#electrical-circuits-superposition-theorem">1. Electrical Circuits — Superposition Theorem</a></li>
+  <li><a href="#structural-mechanics-deflection-of-a-beam" id="toc-structural-mechanics-deflection-of-a-beam" class="nav-link" data-scroll-target="#structural-mechanics-deflection-of-a-beam">2. Structural Mechanics — Deflection of a Beam</a></li>
+  <li><a href="#fourier-series-infinite-superposition" id="toc-fourier-series-infinite-superposition" class="nav-link" data-scroll-target="#fourier-series-infinite-superposition">3. Fourier Series — Infinite Superposition</a></li>
+  <li><a href="#quantum-mechanics-the-schrödinger-equation" id="toc-quantum-mechanics-the-schrödinger-equation" class="nav-link" data-scroll-target="#quantum-mechanics-the-schrödinger-equation">4. Quantum Mechanics — The Schrödinger Equation</a></li>
+  <li><a href="#optics-huygens-principle-and-interference" id="toc-optics-huygens-principle-and-interference" class="nav-link" data-scroll-target="#optics-huygens-principle-and-interference">5. Optics — Huygens’ Principle and Interference</a></li>
+  <li><a href="#signal-processing-the-transfer-function" id="toc-signal-processing-the-transfer-function" class="nav-link" data-scroll-target="#signal-processing-the-transfer-function">6. Signal Processing — The Transfer Function</a></li>
+  </ul></li>
+  <li><a href="#when-does-superposition-fail" id="toc-when-does-superposition-fail" class="nav-link" data-scroll-target="#when-does-superposition-fail">When Does Superposition Fail?</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Linearity and the Principle of Superposition</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="96612ee4" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>Linearity</strong> is one of the most powerful and pervasive ideas in all of mathematics, science, and engineering. It underlies Fourier analysis, quantum mechanics, circuit theory, structural mechanics, optics, and the entire theory of linear differential equations. At its heart is a single, elegant consequence: the <strong><a href="https://en.wikipedia.org/wiki/Superposition_principle">principle of superposition</a></strong> — the solutions to a linear problem can be added together to produce new solutions.</p>
+<p>This section develops the concept of linearity carefully, states the superposition principle precisely for differential equations, and then illustrates why it is so important in physics and engineering.</p>
+<hr>
+<section id="what-does-linear-mean" class="level2">
+<h2 class="anchored" data-anchor-id="what-does-linear-mean">What Does “Linear” Mean?</h2>
+<section id="linear-maps" class="level3">
+<h3 class="anchored" data-anchor-id="linear-maps">Linear Maps</h3>
+<p>The abstract foundation of linearity is the concept of a <strong><a href="https://en.wikipedia.org/wiki/Linear_map">linear map</a></strong> (also called a linear operator or linear transformation). A map <span class="math inline">\(L\)</span> from a vector space to itself is <strong>linear</strong> if it satisfies two properties for all functions (or vectors) <span class="math inline">\(u\)</span>, <span class="math inline">\(v\)</span> and all scalars <span class="math inline">\(\alpha\)</span>:</p>
+<ol type="1">
+<li><strong>Additivity:</strong> <span class="math inline">\(L(u + v) = L(u) + L(v)\)</span></li>
+<li><strong>Homogeneity:</strong> <span class="math inline">\(L(\alpha u) = \alpha\,L(u)\)</span></li>
+</ol>
+<p>These two conditions are often combined into the single statement: <span class="math display">\[
+L(\alpha u + \beta v) = \alpha\,L(u) + \beta\,L(v)
+\]</span> for all scalars <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>. A map satisfying this is called <strong>linear</strong>; any map that fails it is <strong>nonlinear</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Familiar Linear Maps
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Differentiation:</strong> <span class="math inline">\(L = \dfrac{d}{dt}\)</span>. We have <span class="math inline">\((f+g)' = f'+g'\)</span> and <span class="math inline">\((\alpha f)' = \alpha f'\)</span>.</li>
+<li><strong>Integration:</strong> <span class="math inline">\(L[f] = \int_a^b f(t)\,dt\)</span>.</li>
+<li><strong>Multiplication by a function:</strong> <span class="math inline">\(L[f] = p(t)f(t)\)</span>.</li>
+<li><strong>Matrix multiplication:</strong> <span class="math inline">\(L[\mathbf{x}] = A\mathbf{x}\)</span> for a fixed matrix <span class="math inline">\(A\)</span>.</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="linear-differential-operators" class="level3">
+<h3 class="anchored" data-anchor-id="linear-differential-operators">Linear Differential Operators</h3>
+<p>A <strong>linear differential operator</strong> of order <span class="math inline">\(n\)</span> is a map of the form <span class="math display">\[
+L[x] = a_n(t)\,x^{(n)} + a_{n-1}(t)\,x^{(n-1)} + \cdots + a_1(t)\,x' + a_0(t)\,x,
+\]</span> where the <strong>coefficient functions</strong> <span class="math inline">\(a_k(t)\)</span> depend only on the independent variable <span class="math inline">\(t\)</span>, not on the unknown <span class="math inline">\(x\)</span> or any of its derivatives.</p>
+<p><strong>Examples.</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 45%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th style="text-align: center;">Linear?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(L[x] = x'' + 3x' - 2x\)</span></td>
+<td style="text-align: center;">✓</td>
+<td>Constant coefficients, no products of <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(L[x] = x'' + \sin(x)\)</span></td>
+<td style="text-align: center;">✗</td>
+<td><span class="math inline">\(\sin(x)\)</span> is nonlinear in <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(L[x] = x'' + t^2 x' + e^t x\)</span></td>
+<td style="text-align: center;">✓</td>
+<td>Variable coefficients, but linear in <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(L[x] = x\,x''\)</span></td>
+<td style="text-align: center;">✗</td>
+<td>Product of <span class="math inline">\(x\)</span> and <span class="math inline">\(x''\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(L[x] = (x')^2\)</span></td>
+<td style="text-align: center;">✗</td>
+<td>Square of a derivative</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verification of linearity.</strong> For <span class="math inline">\(L[x] = a_n(t)x^{(n)} + \cdots + a_0(t)x\)</span>: <span class="math display">\[
+L[\alpha u + \beta v]
+= a_n(\alpha u^{(n)} + \beta v^{(n)}) + \cdots + a_0(\alpha u + \beta v)
+= \alpha\,L[u] + \beta\,L[v]. \checkmark
+\]</span></p>
+<hr>
+</section>
+</section>
+<section id="the-principle-of-superposition" class="level2">
+<h2 class="anchored" data-anchor-id="the-principle-of-superposition">The Principle of Superposition</h2>
+<p>The linearity of <span class="math inline">\(L\)</span> has an immediate and profound consequence.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Principle of Superposition — Homogeneous Equation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(x_1(t)\)</span> and <span class="math inline">\(x_2(t)\)</span> are both solutions of the <strong>homogeneous</strong> linear ODE <span class="math display">\[
+L[x] = 0,
+\]</span> then any linear combination <span class="math inline">\(x(t) = C_1 x_1(t) + C_2 x_2(t)\)</span> is also a solution, for any constants <span class="math inline">\(C_1\)</span> and <span class="math inline">\(C_2\)</span>.</p>
+</div>
+</div>
+<p><strong>Proof.</strong> Simply apply <span class="math inline">\(L\)</span> to the combination and use linearity: <span class="math display">\[
+L[C_1 x_1 + C_2 x_2] = C_1\,L[x_1] + C_2\,L[x_2] = C_1 \cdot 0 + C_2 \cdot 0 = 0. \quad\checkmark
+\]</span></p>
+<p>This extends immediately to any finite (or even infinite!) number of solutions: if <span class="math inline">\(L[x_k] = 0\)</span> for <span class="math inline">\(k = 1, 2, \ldots, m\)</span>, then <span class="math display">\[
+x = \sum_{k=1}^m C_k x_k
+\]</span> is also a solution for any constants <span class="math inline">\(C_1, \ldots, C_m\)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Superposition for Inhomogeneous Equations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(x_p\)</span> be <strong>any</strong> particular solution of the inhomogeneous equation <span class="math inline">\(L[x] = q(t)\)</span>, and let <span class="math inline">\(x_h\)</span> be the general solution of the homogeneous equation <span class="math inline">\(L[x] = 0\)</span>. Then the general solution of the inhomogeneous equation is <span class="math display">\[
+x(t) = x_h(t) + x_p(t).
+\]</span></p>
+<p>Moreover, if <span class="math inline">\(L[x_p^{(1)}] = q_1(t)\)</span> and <span class="math inline">\(L[x_p^{(2)}] = q_2(t)\)</span>, then <span class="math display">\[
+L\!\left[x_p^{(1)} + x_p^{(2)}\right] = q_1(t) + q_2(t).
+\]</span> A particular solution for a <strong>sum of forcings</strong> is the <strong>sum of particular solutions</strong>.</p>
+</div>
+</div>
+<p>This second statement is the key to handling complicated forcing functions: decompose <span class="math inline">\(q(t)\)</span> into simpler pieces, solve each piece separately, then add the results.</p>
+<hr>
+</section>
+<section id="why-superposition-fails-for-nonlinear-equations" class="level2">
+<h2 class="anchored" data-anchor-id="why-superposition-fails-for-nonlinear-equations">Why Superposition Fails for Nonlinear Equations</h2>
+<p>It is instructive to see explicitly why linearity is essential. Consider the nonlinear ODE <span class="math display">\[
+x' = x^2.
+\]</span> The function <span class="math inline">\(x_1(t) = \dfrac{1}{1-t}\)</span> is a solution (check: <span class="math inline">\(x_1' = (1-t)^{-2} = x_1^2\)</span> ✓). Is <span class="math inline">\(2x_1(t) = \dfrac{2}{1-t}\)</span> also a solution?</p>
+<p><span class="math display">\[
+(2x_1)' = \frac{2}{(1-t)^2} \neq \left(\frac{2}{1-t}\right)^2 = \frac{4}{(1-t)^2}. \quad \times
+\]</span></p>
+<p>So doubling a solution does <strong>not</strong> give a solution — superposition fails entirely. This is why nonlinear ODEs are so much harder to analyze: each solution stands alone.</p>
+<div id="cell-fig-nonlinear-fail" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="fl">0.85</span>, <span class="dv">400</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> <span class="fl">1.0</span><span class="op">/</span>(<span class="dv">1</span> <span class="op">-</span> t_plot)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> <span class="fl">2.0</span><span class="op">/</span>(<span class="dv">1</span> <span class="op">-</span> t_plot)   <span class="co"># proposed "2*x1"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Residual of 2x1 in x' = x^2</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>dx2_dt <span class="op">=</span> np.gradient(x2, t_plot)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> dx2_dt <span class="op">-</span> x2<span class="op">**</span><span class="dv">2</span>   <span class="co"># should be 0 if x2 were a solution</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, x1, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x_1 = 1/</span><span class="kw">(</span><span class="vs">1-t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">solution</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, x2, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">2x_1</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">not a solution</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x$'</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x' = x</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">: solutions"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot, residual, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="ch">\f</span><span class="vs">rac{d}{dt}</span><span class="kw">(</span><span class="vs">2x_1</span><span class="kw">)</span><span class="vs"> - </span><span class="kw">(</span><span class="vs">2x_1</span><span class="kw">)</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Residual of $2x_1$ in $x</span><span class="ch">\'</span><span class="st">=x^2$ (nonzero $</span><span class="er">\</span><span class="st">Rightarrow$ not a solution)'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylim(<span class="op">-</span><span class="dv">5</span>, <span class="dv">1</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>&lt;&gt;:22: SyntaxWarning: "\R" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\R"? A raw string is also an option.
+&lt;&gt;:22: SyntaxWarning: "\R" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\R"? A raw string is also an option.
+/var/folders/_8/qctxrlb91cx6tt75dbqn42ds92xlbq/T/ipykernel_82587/1151131182.py:22: SyntaxWarning: "\R" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\R"? A raw string is also an option.
+  axes[1].set_title('Residual of $2x_1$ in $x\'=x^2$ (nonzero $\Rightarrow$ not a solution)')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-nonlinear-fail" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nonlinear-fail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_03_files/figure-html/fig-nonlinear-fail-output-2.png" width="1493" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nonlinear-fail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Superposition fails for the nonlinear ODE <span class="math inline">\(x'=x^2\)</span>. The solution <span class="math inline">\(x_1(t)=1/(1-t)\)</span> (blue) blows up at <span class="math inline">\(t=1\)</span>; <span class="math inline">\(2x_1\)</span> (orange dashed) is not a solution — it does not satisfy the ODE, as confirmed by the large residual shown in the right panel.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="superposition-for-second-order-linear-odes" class="level2">
+<h2 class="anchored" data-anchor-id="superposition-for-second-order-linear-odes">Superposition for Second-Order Linear ODEs</h2>
+<p>The most important setting in MATH 341 is the second-order linear ODE <span class="math display">\[
+x'' + p(t)\,x' + q(t)\,x = f(t).
+\]</span> The homogeneous version <span class="math inline">\(x'' + p(t)x' + q(t)x = 0\)</span> has a <strong>two-dimensional solution space</strong>: if <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are <strong>linearly independent</strong> solutions, then every solution is a linear combination <span class="math display">\[
+x_h(t) = C_1 x_1(t) + C_2 x_2(t).
+\]</span> This is the <strong>general solution of the homogeneous equation</strong>, and the two free constants <span class="math inline">\(C_1\)</span>, <span class="math inline">\(C_2\)</span> are fixed by two initial conditions.</p>
+<section id="example-the-simple-harmonic-oscillator" class="level3">
+<h3 class="anchored" data-anchor-id="example-the-simple-harmonic-oscillator">Example — The Simple Harmonic Oscillator</h3>
+<p>For the equation <span class="math inline">\(x'' + \omega^2 x = 0\)</span>:</p>
+<ul>
+<li><span class="math inline">\(x_1(t) = \cos(\omega t)\)</span> is a solution: <span class="math inline">\(x_1'' = -\omega^2\cos(\omega t) = -\omega^2 x_1\)</span> ✓</li>
+<li><span class="math inline">\(x_2(t) = \sin(\omega t)\)</span> is a solution: <span class="math inline">\(x_2'' = -\omega^2\sin(\omega t) = -\omega^2 x_2\)</span> ✓</li>
+<li>By superposition, <span class="math inline">\(x(t) = C_1\cos(\omega t) + C_2\sin(\omega t)\)</span> is the <strong>general solution</strong>.</li>
+</ul>
+<div id="cell-fig-sho-super" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">400</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.cos(omega <span class="op">*</span> t_plot)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.sin(omega <span class="op">*</span> t_plot)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, x1, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x_1 = </span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, x2, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x_2 = </span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x$'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Basis solutions'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Various linear combinations</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>pairs <span class="op">=</span> [(<span class="dv">3</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">2</span>), (<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>), (<span class="dv">0</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">0</span>)]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="bu">len</span>(pairs)))</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (C1, C2), color <span class="kw">in</span> <span class="bu">zip</span>(pairs, colors):</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    x_combo <span class="op">=</span> C1<span class="op">*</span>x1 <span class="op">+</span> C2<span class="op">*</span>x2</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(t_plot, x_combo, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="ss">f'$C_1=</span><span class="sc">{</span>C1<span class="sc">}</span><span class="ss">,</span><span class="ch">\\</span><span class="ss">;C_2=</span><span class="sc">{</span>C2<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$x$'</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="vs">r'Superposition: </span><span class="dv">$</span><span class="vs">C_1</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="op">+</span><span class="vs">C_2</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sho-super" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sho-super-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_03_files/figure-html/fig-sho-super-output-1.png" width="1484" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sho-super-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Simple harmonic oscillator <span class="math inline">\(x'' + 4x = 0\)</span> (<span class="math inline">\(\omega = 2\)</span>). Left: the two basis solutions <span class="math inline">\(x_1 = \cos(2t)\)</span> (blue) and <span class="math inline">\(x_2 = \sin(2t)\)</span> (orange). Right: several linear combinations <span class="math inline">\(C_1\cos(2t)+C_2\sin(2t)\)</span> — all are solutions by superposition, and each corresponds to a different initial condition.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>IVP.</strong> Suppose <span class="math inline">\(x(0) = 3\)</span> and <span class="math inline">\(x'(0) = -2\)</span>. The general solution gives: <span class="math display">\[
+x(0) = C_1 = 3, \qquad x'(0) = 2C_2 = -2 \;\Rightarrow\; C_2 = -1.
+\]</span> So the unique solution is <span class="math inline">\(x(t) = 3\cos(2t) - \sin(2t)\)</span>.</p>
+<div id="cell-fig-sho-ivp" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">400</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x_exact <span class="op">=</span> <span class="dv">3</span><span class="op">*</span>np.cos(<span class="dv">2</span><span class="op">*</span>t_plot) <span class="op">-</span> np.sin(<span class="dv">2</span><span class="op">*</span>t_plot)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sho(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">4</span><span class="op">*</span>y[<span class="dv">0</span>]]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(sho, (<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi), [<span class="fl">3.0</span>, <span class="op">-</span><span class="fl">2.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>t_dots <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">20</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, x_exact, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">3</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="vs">-</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots, sol.sol(t_dots)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Numerical solve'</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"IVP: </span><span class="dv">$</span><span class="vs">x''</span><span class="op">+</span><span class="vs">4x=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=3</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x'</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=-2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sho-ivp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sho-ivp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_03_files/figure-html/fig-sho-ivp-output-1.png" width="1181" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sho-ivp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: IVP for <span class="math inline">\(x''+4x=0\)</span> with <span class="math inline">\(x(0)=3\)</span>, <span class="math inline">\(x'(0)=-2\)</span>. The superposition formula <span class="math inline">\(x=3\cos(2t)-\sin(2t)\)</span> (solid blue) is confirmed by a numerical solve (red dots).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="superposition-for-inhomogeneous-equations-1" class="level2">
+<h2 class="anchored" data-anchor-id="superposition-for-inhomogeneous-equations-1">Superposition for Inhomogeneous Equations</h2>
+<section id="decomposing-the-forcing" class="level3">
+<h3 class="anchored" data-anchor-id="decomposing-the-forcing">Decomposing the Forcing</h3>
+<p>If the forcing function is a sum <span class="math inline">\(f(t) = f_1(t) + f_2(t) + \cdots + f_m(t)\)</span>, find a particular solution <span class="math inline">\(x_p^{(k)}\)</span> for each piece <span class="math inline">\(L[x] = f_k(t)\)</span> separately, then sum them: <span class="math display">\[
+x_p = x_p^{(1)} + x_p^{(2)} + \cdots + x_p^{(m)}.
+\]</span></p>
+</section>
+<section id="example-driven-oscillator-with-two-frequencies" class="level3">
+<h3 class="anchored" data-anchor-id="example-driven-oscillator-with-two-frequencies">Example — Driven Oscillator with Two Frequencies</h3>
+<p>Consider <span class="math inline">\(x'' + 4x = \cos(t) + 3\sin(5t)\)</span>.</p>
+<p><strong>Piece 1:</strong> <span class="math inline">\(x'' + 4x = \cos(t)\)</span>. Try <span class="math inline">\(x_p^{(1)} = A\cos(t)\)</span>: <span class="math display">\[
+-A\cos(t) + 4A\cos(t) = 3A\cos(t) = \cos(t) \;\Rightarrow\; A = \tfrac{1}{3}.
+\]</span></p>
+<p><strong>Piece 2:</strong> <span class="math inline">\(x'' + 4x = 3\sin(5t)\)</span>. Try <span class="math inline">\(x_p^{(2)} = B\sin(5t)\)</span>: <span class="math display">\[
+-25B\sin(5t) + 4B\sin(5t) = -21B\sin(5t) = 3\sin(5t) \;\Rightarrow\; B = -\tfrac{1}{7}.
+\]</span></p>
+<p><strong>Superposition</strong> gives the particular solution: <span class="math display">\[
+x_p(t) = \frac{\cos(t)}{3} - \frac{\sin(5t)}{7}.
+\]</span></p>
+<p>The general solution is <span class="math inline">\(x(t) = C_1\cos(2t) + C_2\sin(2t) + \dfrac{\cos(t)}{3} - \dfrac{\sin(5t)}{7}\)</span>.</p>
+<div id="cell-fig-driven-super" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi, <span class="dv">600</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Particular solution via superposition</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>xp1 <span class="op">=</span> np.cos(t_plot) <span class="op">/</span> <span class="dv">3</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>xp2 <span class="op">=</span> <span class="op">-</span>np.sin(<span class="dv">5</span><span class="op">*</span>t_plot) <span class="op">/</span> <span class="dv">7</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>xp  <span class="op">=</span> xp1 <span class="op">+</span> xp2</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Full solution with x(0)=0, x'(0)=0</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Need C1, C2: x(0)=C1 + 1/3 = 0 =&gt; C1=-1/3</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># x'(0) = 2*C2 - 5/7 = 0 =&gt; C2 = 5/14</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>C1, C2 <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">5</span><span class="op">/</span><span class="dv">14</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>x_full <span class="op">=</span> C1<span class="op">*</span>np.cos(<span class="dv">2</span><span class="op">*</span>t_plot) <span class="op">+</span> C2<span class="op">*</span>np.sin(<span class="dv">2</span><span class="op">*</span>t_plot) <span class="op">+</span> xp</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical verification</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> driven(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">4</span><span class="op">*</span>y[<span class="dv">0</span>] <span class="op">+</span> np.cos(t) <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>np.sin(<span class="dv">5</span><span class="op">*</span>t)]</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>sol_d <span class="op">=</span> solve_ivp(driven, (<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">6</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, xp1, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x_p</span><span class="dv">^</span><span class="vs">{</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">}=</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs">/3</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">response to </span><span class="dv">$</span><span class="er">\</span><span class="vs">cos t</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, xp2, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x_p</span><span class="dv">^</span><span class="vs">{</span><span class="kw">(</span><span class="vs">2</span><span class="kw">)</span><span class="vs">}=-</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">5t</span><span class="kw">)</span><span class="vs">/7</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">response to </span><span class="dv">$</span><span class="vs">3</span><span class="dv">\s</span><span class="vs">in 5t</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, xp,  color<span class="op">=</span><span class="st">'seagreen'</span>,  lw<span class="op">=</span><span class="fl">2.5</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x_p = x_p</span><span class="dv">^</span><span class="vs">{</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">}</span><span class="op">+</span><span class="vs">x_p</span><span class="dv">^</span><span class="vs">{</span><span class="kw">(</span><span class="vs">2</span><span class="kw">)</span><span class="vs">}</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">superposition</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x$'</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"Superposition of particular solutions: </span><span class="dv">$</span><span class="vs">x''</span><span class="op">+</span><span class="vs">4x=</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="op">+</span><span class="vs">3</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">5t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>t_dots <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi, <span class="dv">30</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot, x_full, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Full solution (analytical)'</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_dots, sol_d.sol(t_dots)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical solve'</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$x$'</span>)</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Full solution with zero initial conditions'</span>)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-driven-super" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-driven-super-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_03_files/figure-html/fig-driven-super-output-1.png" width="1348" height="883" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-driven-super-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Driven oscillator <span class="math inline">\(x''+4x=\cos(t)+3\sin(5t)\)</span>, zero initial conditions. The particular solution (green dashed) is built by superposing the responses to each forcing term separately. The full solution (blue) adds the transient homogeneous part.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sympy-verifying-superposition" class="level2">
+<h2 class="anchored" data-anchor-id="sympy-verifying-superposition">SymPy: Verifying Superposition</h2>
+<div id="64ce902a" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>t_s <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>x_s <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define operator L[x] = x'' + 4x</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> L(func):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sym.diff(func, t_s, <span class="dv">2</span>) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>func</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>x1_s <span class="op">=</span> sym.cos(<span class="dv">2</span><span class="op">*</span>t_s)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>x2_s <span class="op">=</span> sym.sin(<span class="dv">2</span><span class="op">*</span>t_s)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>C1_s, C2_s <span class="op">=</span> sym.symbols(<span class="st">'C1 C2'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Verifying homogeneous superposition:"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>combo <span class="op">=</span> C1_s<span class="op">*</span>x1_s <span class="op">+</span> C2_s<span class="op">*</span>x2_s</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> sym.simplify(L(combo))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  L[C1*cos(2t) + C2*sin(2t)] = </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Verifying particular solution superposition:"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>xp1_s <span class="op">=</span> sym.cos(t_s)<span class="op">/</span><span class="dv">3</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>xp2_s <span class="op">=</span> <span class="op">-</span>sym.sin(<span class="dv">5</span><span class="op">*</span>t_s)<span class="op">/</span><span class="dv">7</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  L[cos(t)/3]       = </span><span class="sc">{</span>sym<span class="sc">.</span>simplify(L(xp1_s))<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  L[-sin(5t)/7]     = </span><span class="sc">{</span>sym<span class="sc">.</span>simplify(L(xp2_s))<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  L[xp1 + xp2]      = </span><span class="sc">{</span>sym<span class="sc">.</span>simplify(L(xp1_s <span class="op">+</span> xp2_s))<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Forcing cos(t)+3sin(5t) = cos(t) + 3sin(5t)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Verifying homogeneous superposition:
+  L[C1*cos(2t) + C2*sin(2t)] = 0
+
+Verifying particular solution superposition:
+  L[cos(t)/3]       = cos(t)
+  L[-sin(5t)/7]     = 3*sin(5*t)
+  L[xp1 + xp2]      = 3*sin(5*t) + cos(t)
+  Forcing cos(t)+3sin(5t) = cos(t) + 3sin(5t)</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="superposition-in-physics-and-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="superposition-in-physics-and-engineering">Superposition in Physics and Engineering</h2>
+<section id="electrical-circuits-superposition-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="electrical-circuits-superposition-theorem">1. Electrical Circuits — Superposition Theorem</h3>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Superposition_theorem">superposition theorem</a></strong> is one of the fundamental tools in linear circuit analysis. In a circuit with multiple independent voltage or current sources, the response (current or voltage) at any element is the <strong>sum of the responses due to each source acting alone</strong> (all other sources replaced by their internal impedances: voltage sources short-circuited, current sources open-circuited).</p>
+<p>This is a direct consequence of the linearity of Kirchhoff’s laws. For an RLC circuit: <span class="math display">\[
+L\ddot{Q} + R\dot{Q} + \frac{Q}{C} = E_1(t) + E_2(t)
+\]</span> the response satisfies <span class="math inline">\(Q = Q_1 + Q_2\)</span> where <span class="math inline">\(Q_k\)</span> is the response to <span class="math inline">\(E_k(t)\)</span> alone.</p>
+<div id="cell-fig-circuit-super" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>R_val, C_val <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">1.0</span>   <span class="co"># tau = RC = 1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Q' + Q/RC = E(t)/R =&gt; Q' + Q = E(t) for R=C=1</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rc_response(E_func, t_span, Q0<span class="op">=</span><span class="fl">0.0</span>, steps<span class="op">=</span><span class="dv">2000</span>):</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> <span class="kw">lambda</span> t, Q: [<span class="op">-</span>Q[<span class="dv">0</span>] <span class="op">+</span> E_func(t)]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f, t_span, [Q0], dense_output<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                    max_steps<span class="op">=</span>steps, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sol</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi, <span class="dv">600</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>E1 <span class="op">=</span> <span class="kw">lambda</span> t: np.sin(t)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>E2 <span class="op">=</span> <span class="kw">lambda</span> t: <span class="fl">0.5</span><span class="op">*</span>np.cos(<span class="dv">3</span><span class="op">*</span>t)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>E_total <span class="op">=</span> <span class="kw">lambda</span> t: E1(t) <span class="op">+</span> E2(t)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>sol1 <span class="op">=</span> rc_response(E1, t_span)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>sol2 <span class="op">=</span> rc_response(E2, t_span)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>sol_total <span class="op">=</span> rc_response(E_total, t_span)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>Q1 <span class="op">=</span> sol1.sol(t_plot)[<span class="dv">0</span>]</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>Q2 <span class="op">=</span> sol2.sol(t_plot)[<span class="dv">0</span>]</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>Q_sum <span class="op">=</span> Q1 <span class="op">+</span> Q2</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>Q_total <span class="op">=</span> sol_total.sol(t_plot)[<span class="dv">0</span>]</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, Q1,    color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">Q_1</span><span class="dv">$</span><span class="vs">: response to </span><span class="dv">$</span><span class="vs">E_1=</span><span class="dv">\s</span><span class="vs">in t</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, Q2,    color<span class="op">=</span><span class="st">'seagreen'</span>,   lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">Q_2</span><span class="dv">$</span><span class="vs">: response to </span><span class="dv">$</span><span class="vs">E_2=0</span><span class="dv">.</span><span class="vs">5</span><span class="er">\</span><span class="vs">cos 3t</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, Q_sum, color<span class="op">=</span><span class="st">'steelblue'</span>,  lw<span class="op">=</span><span class="fl">2.5</span>,          label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">Q_1</span><span class="op">+</span><span class="vs">Q_2</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">superposition</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>t_dots <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi, <span class="dv">25</span>)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots, sol_total.sol(t_dots)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Direct solve of combined circuit'</span>)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$Q(t)$'</span>)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'RC Circuit: Superposition Theorem ($R=C=1$)'</span>)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/homebrew/Caskroom/miniforge/base/envs/diffeq_py/lib/python3.14/site-packages/scipy/integrate/_ivp/ivp.py:623: UserWarning: The following arguments have no effect for a chosen solver: `max_steps`.
+  solver = method(fun, t0, y0, tf, vectorized=vectorized, **options)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-circuit-super" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-circuit-super-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_03_files/figure-html/fig-circuit-super-output-2.png" width="1331" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-circuit-super-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Superposition theorem for an RC circuit (<span class="math inline">\(R=1\)</span>, <span class="math inline">\(C=1\)</span>) driven by two sources: <span class="math inline">\(E_1(t) = \sin(t)\)</span> and <span class="math inline">\(E_2(t) = 0.5\cos(3t)\)</span>. The total response <span class="math inline">\(Q\)</span> (blue) equals the sum of the individual responses <span class="math inline">\(Q_1\)</span> (orange) and <span class="math inline">\(Q_2\)</span> (green) — numerically verified (red dots).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="structural-mechanics-deflection-of-a-beam" class="level3">
+<h3 class="anchored" data-anchor-id="structural-mechanics-deflection-of-a-beam">2. Structural Mechanics — Deflection of a Beam</h3>
+<p>In linear elasticity, the deflection <span class="math inline">\(y(x)\)</span> of a <strong><a href="https://en.wikipedia.org/wiki/Euler%E2%80%93Bernoulli_beam_theory">simply supported beam</a></strong> under a distributed load <span class="math inline">\(w(x)\)</span> satisfies the fourth-order linear ODE <span class="math display">\[
+EI\,y'''' = w(x),
+\]</span> where <span class="math inline">\(E\)</span> is the Young’s modulus and <span class="math inline">\(I\)</span> the second moment of area. By superposition, the deflection under multiple loads is the sum of the deflections under each load individually: <span class="math display">\[
+y_{\text{total}} = y_{\text{self-weight}} + y_{\text{live load}} + y_{\text{point loads}} + \cdots
+\]</span> This is the foundation of <strong>influence line</strong> analysis in structural engineering.</p>
+<div id="cell-fig-beam" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.polynomial <span class="im">import</span> polynomial <span class="im">as</span> P</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>L_beam <span class="op">=</span> <span class="fl">1.0</span>   <span class="co"># beam length</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>EI <span class="op">=</span> <span class="fl">1.0</span>       <span class="co"># bending stiffness (normalized)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>x_b <span class="op">=</span> np.linspace(<span class="dv">0</span>, L_beam, <span class="dv">400</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Closed-form deflections for a simply supported beam (SS: y=0, y''=0 at x=0,L)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Under uniform load w0: y = w0/(24*EI) * x*(L^3 - 2L*x^2 + x^3)</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Under central point load P at x=L/2:</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   y = P*x*(3L^2-4x^2)/(48*EI) for x &lt;= L/2 (symmetric)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Under sinusoidal load w(x)=w1*sin(pi*x/L):</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   y = w1*L^4/(pi^4*EI) * sin(pi*x/L)  (exact solution)</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>w0   <span class="op">=</span> <span class="fl">5.0</span>   <span class="co"># uniform load intensity</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>P_c  <span class="op">=</span> <span class="fl">3.0</span>   <span class="co"># central point load</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>w1   <span class="op">=</span> <span class="fl">4.0</span>   <span class="co"># sinusoidal load amplitude</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Load 1: uniform</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> w0 <span class="op">/</span> (<span class="dv">24</span><span class="op">*</span>EI) <span class="op">*</span> x_b <span class="op">*</span> (L_beam<span class="op">**</span><span class="dv">3</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>L_beam<span class="op">*</span>x_b<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x_b<span class="op">**</span><span class="dv">3</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Load 2: central point load (symmetric)</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> np.where(x_b <span class="op">&lt;=</span> L_beam<span class="op">/</span><span class="dv">2</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>              P_c <span class="op">*</span> x_b <span class="op">*</span> (<span class="dv">3</span><span class="op">*</span>L_beam<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>x_b<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (<span class="dv">48</span><span class="op">*</span>EI),</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>              P_c <span class="op">*</span> (L_beam <span class="op">-</span> x_b) <span class="op">*</span> (<span class="dv">3</span><span class="op">*</span>L_beam<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>(L_beam<span class="op">-</span>x_b)<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (<span class="dv">48</span><span class="op">*</span>EI))</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Load 3: sinusoidal</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>y3 <span class="op">=</span> w1 <span class="op">*</span> L_beam<span class="op">**</span><span class="dv">4</span> <span class="op">/</span> (np.pi<span class="op">**</span><span class="dv">4</span> <span class="op">*</span> EI) <span class="op">*</span> np.sin(np.pi <span class="op">*</span> x_b <span class="op">/</span> L_beam)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>y_total <span class="op">=</span> y1 <span class="op">+</span> y2 <span class="op">+</span> y3</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">4.5</span>))</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>ax.plot(x_b, <span class="op">-</span>y1,     color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="ss">f'Uniform load $w_0=</span><span class="sc">{</span>w0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>ax.plot(x_b, <span class="op">-</span>y2,     color<span class="op">=</span><span class="st">'seagreen'</span>,   lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="ss">f'Central point load $P=</span><span class="sc">{</span>P_c<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>ax.plot(x_b, <span class="op">-</span>y3,     color<span class="op">=</span><span class="st">'mediumpurple'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'Sinusoidal load </span><span class="dv">$</span><span class="vs">w_1</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="er">\</span><span class="vs">pi x/L</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>ax.plot(x_b, <span class="op">-</span>y_total, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.8</span>, label<span class="op">=</span><span class="st">'Total deflection (superposition)'</span>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Position $x$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Deflection $y$ (downward positive)'</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Simply Supported Beam: </span><span class="dv">$</span><span class="vs">EI</span><span class="ch">\,</span><span class="vs">y</span><span class="dv">^</span><span class="vs">{</span><span class="kw">(</span><span class="vs">4</span><span class="kw">)</span><span class="vs">}=w</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, deflection by superposition"</span>)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span> ax.invert_yaxis()</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-beam" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beam-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_03_files/figure-html/fig-beam-output-1.png" width="1332" height="658" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beam-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Deflection of a simply supported beam of length <span class="math inline">\(L=1\)</span> under three loading cases, computed by superposition. Each load produces a deflection (dashed lines); the total deflection (solid blue) is their sum. The beam equation is <span class="math inline">\(EI\,y''''=w(x)\)</span> with <span class="math inline">\(EI=1\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="fourier-series-infinite-superposition" class="level3">
+<h3 class="anchored" data-anchor-id="fourier-series-infinite-superposition">3. Fourier Series — Infinite Superposition</h3>
+<p>Perhaps the most spectacular application of superposition is <strong><a href="https://en.wikipedia.org/wiki/Fourier_series">Fourier analysis</a></strong>, developed by <a href="https://en.wikipedia.org/wiki/Joseph_Fourier">Joseph Fourier</a> (1768–1830) to solve the heat equation.</p>
+<p>The <strong>heat equation</strong> <span class="math inline">\(u_t = k\,u_{xx}\)</span> on <span class="math inline">\([0, L]\)</span> with <span class="math inline">\(u(0,t)=u(L,t)=0\)</span> is a <strong>linear</strong> PDE. Each function <span class="math inline">\(u_n(x,t) = \sin(n\pi x/L)\,e^{-n^2\pi^2 k t/L^2}\)</span> satisfies both the PDE and the boundary conditions. By superposition: <span class="math display">\[
+u(x,t) = \sum_{n=1}^{\infty} b_n \sin\!\left(\frac{n\pi x}{L}\right) e^{-n^2\pi^2 k t/L^2}
+\]</span> is also a solution for any coefficients <span class="math inline">\(b_n\)</span>. Setting <span class="math inline">\(t=0\)</span> requires the initial condition <span class="math inline">\(u(x,0) = f(x)\)</span> to equal the <strong>Fourier sine series</strong>: <span class="math display">\[
+f(x) = \sum_{n=1}^{\infty} b_n \sin\!\left(\frac{n\pi x}{L}\right),
+\qquad b_n = \frac{2}{L}\int_0^L f(x)\sin\!\left(\frac{n\pi x}{L}\right)dx.
+\]</span> This is an <strong>infinite superposition</strong> of simple harmonic modes.</p>
+<div id="cell-fig-fourier-heat" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>k_heat <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>L_heat <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>x_arr <span class="op">=</span> np.linspace(<span class="dv">0</span>, L_heat, <span class="dv">300</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fourier coefficients for f(x) = x(1-x): b_n = 8/(n^3*pi^3) for odd n</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> b_n(n):</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    val, _ <span class="op">=</span> quad(<span class="kw">lambda</span> x: x<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x)<span class="op">*</span>np.sin(n<span class="op">*</span>np.pi<span class="op">*</span>x<span class="op">/</span>L_heat), <span class="dv">0</span>, L_heat)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span><span class="op">*</span>val</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fourier_approx(x, N, t<span class="op">=</span><span class="fl">0.0</span>):</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> np.zeros_like(x)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        bn <span class="op">=</span> b_n(n)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        decay <span class="op">=</span> np.exp(<span class="op">-</span>n<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> np.pi<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> k_heat <span class="op">*</span> t <span class="op">/</span> L_heat<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        u <span class="op">+=</span> bn <span class="op">*</span> np.sin(n<span class="op">*</span>np.pi<span class="op">*</span>x<span class="op">/</span>L_heat) <span class="op">*</span> decay</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> u</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Left: convergence of initial condition</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>f_exact <span class="op">=</span> x_arr<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> x_arr)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(x_arr, f_exact, <span class="st">'k--'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$f(x)=x(1-x)$'</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>colors_l <span class="op">=</span> plt.cm.plasma(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.85</span>, <span class="dv">4</span>))</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> N, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">15</span>], colors_l):</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    u_approx <span class="op">=</span> fourier_approx(x_arr, N, t<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(x_arr, u_approx, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="ss">f'$N=</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">$ terms'</span>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$u(x,0)$'</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Fourier series: superposition of sine modes'</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Right: time evolution</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>times <span class="op">=</span> [<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>]</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>colors_r <span class="op">=</span> plt.cm.coolwarm(np.linspace(<span class="fl">0.05</span>, <span class="fl">0.95</span>, <span class="bu">len</span>(times)))</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t_val, color <span class="kw">in</span> <span class="bu">zip</span>(times, colors_r):</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    u_t <span class="op">=</span> fourier_approx(x_arr, <span class="dv">30</span>, t<span class="op">=</span>t_val)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(x_arr, u_t, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="ss">f'$t=</span><span class="sc">{</span>t_val<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$u(x,t)$'</span>)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Heat equation: solution at various times'</span>)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-fourier-heat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fourier-heat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_03_files/figure-html/fig-fourier-heat-output-1.png" width="1632" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fourier-heat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Fourier series solution to the heat equation <span class="math inline">\(u_t = 0.1\,u_{xx}\)</span> on <span class="math inline">\([0,1]\)</span> with <span class="math inline">\(u(x,0)=x(1-x)\)</span> and zero boundary conditions. Left: Fourier sine series approximation to the initial condition using <span class="math inline">\(N=1,3,5,15\)</span> terms — superposition of simple sine modes converges to the parabola. Right: evolution of the solution at several times; each mode decays exponentially at its own rate.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why Fourier Analysis Works
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Fourier analysis works <em>because</em> the heat equation is <strong>linear</strong>. Each sine mode evolves independently — it just multiplies by an exponential decay factor — and the full solution is their superposition. For a nonlinear heat equation (e.g., <span class="math inline">\(u_t = k u_{xx} + u^2\)</span>), the modes would interact and this approach would fail completely.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="quantum-mechanics-the-schrödinger-equation" class="level3">
+<h3 class="anchored" data-anchor-id="quantum-mechanics-the-schrödinger-equation">4. Quantum Mechanics — The Schrödinger Equation</h3>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Schr%C3%B6dinger_equation">Schrödinger equation</a></strong> <span class="math display">\[
+i\hbar\,\frac{\partial\Psi}{\partial t} = \hat{H}\Psi
+\]</span> is a <strong>linear</strong> PDE in the wavefunction <span class="math inline">\(\Psi\)</span>. The Hamiltonian operator <span class="math inline">\(\hat{H}\)</span> is a linear operator. Superposition is therefore a fundamental postulate of quantum mechanics: if <span class="math inline">\(\Psi_1\)</span> and <span class="math inline">\(\Psi_2\)</span> are valid quantum states, then <span class="math inline">\(\alpha\Psi_1 + \beta\Psi_2\)</span> is also a valid state. This is the mathematical origin of <strong>quantum superposition</strong> — the famous phenomenon where a particle can be in multiple states simultaneously until measured.</p>
+<p>The energy eigenstates <span class="math inline">\(\Psi_n\)</span> (solutions of <span class="math inline">\(\hat{H}\Psi_n = E_n\Psi_n\)</span>) play the same role as the Fourier modes do for the heat equation: any state is an infinite superposition <span class="math inline">\(\Psi = \sum_n c_n \Psi_n\)</span>.</p>
+<hr>
+</section>
+<section id="optics-huygens-principle-and-interference" class="level3">
+<h3 class="anchored" data-anchor-id="optics-huygens-principle-and-interference">5. Optics — Huygens’ Principle and Interference</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Huygens%E2%80%93Fresnel_principle">Huygens’ principle</a></strong> treats every point on a wavefront as a source of secondary spherical waves. The wave equation <span class="math inline">\(\nabla^2 u = c^{-2}u_{tt}\)</span> is linear, so the total wave field at any point is the superposition of all secondary wavelets. This directly explains:</p>
+<ul>
+<li><strong>Interference</strong> (Young’s double-slit experiment): constructive and destructive superposition of two coherent sources.</li>
+<li><strong>Diffraction</strong>: superposition of wavelets from a finite aperture.</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/Holography">Holography</a></strong>: three-dimensional image reconstruction by superposing reference and object waves.</li>
+</ul>
+<hr>
+</section>
+<section id="signal-processing-the-transfer-function" class="level3">
+<h3 class="anchored" data-anchor-id="signal-processing-the-transfer-function">6. Signal Processing — The Transfer Function</h3>
+<p>In linear systems theory and signal processing, a linear time-invariant (LTI) system responds to any input signal <span class="math inline">\(u(t)\)</span> according to the <strong><a href="https://en.wikipedia.org/wiki/Convolution">convolution</a></strong> <span class="math display">\[
+y(t) = \int_{-\infty}^{\infty} h(\tau)\,u(t-\tau)\,d\tau,
+\]</span> where <span class="math inline">\(h(t)\)</span> is the <strong>impulse response</strong> of the system. Since the integral is a (continuous) superposition of scaled and time-shifted copies of <span class="math inline">\(h\)</span>, every input can be decomposed into impulses, each contributing its own response.</p>
+<p>In frequency space this becomes multiplication: <span class="math inline">\(Y(\omega) = H(\omega)\,U(\omega)\)</span>, where <span class="math inline">\(H(\omega)\)</span> is the <strong><a href="https://en.wikipedia.org/wiki/Transfer_function">transfer function</a></strong>. The Fourier transform itself is a continuous superposition — it decomposes any signal into a continuum of complex exponentials.</p>
+<hr>
+</section>
+</section>
+<section id="when-does-superposition-fail" class="level2">
+<h2 class="anchored" data-anchor-id="when-does-superposition-fail">When Does Superposition Fail?</h2>
+<p>Superposition is exclusively a property of <strong>linear</strong> systems. It fails whenever the governing equations are nonlinear — which includes a vast array of important phenomena:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Phenomenon</th>
+<th>Governing Equation</th>
+<th>Nonlinearity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pendulum (large angle)</td>
+<td><span class="math inline">\(\theta'' + (g/L)\sin\theta = 0\)</span></td>
+<td><span class="math inline">\(\sin\theta \neq \theta\)</span></td>
+</tr>
+<tr class="even">
+<td>Fluid dynamics</td>
+<td><a href="https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations">Navier–Stokes</a></td>
+<td><span class="math inline">\((\mathbf{u}\cdot\nabla)\mathbf{u}\)</span> (convective term)</td>
+</tr>
+<tr class="odd">
+<td>Nonlinear optics</td>
+<td><a href="https://en.wikipedia.org/wiki/Kerr_effect">Wave equation with Kerr term</a></td>
+<td><span class="math inline">\(\chi^{(3)}|E|^2 E\)</span></td>
+</tr>
+<tr class="even">
+<td>General Relativity</td>
+<td><a href="https://en.wikipedia.org/wiki/Einstein_field_equations">Einstein field equations</a></td>
+<td><span class="math inline">\(R_{\mu\nu} - \tfrac{1}{2}g_{\mu\nu}R = 8\pi G T_{\mu\nu}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Population dynamics</td>
+<td>Logistic, Lotka–Volterra</td>
+<td><span class="math inline">\(x^2\)</span>, <span class="math inline">\(xy\)</span> terms</td>
+</tr>
+</tbody>
+</table>
+<p>The study of nonlinear systems requires entirely different tools: phase plane analysis, bifurcation theory, perturbation methods, and numerical simulation.</p>
+<hr>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key Statement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Linear operator</strong></td>
+<td><span class="math inline">\(L[\alpha u + \beta v] = \alpha L[u] + \beta L[v]\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Homogeneous superposition</strong></td>
+<td>If <span class="math inline">\(L[x_k]=0\)</span>, then <span class="math inline">\(L\!\left[\sum C_k x_k\right]=0\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Inhomogeneous superposition</strong></td>
+<td>Particular solution for <span class="math inline">\(\sum f_k\)</span> is <span class="math inline">\(\sum\)</span> of particular solutions for each <span class="math inline">\(f_k\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>General solution</strong></td>
+<td><span class="math inline">\(x = x_h + x_p\)</span> (homogeneous + particular)</td>
+</tr>
+<tr class="odd">
+<td><strong>Why it matters</strong></td>
+<td>Enables Fourier analysis, circuit analysis, structural analysis, quantum mechanics, …</td>
+</tr>
+<tr class="even">
+<td><strong>When it fails</strong></td>
+<td>Any nonlinear governing equation</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The Big Picture
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The reason linear ODEs are so thoroughly solvable — and so widely applicable — is precisely because they respect superposition. The theory of linear ODEs you learn in MATH 341 is not just a bag of techniques; it is a unified framework built on the single algebraic property <span class="math inline">\(L[\alpha u + \beta v] = \alpha L[u] + \beta L[v]\)</span>. Every method (integrating factors, characteristic equations, variation of parameters, Laplace transforms) is ultimately an exploitation of this one fact.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="ad10b6ae" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
