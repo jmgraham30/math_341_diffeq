@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Existence, Uniqueness, and Continuous Dependence – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./topics.html" aria-current="page"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./topics_04.html">Existence, Uniqueness, and Continuous Dependence</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Topics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dimensional Analysis and Non-Dimensionalization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bernoulli Equations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linearity and the Principle of Superposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_04.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Existence, Uniqueness, and Continuous Dependence</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-cauchy-problem" id="toc-the-cauchy-problem" class="nav-link active" data-scroll-target="#the-cauchy-problem">The Cauchy Problem</a></li>
+  <li><a href="#historical-background" id="toc-historical-background" class="nav-link" data-scroll-target="#historical-background">Historical Background</a>
+  <ul class="collapse">
+  <li><a href="#the-pre-history-leibniz-euler-and-bernoulli" id="toc-the-pre-history-leibniz-euler-and-bernoulli" class="nav-link" data-scroll-target="#the-pre-history-leibniz-euler-and-bernoulli">The Pre-History: Leibniz, Euler, and Bernoulli</a></li>
+  <li><a href="#cauchy-and-the-first-existence-theorem" id="toc-cauchy-and-the-first-existence-theorem" class="nav-link" data-scroll-target="#cauchy-and-the-first-existence-theorem">Cauchy and the First Existence Theorem</a></li>
+  <li><a href="#peano-and-existence-without-uniqueness" id="toc-peano-and-existence-without-uniqueness" class="nav-link" data-scroll-target="#peano-and-existence-without-uniqueness">Peano and Existence Without Uniqueness</a></li>
+  <li><a href="#picards-fixed-point-approach" id="toc-picards-fixed-point-approach" class="nav-link" data-scroll-target="#picards-fixed-point-approach">Picard’s Fixed-Point Approach</a></li>
+  <li><a href="#gronwall-and-continuous-dependence" id="toc-gronwall-and-continuous-dependence" class="nav-link" data-scroll-target="#gronwall-and-continuous-dependence">Gronwall and Continuous Dependence</a></li>
+  </ul></li>
+  <li><a href="#the-lipschitz-condition" id="toc-the-lipschitz-condition" class="nav-link" data-scroll-target="#the-lipschitz-condition">The Lipschitz Condition</a></li>
+  <li><a href="#existence-and-uniqueness-the-picardlindelöf-theorem" id="toc-existence-and-uniqueness-the-picardlindelöf-theorem" class="nav-link" data-scroll-target="#existence-and-uniqueness-the-picardlindelöf-theorem">Existence and Uniqueness: The Picard–Lindelöf Theorem</a>
+  <ul class="collapse">
+  <li><a href="#proof-sketch-picard-iteration" id="toc-proof-sketch-picard-iteration" class="nav-link" data-scroll-target="#proof-sketch-picard-iteration">Proof Sketch: Picard Iteration</a></li>
+  </ul></li>
+  <li><a href="#picard-iteration-in-practice" id="toc-picard-iteration-in-practice" class="nav-link" data-scroll-target="#picard-iteration-in-practice">Picard Iteration in Practice</a></li>
+  <li><a href="#when-uniqueness-fails-peanos-theorem-and-non-uniqueness" id="toc-when-uniqueness-fails-peanos-theorem-and-non-uniqueness" class="nav-link" data-scroll-target="#when-uniqueness-fails-peanos-theorem-and-non-uniqueness">When Uniqueness Fails: Peano’s Theorem and Non-Uniqueness</a></li>
+  <li><a href="#when-existence-fails-finite-time-blow-up" id="toc-when-existence-fails-finite-time-blow-up" class="nav-link" data-scroll-target="#when-existence-fails-finite-time-blow-up">When Existence Fails: Finite-Time Blow-Up</a></li>
+  <li><a href="#peanos-existence-theorem" id="toc-peanos-existence-theorem" class="nav-link" data-scroll-target="#peanos-existence-theorem">Peano’s Existence Theorem</a></li>
+  <li><a href="#continuous-dependence-on-initial-conditions" id="toc-continuous-dependence-on-initial-conditions" class="nav-link" data-scroll-target="#continuous-dependence-on-initial-conditions">Continuous Dependence on Initial Conditions</a>
+  <ul class="collapse">
+  <li><a href="#the-gronwall-inequality" id="toc-the-gronwall-inequality" class="nav-link" data-scroll-target="#the-gronwall-inequality">The Gronwall Inequality</a></li>
+  </ul></li>
+  <li><a href="#sensitivity-to-initial-conditions-and-chaos" id="toc-sensitivity-to-initial-conditions-and-chaos" class="nav-link" data-scroll-target="#sensitivity-to-initial-conditions-and-chaos">Sensitivity to Initial Conditions and Chaos</a></li>
+  <li><a href="#why-these-theorems-matter" id="toc-why-these-theorems-matter" class="nav-link" data-scroll-target="#why-these-theorems-matter">Why These Theorems Matter</a>
+  <ul class="collapse">
+  <li><a href="#in-mathematics" id="toc-in-mathematics" class="nav-link" data-scroll-target="#in-mathematics">In Mathematics</a></li>
+  <li><a href="#in-physics-and-engineering" id="toc-in-physics-and-engineering" class="nav-link" data-scroll-target="#in-physics-and-engineering">In Physics and Engineering</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Existence, Uniqueness, and Continuous Dependence</h1>
+<p class="subtitle lead">The Cauchy Problem for First-Order ODEs</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="7f44d34b" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>When we write down a differential equation and impose an initial condition, we are implicitly making several assumptions: that a solution <em>exists</em>, that it is <em>unique</em>, and that it varies <em>continuously</em> with the data we prescribe. These assumptions are so natural that they are easy to take for granted — until we encounter an equation where one of them fails, and the mathematics behaves in a completely unexpected way.</p>
+<p>This section develops the three foundational theorems for the initial value problem (IVP) for first-order ODEs. We aim for both geometric intuition and precise statements, and we trace the rich history that led to these results.</p>
+<hr>
+<section id="the-cauchy-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-cauchy-problem">The Cauchy Problem</h2>
+<p>A <strong>first-order initial value problem</strong> (IVP), also known as the <strong><a href="https://en.wikipedia.org/wiki/Cauchy_problem">Cauchy problem</a></strong> in honor of its principal analyst, consists of an ODE together with a prescribed initial state: <span class="math display">\[
+\begin{cases}
+x' = f(t, x), \\
+x(t_0) = x_0.
+\end{cases}
+\tag{IVP}
+\]</span> The unknown is a function <span class="math inline">\(x = x(t)\)</span> defined on some interval <span class="math inline">\(I\)</span> containing <span class="math inline">\(t_0\)</span>.</p>
+<p><strong>What we want to know:</strong></p>
+<ol type="1">
+<li><strong>Existence.</strong> Does (IVP) have at least one solution?</li>
+<li><strong>Uniqueness.</strong> Does (IVP) have at most one solution?</li>
+<li><strong>Continuous dependence.</strong> If we perturb <span class="math inline">\(x_0\)</span> slightly, does the solution change only slightly?</li>
+</ol>
+<p>These three questions define what it means for a mathematical problem to be <strong><a href="https://en.wikipedia.org/wiki/Well-posed_problem">well-posed</a></strong> in the sense of <a href="https://en.wikipedia.org/wiki/Jacques_Hadamard">Jacques Hadamard</a> (1865–1963), who argued that a physically meaningful problem must have all three properties.</p>
+<hr>
+</section>
+<section id="historical-background" class="level2">
+<h2 class="anchored" data-anchor-id="historical-background">Historical Background</h2>
+<section id="the-pre-history-leibniz-euler-and-bernoulli" class="level3">
+<h3 class="anchored" data-anchor-id="the-pre-history-leibniz-euler-and-bernoulli">The Pre-History: Leibniz, Euler, and Bernoulli</h3>
+<p>The question of whether an ODE has a solution was not even meaningfully posed until the late 17th century, when <a href="https://en.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz">Leibniz</a> and <a href="https://en.wikipedia.org/wiki/Isaac_Newton">Newton</a> invented calculus. For the next century and a half, mathematicians — Leibniz, the Bernoullis, Euler, Lagrange — solved specific ODEs by constructing explicit formulas. The implicit assumption was always: if you can write down an equation, a solution must exist.</p>
+<p><a href="https://en.wikipedia.org/wiki/Leonhard_Euler">Leonhard Euler</a> (1707–1783) took the first step toward a general theory by introducing his numerical method (now called <strong><a href="https://en.wikipedia.org/wiki/Euler_method">Euler’s method</a></strong>) in 1768. Euler’s polygon construction approximates the solution by following the slope field in small steps. This is not just a numerical algorithm — it is a constructive proof that a solution can be <em>approximated</em> arbitrarily well, which was the seed of the later existence proofs.</p>
+</section>
+<section id="cauchy-and-the-first-existence-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="cauchy-and-the-first-existence-theorem">Cauchy and the First Existence Theorem</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Augustin-Louis_Cauchy">Augustin-Louis Cauchy</a></strong> (1789–1857) is the towering figure in the rigorous foundation of analysis. In the 1820s he gave the first <em>proof</em> (using the Cauchy–Lipschitz method of successive approximations) that the IVP has a solution when <span class="math inline">\(f\)</span> is continuous and satisfies a Lipschitz condition. His approach was formalized and extended by <strong><a href="https://en.wikipedia.org/wiki/Rudolf_Lipschitz">Rudolf Lipschitz</a></strong> (1832–1903), which is why the key condition bears both names.</p>
+<p>At the same time, Cauchy introduced <strong><a href="https://en.wikipedia.org/wiki/Complex_analysis">complex analysis</a></strong> as a tool for ODEs, proving existence for analytic <span class="math inline">\(f\)</span> by power series (the <strong>Cauchy–Kovalevskaya theorem</strong>, later extended to PDEs by <a href="https://en.wikipedia.org/wiki/Sofia_Kovalevskaya">Sofia Kovalevskaya</a> in 1875).</p>
+</section>
+<section id="peano-and-existence-without-uniqueness" class="level3">
+<h3 class="anchored" data-anchor-id="peano-and-existence-without-uniqueness">Peano and Existence Without Uniqueness</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Giuseppe_Peano">Giuseppe Peano</a></strong> (1858–1932), better known today for the Peano axioms of arithmetic, proved in 1886 that the IVP has at least one solution whenever <span class="math inline">\(f\)</span> is merely <strong>continuous</strong> — no Lipschitz condition required. Peano’s theorem was a shock: continuity alone guarantees existence, but <em>not</em> uniqueness. His proof used a limiting argument on Euler polygon approximations.</p>
+</section>
+<section id="picards-fixed-point-approach" class="level3">
+<h3 class="anchored" data-anchor-id="picards-fixed-point-approach">Picard’s Fixed-Point Approach</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/%C3%89mile_Picard">Émile Picard</a></strong> (1856–1941) introduced in 1890 the method of <strong>successive approximations</strong> (now called <strong><a href="https://en.wikipedia.org/wiki/Picard%E2%80%93Lindel%C3%B6f_theorem">Picard iteration</a></strong>): start with a constant guess <span class="math inline">\(x_0(t) = x_0\)</span>, then iterate <span class="math display">\[
+x_{n+1}(t) = x_0 + \int_{t_0}^t f\bigl(s,\, x_n(s)\bigr)\,ds.
+\]</span> When <span class="math inline">\(f\)</span> satisfies a Lipschitz condition, this sequence converges to the unique solution — and the proof is both constructive and quantitative. Picard’s approach unified existence and uniqueness into a single elegant argument, and it is essentially the proof used today.</p>
+</section>
+<section id="gronwall-and-continuous-dependence" class="level3">
+<h3 class="anchored" data-anchor-id="gronwall-and-continuous-dependence">Gronwall and Continuous Dependence</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Gronwall%27s_inequality">Thomas Gronwall</a></strong> (1877–1932) proved his fundamental inequality in 1919, providing the technical tool needed to rigorously establish that solutions depend continuously on initial data. The Gronwall inequality has since become indispensable throughout the theory of ODEs, PDEs, and numerical analysis.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Timeline
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Year</th>
+<th>Person</th>
+<th>Contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1768</td>
+<td>Euler</td>
+<td>Euler polygon method — constructive approximation</td>
+</tr>
+<tr class="even">
+<td>1820s</td>
+<td>Cauchy</td>
+<td>First rigorous existence proof (Lipschitz condition)</td>
+</tr>
+<tr class="odd">
+<td>1875</td>
+<td>Kovalevskaya</td>
+<td>Cauchy–Kovalevskaya theorem for PDEs</td>
+</tr>
+<tr class="even">
+<td>1876</td>
+<td>Lipschitz</td>
+<td>Lipschitz condition; sharpened Cauchy’s theorem</td>
+</tr>
+<tr class="odd">
+<td>1886</td>
+<td>Peano</td>
+<td>Existence with continuity alone (no uniqueness)</td>
+</tr>
+<tr class="even">
+<td>1890</td>
+<td>Picard</td>
+<td>Successive approximations — unified existence + uniqueness</td>
+</tr>
+<tr class="odd">
+<td>1919</td>
+<td>Gronwall</td>
+<td>Gronwall inequality — continuous dependence</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-lipschitz-condition" class="level2">
+<h2 class="anchored" data-anchor-id="the-lipschitz-condition">The Lipschitz Condition</h2>
+<p>The hypothesis that makes the Picard–Lindelöf theorem work is the <strong><a href="https://en.wikipedia.org/wiki/Lipschitz_continuity">Lipschitz condition</a></strong>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Definition: Lipschitz Condition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A function <span class="math inline">\(f(t,x)\)</span> satisfies a <strong>Lipschitz condition in <span class="math inline">\(x\)</span></strong> on a region <span class="math inline">\(R = \{(t,x) : |t-t_0| \leq a,\, |x-x_0| \leq b\}\)</span> if there exists a constant <span class="math inline">\(L \geq 0\)</span> (called the <strong>Lipschitz constant</strong>) such that <span class="math display">\[
+|f(t,x_1) - f(t,x_2)| \leq L\,|x_1 - x_2|
+\]</span> for all <span class="math inline">\((t,x_1),\, (t,x_2) \in R\)</span>.</p>
+</div>
+</div>
+<p><strong>Geometric meaning.</strong> The Lipschitz condition says the slope of <span class="math inline">\(f\)</span> as a function of <span class="math inline">\(x\)</span> cannot be arbitrarily steep. Think of it as a bound on how fast the vector field can tilt as you move vertically in the slope field.</p>
+<p><strong>Sufficient condition.</strong> If the partial derivative <span class="math inline">\(\partial f/\partial x\)</span> exists and is bounded on <span class="math inline">\(R\)</span>, say <span class="math inline">\(|\partial f/\partial x| \leq L\)</span>, then <span class="math inline">\(f\)</span> satisfies a Lipschitz condition with constant <span class="math inline">\(L\)</span>. This follows immediately from the Mean Value Theorem: <span class="math display">\[
+|f(t,x_1) - f(t,x_2)| = \left|\frac{\partial f}{\partial x}(t,\xi)\right| |x_1-x_2| \leq L|x_1-x_2|.
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Examples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 45%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(f(t,x)\)</span></th>
+<th style="text-align: center;">Lipschitz in <span class="math inline">\(x\)</span>?</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(f = ax + g(t)\)</span></td>
+<td style="text-align: center;">✓</td>
+<td><span class="math inline">\(\partial f/\partial x = a\)</span> bounded</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f = t\sin(x)\)</span></td>
+<td style="text-align: center;">✓ on bounded region</td>
+<td><span class="math inline">\(|\partial f/\partial x| = |t\cos x| \leq |t|\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f = x^2\)</span></td>
+<td style="text-align: center;">✓ on bounded region</td>
+<td><span class="math inline">\(\partial f/\partial x = 2x\)</span> bounded if <span class="math inline">\(|x| \leq b\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f = \sqrt{|x|}\)</span></td>
+<td style="text-align: center;">✗ near <span class="math inline">\(x=0\)</span></td>
+<td><span class="math inline">\(\partial f/\partial x = 1/(2\sqrt{|x|}) \to \infty\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f = x^{2/3}\)</span></td>
+<td style="text-align: center;">✗ near <span class="math inline">\(x=0\)</span></td>
+<td>derivative unbounded</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The last two examples in the table are the dangerous cases — they are the ones where uniqueness can fail.</p>
+<hr>
+</section>
+<section id="existence-and-uniqueness-the-picardlindelöf-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="existence-and-uniqueness-the-picardlindelöf-theorem">Existence and Uniqueness: The Picard–Lindelöf Theorem</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem (Picard–Lindelöf / Cauchy–Lipschitz)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(f(t,x)\)</span> be <strong>continuous</strong> on the rectangle <span class="math inline">\(R = \{(t,x): |t-t_0| \leq a,\, |x-x_0| \leq b\}\)</span> and satisfy a <strong>Lipschitz condition in <span class="math inline">\(x\)</span></strong> on <span class="math inline">\(R\)</span> with constant <span class="math inline">\(L\)</span>. Let <span class="math inline">\(M = \max_R |f(t,x)|\)</span> and <span class="math inline">\(h = \min\!\left(a,\, b/M\right)\)</span>.</p>
+<p>Then the IVP <span class="math inline">\(x' = f(t,x)\)</span>, <span class="math inline">\(x(t_0) = x_0\)</span> has a <strong>unique</strong> solution <span class="math inline">\(x(t)\)</span> on the interval <span class="math inline">\(|t - t_0| \leq h\)</span>.</p>
+</div>
+</div>
+<p>Several aspects of this statement deserve comment.</p>
+<p><strong>Why <span class="math inline">\(h = \min(a, b/M)\)</span>?</strong> The solution must stay inside the rectangle <span class="math inline">\(R\)</span> where our hypotheses hold. The ODE tells us <span class="math inline">\(|x'| \leq M\)</span>, so starting from <span class="math inline">\(x_0\)</span> the solution can travel at most <span class="math inline">\(M \cdot h\)</span> in the <span class="math inline">\(x\)</span>-direction in time <span class="math inline">\(h\)</span>. To stay within <span class="math inline">\(b\)</span> of <span class="math inline">\(x_0\)</span> we need <span class="math inline">\(Mh \leq b\)</span>, giving <span class="math inline">\(h \leq b/M\)</span>.</p>
+<p><strong>Local vs.&nbsp;global.</strong> The theorem is <em>local</em> — it guarantees a solution on some interval <span class="math inline">\([t_0-h, t_0+h]\)</span>, not necessarily on all of <span class="math inline">\(\mathbb{R}\)</span>. The solution can often be extended further, but may blow up in finite time (see below).</p>
+<p><strong>The role of continuity.</strong> Continuity of <span class="math inline">\(f\)</span> alone (Peano’s theorem) guarantees existence but not uniqueness. The Lipschitz condition is what rules out branching.</p>
+<section id="proof-sketch-picard-iteration" class="level3">
+<h3 class="anchored" data-anchor-id="proof-sketch-picard-iteration">Proof Sketch: Picard Iteration</h3>
+<p>The proof constructs the solution as the limit of the sequence: <span class="math display">\[
+x_0(t) = x_0, \qquad x_{n+1}(t) = x_0 + \int_{t_0}^t f\bigl(s,\, x_n(s)\bigr)\,ds.
+\]</span></p>
+<p><strong>Step 1 — Each iterate stays in <span class="math inline">\(R\)</span>.</strong> By induction and the bound <span class="math inline">\(|x'| \leq M\)</span>, if <span class="math inline">\(x_n\)</span> stays in <span class="math inline">\(R\)</span> then so does <span class="math inline">\(x_{n+1}\)</span> on <span class="math inline">\(|t-t_0| \leq h\)</span>.</p>
+<p><strong>Step 2 — The sequence is Cauchy.</strong> Using the Lipschitz condition repeatedly: <span class="math display">\[
+|x_{n+1}(t) - x_n(t)| \leq \frac{ML^n |t-t_0|^{n+1}}{(n+1)!} \leq \frac{ML^n h^{n+1}}{(n+1)!}.
+\]</span> The right side is the <span class="math inline">\((n+1)\)</span>st term of the Taylor series of <span class="math inline">\(e^{Lh}\)</span>, so the series <span class="math inline">\(\sum_n |x_{n+1} - x_n|\)</span> converges absolutely and uniformly.</p>
+<p><strong>Step 3 — The limit solves the IVP.</strong> Passing the limit through the integral (justified by uniform convergence), <span class="math inline">\(x(t) = \lim_{n\to\infty} x_n(t)\)</span> satisfies the integral equation <span class="math inline">\(x(t) = x_0 + \int_{t_0}^t f(s, x(s))\,ds\)</span>, which is equivalent to the IVP.</p>
+<p><strong>Step 4 — Uniqueness.</strong> If two solutions <span class="math inline">\(x\)</span> and <span class="math inline">\(\tilde{x}\)</span> both satisfy the IVP, their difference satisfies <span class="math inline">\(|x(t) - \tilde{x}(t)| \leq L\int_{t_0}^t |x-\tilde{x}|\,ds\)</span>. The Gronwall inequality then forces <span class="math inline">\(|x(t) - \tilde{x}(t)| = 0\)</span> for all <span class="math inline">\(t\)</span>.</p>
+<p>The key tool in steps 2 and 4 is the Gronwall inequality, discussed below.</p>
+<hr>
+</section>
+</section>
+<section id="picard-iteration-in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="picard-iteration-in-practice">Picard Iteration in Practice</h2>
+<p>Let us watch Picard iteration converge on the simple example <span class="math inline">\(x' = tx\)</span>, <span class="math inline">\(x(0) = 1\)</span>, whose exact solution is <span class="math inline">\(x(t) = e^{t^2/2}\)</span>.</p>
+<p>The iterates are: <span class="math display">\[
+x_0 = 1, \quad
+x_1 = 1 + \frac{t^2}{2}, \quad
+x_2 = 1 + \frac{t^2}{2} + \frac{t^4}{8}, \quad
+x_3 = 1 + \frac{t^2}{2} + \frac{t^4}{8} + \frac{t^6}{48}, \quad \ldots
+\]</span> These are the partial sums of the Taylor series of <span class="math inline">\(e^{t^2/2}\)</span>.</p>
+<div id="cell-fig-picard" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">1.5</span>, <span class="dv">400</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x_exact <span class="op">=</span> np.exp(t_plot<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>iterates <span class="op">=</span> [</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    np.ones_like(t_plot),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">2</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">4</span><span class="op">/</span><span class="dv">8</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">4</span><span class="op">/</span><span class="dv">8</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">6</span><span class="op">/</span><span class="dv">48</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">4</span><span class="op">/</span><span class="dv">8</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">6</span><span class="op">/</span><span class="dv">48</span> <span class="op">+</span> t_plot<span class="op">**</span><span class="dv">8</span><span class="op">/</span><span class="dv">384</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">'$x_0 = 1$'</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>          <span class="vs">r'</span><span class="dv">$</span><span class="vs">x_1 = 1</span><span class="op">+</span><span class="ch">\f</span><span class="vs">rac{t</span><span class="dv">^</span><span class="vs">2}</span><span class="op">{2}</span><span class="dv">$</span><span class="vs">'</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>          <span class="vs">r'</span><span class="dv">$</span><span class="vs">x_2 = 1</span><span class="op">+</span><span class="ch">\f</span><span class="vs">rac{t</span><span class="dv">^</span><span class="vs">2}</span><span class="op">{2}+</span><span class="ch">\f</span><span class="vs">rac{t</span><span class="dv">^</span><span class="vs">4}</span><span class="op">{8}</span><span class="dv">$</span><span class="vs">'</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>          <span class="vs">r'</span><span class="dv">$</span><span class="vs">x_3</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">4 terms</span><span class="kw">)</span><span class="vs">'</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>          <span class="vs">r'</span><span class="dv">$</span><span class="vs">x_4</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">5 terms</span><span class="kw">)</span><span class="vs">'</span>]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.85</span>, <span class="bu">len</span>(iterates)))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> xn, label, color <span class="kw">in</span> <span class="bu">zip</span>(iterates, labels, colors):</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(t_plot, xn, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span>label)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, x_exact, <span class="st">'k--'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'Exact </span><span class="dv">$</span><span class="vs">e</span><span class="dv">^</span><span class="vs">{t</span><span class="dv">^</span><span class="vs">2/2}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Picard iterates converging to $e^{t^2/2}$'</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim(<span class="fl">0.8</span>, <span class="dv">4</span>)<span class="op">;</span> axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> [np.<span class="bu">max</span>(np.<span class="bu">abs</span>(xn <span class="op">-</span> x_exact)) <span class="cf">for</span> xn <span class="kw">in</span> iterates]</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].semilogy(<span class="bu">range</span>(<span class="bu">len</span>(errors)), errors, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                 lw<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Iteration $n$'</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Max error on $[0, 1.5]$'</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Convergence of Picard iteration (log scale)'</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(errors)))</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-picard" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-picard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_04_files/figure-html/fig-picard-output-1.png" width="1632" height="658" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-picard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Picard iteration for <span class="math inline">\(x'=tx\)</span>, <span class="math inline">\(x(0)=1\)</span>. Left: successive approximations <span class="math inline">\(x_0,\ldots,x_4\)</span> (colored) converging to the exact solution <span class="math inline">\(e^{t^2/2}\)</span> (dashed black) on <span class="math inline">\([0,1.5]\)</span>. Right: maximum error of each iterate on <span class="math inline">\([0,1.5]\)</span> — the error decreases rapidly, confirming convergence.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="when-uniqueness-fails-peanos-theorem-and-non-uniqueness" class="level2">
+<h2 class="anchored" data-anchor-id="when-uniqueness-fails-peanos-theorem-and-non-uniqueness">When Uniqueness Fails: Peano’s Theorem and Non-Uniqueness</h2>
+<p>If <span class="math inline">\(f\)</span> is continuous but <em>not</em> Lipschitz at <span class="math inline">\((t_0, x_0)\)</span>, then Peano’s theorem guarantees existence but uniqueness may fail. The canonical example is:</p>
+<p><span class="math display">\[
+x' = x^{2/3}, \qquad x(0) = 0.
+\]</span></p>
+<p>Here <span class="math inline">\(f(t,x) = x^{2/3}\)</span> is continuous everywhere but <span class="math inline">\(\partial f/\partial x = \frac{2}{3}x^{-1/3}\)</span> is unbounded near <span class="math inline">\(x = 0\)</span> — the Lipschitz condition fails at the initial point.</p>
+<p><strong>Two obvious solutions:</strong></p>
+<ul>
+<li><span class="math inline">\(x(t) \equiv 0\)</span> (check: <span class="math inline">\(0' = 0 = 0^{2/3}\)</span> ✓)</li>
+<li><span class="math inline">\(x(t) = (t/3)^3\)</span> (check: <span class="math inline">\(x' = t^2/9\)</span> and <span class="math inline">\(x^{2/3} = (t/3)^2 = t^2/9\)</span> ✓)</li>
+</ul>
+<p><strong>Infinitely many solutions.</strong> For any <span class="math inline">\(a \geq 0\)</span>, the “glued” function <span class="math display">\[
+x_a(t) = \begin{cases} 0 &amp; t &lt; a \\ \left(\dfrac{t-a}{3}\right)^{\!3} &amp; t \geq a \end{cases}
+\]</span> is continuously differentiable and satisfies the IVP. There is a one-parameter family of solutions — uniqueness fails completely.</p>
+<div id="cell-fig-nonunique" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">2.5</span>, <span class="dv">500</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Trivial solution</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, np.zeros_like(t_plot), color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">'$x(t) </span><span class="er">\</span><span class="st">equiv 0$'</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Family of solutions</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>a_vals <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.4</span>, <span class="fl">0.8</span>, <span class="fl">1.2</span>, <span class="fl">1.8</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.plasma(np.linspace(<span class="fl">0.15</span>, <span class="fl">0.85</span>, <span class="bu">len</span>(a_vals)))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, color <span class="kw">in</span> <span class="bu">zip</span>(a_vals, colors):</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    x_a <span class="op">=</span> np.where(t_plot <span class="op">&gt;=</span> a, ((t_plot <span class="op">-</span> a)<span class="op">/</span><span class="dv">3</span>)<span class="op">**</span><span class="dv">3</span>, <span class="fl">0.0</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    lbl <span class="op">=</span> <span class="ss">f'$x_</span><span class="ch">{{</span><span class="ss">a</span><span class="ch">}}</span><span class="ss">(t)$, $a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$'</span> <span class="cf">if</span> a <span class="op">==</span> <span class="fl">0.0</span> <span class="cf">else</span> <span class="ss">f'$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$'</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, x_a, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">0</span>, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="dv">10</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'IC $(0,0)$'</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Non-uniqueness: </span><span class="dv">$</span><span class="vs">x' = x</span><span class="dv">^</span><span class="vs">{2/3}</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs"> — infinitely many solutions"</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">0.2</span>, <span class="fl">1.5</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-nonunique" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nonunique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_04_files/figure-html/fig-nonunique-output-1.png" width="1181" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nonunique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Non-uniqueness for <span class="math inline">\(x' = x^{2/3}\)</span>, <span class="math inline">\(x(0)=0\)</span>. All colored curves are valid solutions of the same IVP — the Lipschitz condition fails at the origin and uniqueness is lost. Each solution stays at zero until time <span class="math inline">\(a\)</span>, then follows the cubic branch <span class="math inline">\((t-a)^3/27\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Geometric Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The slope field for <span class="math inline">\(x'=x^{2/3}\)</span> has slope <span class="math inline">\(0\)</span> along the entire <span class="math inline">\(t\)</span>-axis (since <span class="math inline">\(0^{2/3}=0\)</span>), and the slope increases as <span class="math inline">\(|x|\)</span> increases. A solution can travel along the <span class="math inline">\(t\)</span>-axis (zero slope) indefinitely, or leave it at any time — the vector field does not “push” the solution away from <span class="math inline">\(x=0\)</span> strongly enough to enforce a unique trajectory.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="when-existence-fails-finite-time-blow-up" class="level2">
+<h2 class="anchored" data-anchor-id="when-existence-fails-finite-time-blow-up">When Existence Fails: Finite-Time Blow-Up</h2>
+<p>The Picard–Lindelöf theorem guarantees a solution on <em>some</em> interval <span class="math inline">\([t_0-h, t_0+h]\)</span>. It does not guarantee a solution for all time. A solution may cease to exist at a finite time — it <strong>blows up</strong>.</p>
+<p>The classic example is: <span class="math display">\[
+x' = x^2, \qquad x(0) = 1 \quad\Longrightarrow\quad x(t) = \frac{1}{1-t}.
+\]</span> The solution is uniquely defined on <span class="math inline">\((-\infty, 1)\)</span> but <span class="math inline">\(x(t) \to +\infty\)</span> as <span class="math inline">\(t \to 1^-\)</span>. There is no way to extend the solution past <span class="math inline">\(t = 1\)</span>.</p>
+<p>More generally, for <span class="math inline">\(x' = x^p\)</span> with <span class="math inline">\(p &gt; 1\)</span> and <span class="math inline">\(x(0) = x_0 &gt; 0\)</span>: <span class="math display">\[
+x(t) = \frac{x_0}{\bigl(1 - (p-1)x_0^{p-1}t\bigr)^{1/(p-1)}},
+\qquad t &lt; t^* = \frac{1}{(p-1)x_0^{p-1}}.
+\]</span></p>
+<div id="cell-fig-blowup" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p_vals <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.Reds(np.linspace(<span class="fl">0.4</span>, <span class="fl">0.9</span>, <span class="bu">len</span>(p_vals)))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p, color <span class="kw">in</span> <span class="bu">zip</span>(p_vals, colors):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    t_star <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> ((p<span class="op">-</span><span class="dv">1</span>) <span class="op">*</span> x0<span class="op">**</span>(p<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_star <span class="op">*</span> <span class="fl">0.97</span>, <span class="dv">400</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    x_sol <span class="op">=</span> x0 <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> (p<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>x0<span class="op">**</span>(p<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>t_plot)<span class="op">**</span>(<span class="dv">1</span><span class="op">/</span>(p<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, x_sol, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.2</span>, label<span class="op">=</span><span class="ss">f'$p=</span><span class="sc">{</span>p<span class="sc">}</span><span class="ss">$, $t^*=</span><span class="sc">{</span>t_star<span class="sc">:.3f}</span><span class="ss">$'</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    ax.axvline(t_star, color<span class="op">=</span>color, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">15</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Finite-time blow-up: </span><span class="dv">$</span><span class="vs">x' = x</span><span class="dv">^</span><span class="vs">p</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-blowup" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-blowup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_04_files/figure-html/fig-blowup-output-1.png" width="1182" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-blowup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Finite-time blow-up for <span class="math inline">\(x'=x^p\)</span> with <span class="math inline">\(x(0)=1\)</span>. Each solution exists only up to a finite blow-up time <span class="math inline">\(t^* = 1/(p-1)\)</span> (marked with dashed vertical lines). Solutions blow up faster for larger <span class="math inline">\(p\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Maximal Interval of Existence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>maximal interval of existence</strong> <span class="math inline">\((\alpha, \beta)\)</span> is the largest open interval on which the solution is defined. If <span class="math inline">\(\beta &lt; \infty\)</span>, then necessarily <span class="math inline">\(|x(t)| \to \infty\)</span> as <span class="math inline">\(t \to \beta^-\)</span> (the solution blows up). A solution that exists for all <span class="math inline">\(t \in \mathbb{R}\)</span> is called a <strong>global solution</strong>.</p>
+<p>For linear ODEs <span class="math inline">\(x' + p(t)x = q(t)\)</span> with continuous coefficients, solutions always exist globally on any interval where <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are continuous — blow-up is a purely nonlinear phenomenon.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="peanos-existence-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="peanos-existence-theorem">Peano’s Existence Theorem</h2>
+<p>When the Lipschitz condition is dropped, we lose uniqueness but retain existence:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem (Peano, 1886)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(f(t,x)\)</span> is <strong>continuous</strong> on the rectangle <span class="math inline">\(R = \{|t-t_0| \leq a,\, |x-x_0| \leq b\}\)</span>, then the IVP <span class="math inline">\(x' = f(t,x)\)</span>, <span class="math inline">\(x(t_0) = x_0\)</span> has <strong>at least one</strong> solution on <span class="math inline">\(|t-t_0| \leq h\)</span>, where <span class="math inline">\(h = \min(a, b/M)\)</span> and <span class="math inline">\(M = \max_R |f|\)</span>.</p>
+</div>
+</div>
+<p><strong>Proof idea.</strong> Construct Euler polygon approximations <span class="math inline">\(x^{(n)}\)</span> with step size <span class="math inline">\(1/n\)</span>. Each <span class="math inline">\(x^{(n)}\)</span> is continuous, uniformly bounded, and equicontinuous (slopes bounded by <span class="math inline">\(M\)</span>). The <strong><a href="https://en.wikipedia.org/wiki/Arzel%C3%A0%E2%80%93Ascoli_theorem">Arzelà–Ascoli theorem</a></strong> guarantees a uniformly convergent subsequence, and the limit is a solution.</p>
+<p>Peano’s theorem shows that continuity is the minimal condition for existence. The gap between Peano and Picard–Lindelöf — the Lipschitz condition — is precisely what separates existence from uniqueness.</p>
+<hr>
+</section>
+<section id="continuous-dependence-on-initial-conditions" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-dependence-on-initial-conditions">Continuous Dependence on Initial Conditions</h2>
+<p>The third pillar of well-posedness asks: if we perturb <span class="math inline">\(x_0\)</span> by a small amount <span class="math inline">\(\delta\)</span>, does the solution change by at most a small amount (depending continuously on <span class="math inline">\(\delta\)</span>)?</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem (Continuous Dependence)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under the hypotheses of the Picard–Lindelöf theorem, let <span class="math inline">\(x(t)\)</span> be the solution to the IVP with initial condition <span class="math inline">\(x(t_0) = x_0\)</span>, and let <span class="math inline">\(\tilde{x}(t)\)</span> be the solution with <span class="math inline">\(\tilde{x}(t_0) = \tilde{x}_0\)</span>. Then for <span class="math inline">\(|t - t_0| \leq h\)</span>: <span class="math display">\[
+|x(t) - \tilde{x}(t)| \leq |\tilde{x}_0 - x_0|\,e^{L|t-t_0|}.
+\]</span> In particular, if <span class="math inline">\(|\tilde{x}_0 - x_0| &lt; \delta\)</span>, then <span class="math inline">\(|x(t) - \tilde{x}(t)| &lt; \delta\,e^{Lh}\)</span> — a bound proportional to <span class="math inline">\(\delta\)</span>.</p>
+</div>
+</div>
+<p>The exponential factor <span class="math inline">\(e^{L|t-t_0|}\)</span> says that solutions can diverge — small initial differences can grow — but they grow at most <em>exponentially</em>, and on a bounded time interval the bound is finite.</p>
+<section id="the-gronwall-inequality" class="level3">
+<h3 class="anchored" data-anchor-id="the-gronwall-inequality">The Gronwall Inequality</h3>
+<p>The key technical tool for continuous dependence (and for the uniqueness part of Picard–Lindelöf) is the following remarkable inequality.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Gronwall’s Inequality (1919)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(u(t) \geq 0\)</span> be continuous on <span class="math inline">\([t_0, T]\)</span>, and suppose <span class="math display">\[
+u(t) \leq \alpha + \beta \int_{t_0}^t u(s)\,ds
+\]</span> for constants <span class="math inline">\(\alpha \geq 0\)</span>, <span class="math inline">\(\beta \geq 0\)</span>. Then <span class="math display">\[
+u(t) \leq \alpha\,e^{\beta(t-t_0)} \quad \text{for all } t \in [t_0, T].
+\]</span></p>
+</div>
+</div>
+<p><strong>How it proves continuous dependence.</strong> Let <span class="math inline">\(u(t) = |x(t) - \tilde{x}(t)|\)</span>. Subtracting the integral equations for <span class="math inline">\(x\)</span> and <span class="math inline">\(\tilde{x}\)</span> and using the Lipschitz condition: <span class="math display">\[
+u(t) \leq |\tilde{x}_0 - x_0| + L\int_{t_0}^t u(s)\,ds.
+\]</span> This is exactly Gronwall’s inequality with <span class="math inline">\(\alpha = |\tilde{x}_0 - x_0|\)</span> and <span class="math inline">\(\beta = L\)</span>, giving <span class="math inline">\(u(t) \leq |\tilde{x}_0 - x_0|\,e^{L(t-t_0)}\)</span>.</p>
+<div id="cell-fig-cont-dep" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>L_val <span class="op">=</span> <span class="fl">1.0</span>   <span class="co"># Lipschitz constant for f(t,x) = x</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>x0_base <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>delta_vals <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.Blues(np.linspace(<span class="fl">0.4</span>, <span class="fl">0.85</span>, <span class="bu">len</span>(delta_vals)))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>x_base <span class="op">=</span> x0_base <span class="op">*</span> np.exp(t_plot)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, x_base, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0_base<span class="sc">}</span><span class="ss">$ (base)'</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].fill_between(t_plot,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                     (x0_base <span class="op">-</span> <span class="fl">0.1</span>)<span class="op">*</span>np.exp(t_plot),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                     (x0_base <span class="op">+</span> <span class="fl">0.1</span>)<span class="op">*</span>np.exp(t_plot),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                     alpha<span class="op">=</span><span class="fl">0.15</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, label<span class="op">=</span><span class="st">'$</span><span class="ch">\\</span><span class="st">pm</span><span class="ch">\\</span><span class="st">delta e^t$ tube ($</span><span class="ch">\\</span><span class="st">delta=0.1$)'</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> delta, color <span class="kw">in</span> <span class="bu">zip</span>(delta_vals, colors):</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    x_pert <span class="op">=</span> (x0_base <span class="op">+</span> delta) <span class="op">*</span> np.exp(t_plot)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(t_plot, x_pert, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="ss">f'$x_0 + </span><span class="ch">\\</span><span class="ss">delta$, $</span><span class="ch">\\</span><span class="ss">delta=</span><span class="sc">{</span>delta<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"Continuous dependence: </span><span class="dv">$</span><span class="vs">x'=x</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylim(<span class="dv">0</span>, <span class="dv">25</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> delta, color <span class="kw">in</span> <span class="bu">zip</span>(delta_vals, colors):</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    diff <span class="op">=</span> np.<span class="bu">abs</span>((x0_base <span class="op">+</span> delta)<span class="op">*</span>np.exp(t_plot) <span class="op">-</span> x_base)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    gronwall_bound <span class="op">=</span> delta <span class="op">*</span> np.exp(L_val <span class="op">*</span> t_plot)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].semilogy(t_plot, diff, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$</span><span class="ch">\\</span><span class="ss">delta=</span><span class="sc">{</span>delta<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].semilogy(t_plot, gronwall_bound, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$|x(t) - </span><span class="ch">\\</span><span class="st">tilde</span><span class="sc">{x}</span><span class="st">(t)|$'</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Solution difference vs. Gronwall bound (dotted)'</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-cont-dep" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cont-dep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_04_files/figure-html/fig-cont-dep-output-1.png" width="1632" height="658" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cont-dep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Continuous dependence for <span class="math inline">\(x'=x\)</span>, <span class="math inline">\(x(0)=x_0\)</span>. Left: solutions from three nearby initial conditions — small initial separation grows but remains controlled on any bounded interval. Right: the difference between each perturbed solution and the base solution <span class="math inline">\(x_0=1\)</span> matches the Gronwall bound <span class="math inline">\(\delta e^t\)</span> exactly (as expected since <span class="math inline">\(L=1\)</span> for this linear ODE).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sensitivity-to-initial-conditions-and-chaos" class="level2">
+<h2 class="anchored" data-anchor-id="sensitivity-to-initial-conditions-and-chaos">Sensitivity to Initial Conditions and Chaos</h2>
+<p>The exponential factor <span class="math inline">\(e^{L(t-t_0)}\)</span> in the continuous dependence bound is sharp: even for the simple linear equation <span class="math inline">\(x' = x\)</span>, the separation between two solutions starting <span class="math inline">\(\delta\)</span> apart grows as <span class="math inline">\(\delta e^t\)</span>. On long time intervals this can be enormous.</p>
+<p>For nonlinear systems, the effective Lipschitz constant can be large, or can vary in time, leading to <strong>sensitive dependence on initial conditions</strong> — the hallmark of <strong><a href="https://en.wikipedia.org/wiki/Chaos_theory">chaos</a></strong>. In a chaotic system, two trajectories starting arbitrarily close diverge exponentially fast, making long-term prediction practically impossible.</p>
+<p>The quantitative measure of this divergence is the <strong><a href="https://en.wikipedia.org/wiki/Lyapunov_exponent">Lyapunov exponent</a></strong> <span class="math inline">\(\lambda\)</span>: on average, nearby trajectories separate as <span class="math inline">\(e^{\lambda t}\)</span>. A positive Lyapunov exponent signals chaos. Famous chaotic systems include the <a href="https://en.wikipedia.org/wiki/Lorenz_system">Lorenz equations</a> (a simplified model of atmospheric convection) and the <a href="https://en.wikipedia.org/wiki/Double_pendulum">double pendulum</a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The existence and uniqueness theorem still holds for chaotic systems — the IVP has a unique solution. Chaos is not about non-uniqueness; it is about the <em>sensitivity</em> of that unique solution to the initial condition. Uniqueness and chaos are perfectly compatible.</p>
+</div>
+</div>
+<div id="cell-fig-sensitive" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r_val <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>f_log <span class="op">=</span> <span class="kw">lambda</span> t, x: [r_val <span class="op">*</span> x[<span class="dv">0</span>] <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x[<span class="dv">0</span>])]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>x0_base <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>epsilon <span class="op">=</span> <span class="fl">1e-4</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">8</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">800</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>sol_base <span class="op">=</span> solve_ivp(f_log, t_span, [x0_base],       t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>sol_pert <span class="op">=</span> solve_ivp(f_log, t_span, [x0_base<span class="op">+</span>epsilon], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_eval, sol_base.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>,   label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0_base<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_eval, sol_pert.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'crimson'</span>,   lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="ss">f'$x_0+</span><span class="ch">\\</span><span class="ss">varepsilon$, $</span><span class="ch">\\</span><span class="ss">varepsilon=10^</span><span class="ch">{{</span><span class="ss">-4</span><span class="ch">}}</span><span class="ss">$'</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"Nonlinear ODE </span><span class="dv">$</span><span class="vs">x'=3x</span><span class="kw">(</span><span class="vs">1-x</span><span class="kw">)</span><span class="dv">$</span><span class="vs">: two nearby solutions"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> np.<span class="bu">abs</span>(sol_pert.y[<span class="dv">0</span>] <span class="op">-</span> sol_base.y[<span class="dv">0</span>])</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].semilogy(t_eval, diff <span class="op">+</span> <span class="fl">1e-16</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$|x(t)-</span><span class="ch">\\</span><span class="st">tilde</span><span class="sc">{x}</span><span class="st">(t)|$'</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Separation between solutions (log scale)'</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sensitive" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sensitive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_04_files/figure-html/fig-sensitive-output-1.png" width="1631" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sensitive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Sensitive dependence: logistic ODE <span class="math inline">\(x'=3x(1-x)\)</span> from two initial conditions differing by <span class="math inline">\(\varepsilon = 10^{-4}\)</span>. On a short interval both solutions track each other closely; on a longer interval they diverge noticeably, illustrating how even well-posed, unique solutions can be sensitive to tiny perturbations in a nonlinear setting.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="why-these-theorems-matter" class="level2">
+<h2 class="anchored" data-anchor-id="why-these-theorems-matter">Why These Theorems Matter</h2>
+<section id="in-mathematics" class="level3">
+<h3 class="anchored" data-anchor-id="in-mathematics">In Mathematics</h3>
+<p>The existence and uniqueness theorems are the bedrock of the entire theory of ODEs.</p>
+<ul>
+<li><p>They justify the <strong>general solution</strong> concept: a 1st-order ODE has a one-parameter family of solutions because a unique solution is determined by one piece of initial data. Without uniqueness, the notion of a “general solution” containing all solutions would be meaningless.</p></li>
+<li><p>They underpin <strong>qualitative theory</strong>: phase plane analysis, stability theory, and bifurcation theory all assume solutions are unique, so trajectories cannot cross in the phase plane.</p></li>
+<li><p>They drive <strong>numerical methods</strong>: Euler’s method, Runge–Kutta, and all modern ODE solvers are justified by the fact that they approximate a unique, continuously dependent solution. Error bounds for numerical methods are derived using the Gronwall inequality.</p></li>
+<li><p>They extend to <strong>higher-order ODEs and systems</strong>: a 2nd-order ODE requires two initial conditions for a unique solution; an <span class="math inline">\(n\times n\)</span> system requires <span class="math inline">\(n\)</span> initial conditions. The same Picard–Lindelöf framework applies.</p></li>
+</ul>
+</section>
+<section id="in-physics-and-engineering" class="level3">
+<h3 class="anchored" data-anchor-id="in-physics-and-engineering">In Physics and Engineering</h3>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Determinism
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In classical mechanics, Newton’s second law <span class="math inline">\(m\ddot{\mathbf{r}} = \mathbf{F}(\mathbf{r}, \dot{\mathbf{r}}, t)\)</span> is a system of ODEs. Uniqueness is the mathematical statement of <strong>determinism</strong>: knowing the position and velocity of every particle at one instant completely determines all past and future motion. This was the philosophical foundation of the Laplacian worldview — the universe as a clockwork whose future is in principle fully predictable.</p>
+</div>
+</div>
+<ul>
+<li><p><strong>Control systems.</strong> A controller can only stabilize a system if the system responds predictably to inputs. Continuous dependence on initial conditions guarantees this predictability on finite time intervals.</p></li>
+<li><p><strong>Simulation and modeling.</strong> Every numerical simulation of a physical system — weather forecasting, circuit simulation, structural analysis, fluid dynamics — rests on the assumption that the governing equations are well-posed. If existence or uniqueness failed, no numerical method could converge to a meaningful answer.</p></li>
+<li><p><strong>Sensitivity analysis and uncertainty quantification.</strong> The Gronwall bound provides explicit estimates for how initial measurement errors propagate through a simulation. These estimates are used in engineering to determine required measurement precision.</p></li>
+<li><p><strong>The limits of predictability.</strong> For chaotic systems the Gronwall bound is exponentially growing, which means initial measurement errors amplify exponentially. This is why weather forecasts are reliable for a few days but not for months — not because solutions fail to exist or be unique, but because the exponential sensitivity makes the unique solution practically unpredictable from imprecise data.</p></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Theorem</th>
+<th>Hypothesis</th>
+<th>Conclusion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Peano (1886)</strong></td>
+<td><span class="math inline">\(f\)</span> continuous</td>
+<td>At least one solution exists locally</td>
+</tr>
+<tr class="even">
+<td><strong>Picard–Lindelöf</strong></td>
+<td><span class="math inline">\(f\)</span> continuous + Lipschitz in <span class="math inline">\(x\)</span></td>
+<td>Unique solution exists locally</td>
+</tr>
+<tr class="odd">
+<td><strong>Continuous dependence</strong></td>
+<td><span class="math inline">\(f\)</span> continuous + Lipschitz in <span class="math inline">\(x\)</span></td>
+<td>Solutions vary continuously with <span class="math inline">\(x_0\)</span>; bound <span class="math inline">\(\delta e^{L(t-t_0)}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Global existence</strong></td>
+<td><span class="math inline">\(f\)</span> linear in <span class="math inline">\(x\)</span></td>
+<td>Solutions exist on entire interval of continuity of <span class="math inline">\(p(t)\)</span>, <span class="math inline">\(q(t)\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Key Takeaways
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Continuity of <span class="math inline">\(f\)</span></strong> is sufficient for existence (Peano), but not for uniqueness.</li>
+<li><strong>Lipschitz continuity of <span class="math inline">\(f\)</span> in <span class="math inline">\(x\)</span></strong> — equivalently, boundedness of <span class="math inline">\(\partial f/\partial x\)</span> — is the additional condition that gives uniqueness.</li>
+<li><strong>Uniqueness fails</strong> when <span class="math inline">\(\partial f/\partial x\)</span> is unbounded near the initial point (e.g., <span class="math inline">\(f = x^{2/3}\)</span> at <span class="math inline">\(x=0\)</span>).</li>
+<li><strong>Existence fails globally</strong> for nonlinear equations: solutions can blow up in finite time. This never happens for linear equations.</li>
+<li><strong>Continuous dependence</strong> is guaranteed on any bounded interval, with an explicit exponential bound derived from the Gronwall inequality.</li>
+<li><strong>Chaos</strong> is consistent with well-posedness: unique solutions can still be exponentially sensitive to initial conditions.</li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="39c40e01" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
