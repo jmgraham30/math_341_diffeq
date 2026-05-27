@@ -1,0 +1,677 @@
+---
+title: "One-Dimensional Dynamical Systems"
+subtitle: "MATH 341 — Notes 3"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    chalkboard: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 3"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover Today
+
+:::: {.columns}
+::: {.column width="60%"}
+1. **Autonomous ODEs** $x'=f(x)$ as one-dimensional dynamical systems
+
+2. **Equilibrium solutions** and stability via the **phase line**
+
+3. **Linearization** — the algebraic stability criterion $f'(x^*)$
+
+4. **Bifurcations** — qualitative changes in equilibrium structure
+
+5. **Bifurcation diagrams** for the three classical cases
+:::
+::: {.column width="40%"}
+::: {.callout-note}
+**Section 1.5** of @logan2015first.
+:::
+:::
+::::
+
+
+# Autonomous Equations {background-color="#2c3e50"}
+
+## The Setup
+
+An **[autonomous ODE](https://en.wikipedia.org/wiki/Autonomous_system_(mathematics))** has no explicit dependence on $t$:
+$$x' = f(x).$$
+
+The rate of change of $x$ depends only on the **current state** $x$, not on *when* that state occurs.
+
+. . .
+
+**Key structural property.** The slope field is **constant along every horizontal line** $x = c$.
+
+$$\text{slope} = f(x) \quad \longrightarrow \quad \text{same value for all } t$$
+
+. . .
+
+This means the entire qualitative story lives on the **$x$-axis alone** — we never need to solve the ODE to understand the long-term behavior.
+
+**Examples:** population size, temperature, voltage, chemical concentration.
+
+
+## Equilibrium Solutions
+
+::: {.callout-important}
+## Definition
+An **equilibrium** (steady state, fixed point) of $x' = f(x)$ is a constant solution $x(t) \equiv x^*$ satisfying
+$$f(x^*) = 0.$$
+Equilibria are the **zeros of $f$** — where the slope field is horizontal.
+:::
+
+. . .
+
+**Geometric picture.** In the $tx$-plane, an equilibrium is a horizontal line. On the phase line it is a single point.
+
+| If $f(x) > 0$ near $x^*$ | If $f(x) < 0$ near $x^*$ |
+|:---:|:---:|
+| Solutions increase | Solutions decrease |
+| Flow moves right $\rightarrow$ | Flow moves left $\leftarrow$ |
+
+
+## The Phase Line
+
+::: {.callout-important}
+## Algorithm: Constructing the Phase Line
+1. Solve $f(x^*)=0$ — mark equilibria on the $x$-axis.
+2. Determine the **sign of $f(x)$** on each interval:
+   - $f>0$: arrow points **right** $\rightarrow$ (increasing)
+   - $f<0$: arrow points **left** $\leftarrow$ (decreasing)
+3. Draw flow arrows.
+:::
+
+. . .
+
+**Reading stability from the phase line:**
+
+| Arrows | Equilibrium type |
+|---|:---:|
+| Both point **toward** $x^*$ | Stable (asymptotically stable) |
+| Both point **away** from $x^*$ | Unstable |
+| One toward, one away | Semi-stable |
+
+
+## Stability Definitions
+
+::: {.callout-important}
+## Stability
+- **Stable**: solutions starting near $x^*$ converge to $x^*$ as $t\to\infty$
+- **Unstable**: solutions starting near $x^*$ move away from $x^*$
+- **Semi-stable**: solutions approach from one side, diverge from the other
+:::
+
+. . .
+
+```{python}
+#| echo: false
+#| fig-height: 1.6
+
+fig, ax = plt.subplots(figsize=(10, 1.4))
+ax.axhline(0, color='k', lw=1.2)
+ax.set_xlim(-0.5, 10.5); ax.set_ylim(-0.5, 0.7); ax.axis('off')
+
+# Stable
+ax.plot(2, 0, 'o', color='seagreen', markersize=14, zorder=5)
+ax.text(2, 0.35, 'Stable', ha='center', fontsize=11, color='seagreen', fontweight='bold')
+for xm, dx in [(0.7, 0.4), (3.3, -0.4)]:
+    ax.annotate('', xy=(xm+dx, 0), xytext=(xm, 0),
+                arrowprops=dict(arrowstyle='->', color='seagreen', lw=2))
+
+# Unstable
+ax.plot(5, 0, 'o', color='crimson', markersize=14, markerfacecolor='white',
+        markeredgewidth=2.5, zorder=5)
+ax.text(5, 0.35, 'Unstable', ha='center', fontsize=11, color='crimson', fontweight='bold')
+for xm, dx in [(3.7, -0.4), (6.3, 0.4)]:
+    ax.annotate('', xy=(xm+dx, 0), xytext=(xm, 0),
+                arrowprops=dict(arrowstyle='->', color='crimson', lw=2))
+
+# Semi-stable
+ax.plot(8, 0, 's', color='darkorange', markersize=14, zorder=5)
+ax.text(8, 0.35, 'Semi-stable', ha='center', fontsize=11, color='darkorange', fontweight='bold')
+ax.annotate('', xy=(8-0.4, 0), xytext=(6.8, 0),
+            arrowprops=dict(arrowstyle='->', color='darkorange', lw=2))
+ax.annotate('', xy=(9.5, 0), xytext=(8.2, 0),
+            arrowprops=dict(arrowstyle='->', color='darkorange', lw=2))
+plt.tight_layout(); plt.show()
+```
+
+
+# Phase Line Examples {background-color="#2c3e50"}
+
+## Example 1 — Logistic Equation
+
+$$x' = rx\!\left(1-\frac{x}{K}\right), \quad r=1,\; K=4$$
+
+**Equilibria:** $x^*=0$ and $x^*=4$.
+
+**Sign analysis:** $f<0$ for $x<0$; $\;f>0$ for $0<x<4$; $\;f<0$ for $x>4$.
+
+```{python}
+#| label: fig-logistic-slides
+#| fig-height: 3.8
+
+r_val, K_val = 1.0, 4.0
+f_log = lambda x: r_val * x * (1 - x / K_val)
+x_arr = np.linspace(-0.5, 6.5, 400)
+f_arr = f_log(x_arr)
+
+fig = plt.figure(figsize=(10, 3.6))
+gs  = fig.add_gridspec(2, 2, width_ratios=[1.8, 1], hspace=0.6, wspace=0.35)
+ax_f  = fig.add_subplot(gs[0, 0])
+ax_pl = fig.add_subplot(gs[1, 0])
+ax_t  = fig.add_subplot(gs[:, 1])
+
+ax_f.plot(x_arr, f_arr, color='steelblue', lw=2)
+ax_f.axhline(0, color='k', lw=0.8)
+ax_f.fill_between(x_arr, 0, f_arr, where=(f_arr>0), alpha=0.15, color='seagreen', label='$f>0$')
+ax_f.fill_between(x_arr, 0, f_arr, where=(f_arr<0), alpha=0.15, color='crimson',  label='$f<0$')
+ax_f.plot(0, 0, 'ko', markersize=7); ax_f.plot(K_val, 0, 'ko', markersize=7)
+ax_f.set_xlabel('$x$'); ax_f.set_ylabel('$f(x)$')
+ax_f.set_title(r"$f(x)=x(1-x/4)$"); ax_f.legend(fontsize=7); ax_f.set_xlim(-0.5, 6.5)
+
+ax_pl.axhline(0, color='k', lw=1.2)
+ax_pl.plot(0,     0, 'o', markersize=11, color='crimson',  zorder=5)
+ax_pl.plot(K_val, 0, 'o', markersize=11, color='seagreen', zorder=5)
+ax_pl.annotate('', xy=(-0.3,0), xytext=(0.3,0), arrowprops=dict(arrowstyle='<-', color='crimson', lw=2))
+for xm in [1.5, 2.5]:
+    ax_pl.annotate('', xy=(xm+0.5,0), xytext=(xm-0.5,0), arrowprops=dict(arrowstyle='->', color='seagreen', lw=2))
+for xm in [5.0, 5.8]:
+    ax_pl.annotate('', xy=(xm-0.5,0), xytext=(xm+0.5,0), arrowprops=dict(arrowstyle='<-', color='crimson', lw=2))
+ax_pl.text(0,   0.25, '$x^*=0$ (unstable)', ha='center', fontsize=8, color='crimson')
+ax_pl.text(K_val, 0.25, '$x^*=4$ (stable)', ha='center', fontsize=8, color='seagreen')
+ax_pl.set_xlim(-0.8, 7); ax_pl.set_ylim(-0.6, 0.7); ax_pl.set_yticks([]); ax_pl.set_xlabel('$x$')
+
+t_eval = np.linspace(0, 8, 300)
+f_ode  = lambda t, x: [r_val*x[0]*(1-x[0]/K_val)]
+for x0, color in zip([0.3,1.0,2.0,3.0,6.0,8.0], plt.cm.viridis(np.linspace(0.1,0.9,6))):
+    sol = solve_ivp(f_ode, (0,8), [x0], t_eval=t_eval, max_step=0.05)
+    ax_t.plot(sol.t, sol.y[0], color=color, lw=1.8, label=f'$x_0={x0}$')
+ax_t.axhline(K_val, color='seagreen', ls='--', lw=1.5)
+ax_t.axhline(0,     color='crimson',  ls='--', lw=1.0)
+ax_t.set_xlabel('$t$'); ax_t.set_ylabel('$x(t)$'); ax_t.legend(fontsize=6, ncol=2)
+plt.tight_layout(); plt.show()
+```
+
+
+## Example 2 — Multiple Equilibria: $x'=x^3-x$
+
+$$f(x)=x(x-1)(x+1), \quad \text{equilibria: } x^*=-1,\,0,\,1$$
+
+| Equilibrium | $f'(x^*)=3(x^*)^2-1$ | Stability |
+|:---:|:---:|:---:|
+| $x^*=-1$ | $+2>0$ | Unstable |
+| $x^*=0$ | $-1<0$ | **Stable** |
+| $x^*=1$ | $+2>0$ | Unstable |
+
+```{python}
+#| label: fig-cubic-slides
+#| fig-height: 3.2
+
+f_cub = lambda x: x**3 - x
+x_arr = np.linspace(-1.6, 1.6, 400); f_arr2 = f_cub(x_arr)
+fig, axes = plt.subplots(1, 3, figsize=(10, 3.0))
+
+axes[0].plot(x_arr, f_arr2, color='steelblue', lw=2)
+axes[0].axhline(0, color='k', lw=0.8)
+axes[0].fill_between(x_arr, 0, f_arr2, where=(f_arr2>0), alpha=0.15, color='crimson')
+axes[0].fill_between(x_arr, 0, f_arr2, where=(f_arr2<0), alpha=0.15, color='steelblue')
+for xe in [-1,0,1]: axes[0].plot(xe, 0, 'ko', markersize=7, zorder=5)
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)$'); axes[0].set_title(r"$f(x)=x^3-x$")
+
+ax2 = axes[1]; ax2.axhline(0, color='k', lw=1.2)
+for xe, sc in zip([-1,0,1], ['crimson','seagreen','crimson']): ax2.plot(xe, 0, 'o', markersize=11, color=sc, zorder=5)
+arrow_cfg = [(-1.35,'crimson','->'),(-0.5,'steelblue','<-'),(0.5,'steelblue','->'),(1.35,'crimson','<-')]
+for xm, color, style in arrow_cfg:
+    ax2.annotate('', xy=(xm+0.2*(-1 if '<-' in style else 1),0), xytext=(xm,0),
+                 arrowprops=dict(arrowstyle='->', color=color, lw=2))
+ax2.text(-1,0.28,'unstable',ha='center',fontsize=7,color='crimson')
+ax2.text(0, 0.28,'stable',  ha='center',fontsize=7,color='seagreen')
+ax2.text(1, 0.28,'unstable',ha='center',fontsize=7,color='crimson')
+ax2.set_xlim(-1.8,1.8); ax2.set_ylim(-0.5,0.5); ax2.set_yticks([]); ax2.set_xlabel('$x$'); ax2.set_title('Phase line')
+
+f_ode2 = lambda t, x: [x[0]**3-x[0]]
+for x0, color in zip([-1.3,-0.8,-0.3,0.3,0.8,1.3], plt.cm.coolwarm(np.linspace(0.05,0.95,6))):
+    sol = solve_ivp(f_ode2,(0,3),[x0],t_eval=np.linspace(0,3,300),max_step=0.01,events=lambda t,y:abs(y[0])-8)
+    axes[2].plot(sol.t, np.clip(sol.y[0],-4,4), color=color, lw=1.8, label=f'$x_0={x0}$')
+for xe in [-1,0,1]: axes[2].axhline(xe,ls='--',lw=1.2,color='crimson' if xe!=0 else 'seagreen')
+axes[2].set_xlabel('$t$'); axes[2].set_ylabel('$x(t)$'); axes[2].set_title('Solutions'); axes[2].legend(fontsize=6); axes[2].set_ylim(-3,3)
+plt.suptitle(r"$x'=x^3-x$",fontsize=11); plt.tight_layout(); plt.show()
+```
+
+
+# Linearization {background-color="#2c3e50"}
+
+## The Linearization Criterion
+
+Write $x(t) = x^* + u(t)$ where $u$ is a small perturbation. Taylor-expand $f$ about $x^*$:
+$$u' = f(x^*+u) = \underbrace{f(x^*)}_{=0} + f'(x^*)\,u + O(u^2)$$
+
+For small $u$, drop the $O(u^2)$ terms:
+$$\boxed{u' \approx f'(x^*)\,u \quad\Longrightarrow\quad u(t) = u(0)\,e^{f'(x^*)t}}$$
+
+. . .
+
+::: {.callout-important}
+## Stability Criterion (Hyperbolic Equilibria)
+| $f'(x^*)$ | Behavior | Stability |
+|:---:|:---:|:---:|
+| $< 0$ | $e^{f'(x^*)t} \to 0$ | **Asymptotically stable** |
+| $> 0$ | $e^{f'(x^*)t} \to \infty$ | **Unstable** |
+| $= 0$ | Test **inconclusive** | Need higher-order terms |
+
+The quantity $\lambda = f'(x^*)$ is the **eigenvalue** of the equilibrium.
+:::
+
+
+## Linearization: Two Examples
+
+**Logistic** $x'=rx(1-x/K)$, $f'(x) = r(1-2x/K)$:
+
+$$f'(0) = r > 0 \;\Rightarrow\; \text{unstable} \qquad f'(K) = -r < 0 \;\Rightarrow\; \text{stable} \checkmark$$
+
+. . .
+
+**Cubic** $x'=x^3-x$, $f'(x)=3x^2-1$:
+
+$$f'(\pm 1) = 2 > 0 \;\Rightarrow\; \text{unstable} \qquad f'(0) = -1 < 0 \;\Rightarrow\; \text{stable} \checkmark$$
+
+. . .
+
+```{python}
+#| echo: true
+#| code-fold: false
+
+x_sym, r_sym, K_sym = sym.symbols('x r K', real=True, positive=True)
+f_logistic = r_sym * x_sym * (1 - x_sym / K_sym)
+fp = sym.diff(f_logistic, x_sym)
+print("f'(x) =", fp)
+print("f'(0) =", sym.simplify(fp.subs(x_sym, 0)))
+print("f'(K) =", sym.simplify(fp.subs(x_sym, K_sym)))
+```
+
+
+## Non-Hyperbolic Equilibrium: $x'=x^3$
+
+At $x^*=0$: $f'(0)=0$ — **test inconclusive**. Must inspect $f$ directly.
+
+$f(x)=x^3>0$ for $x>0$, $f(x)<0$ for $x<0$ → arrows point **away above**, **toward below** → **semi-stable**.
+
+```{python}
+#| label: fig-nonhyp-slides
+#| fig-height: 3.0
+
+f_nh = lambda x: x**3; x_arr = np.linspace(-1.5,1.5,400)
+fig, axes = plt.subplots(1, 2, figsize=(9, 2.8))
+axes[0].plot(x_arr, f_nh(x_arr), color='steelblue', lw=2)
+axes[0].axhline(0, color='k', lw=0.8)
+axes[0].fill_between(x_arr, 0, f_nh(x_arr), where=(f_nh(x_arr)>0), alpha=0.15, color='crimson', label='$f>0$')
+axes[0].fill_between(x_arr, 0, f_nh(x_arr), where=(f_nh(x_arr)<0), alpha=0.15, color='steelblue', label='$f<0$')
+axes[0].plot(0, 0, 'ks', markersize=10, zorder=5, label='$x^*=0$ (semi-stable)')
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)$'); axes[0].set_title(r"$f(x)=x^3$"); axes[0].legend(fontsize=7)
+
+f_ode_nh = lambda t, x: [x[0]**3]
+for x0, color in zip([-1.2,-0.7,-0.3,0.3,0.7,1.2], plt.cm.RdBu(np.linspace(0.05,0.95,6))):
+    sol = solve_ivp(f_ode_nh,(0,1.8),[x0],t_eval=np.linspace(0,1.8,300),max_step=0.005,events=lambda t,y:abs(y[0])-8)
+    axes[1].plot(sol.t, np.clip(sol.y[0],-5,5), color=color, lw=1.8, label=f'$x_0={x0}$')
+axes[1].axhline(0, color='k', ls='--', lw=1.5); axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
+axes[1].set_title('Semi-stable: above blows up, below decays'); axes[1].legend(fontsize=6, ncol=2); axes[1].set_ylim(-4,4)
+plt.tight_layout(); plt.show()
+```
+
+
+# Bifurcations {background-color="#2c3e50"}
+
+## What Is a Bifurcation?
+
+In applications the ODE contains a **parameter** $r$:
+$$x' = f(x;\,r)$$
+
+As $r$ varies, the equilibria may appear, disappear, or change stability.
+
+::: {.callout-important}
+## Definition
+A value $r=r_c$ is a **bifurcation point** if the number or stability of equilibria changes as $r$ passes through $r_c$.
+:::
+
+. . .
+
+**Bifurcation diagram:** plot $x^*$ vs. $r$
+
+- **Solid curve** = stable equilibria
+- **Dashed curve** = unstable equilibria
+- **Dot** = bifurcation point
+
+. . .
+
+Three classical bifurcations: **saddle-node**, **transcritical**, **pitchfork**.
+
+
+# Saddle-Node Bifurcation {background-color="#1a5276"}
+
+## Saddle-Node: $x'=r-x^2$
+
+**Equilibria:** $x^*=\pm\sqrt{r}$ (exist only for $r\geq 0$).
+
+**Linearization:** $f'(x)=-2x$
+
+| $r$ | Equilibria | Stability |
+|:---:|:---:|---|
+| $r<0$ | None | — |
+| $r=0$ | $x^*=0$ | Semi-stable (bifurcation point) |
+| $r>0$ | $x^*=+\sqrt{r}$ | **Stable** |
+| $r>0$ | $x^*=-\sqrt{r}$ | Unstable |
+
+. . .
+
+::: {.callout-tip}
+A stable and unstable equilibrium **collide and annihilate** as $r$ decreases through zero. This is the most generic way equilibria are created or destroyed.
+:::
+
+
+## Saddle-Node: Diagrams
+
+```{python}
+#| label: fig-sn-slides
+#| fig-height: 3.8
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+x_arr = np.linspace(-2.2, 2.2, 400)
+for r_val, color, lbl in zip([-0.5, 0, 1.0], ['crimson','darkorange','steelblue'], ['$r=-0.5$','$r=0$','$r=1$']):
+    axes[0].plot(x_arr, r_val - x_arr**2, color=color, lw=2, label=lbl)
+axes[0].axhline(0, color='k', lw=0.8)
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)=r-x^2$')
+axes[0].set_title('$f(x)$ for three values of $r$'); axes[0].legend(fontsize=9); axes[0].set_ylim(-2,2)
+
+r_bif = np.linspace(-0.05, 2.5, 400); r_pos = r_bif[r_bif>=0]
+axes[1].plot(r_pos,  np.sqrt(r_pos), color='steelblue', lw=2.5, label='Stable')
+axes[1].plot(r_pos, -np.sqrt(r_pos), color='crimson',   lw=2.5, ls='--', label='Unstable')
+axes[1].plot(0, 0, 'ko', markersize=8, zorder=5, label='Bifurcation $r=0$')
+axes[1].axvline(0, color='k', lw=0.5, ls=':'); axes[1].axhline(0, color='k', lw=0.5)
+axes[1].set_xlabel('$r$'); axes[1].set_ylabel('$x^*$')
+axes[1].set_title('Bifurcation diagram'); axes[1].legend(fontsize=8)
+plt.suptitle("Saddle-Node: $x'=r-x^2$", fontsize=11); plt.tight_layout(); plt.show()
+```
+
+
+# Transcritical Bifurcation {background-color="#1a5276"}
+
+## Transcritical: $x'=rx-x^2$
+
+**Equilibria:** $x^*=0$ and $x^*=r$ exist **for all $r$**.
+
+**Linearization:** $f'(x)=r-2x$, so $f'(0)=r$ and $f'(r)=-r$.
+
+| $r$ | $x^*=0$ | $x^*=r$ |
+|:---:|:---:|:---:|
+| $r<0$ | Stable | Unstable |
+| $r=0$ | Non-hyperbolic | (same point) |
+| $r>0$ | **Unstable** | **Stable** |
+
+. . .
+
+The two equilibria **exchange stability** at $r=0$.
+
+::: {.callout-tip}
+Arises in population models where $x=0$ is always an equilibrium: the zero-population state loses stability when $r$ exceeds a threshold, and a non-trivial population $x^*=r$ becomes the attractor.
+:::
+
+
+## Transcritical: Bifurcation Diagram
+
+```{python}
+#| label: fig-tc-slides
+#| fig-height: 3.8
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+x_arr = np.linspace(-1.5, 3.0, 400)
+for r_val, color, lbl in zip([-0.8, 0.0, 1.2], ['crimson','darkorange','steelblue'],
+                               ['$r=-0.8$','$r=0$','$r=1.2$']):
+    axes[0].plot(x_arr, r_val*x_arr - x_arr**2, color=color, lw=2, label=lbl)
+axes[0].axhline(0, color='k', lw=0.8)
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)=rx-x^2$')
+axes[0].set_title('$f(x)$ for several $r$'); axes[0].legend(fontsize=9); axes[0].set_ylim(-2,1)
+
+r_bif = np.linspace(-1.5, 2.5, 400)
+axes[1].plot(r_bif[r_bif<=0], np.zeros(np.sum(r_bif<=0)), color='steelblue', lw=2.5, label='$x^*=0$ stable')
+axes[1].plot(r_bif[r_bif>=0], np.zeros(np.sum(r_bif>=0)), color='steelblue', lw=2.5, ls='--', label='$x^*=0$ unstable')
+axes[1].plot(r_bif[r_bif<=0], r_bif[r_bif<=0], color='crimson', lw=2.5, ls='--', label='$x^*=r$ unstable')
+axes[1].plot(r_bif[r_bif>=0], r_bif[r_bif>=0], color='crimson', lw=2.5, label='$x^*=r$ stable')
+axes[1].plot(0, 0, 'ko', markersize=8, zorder=5, label='Bifurcation $r=0$')
+axes[1].axvline(0, color='k', lw=0.5, ls=':'); axes[1].axhline(0, color='k', lw=0.5)
+axes[1].set_xlabel('$r$'); axes[1].set_ylabel('$x^*$')
+axes[1].set_title('Bifurcation diagram'); axes[1].legend(fontsize=7, ncol=2)
+plt.suptitle(r"Transcritical: $x'=rx-x^2$", fontsize=11); plt.tight_layout(); plt.show()
+```
+
+
+# Pitchfork Bifurcation {background-color="#1a5276"}
+
+## Pitchfork: $x'=rx-x^3$ (Supercritical)
+
+Arises in **symmetric** systems where $f(-x;r)=-f(x;r)$.
+
+**Equilibria:** $x^*=0$ always; $x^*=\pm\sqrt{r}$ when $r>0$.
+
+**Linearization:** $f'(x)=r-3x^2$
+
+| $r\leq 0$ | $x^*=0$ stable | No other equilibria |
+|:---:|:---:|:---:|
+| $r>0$ | $x^*=0$ **unstable** | $x^*=\pm\sqrt{r}$ **stable** |
+
+. . .
+
+As $r$ increases through zero, the origin **loses stability** and **two new symmetric stable equilibria** are born — the bifurcation diagram has the shape of a pitchfork.
+
+::: {.callout-tip}
+## Supercritical vs. Subcritical
+- **Supercritical** $x'=rx-x^3$: smooth "soft" transition — new stable states appear gradually.
+- **Subcritical** $x'=rx+x^3$: "hard" dangerous transition — all equilibria disappear at once.
+:::
+
+
+## Pitchfork: Diagrams
+
+```{python}
+#| label: fig-pf-slides
+#| fig-height: 3.8
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+r_bif = np.linspace(-1.5, 3.0, 400); r_pos = r_bif[r_bif>=0]
+axes[0].plot(r_bif[r_bif<=0], np.zeros(np.sum(r_bif<=0)), color='steelblue', lw=2.5, label='$x^*=0$ stable')
+axes[0].plot(r_bif[r_bif>=0], np.zeros(np.sum(r_bif>=0)), color='steelblue', lw=2.5, ls='--', label='$x^*=0$ unstable')
+axes[0].plot(r_pos,  np.sqrt(r_pos), color='crimson', lw=2.5, label=r'$x^*=\pm\sqrt{r}$ stable')
+axes[0].plot(r_pos, -np.sqrt(r_pos), color='crimson', lw=2.5)
+axes[0].plot(0, 0, 'ko', markersize=8, zorder=5)
+axes[0].axvline(0, color='k', lw=0.5, ls=':'); axes[0].axhline(0, color='k', lw=0.5)
+axes[0].set_xlabel('$r$'); axes[0].set_ylabel('$x^*$')
+axes[0].set_title('Bifurcation diagram'); axes[0].legend(fontsize=8)
+
+r_fixed = 1.5; xe_s = np.sqrt(r_fixed)
+f_pf = lambda t, x: [r_fixed*x[0] - x[0]**3]
+t_eval = np.linspace(0, 6, 300)
+for x0, color in zip([-2.5,-1.5,-0.5,0.3,0.5,1.5,2.5,-0.1],
+                      plt.cm.RdYlBu(np.linspace(0.05,0.95,8))):
+    sol = solve_ivp(f_pf,(0,6),[x0],t_eval=t_eval,max_step=0.02)
+    axes[1].plot(sol.t, sol.y[0], color=color, lw=1.5, label=f'$x_0={x0}$')
+axes[1].axhline( xe_s, color='crimson',  ls='--', lw=1.5, label=f'$x^*=+{xe_s:.2f}$')
+axes[1].axhline(-xe_s, color='crimson',  ls='--', lw=1.5)
+axes[1].axhline(0,     color='steelblue', ls='--', lw=1.0)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
+axes[1].set_title(f'Solutions ($r={r_fixed}$)'); axes[1].legend(fontsize=6, ncol=2); axes[1].set_ylim(-3,3)
+plt.suptitle(r"Supercritical Pitchfork: $x'=rx-x^3$", fontsize=11); plt.tight_layout(); plt.show()
+```
+
+
+# All Three Bifurcations {background-color="#2c3e50"}
+
+## Side-by-Side Comparison
+
+```{python}
+#| label: fig-bif-all-slides
+#| fig-height: 3.5
+
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.3))
+
+# Saddle-node
+r = np.linspace(-0.2, 2.0, 300); r_pos = r[r>=0]
+axes[0].plot(r_pos,  np.sqrt(r_pos), color='steelblue', lw=2.5, label='Stable')
+axes[0].plot(r_pos, -np.sqrt(r_pos), color='crimson',   lw=2.5, ls='--', label='Unstable')
+axes[0].plot(0, 0, 'ko', markersize=7)
+axes[0].axvline(0, color='k', lw=0.5, ls=':'); axes[0].axhline(0, color='k', lw=0.5)
+axes[0].set_xlabel('$r$'); axes[0].set_ylabel('$x^*$')
+axes[0].set_title("Saddle-Node\n$x'=r-x^2$"); axes[0].legend(fontsize=8)
+
+# Transcritical
+r2 = np.linspace(-1.5, 2.0, 300)
+axes[1].plot(r2[r2<=0], np.zeros(np.sum(r2<=0)), color='steelblue', lw=2.5)
+axes[1].plot(r2[r2>=0], np.zeros(np.sum(r2>=0)), color='steelblue', lw=2.5, ls='--')
+axes[1].plot(r2[r2<=0], r2[r2<=0], color='crimson', lw=2.5, ls='--')
+axes[1].plot(r2[r2>=0], r2[r2>=0], color='crimson', lw=2.5)
+axes[1].plot(0, 0, 'ko', markersize=7)
+axes[1].axvline(0, color='k', lw=0.5, ls=':'); axes[1].axhline(0, color='k', lw=0.5)
+axes[1].set_xlabel('$r$'); axes[1].set_ylabel('$x^*$')
+axes[1].set_title("Transcritical\n$x'=rx-x^2$")
+
+# Pitchfork
+r3 = np.linspace(-1.5, 2.5, 300); r3_pos = r3[r3>=0]
+axes[2].plot(r3[r3<=0], np.zeros(np.sum(r3<=0)), color='steelblue', lw=2.5)
+axes[2].plot(r3[r3>=0], np.zeros(np.sum(r3>=0)), color='steelblue', lw=2.5, ls='--')
+axes[2].plot(r3_pos,  np.sqrt(r3_pos), color='crimson', lw=2.5)
+axes[2].plot(r3_pos, -np.sqrt(r3_pos), color='crimson', lw=2.5, label='Stable')
+axes[2].plot(0, 0, 'ko', markersize=7)
+axes[2].axvline(0, color='k', lw=0.5, ls=':'); axes[2].axhline(0, color='k', lw=0.5)
+axes[2].set_xlabel('$r$'); axes[2].set_ylabel('$x^*$')
+axes[2].set_title("Pitchfork (supercrit.)\n$x'=rx-x^3$"); axes[2].legend(fontsize=8)
+
+plt.suptitle('Three Classical Bifurcations — Solid: stable, Dashed: unstable', fontsize=10)
+plt.tight_layout(); plt.show()
+```
+
+| Bifurcation | What happens at $r_c$ |
+|---|---|
+| **Saddle-node** | Stable + unstable pair created/destroyed |
+| **Transcritical** | Two equilibria exchange stability |
+| **Pitchfork** | Origin loses stability; symmetric pair born (super) or disappears (sub) |
+
+
+# Application: Spruce Budworm {background-color="#1a5276"}
+
+## The Model
+
+The **[spruce budworm model](https://en.wikipedia.org/wiki/Spruce_budworm)** (Ludwig–Jones–Holling 1978):
+$$x' = rx\!\left(1-\frac{x}{K}\right) - \frac{x^2}{1+x^2}$$
+
+- $x$: budworm population density
+- $rx(1-x/K)$: logistic growth
+- $x^2/(1+x^2)$: predation (Type III functional response)
+
+. . .
+
+**Bistability and hysteresis:** for certain $r$, there are **two stable equilibria** — a low *refuge* state and a high *outbreak* state.  The system can jump suddenly from refuge to outbreak when $r$ crosses a threshold, and **will not return** unless $r$ is reduced well below the forward bifurcation point.
+
+This is an example of **hysteresis** — the forward and backward transitions occur at different parameter values.
+
+
+## Budworm: Solutions
+
+```{python}
+#| label: fig-budworm-slides
+#| fig-height: 3.8
+
+K_bw = 10.0
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+
+x_arr = np.linspace(0.01, 12, 400)
+pred  = x_arr**2 / (1 + x_arr**2)
+for r_val, color, lbl in zip([0.3, 0.55, 0.85],
+                               ['steelblue','darkorange','crimson'],
+                               ['$r=0.30$ (one eq.)', '$r=0.55$ (bistable)', '$r=0.85$ (outbreak)']):
+    growth = r_val * x_arr * (1 - x_arr/K_bw)
+    axes[0].plot(x_arr, growth - pred, color=color, lw=2, label=lbl)
+axes[0].axhline(0, color='k', lw=0.8)
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)$')
+axes[0].set_title('$f(x)$ for three values of $r$'); axes[0].legend(fontsize=8); axes[0].set_ylim(-1.5, 1.5)
+
+r_bw = 0.55
+f_bw = lambda t, x: [r_bw*x[0]*(1-x[0]/K_bw) - x[0]**2/(1+x[0]**2)]
+t_eval = np.linspace(0, 40, 500)
+for x0, color in zip([0.3,0.8,1.5,3.0,5.0,7.0,9.0,11.0],
+                     plt.cm.viridis(np.linspace(0.1,0.9,8))):
+    sol = solve_ivp(f_bw,(0,40),[x0],t_eval=t_eval,max_step=0.05)
+    axes[1].plot(sol.t, sol.y[0], color=color, lw=1.8, label=f'$x_0={x0}$')
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
+axes[1].set_title(f'Bistable solutions ($r={r_bw}$)'); axes[1].legend(fontsize=6, ncol=2)
+plt.suptitle("Spruce Budworm Model", fontsize=11); plt.tight_layout(); plt.show()
+```
+
+::: {.callout-note}
+The two stable states are clearly visible: initial populations below the unstable separator converge to the low refuge state; those above converge to the outbreak state.
+:::
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- An **autonomous ODE** $x'=f(x)$ defines a 1D dynamical system. The slope field is constant along horizontal lines.
+
+- **Equilibria** are zeros of $f$. Stability is read from the **phase line**: arrows pointing inward → stable; outward → unstable.
+
+- **Linearization**: the perturbation $u=x-x^*$ satisfies $u'\approx f'(x^*)u$, so $\lambda=f'(x^*)$ determines stability when $\lambda\neq 0$.
+
+- When $f'(x^*)=0$ (non-hyperbolic), higher-order terms decide — the linearization is **inconclusive**.
+
+- A **bifurcation** is a qualitative change in equilibrium structure. The three normal forms are **saddle-node**, **transcritical**, and **pitchfork**.
+
+- Real applications like the spruce budworm exhibit **bistability** and **hysteresis** — phenomena impossible to see from a single solution curve, but immediately apparent from the bifurcation diagram.
+:::
+
+. . .
+
+::: {.callout-tip}
+**Next:** These ideas extend to **systems** of ODEs in 2D. The phase line becomes the phase plane, $f'(x^*)$ becomes the Jacobian matrix, and the pitchfork becomes the Hopf bifurcation — Chapter 3 of @logan2015first.
+:::
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
