@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Second-Order Linear Equations — Worked Examples – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#homogeneous-equations" id="toc-homogeneous-equations" class="nav-link active" data-scroll-target="#homogeneous-equations">§2.2 Homogeneous Equations</a>
+  <ul class="collapse">
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example 1 — Real Distinct Roots</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example 2 — Repeated Root</a></li>
+  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example 3 — Complex Conjugate Roots</a></li>
+  </ul></li>
+  <li><a href="#nonhomogeneous-equations-method-of-undetermined-coefficients" id="toc-nonhomogeneous-equations-method-of-undetermined-coefficients" class="nav-link" data-scroll-target="#nonhomogeneous-equations-method-of-undetermined-coefficients">§2.3 Nonhomogeneous Equations — Method of Undetermined Coefficients</a>
+  <ul class="collapse">
+  <li><a href="#example-4" id="toc-example-4" class="nav-link" data-scroll-target="#example-4">Example 4 — Polynomial Forcing</a></li>
+  <li><a href="#example-5" id="toc-example-5" class="nav-link" data-scroll-target="#example-5">Example 5 — Exponential Forcing (Standard Case)</a></li>
+  <li><a href="#example-6" id="toc-example-6" class="nav-link" data-scroll-target="#example-6">Example 6 — Exponential Forcing (Modification Rule)</a></li>
+  <li><a href="#example-7" id="toc-example-7" class="nav-link" data-scroll-target="#example-7">Example 7 — Sinusoidal Forcing</a></li>
+  <li><a href="#example-8" id="toc-example-8" class="nav-link" data-scroll-target="#example-8">Example 8 — Sinusoidal Forcing at the Natural Frequency (Resonance)</a></li>
+  </ul></li>
+  <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Second-Order Linear Equations — Worked Examples</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="setup" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np                        <span class="co"># NumPy for numerical computations</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym                       <span class="co"># SymPy for symbolic mathematics</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl                  <span class="co"># Matplotlib for plotting</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt           <span class="co"># Matplotlib pyplot interface</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>In this document we work through fully solved examples for the topics covered in Sections 2.2 and 2.3 of the text:</p>
+<ul>
+<li><strong>§2.2</strong> — Homogeneous second-order linear constant-coefficient ODEs. The three cases for the characteristic roots (real distinct, repeated, complex conjugate) are each illustrated.</li>
+<li><strong>§2.3</strong> — Nonhomogeneous equations solved by the <strong>method of undetermined coefficients</strong>, with polynomial, exponential, and sinusoidal forcing functions, including the modification rule when a term in the trial solution duplicates a homogeneous solution.</li>
+</ul>
+<p>Each example is worked “by hand” first and then verified using <a href="https://www.sympy.org/">SymPy</a>.</p>
+<hr>
+<section id="homogeneous-equations" class="level2">
+<h2 class="anchored" data-anchor-id="homogeneous-equations">§2.2 Homogeneous Equations</h2>
+<p>A <strong>second-order linear constant-coefficient homogeneous ODE</strong> has the form <span class="math display">\[
+ay'' + by' + cy = 0, \qquad a \neq 0.
+\]</span> The solution strategy is to substitute the trial function <span class="math inline">\(y = e^{rt}\)</span> and solve the <strong>characteristic equation</strong> <span class="math display">\[
+ar^2 + br + c = 0.
+\]</span> The nature of the two roots <span class="math inline">\(r_1, r_2\)</span> determines the form of the general solution.</p>
+<hr>
+<section id="example-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-1">Example 1 — Real Distinct Roots</h3>
+<blockquote class="blockquote">
+<p>Find the general solution of <span class="math display">\[y'' - y' - 6y = 0,\]</span> and solve the initial value problem with <span class="math inline">\(y(0) = 1\)</span>, <span class="math inline">\(y'(0) = -1\)</span>.</p>
+</blockquote>
+<section id="ex1-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex1-by-hand">By Hand</h4>
+<p><strong>Step 1 — Write the characteristic equation.</strong></p>
+<p>Substituting <span class="math inline">\(y = e^{rt}\)</span> gives <span class="math display">\[
+r^2 - r - 6 = 0.
+\]</span></p>
+<p><strong>Step 2 — Solve for the roots.</strong></p>
+<p>Factor: <span class="math display">\[
+(r - 3)(r + 2) = 0 \quad\Longrightarrow\quad r_1 = 3,\quad r_2 = -2.
+\]</span></p>
+<p>The roots are <strong>real and distinct</strong>.</p>
+<p><strong>Step 3 — Write the general solution.</strong></p>
+<p>Since <span class="math inline">\(r_1 \neq r_2\)</span> are both real, two linearly independent solutions are <span class="math inline">\(e^{3t}\)</span> and <span class="math inline">\(e^{-2t}\)</span>, so the general solution is <span class="math display">\[
+\boxed{y(t) = C_1 e^{3t} + C_2 e^{-2t}.}
+\]</span></p>
+<p><strong>Step 4 — Apply the initial conditions <span class="math inline">\(y(0) = 1\)</span>, <span class="math inline">\(y'(0) = -1\)</span>.</strong></p>
+<p>First differentiate the general solution: <span class="math display">\[
+y'(t) = 3C_1 e^{3t} - 2C_2 e^{-2t}.
+\]</span></p>
+<p>Evaluate at <span class="math inline">\(t = 0\)</span>: <span class="math display">\[
+y(0)  = C_1 + C_2 = 1,
+\]</span> <span class="math display">\[
+y'(0) = 3C_1 - 2C_2 = -1.
+\]</span></p>
+<p>Solve the <span class="math inline">\(2 \times 2\)</span> linear system. From the first equation <span class="math inline">\(C_1 = 1 - C_2\)</span>. Substitute into the second: <span class="math display">\[
+3(1 - C_2) - 2C_2 = -1
+\;\Longrightarrow\;
+3 - 5C_2 = -1
+\;\Longrightarrow\;
+C_2 = \frac{4}{5}.
+\]</span> Then <span class="math inline">\(C_1 = 1 - \dfrac{4}{5} = \dfrac{1}{5}\)</span>.</p>
+<p>The particular solution is <span class="math display">\[
+\boxed{y(t) = \frac{1}{5}e^{3t} + \frac{4}{5}e^{-2t}.}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Long-run behavior.</strong> As <span class="math inline">\(t \to \infty\)</span> the term <span class="math inline">\(\tfrac{1}{5}e^{3t}\)</span> dominates since <span class="math inline">\(3 &gt; -2\)</span>, so <span class="math inline">\(y(t) \to +\infty\)</span>. If <span class="math inline">\(C_1 = 0\)</span> (obtainable by choosing <span class="math inline">\(y(0) = 0\)</span>, <span class="math inline">\(y'(0) = 2\)</span>), the solution decays to zero.</p>
+</div>
+</div>
+</section>
+<section id="ex1-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex1-sympy">Using SymPy</h4>
+<div id="ex1-sympy" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> sym.Function(<span class="st">'y'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ode1 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">-</span> y(t).diff(t) <span class="op">-</span> <span class="dv">6</span><span class="op">*</span>y(t), <span class="dv">0</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># General solution</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>gen1 <span class="op">=</span> sym.dsolve(ode1, y(t))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen1)))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Particular solution with y(0)=1, y'(0)=-1</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>part1 <span class="op">=</span> sym.dsolve(ode1, y(t), ics<span class="op">=</span>{y(<span class="dv">0</span>): <span class="dv">1</span>, y(t).diff(t).subs(t, <span class="dv">0</span>): <span class="op">-</span><span class="dv">1</span>})</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Particular solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(part1)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex1-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = C_{1} e^{- 2 t} + C_{2} e^{3 t}\)</span></p>
+</div>
+<div id="ex1-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Particular solution: }\quady{\left(t \right)} = \frac{e^{3 t}}{5} + \frac{4 e^{- 2 t}}{5}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex1" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.4</span>, <span class="fl">1.2</span>, <span class="dv">500</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Several solution curves via different (C1, C2) pairs</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C1, C2 <span class="kw">in</span> [(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">1.5</span>), (<span class="dv">0</span>, <span class="dv">1</span>), (<span class="fl">0.3</span>, <span class="fl">0.3</span>), (<span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>), (<span class="op">-</span><span class="fl">0.2</span>, <span class="fl">0.8</span>)]:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    y_sol <span class="op">=</span> C1<span class="op">*</span>np.exp(<span class="dv">3</span><span class="op">*</span>t_vals) <span class="op">+</span> C2<span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t_vals)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_vals, y_sol, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.55</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Particular solution C1=1/5, C2=4/5</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>y_part <span class="op">=</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">5</span>)<span class="op">*</span>np.exp(<span class="dv">3</span><span class="op">*</span>t_vals) <span class="op">+</span> (<span class="dv">4</span><span class="op">/</span><span class="dv">5</span>)<span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t_vals)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, y_part, color<span class="op">=</span><span class="st">'tomato'</span>, lw<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=1,</span><span class="ch">\;</span><span class="vs"> y</span><span class="er">\</span><span class="vs">prime</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=-1</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">'ko'</span>, ms<span class="op">=</span><span class="dv">6</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">y'' - y' - 6y = 0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_03_files/figure-html/fig-ex1-output-1.png" width="1034" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Solutions of <span class="math inline">\(y'' - y' - 6y = 0\)</span> for several initial conditions. The particular solution satisfying <span class="math inline">\(y(0)=1\)</span>, <span class="math inline">\(y'(0)=-1\)</span> is highlighted in red.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-2" class="level3">
+<h3 class="anchored" data-anchor-id="example-2">Example 2 — Repeated Root</h3>
+<blockquote class="blockquote">
+<p>Find the general solution of <span class="math display">\[y'' + 6y' + 9y = 0,\]</span> and solve the initial value problem with <span class="math inline">\(y(0) = 2\)</span>, <span class="math inline">\(y'(0) = -3\)</span>.</p>
+</blockquote>
+<section id="ex2-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex2-by-hand">By Hand</h4>
+<p><strong>Step 1 — Characteristic equation.</strong></p>
+<p><span class="math display">\[
+r^2 + 6r + 9 = 0.
+\]</span></p>
+<p><strong>Step 2 — Solve for the roots.</strong></p>
+<p><span class="math display">\[
+(r + 3)^2 = 0 \quad\Longrightarrow\quad r = -3 \text{ (repeated root)}.
+\]</span></p>
+<p><strong>Step 3 — General solution for a repeated root.</strong></p>
+<p>When the characteristic equation has a repeated root <span class="math inline">\(r_1 = r_2 = r\)</span>, the two linearly independent solutions are <span class="math inline">\(e^{rt}\)</span> and <span class="math inline">\(t e^{rt}\)</span>. Here <span class="math inline">\(r = -3\)</span>, so <span class="math display">\[
+\boxed{y(t) = C_1 e^{-3t} + C_2\, t e^{-3t} = (C_1 + C_2 t)\,e^{-3t}.}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Why <span class="math inline">\(te^{rt}\)</span>?</strong> If we only used <span class="math inline">\(e^{rt}\)</span> twice we would not have two <em>independent</em> solutions. The factor of <span class="math inline">\(t\)</span> is required to generate a second independent solution; this can be verified rigorously using the method of reduction of order.</p>
+</div>
+</div>
+<p><strong>Step 4 — Apply the initial conditions <span class="math inline">\(y(0) = 2\)</span>, <span class="math inline">\(y'(0) = -3\)</span>.</strong></p>
+<p>Differentiate: <span class="math display">\[
+y'(t) = -3C_1 e^{-3t} + C_2\bigl(e^{-3t} - 3te^{-3t}\bigr)
+       = (-3C_1 + C_2)e^{-3t} - 3C_2\,te^{-3t}.
+\]</span></p>
+<p>At <span class="math inline">\(t = 0\)</span>: <span class="math display">\[
+y(0)  = C_1 = 2,
+\]</span> <span class="math display">\[
+y'(0) = -3C_1 + C_2 = -3.
+\]</span></p>
+<p>From the first equation <span class="math inline">\(C_1 = 2\)</span>. Substitute: <span class="math display">\[
+-3(2) + C_2 = -3 \;\Longrightarrow\; C_2 = -3 + 6 = 3.
+\]</span></p>
+<p>The particular solution is <span class="math display">\[
+\boxed{y(t) = (2 + 3t)\,e^{-3t}.}
+\]</span></p>
+</section>
+<section id="ex2-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex2-sympy">Using SymPy</h4>
+<div id="ex2-sympy" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ode2 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">+</span> <span class="dv">6</span><span class="op">*</span>y(t).diff(t) <span class="op">+</span> <span class="dv">9</span><span class="op">*</span>y(t), <span class="dv">0</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>gen2 <span class="op">=</span> sym.dsolve(ode2, y(t))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen2)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>part2 <span class="op">=</span> sym.dsolve(ode2, y(t), ics<span class="op">=</span>{y(<span class="dv">0</span>): <span class="dv">2</span>, y(t).diff(t).subs(t, <span class="dv">0</span>): <span class="op">-</span><span class="dv">3</span>})</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Particular solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(part2)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex2-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = \left(C_{1} + C_{2} t\right) e^{- 3 t}\)</span></p>
+</div>
+<div id="ex2-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Particular solution: }\quady{\left(t \right)} = \left(3 t + 2\right) e^{- 3 t}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex2" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">500</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C1, C2 <span class="kw">in</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">4</span>), (<span class="dv">3</span>, <span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>)]:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    y_sol <span class="op">=</span> (C1 <span class="op">+</span> C2<span class="op">*</span>t_vals)<span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t_vals)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_vals, y_sol, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.55</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>y_part <span class="op">=</span> (<span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>t_vals)<span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t_vals)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, y_part, color<span class="op">=</span><span class="st">'tomato'</span>, lw<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=2,</span><span class="ch">\;</span><span class="vs"> y</span><span class="er">\</span><span class="vs">prime</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=-3</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">2</span>, <span class="st">'ko'</span>, ms<span class="op">=</span><span class="dv">6</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.8</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">y'' </span><span class="op">+</span><span class="vs"> 6y' </span><span class="op">+</span><span class="vs"> 9y = 0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_03_files/figure-html/fig-ex2-output-1.png" width="1034" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Solutions of <span class="math inline">\(y'' + 6y' + 9y = 0\)</span> (repeated root <span class="math inline">\(r=-3\)</span>). All solutions decay to zero. The particular solution satisfying <span class="math inline">\(y(0)=2\)</span>, <span class="math inline">\(y'(0)=-3\)</span> is highlighted in red.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-3" class="level3">
+<h3 class="anchored" data-anchor-id="example-3">Example 3 — Complex Conjugate Roots</h3>
+<blockquote class="blockquote">
+<p>Find the general solution of <span class="math display">\[y'' - 4y' + 13y = 0,\]</span> and solve the initial value problem with <span class="math inline">\(y(0) = 0\)</span>, <span class="math inline">\(y'(0) = 3\)</span>.</p>
+</blockquote>
+<section id="ex3-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex3-by-hand">By Hand</h4>
+<p><strong>Step 1 — Characteristic equation.</strong></p>
+<p><span class="math display">\[
+r^2 - 4r + 13 = 0.
+\]</span></p>
+<p><strong>Step 2 — Solve using the quadratic formula.</strong></p>
+<p><span class="math display">\[
+r = \frac{4 \pm \sqrt{16 - 52}}{2} = \frac{4 \pm \sqrt{-36}}{2} = \frac{4 \pm 6i}{2} = 2 \pm 3i.
+\]</span></p>
+<p>The roots are <strong>complex conjugates</strong> <span class="math inline">\(r = \alpha \pm \beta i\)</span> with <span class="math inline">\(\alpha = 2\)</span> and <span class="math inline">\(\beta = 3\)</span>.</p>
+<p><strong>Step 3 — Write the general solution.</strong></p>
+<p>For complex conjugate roots <span class="math inline">\(r = \alpha \pm \beta i\)</span>, Euler’s formula gives real-valued solutions <span class="math inline">\(e^{\alpha t}\cos(\beta t)\)</span> and <span class="math inline">\(e^{\alpha t}\sin(\beta t)\)</span>. The general solution is <span class="math display">\[
+\boxed{y(t) = e^{2t}\bigl[C_1\cos(3t) + C_2\sin(3t)\bigr].}
+\]</span></p>
+<p><strong>Step 4 — Apply the initial conditions <span class="math inline">\(y(0) = 0\)</span>, <span class="math inline">\(y'(0) = 3\)</span>.</strong></p>
+<p>At <span class="math inline">\(t = 0\)</span>: <span class="math display">\[
+y(0) = e^{0}\bigl[C_1\cos 0 + C_2\sin 0\bigr] = C_1 = 0.
+\]</span></p>
+<p>Differentiate (using <span class="math inline">\(C_1 = 0\)</span>): <span class="math display">\[
+y(t) = C_2 e^{2t}\sin(3t),
+\]</span> <span class="math display">\[
+y'(t) = C_2\bigl[2e^{2t}\sin(3t) + 3e^{2t}\cos(3t)\bigr].
+\]</span></p>
+<p>At <span class="math inline">\(t = 0\)</span>: <span class="math display">\[
+y'(0) = C_2\bigl[0 + 3\bigr] = 3C_2 = 3 \;\Longrightarrow\; C_2 = 1.
+\]</span></p>
+<p>The particular solution is <span class="math display">\[
+\boxed{y(t) = e^{2t}\sin(3t).}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Amplitude growth.</strong> Because <span class="math inline">\(\alpha = 2 &gt; 0\)</span>, the exponential envelope <span class="math inline">\(e^{2t}\)</span> grows without bound; the oscillations increase in amplitude. If <span class="math inline">\(\alpha &lt; 0\)</span> the envelope would decay (damped oscillations), and if <span class="math inline">\(\alpha = 0\)</span> the oscillations would have constant amplitude (pure oscillation).</p>
+</div>
+</div>
+</section>
+<section id="ex3-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex3-sympy">Using SymPy</h4>
+<div id="ex3-sympy" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ode3 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>y(t).diff(t) <span class="op">+</span> <span class="dv">13</span><span class="op">*</span>y(t), <span class="dv">0</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>gen3 <span class="op">=</span> sym.dsolve(ode3, y(t))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen3)))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>part3 <span class="op">=</span> sym.dsolve(ode3, y(t), ics<span class="op">=</span>{y(<span class="dv">0</span>): <span class="dv">0</span>, y(t).diff(t).subs(t, <span class="dv">0</span>): <span class="dv">3</span>})</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Particular solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(part3)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex3-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = \left(C_{1} \sin{\left(3 t \right)} + C_{2} \cos{\left(3 t \right)}\right) e^{2 t}\)</span></p>
+</div>
+<div id="ex3-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Particular solution: }\quady{\left(t \right)} = e^{2 t} \sin{\left(3 t \right)}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex3" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">2.2</span>, <span class="dv">600</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C1, C2 <span class="kw">in</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, <span class="fl">0.5</span>), (<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)]:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    y_sol <span class="op">=</span> np.exp(<span class="dv">2</span><span class="op">*</span>t_vals)<span class="op">*</span>(C1<span class="op">*</span>np.cos(<span class="dv">3</span><span class="op">*</span>t_vals) <span class="op">+</span> C2<span class="op">*</span>np.sin(<span class="dv">3</span><span class="op">*</span>t_vals))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_vals, y_sol, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.55</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Particular solution C1=0, C2=1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>y_part <span class="op">=</span> np.exp(<span class="dv">2</span><span class="op">*</span>t_vals)<span class="op">*</span>np.sin(<span class="dv">3</span><span class="op">*</span>t_vals)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, y_part, color<span class="op">=</span><span class="st">'tomato'</span>, lw<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y = e</span><span class="dv">^</span><span class="vs">{2t}</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">3t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Envelope</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals,  np.exp(<span class="dv">2</span><span class="op">*</span>t_vals), <span class="st">'k--'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pm e</span><span class="dv">^</span><span class="vs">{2t}</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">envelope</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, <span class="op">-</span>np.exp(<span class="dv">2</span><span class="op">*</span>t_vals), <span class="st">'k--'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">0</span>, <span class="st">'ko'</span>, ms<span class="op">=</span><span class="dv">6</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">20</span>, <span class="dv">20</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">y'' - 4y' </span><span class="op">+</span><span class="vs"> 13y = 0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_03_files/figure-html/fig-ex3-output-1.png" width="1034" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Solutions of <span class="math inline">\(y'' - 4y' + 13y = 0\)</span> (complex roots <span class="math inline">\(r = 2\pm 3i\)</span>). The growing exponential envelope <span class="math inline">\(\pm e^{2t}\)</span> is shown dashed. The particular solution <span class="math inline">\(y = e^{2t}\sin(3t)\)</span> is highlighted in red.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="nonhomogeneous-equations-method-of-undetermined-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="nonhomogeneous-equations-method-of-undetermined-coefficients">§2.3 Nonhomogeneous Equations — Method of Undetermined Coefficients</h2>
+<p>A <strong>nonhomogeneous</strong> second-order linear constant-coefficient ODE has the form <span class="math display">\[
+ay'' + by' + cy = f(t),
+\]</span> where <span class="math inline">\(f(t) \not\equiv 0\)</span> is the <strong>forcing function</strong>. The general solution is <span class="math display">\[
+y(t) = y_h(t) + y_p(t),
+\]</span> where <span class="math inline">\(y_h\)</span> is the general solution of the associated homogeneous equation and <span class="math inline">\(y_p\)</span> is any particular solution of the full nonhomogeneous equation.</p>
+<p>The <strong>method of undetermined coefficients</strong> finds <span class="math inline">\(y_p\)</span> by guessing a trial function whose form mirrors that of <span class="math inline">\(f(t)\)</span>, substituting it into the ODE, and matching coefficients. The method applies when <span class="math inline">\(f(t)\)</span> is a polynomial, an exponential, a sine or cosine, or a product of these.</p>
+<hr>
+<section id="example-4" class="level3">
+<h3 class="anchored" data-anchor-id="example-4">Example 4 — Polynomial Forcing</h3>
+<blockquote class="blockquote">
+<p>Solve the initial value problem <span class="math display">\[y'' + 4y' + 4y = 3t^2 - 2, \qquad y(0) = 1,\quad y'(0) = 0.\]</span></p>
+</blockquote>
+<section id="ex4-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex4-by-hand">By Hand</h4>
+<p><strong>Step 1 — Solve the homogeneous equation <span class="math inline">\(y'' + 4y' + 4y = 0\)</span>.</strong></p>
+<p>Characteristic equation: <span class="math inline">\(r^2 + 4r + 4 = (r+2)^2 = 0\)</span>, so <span class="math inline">\(r = -2\)</span> (repeated).</p>
+<p><span class="math display">\[
+y_h(t) = (C_1 + C_2 t)\,e^{-2t}.
+\]</span></p>
+<p><strong>Step 2 — Choose a trial particular solution.</strong></p>
+<p>Since <span class="math inline">\(f(t) = 3t^2 - 2\)</span> is a degree-2 polynomial and neither <span class="math inline">\(t^0\)</span> nor <span class="math inline">\(t^1\)</span> nor <span class="math inline">\(t^2\)</span> appears in <span class="math inline">\(y_h\)</span>, we try a full degree-2 polynomial: <span class="math display">\[
+y_p = At^2 + Bt + D.
+\]</span> (We use <span class="math inline">\(D\)</span> instead of <span class="math inline">\(C\)</span> to avoid confusion with the constants <span class="math inline">\(C_1\)</span>, <span class="math inline">\(C_2\)</span>.)</p>
+<p><strong>Step 3 — Compute the required derivatives and substitute.</strong></p>
+<p><span class="math display">\[
+y_p' = 2At + B, \qquad y_p'' = 2A.
+\]</span></p>
+<p>Substitute into <span class="math inline">\(y'' + 4y' + 4y = 3t^2 - 2\)</span>: <span class="math display">\[
+2A + 4(2At + B) + 4(At^2 + Bt + D) = 3t^2 - 2.
+\]</span></p>
+<p>Expand and collect by powers of <span class="math inline">\(t\)</span>: <span class="math display">\[
+4At^2 + (8A + 4B)t + (2A + 4B + 4D) = 3t^2 - 2.
+\]</span></p>
+<p><strong>Step 4 — Match coefficients.</strong></p>
+<p>Equating coefficients of each power:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Power</th>
+<th>Equation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(t^2\)</span></td>
+<td><span class="math inline">\(4A = 3\)</span></td>
+<td><span class="math inline">\(A = \dfrac{3}{4}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t^1\)</span></td>
+<td><span class="math inline">\(8A + 4B = 0\)</span></td>
+<td><span class="math inline">\(B = -2A = -\dfrac{3}{2}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(t^0\)</span></td>
+<td><span class="math inline">\(2A + 4B + 4D = -2\)</span></td>
+<td><span class="math inline">\(4D = -2 - 2\!\left(\tfrac{3}{4}\right) - 4\!\left(-\tfrac{3}{2}\right) = -2 - \tfrac{3}{2} + 6 = \tfrac{5}{2}\)</span>, so <span class="math inline">\(D = \dfrac{5}{8}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Thus <span class="math display">\[
+y_p = \frac{3}{4}t^2 - \frac{3}{2}t + \frac{5}{8}.
+\]</span></p>
+<p><strong>Step 5 — General solution.</strong></p>
+<p><span class="math display">\[
+y(t) = (C_1 + C_2 t)\,e^{-2t} + \frac{3}{4}t^2 - \frac{3}{2}t + \frac{5}{8}.
+\]</span></p>
+<p><strong>Step 6 — Apply the initial conditions.</strong></p>
+<p><span class="math display">\[
+y(0) = C_1 + \frac{5}{8} = 1 \;\Longrightarrow\; C_1 = \frac{3}{8}.
+\]</span></p>
+<p>Differentiate: <span class="math display">\[
+y'(t) = (C_2 - 2C_1 - 2C_2 t)\,e^{-2t} + \frac{3}{2}t - \frac{3}{2}.
+\]</span></p>
+<p>At <span class="math inline">\(t = 0\)</span>: <span class="math display">\[
+y'(0) = C_2 - 2C_1 - \frac{3}{2} = 0
+\;\Longrightarrow\;
+C_2 = 2C_1 + \frac{3}{2} = \frac{3}{4} + \frac{3}{2} = \frac{9}{4}.
+\]</span></p>
+<p>The particular solution is <span class="math display">\[
+\boxed{y(t) = \left(\frac{3}{8} + \frac{9}{4}t\right)e^{-2t} + \frac{3}{4}t^2 - \frac{3}{2}t + \frac{5}{8}.}
+\]</span></p>
+</section>
+<section id="ex4-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex4-sympy">Using SymPy</h4>
+<div id="ex4-sympy" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ode4 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>y(t).diff(t) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>y(t), <span class="dv">3</span><span class="op">*</span>t<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>gen4 <span class="op">=</span> sym.dsolve(ode4, y(t))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen4)))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>part4 <span class="op">=</span> sym.dsolve(ode4, y(t), ics<span class="op">=</span>{y(<span class="dv">0</span>): <span class="dv">1</span>, y(t).diff(t).subs(t, <span class="dv">0</span>): <span class="dv">0</span>})</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Particular solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(part4)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex4-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = \frac{3 t^{2}}{4} - \frac{3 t}{2} + \left(C_{1} + C_{2} t\right) e^{- 2 t} + \frac{5}{8}\)</span></p>
+</div>
+<div id="ex4-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Particular solution: }\quady{\left(t \right)} = \frac{3 t^{2}}{4} - \frac{3 t}{2} + \left(\frac{9 t}{4} + \frac{3}{8}\right) e^{- 2 t} + \frac{5}{8}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-5" class="level3">
+<h3 class="anchored" data-anchor-id="example-5">Example 5 — Exponential Forcing (Standard Case)</h3>
+<blockquote class="blockquote">
+<p>Find the general solution of <span class="math display">\[y'' - 3y' - 10y = 6e^{2t}.\]</span></p>
+</blockquote>
+<section id="ex5-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex5-by-hand">By Hand</h4>
+<p><strong>Step 1 — Solve the homogeneous equation.</strong></p>
+<p>Characteristic equation: <span class="math inline">\(r^2 - 3r - 10 = (r-5)(r+2) = 0\)</span>, giving <span class="math inline">\(r_1 = 5\)</span>, <span class="math inline">\(r_2 = -2\)</span>.</p>
+<p><span class="math display">\[
+y_h = C_1 e^{5t} + C_2 e^{-2t}.
+\]</span></p>
+<p><strong>Step 2 — Choose a trial particular solution.</strong></p>
+<p>The forcing function is <span class="math inline">\(f(t) = 6e^{2t}\)</span>. Since <span class="math inline">\(e^{2t}\)</span> does <strong>not</strong> appear in <span class="math inline">\(y_h\)</span> (the exponents <span class="math inline">\(5\)</span> and <span class="math inline">\(-2\)</span> differ from <span class="math inline">\(2\)</span>), we try <span class="math display">\[
+y_p = Ae^{2t}.
+\]</span></p>
+<p><strong>Step 3 — Substitute and solve for <span class="math inline">\(A\)</span>.</strong></p>
+<p><span class="math display">\[
+y_p' = 2Ae^{2t}, \qquad y_p'' = 4Ae^{2t}.
+\]</span></p>
+<p>Substituting into the ODE: <span class="math display">\[
+4Ae^{2t} - 3(2Ae^{2t}) - 10(Ae^{2t}) = 6e^{2t}
+\]</span> <span class="math display">\[
+(4 - 6 - 10)Ae^{2t} = 6e^{2t}
+\]</span> <span class="math display">\[
+-12A = 6 \;\Longrightarrow\; A = -\frac{1}{2}.
+\]</span></p>
+<p><strong>Step 4 — General solution.</strong></p>
+<p><span class="math display">\[
+\boxed{y(t) = C_1 e^{5t} + C_2 e^{-2t} - \frac{1}{2}e^{2t}.}
+\]</span></p>
+</section>
+<section id="ex5-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex5-sympy">Using SymPy</h4>
+<div id="cell-ex5-sympy" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ode5 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>y(t).diff(t) <span class="op">-</span> <span class="dv">10</span><span class="op">*</span>y(t), <span class="dv">6</span><span class="op">*</span>sym.exp(<span class="dv">2</span><span class="op">*</span>t))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>gen5 <span class="op">=</span> sym.dsolve(ode5, y(t))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen5)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex5-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = C_{1} e^{- 2 t} + C_{2} e^{5 t} - \frac{e^{2 t}}{2}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-6" class="level3">
+<h3 class="anchored" data-anchor-id="example-6">Example 6 — Exponential Forcing (Modification Rule)</h3>
+<blockquote class="blockquote">
+<p>Find the general solution of <span class="math display">\[y'' - 3y' - 10y = 6e^{-2t}.\]</span></p>
+</blockquote>
+<section id="ex6-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex6-by-hand">By Hand</h4>
+<p><strong>Step 1 — Homogeneous solution.</strong></p>
+<p>From Example 5 the characteristic roots are <span class="math inline">\(r_1 = 5\)</span> and <span class="math inline">\(r_2 = -2\)</span>, giving <span class="math display">\[
+y_h = C_1 e^{5t} + C_2 e^{-2t}.
+\]</span></p>
+<p><strong>Step 2 — Identify the conflict.</strong></p>
+<p>The forcing function <span class="math inline">\(f(t) = 6e^{-2t}\)</span> has the same exponent <span class="math inline">\(-2\)</span> as the homogeneous solution <span class="math inline">\(e^{-2t}\)</span>. If we naively tried <span class="math inline">\(y_p = Ae^{-2t}\)</span>, substitution would give <span class="math inline">\(0 = 6e^{-2t}\)</span> (a contradiction) because <span class="math inline">\(Ae^{-2t}\)</span> already satisfies the homogeneous equation.</p>
+<p><strong>Modification rule:</strong> multiply the trial function by <span class="math inline">\(t\)</span>: <span class="math display">\[
+y_p = Ate^{-2t}.
+\]</span></p>
+<p><strong>Step 3 — Compute derivatives and substitute.</strong></p>
+<p><span class="math display">\[
+y_p'  = A e^{-2t} - 2At e^{-2t} = A(1 - 2t)e^{-2t},
+\]</span> <span class="math display">\[
+y_p'' = A\bigl[-2e^{-2t} - 2(1-2t)e^{-2t}\bigr]
+       = A(-2 - 2 + 4t)e^{-2t}
+       = A(4t - 4)e^{-2t}.
+\]</span></p>
+<p>Substitute: <span class="math display">\[
+A(4t-4)e^{-2t} - 3A(1-2t)e^{-2t} - 10At e^{-2t} = 6e^{-2t}.
+\]</span></p>
+<p>Factor out <span class="math inline">\(Ae^{-2t}\)</span> and collect powers of <span class="math inline">\(t\)</span>: <span class="math display">\[
+A\bigl[(4t - 4) - 3(1 - 2t) - 10t\bigr] = 6.
+\]</span> <span class="math display">\[
+A\bigl[4t - 4 - 3 + 6t - 10t\bigr] = 6.
+\]</span> <span class="math display">\[
+A\bigl[(4 + 6 - 10)t + (-4 - 3)\bigr] = 6.
+\]</span> <span class="math display">\[
+A(0 \cdot t - 7) = 6 \;\Longrightarrow\; A = -\frac{6}{7}.
+\]</span></p>
+<p><strong>Step 4 — General solution.</strong></p>
+<p><span class="math display">\[
+\boxed{y(t) = C_1 e^{5t} + C_2 e^{-2t} - \frac{6}{7}\,t e^{-2t}.}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Modification rule summary.</strong> If the natural trial function for <span class="math inline">\(y_p\)</span> duplicates a term already present in <span class="math inline">\(y_h\)</span>, multiply the trial by <span class="math inline">\(t\)</span>. If it duplicates a term in <span class="math inline">\(y_h\)</span> that itself arose from a <strong>repeated</strong> characteristic root, multiply by <span class="math inline">\(t^2\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="ex6-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex6-sympy">Using SymPy</h4>
+<div id="cell-ex6-sympy" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ode6 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>y(t).diff(t) <span class="op">-</span> <span class="dv">10</span><span class="op">*</span>y(t), <span class="dv">6</span><span class="op">*</span>sym.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>gen6 <span class="op">=</span> sym.dsolve(ode6, y(t))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen6)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex6-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = C_{2} e^{5 t} + \left(C_{1} - \frac{6 t}{7}\right) e^{- 2 t}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-7" class="level3">
+<h3 class="anchored" data-anchor-id="example-7">Example 7 — Sinusoidal Forcing</h3>
+<blockquote class="blockquote">
+<p>Solve the initial value problem <span class="math display">\[y'' + 9y = 5\cos(2t), \qquad y(0) = 1,\quad y'(0) = 0.\]</span></p>
+</blockquote>
+<section id="ex7-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex7-by-hand">By Hand</h4>
+<p><strong>Step 1 — Solve the homogeneous equation <span class="math inline">\(y'' + 9y = 0\)</span>.</strong></p>
+<p>Characteristic equation: <span class="math inline">\(r^2 + 9 = 0 \Rightarrow r = \pm 3i\)</span>. So <span class="math inline">\(\alpha = 0\)</span>, <span class="math inline">\(\beta = 3\)</span>: <span class="math display">\[
+y_h = C_1\cos(3t) + C_2\sin(3t).
+\]</span></p>
+<p><strong>Step 2 — Choose a trial particular solution.</strong></p>
+<p>The forcing function <span class="math inline">\(f(t) = 5\cos(2t)\)</span> has frequency <span class="math inline">\(2\)</span>, while the homogeneous solutions oscillate at frequency <span class="math inline">\(3\)</span>. Since <span class="math inline">\(\cos(2t)\)</span> and <span class="math inline">\(\sin(2t)\)</span> do <strong>not</strong> appear in <span class="math inline">\(y_h\)</span> (because <span class="math inline">\(2 \neq 3\)</span>), we try <span class="math display">\[
+y_p = A\cos(2t) + B\sin(2t).
+\]</span></p>
+<p><strong>Step 3 — Substitute.</strong></p>
+<p><span class="math display">\[
+y_p'' = -4A\cos(2t) - 4B\sin(2t).
+\]</span></p>
+<p>Substituting into <span class="math inline">\(y'' + 9y = 5\cos(2t)\)</span>: <span class="math display">\[
+-4A\cos(2t) - 4B\sin(2t) + 9A\cos(2t) + 9B\sin(2t) = 5\cos(2t).
+\]</span> <span class="math display">\[
+(9 - 4)A\cos(2t) + (9 - 4)B\sin(2t) = 5\cos(2t).
+\]</span> <span class="math display">\[
+5A\cos(2t) + 5B\sin(2t) = 5\cos(2t).
+\]</span></p>
+<p><strong>Step 4 — Match coefficients.</strong></p>
+<p><span class="math display">\[
+5A = 5 \;\Longrightarrow\; A = 1, \qquad 5B = 0 \;\Longrightarrow\; B = 0.
+\]</span></p>
+<p><span class="math display">\[
+y_p = \cos(2t).
+\]</span></p>
+<p><strong>Step 5 — General solution.</strong></p>
+<p><span class="math display">\[
+y(t) = C_1\cos(3t) + C_2\sin(3t) + \cos(2t).
+\]</span></p>
+<p><strong>Step 6 — Apply the initial conditions.</strong></p>
+<p><span class="math display">\[
+y(0)  = C_1 + 1 = 1 \;\Longrightarrow\; C_1 = 0.
+\]</span></p>
+<p>Differentiate (using <span class="math inline">\(C_1 = 0\)</span>): <span class="math display">\[
+y'(t) = 3C_2\cos(3t) - 2\sin(2t).
+\]</span> <span class="math display">\[
+y'(0) = 3C_2 = 0 \;\Longrightarrow\; C_2 = 0.
+\]</span></p>
+<p>The particular solution is remarkably clean: <span class="math display">\[
+\boxed{y(t) = \cos(2t).}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This IVP happens to be satisfied by the particular solution alone. In general the homogeneous terms will be nonzero after applying the initial conditions.</p>
+</div>
+</div>
+</section>
+<section id="ex7-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex7-sympy">Using SymPy</h4>
+<div id="ex7-sympy" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ode7 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">+</span> <span class="dv">9</span><span class="op">*</span>y(t), <span class="dv">5</span><span class="op">*</span>sym.cos(<span class="dv">2</span><span class="op">*</span>t))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>gen7 <span class="op">=</span> sym.dsolve(ode7, y(t))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen7)))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>part7 <span class="op">=</span> sym.dsolve(ode7, y(t), ics<span class="op">=</span>{y(<span class="dv">0</span>): <span class="dv">1</span>, y(t).diff(t).subs(t, <span class="dv">0</span>): <span class="dv">0</span>})</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Particular solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(part7)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex7-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = C_{1} \sin{\left(3 t \right)} + C_{2} \cos{\left(3 t \right)} + \cos{\left(2 t \right)}\)</span></p>
+</div>
+<div id="ex7-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Particular solution: }\quady{\left(t \right)} = \cos{\left(2 t \right)}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex7" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span><span class="op">*</span>np.pi, <span class="dv">800</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>y_full <span class="op">=</span> np.cos(<span class="dv">2</span><span class="op">*</span>t_vals)              <span class="co"># C1 = C2 = 0</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>y_hom  <span class="op">=</span> np.zeros_like(t_vals)        <span class="co"># homogeneous part vanishes for this IVP</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>y_part_plot <span class="op">=</span> np.cos(<span class="dv">2</span><span class="op">*</span>t_vals)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, y_full,      color<span class="op">=</span><span class="st">'tomato'</span>,    lw<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = </span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">full solution</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, y_part_plot, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.4</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y_p = </span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">particular</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">'ko'</span>, ms<span class="op">=</span><span class="dv">6</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">y'' </span><span class="op">+</span><span class="vs"> 9y = 5</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="ch">\;</span><span class="vs">y</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=1</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="ch">\;</span><span class="vs">y'</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex7" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_03_files/figure-html/fig-ex7-output-1.png" width="1184" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Solution of <span class="math inline">\(y'' + 9y = 5\cos(2t)\)</span> with <span class="math inline">\(y(0)=1\)</span>, <span class="math inline">\(y'(0)=0\)</span>. The particular (forced) response <span class="math inline">\(\cos(2t)\)</span> and the homogeneous (natural) response are both shown. Here <span class="math inline">\(C_1 = C_2 = 0\)</span> so the full solution equals the forced response alone.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-8" class="level3">
+<h3 class="anchored" data-anchor-id="example-8">Example 8 — Sinusoidal Forcing at the Natural Frequency (Resonance)</h3>
+<blockquote class="blockquote">
+<p>Find the general solution of <span class="math display">\[y'' + 9y = 5\cos(3t).\]</span></p>
+</blockquote>
+<section id="ex8-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex8-by-hand">By Hand</h4>
+<p><strong>Step 1 — Homogeneous solution.</strong></p>
+<p>From Example 7, <span class="math inline">\(y_h = C_1\cos(3t) + C_2\sin(3t)\)</span>.</p>
+<p><strong>Step 2 — Identify the conflict.</strong></p>
+<p>The forcing function <span class="math inline">\(f(t) = 5\cos(3t)\)</span> oscillates at frequency <span class="math inline">\(3\)</span>, which matches the natural frequency of the system. The trial <span class="math inline">\(y_p = A\cos(3t) + B\sin(3t)\)</span> would duplicate terms already in <span class="math inline">\(y_h\)</span>.</p>
+<p><strong>Modification rule:</strong> multiply by <span class="math inline">\(t\)</span>: <span class="math display">\[
+y_p = At\cos(3t) + Bt\sin(3t).
+\]</span></p>
+<p><strong>Step 3 — Compute derivatives.</strong></p>
+<p><span class="math display">\[
+y_p'  = A\cos(3t) - 3At\sin(3t) + B\sin(3t) + 3Bt\cos(3t),
+\]</span> <span class="math display">\[
+y_p'' = -3A\sin(3t) - 3A\sin(3t) - 9At\cos(3t)
+       + 3B\cos(3t) + 3B\cos(3t) - 9Bt\sin(3t),
+\]</span> <span class="math display">\[
+y_p'' = -6A\sin(3t) + 6B\cos(3t) - 9At\cos(3t) - 9Bt\sin(3t).
+\]</span></p>
+<p><strong>Step 4 — Substitute into <span class="math inline">\(y'' + 9y = 5\cos(3t)\)</span>.</strong></p>
+<p><span class="math display">\[
+\bigl[-6A\sin(3t) + 6B\cos(3t) - 9At\cos(3t) - 9Bt\sin(3t)\bigr]
++ 9\bigl[At\cos(3t) + Bt\sin(3t)\bigr]
+= 5\cos(3t).
+\]</span></p>
+<p>The <span class="math inline">\(t\cos\)</span> and <span class="math inline">\(t\sin\)</span> terms cancel: <span class="math display">\[
+-6A\sin(3t) + 6B\cos(3t) = 5\cos(3t).
+\]</span></p>
+<p><strong>Step 5 — Match coefficients.</strong></p>
+<p><span class="math display">\[
+-6A = 0 \;\Longrightarrow\; A = 0, \qquad 6B = 5 \;\Longrightarrow\; B = \frac{5}{6}.
+\]</span></p>
+<p><strong>Step 6 — General solution.</strong></p>
+<p><span class="math display">\[
+\boxed{y(t) = C_1\cos(3t) + C_2\sin(3t) + \frac{5}{6}\,t\sin(3t).}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Resonance.</strong> The particular solution <span class="math inline">\(y_p = \dfrac{5}{6}\,t\sin(3t)\)</span> grows in amplitude without bound as <span class="math inline">\(t \to \infty\)</span> because the forcing frequency exactly matches the system’s natural frequency <span class="math inline">\(\omega_0 = 3\)</span>. This phenomenon is called <strong>pure resonance</strong>. In physical systems (springs, circuits) even small sustained forces at the natural frequency can produce unbounded oscillations.</p>
+</div>
+</div>
+</section>
+<section id="ex8-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex8-sympy">Using SymPy</h4>
+<div id="cell-ex8-sympy" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ode8 <span class="op">=</span> sym.Eq(y(t).diff(t, <span class="dv">2</span>) <span class="op">+</span> <span class="dv">9</span><span class="op">*</span>y(t), <span class="dv">5</span><span class="op">*</span>sym.cos(<span class="dv">3</span><span class="op">*</span>t))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>gen8 <span class="op">=</span> sym.dsolve(ode8, y(t))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{General solution: }</span><span class="er">\</span><span class="vs">quad'</span> <span class="op">+</span> sym.latex(gen8)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex8-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{General solution: }\quady{\left(t \right)} = C_{2} \cos{\left(3 t \right)} + \left(C_{1} + \frac{5 t}{6}\right) \sin{\left(3 t \right)}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex8" class="cell" data-execution_count="14">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">6</span><span class="op">*</span>np.pi, <span class="dv">1000</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>y_res <span class="op">=</span> (<span class="dv">5</span><span class="op">/</span><span class="dv">6</span>)<span class="op">*</span>t_vals<span class="op">*</span>np.sin(<span class="dv">3</span><span class="op">*</span>t_vals)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>envelope <span class="op">=</span> (<span class="dv">5</span><span class="op">/</span><span class="dv">6</span>)<span class="op">*</span>t_vals</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, y_res,      color<span class="op">=</span><span class="st">'tomato'</span>,    lw<span class="op">=</span><span class="fl">1.8</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y_p = </span><span class="ch">\f</span><span class="vs">rac</span><span class="op">{5}{6}</span><span class="ch">\,</span><span class="vs">t</span><span class="dv">\s</span><span class="vs">in</span><span class="kw">(</span><span class="vs">3t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals,  envelope,  color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pm</span><span class="ch">\f</span><span class="vs">rac</span><span class="op">{5}{6}</span><span class="ch">\,</span><span class="vs">t</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">linear envelope</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, <span class="op">-</span>envelope,  color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Resonance: </span><span class="dv">$</span><span class="vs">y'' </span><span class="op">+</span><span class="vs"> 9y = 5</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">3t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex8" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_03_files/figure-html/fig-ex8-output-1.png" width="1184" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: General solution of <span class="math inline">\(y'' + 9y = 5\cos(3t)\)</span> with <span class="math inline">\(C_1 = C_2 = 0\)</span>, showing the resonant response <span class="math inline">\(y_p = \tfrac{5}{6}t\sin(3t)\)</span>. The amplitude grows linearly with time.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="session-info" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid"></a></p>
+</section>
+</section>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
