@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="University of Scranton, Mathematics Department">
+<meta name="dcterms.date" content="2026-05-29">
+
+<title>MATH 341 — Differential Equations – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e14cfaa651a2b1e5413afab38cf38831.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="body { font-size: 15px; }
+h2 { color: #2c5f8a; border-bottom: 2px solid #2c5f8a; padding-bottom: 4px; }
+h3 { color: #3a7abf; }
+.callout-tip { border-left: 4px solid #28a745; }
+.callout-note { border-left: 4px solid #17a2b8; }
+.callout-warning { border-left: 4px solid #ffc107; }
+table { font-size: 14px; }
+th { background-color: #2c5f8a; color: white; }">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#first-order-equations-chapter-1" id="toc-first-order-equations-chapter-1" class="nav-link active" data-scroll-target="#first-order-equations-chapter-1"><span class="header-section-number">1</span> First-Order Equations (Chapter 1)</a>
+  <ul class="collapse">
+  <li><a href="#quick-decision-guide" id="toc-quick-decision-guide" class="nav-link" data-scroll-target="#quick-decision-guide"><span class="header-section-number">1.1</span> Quick Decision Guide</a></li>
+  <li><a href="#separation-of-variables-1.2" id="toc-separation-of-variables-1.2" class="nav-link" data-scroll-target="#separation-of-variables-1.2"><span class="header-section-number">1.2</span> Separation of Variables (§1.2)</a></li>
+  <li><a href="#integrating-factor-linear-first-order-1.3" id="toc-integrating-factor-linear-first-order-1.3" class="nav-link" data-scroll-target="#integrating-factor-linear-first-order-1.3"><span class="header-section-number">1.3</span> Integrating Factor / Linear First-Order (§1.3)</a></li>
+  <li><a href="#exact-equations-1.4" id="toc-exact-equations-1.4" class="nav-link" data-scroll-target="#exact-equations-1.4"><span class="header-section-number">1.4</span> Exact Equations (§1.4)</a></li>
+  <li><a href="#substitution-methods-1.5" id="toc-substitution-methods-1.5" class="nav-link" data-scroll-target="#substitution-methods-1.5"><span class="header-section-number">1.5</span> Substitution Methods (§1.5)</a>
+  <ul class="collapse">
+  <li><a href="#homogeneous-equations" id="toc-homogeneous-equations" class="nav-link" data-scroll-target="#homogeneous-equations"><span class="header-section-number">1.5.1</span> Homogeneous Equations</a></li>
+  <li><a href="#bernoulli-equations" id="toc-bernoulli-equations" class="nav-link" data-scroll-target="#bernoulli-equations"><span class="header-section-number">1.5.2</span> Bernoulli Equations</a></li>
+  <li><a href="#linear-substitution" id="toc-linear-substitution" class="nav-link" data-scroll-target="#linear-substitution"><span class="header-section-number">1.5.3</span> Linear Substitution</a></li>
+  </ul></li>
+  <li><a href="#autonomous-equations-qualitative-analysis-1.1-1.6" id="toc-autonomous-equations-qualitative-analysis-1.1-1.6" class="nav-link" data-scroll-target="#autonomous-equations-qualitative-analysis-1.1-1.6"><span class="header-section-number">1.6</span> Autonomous Equations &amp; Qualitative Analysis (§1.1, §1.6)</a></li>
+  <li><a href="#numerical-methods-1.7" id="toc-numerical-methods-1.7" class="nav-link" data-scroll-target="#numerical-methods-1.7"><span class="header-section-number">1.7</span> Numerical Methods (§1.7)</a>
+  <ul class="collapse">
+  <li><a href="#eulers-method" id="toc-eulers-method" class="nav-link" data-scroll-target="#eulers-method"><span class="header-section-number">1.7.1</span> Euler’s Method</a></li>
+  <li><a href="#improved-euler-heuns-method" id="toc-improved-euler-heuns-method" class="nav-link" data-scroll-target="#improved-euler-heuns-method"><span class="header-section-number">1.7.2</span> Improved Euler (Heun’s Method)</a></li>
+  <li><a href="#runge-kutta-rk4" id="toc-runge-kutta-rk4" class="nav-link" data-scroll-target="#runge-kutta-rk4"><span class="header-section-number">1.7.3</span> Runge-Kutta (RK4)</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#second-order-linear-equations-chapter-2" id="toc-second-order-linear-equations-chapter-2" class="nav-link" data-scroll-target="#second-order-linear-equations-chapter-2"><span class="header-section-number">2</span> Second-Order Linear Equations (Chapter 2)</a>
+  <ul class="collapse">
+  <li><a href="#quick-decision-guide-1" id="toc-quick-decision-guide-1" class="nav-link" data-scroll-target="#quick-decision-guide-1"><span class="header-section-number">2.1</span> Quick Decision Guide</a></li>
+  <li><a href="#homogeneous-linear-equations-characteristic-equation-2.1" id="toc-homogeneous-linear-equations-characteristic-equation-2.1" class="nav-link" data-scroll-target="#homogeneous-linear-equations-characteristic-equation-2.1"><span class="header-section-number">2.2</span> Homogeneous Linear Equations: Characteristic Equation (§2.1)</a></li>
+  <li><a href="#reduction-of-order-2.2" id="toc-reduction-of-order-2.2" class="nav-link" data-scroll-target="#reduction-of-order-2.2"><span class="header-section-number">2.3</span> Reduction of Order (§2.2)</a></li>
+  <li><a href="#undetermined-coefficients-2.3" id="toc-undetermined-coefficients-2.3" class="nav-link" data-scroll-target="#undetermined-coefficients-2.3"><span class="header-section-number">2.4</span> Undetermined Coefficients (§2.3)</a>
+  <ul class="collapse">
+  <li><a href="#particular-solution-guesses" id="toc-particular-solution-guesses" class="nav-link" data-scroll-target="#particular-solution-guesses"><span class="header-section-number">2.4.1</span> Particular Solution Guesses</a></li>
+  </ul></li>
+  <li><a href="#variation-of-parameters-2.4" id="toc-variation-of-parameters-2.4" class="nav-link" data-scroll-target="#variation-of-parameters-2.4"><span class="header-section-number">2.5</span> Variation of Parameters (§2.4)</a></li>
+  <li><a href="#cauchyeuler-equations-2.5" id="toc-cauchyeuler-equations-2.5" class="nav-link" data-scroll-target="#cauchyeuler-equations-2.5"><span class="header-section-number">2.6</span> Cauchy–Euler Equations (§2.5)</a></li>
+  <li><a href="#applications-spring-mass-system-2.12.3" id="toc-applications-spring-mass-system-2.12.3" class="nav-link" data-scroll-target="#applications-spring-mass-system-2.12.3"><span class="header-section-number">2.7</span> Applications: Spring-Mass System (§2.1–§2.3)</a></li>
+  </ul></li>
+  <li><a href="#laplace-transforms-chapter-3" id="toc-laplace-transforms-chapter-3" class="nav-link" data-scroll-target="#laplace-transforms-chapter-3"><span class="header-section-number">3</span> Laplace Transforms (Chapter 3)</a>
+  <ul class="collapse">
+  <li><a href="#definition-key-properties" id="toc-definition-key-properties" class="nav-link" data-scroll-target="#definition-key-properties"><span class="header-section-number">3.1</span> Definition &amp; Key Properties</a></li>
+  <li><a href="#common-laplace-transform-table" id="toc-common-laplace-transform-table" class="nav-link" data-scroll-target="#common-laplace-transform-table"><span class="header-section-number">3.2</span> Common Laplace Transform Table</a></li>
+  <li><a href="#solving-ivps-with-laplace-transforms-3.13.3" id="toc-solving-ivps-with-laplace-transforms-3.13.3" class="nav-link" data-scroll-target="#solving-ivps-with-laplace-transforms-3.13.3"><span class="header-section-number">3.3</span> Solving IVPs with Laplace Transforms (§3.1–§3.3)</a></li>
+  <li><a href="#step-functions-piecewise-forcing-3.2" id="toc-step-functions-piecewise-forcing-3.2" class="nav-link" data-scroll-target="#step-functions-piecewise-forcing-3.2"><span class="header-section-number">3.4</span> Step Functions &amp; Piecewise Forcing (§3.2)</a></li>
+  <li><a href="#impulse-functions-dirac-delta-3.3" id="toc-impulse-functions-dirac-delta-3.3" class="nav-link" data-scroll-target="#impulse-functions-dirac-delta-3.3"><span class="header-section-number">3.5</span> Impulse Functions &amp; Dirac Delta (§3.3)</a></li>
+  <li><a href="#convolution-3.4" id="toc-convolution-3.4" class="nav-link" data-scroll-target="#convolution-3.4"><span class="header-section-number">3.6</span> Convolution (§3.4)</a></li>
+  </ul></li>
+  <li><a href="#linear-systems-chapter-4" id="toc-linear-systems-chapter-4" class="nav-link" data-scroll-target="#linear-systems-chapter-4"><span class="header-section-number">4</span> Linear Systems (Chapter 4)</a>
+  <ul class="collapse">
+  <li><a href="#system-setup" id="toc-system-setup" class="nav-link" data-scroll-target="#system-setup"><span class="header-section-number">4.1</span> System Setup</a></li>
+  <li><a href="#quick-decision-guide-2-times-2-systems" id="toc-quick-decision-guide-2-times-2-systems" class="nav-link" data-scroll-target="#quick-decision-guide-2-times-2-systems"><span class="header-section-number">4.2</span> Quick Decision Guide: <span class="math inline">\(2 \times 2\)</span> Systems</a></li>
+  <li><a href="#solving-2-times-2-homogeneous-systems-4.14.2" id="toc-solving-2-times-2-homogeneous-systems-4.14.2" class="nav-link" data-scroll-target="#solving-2-times-2-homogeneous-systems-4.14.2"><span class="header-section-number">4.3</span> Solving <span class="math inline">\(2 \times 2\)</span> Homogeneous Systems (§4.1–§4.2)</a>
+  <ul class="collapse">
+  <li><a href="#case-1-distinct-real-eigenvalues" id="toc-case-1-distinct-real-eigenvalues" class="nav-link" data-scroll-target="#case-1-distinct-real-eigenvalues"><span class="header-section-number">4.3.1</span> Case 1: Distinct Real Eigenvalues</a></li>
+  <li><a href="#case-2-complex-eigenvalues-lambda-alpha-pm-beta-i" id="toc-case-2-complex-eigenvalues-lambda-alpha-pm-beta-i" class="nav-link" data-scroll-target="#case-2-complex-eigenvalues-lambda-alpha-pm-beta-i"><span class="header-section-number">4.3.2</span> Case 2: Complex Eigenvalues <span class="math inline">\(\lambda = \alpha \pm \beta i\)</span></a></li>
+  <li><a href="#case-3-repeated-eigenvalue-lambda-defective" id="toc-case-3-repeated-eigenvalue-lambda-defective" class="nav-link" data-scroll-target="#case-3-repeated-eigenvalue-lambda-defective"><span class="header-section-number">4.3.3</span> Case 3: Repeated Eigenvalue <span class="math inline">\(\lambda\)</span> (defective)</a></li>
+  </ul></li>
+  <li><a href="#phase-plane-analysis-4.3" id="toc-phase-plane-analysis-4.3" class="nav-link" data-scroll-target="#phase-plane-analysis-4.3"><span class="header-section-number">4.4</span> Phase Plane Analysis (§4.3)</a></li>
+  <li><a href="#nonhomogeneous-systems-variation-of-parameters-4.4" id="toc-nonhomogeneous-systems-variation-of-parameters-4.4" class="nav-link" data-scroll-target="#nonhomogeneous-systems-variation-of-parameters-4.4"><span class="header-section-number">4.5</span> Nonhomogeneous Systems: Variation of Parameters (§4.4)</a></li>
+  </ul></li>
+  <li><a href="#nonlinear-systems-stability-chapter-5" id="toc-nonlinear-systems-stability-chapter-5" class="nav-link" data-scroll-target="#nonlinear-systems-stability-chapter-5"><span class="header-section-number">5</span> Nonlinear Systems &amp; Stability (Chapter 5)</a>
+  <ul class="collapse">
+  <li><a href="#linearization-at-equilibria-5.1" id="toc-linearization-at-equilibria-5.1" class="nav-link" data-scroll-target="#linearization-at-equilibria-5.1"><span class="header-section-number">5.1</span> Linearization at Equilibria (§5.1)</a></li>
+  <li><a href="#stability-definitions-5.15.2" id="toc-stability-definitions-5.15.2" class="nav-link" data-scroll-target="#stability-definitions-5.15.2"><span class="header-section-number">5.2</span> Stability Definitions (§5.1–§5.2)</a></li>
+  <li><a href="#lyapunov-functions-5.2" id="toc-lyapunov-functions-5.2" class="nav-link" data-scroll-target="#lyapunov-functions-5.2"><span class="header-section-number">5.3</span> Lyapunov Functions (§5.2)</a></li>
+  <li><a href="#limit-cycles-periodic-orbits-5.3" id="toc-limit-cycles-periodic-orbits-5.3" class="nav-link" data-scroll-target="#limit-cycles-periodic-orbits-5.3"><span class="header-section-number">5.4</span> Limit Cycles &amp; Periodic Orbits (§5.3)</a></li>
+  </ul></li>
+  <li><a href="#overall-strategy-flowchart" id="toc-overall-strategy-flowchart" class="nav-link" data-scroll-target="#overall-strategy-flowchart"><span class="header-section-number">6</span> Overall Strategy Flowchart</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="math341_cheatsheet.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">MATH 341 — Differential Equations</h1>
+<p class="subtitle lead">Methods &amp; Techniques Quick Reference</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>University of Scranton, Mathematics Department </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 29, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Textbook:</strong> Logan, J.D. <em>A First Course in Differential Equations</em>, 3rd ed.&nbsp;(Springer, 2015).<br>
+<strong>Sections covered:</strong> All sections except §2.6.<br>
+<strong>Course website:</strong> <a href="https://math341diffeq.netlify.app/" class="uri">https://math341diffeq.netlify.app/</a></p>
+</div>
+</div>
+<hr>
+<section id="first-order-equations-chapter-1" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> First-Order Equations (Chapter 1)</h1>
+<section id="quick-decision-guide" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="quick-decision-guide"><span class="header-section-number">1.1</span> Quick Decision Guide</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Form of Equation</th>
+<th>Technique</th>
+<th>See Section</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y' = f(x)\,g(y)\)</span></td>
+<td>Separation of Variables</td>
+<td>§1.2</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y' + p(x)\,y = q(x)\)</span></td>
+<td>Integrating Factor</td>
+<td>§1.3</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(M\,dx + N\,dy = 0\)</span>, <span class="math inline">\(M_y = N_x\)</span></td>
+<td>Exact Equation</td>
+<td>§1.4</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y' = f(y/x)\)</span></td>
+<td>Substitution <span class="math inline">\(v = y/x\)</span></td>
+<td>§1.5</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(y' = f(ax + by + c)\)</span></td>
+<td>Substitution <span class="math inline">\(v = ax+by+c\)</span></td>
+<td>§1.5</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y' + p(x)\,y = q(x)\,y^n\)</span></td>
+<td>Bernoulli Substitution</td>
+<td>§1.5</td>
+</tr>
+<tr class="odd">
+<td>None of the above</td>
+<td>Numerical Methods (§1.6) or Qualitative Analysis</td>
+<td>§1.1</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="separation-of-variables-1.2" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="separation-of-variables-1.2"><span class="header-section-number">1.2</span> Separation of Variables (§1.2)</h2>
+<p><strong>When to use:</strong> The right-hand side factors as <span class="math inline">\(f(x) \cdot g(y)\)</span>.</p>
+<p><strong>Form:</strong> <span class="math inline">\(\dfrac{dy}{dx} = f(x)\,g(y)\)</span></p>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li>Rewrite as <span class="math inline">\(\dfrac{dy}{g(y)} = f(x)\,dx\)</span> (check <span class="math inline">\(g(y) \neq 0\)</span>).</li>
+<li>Integrate both sides: <span class="math inline">\(\displaystyle\int \frac{dy}{g(y)} = \int f(x)\,dx + C\)</span>.</li>
+<li>Solve for <span class="math inline">\(y\)</span> (if possible); apply initial condition to find <span class="math inline">\(C\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Watch out:</strong> Always check for <strong>equilibrium solutions</strong> where <span class="math inline">\(g(y) = 0\)</span> — these may be lost when dividing.</p>
+</div>
+</div>
+<p><strong>Example:</strong> <span class="math inline">\(y' = xy\)</span><br>
+<span class="math inline">\(\Rightarrow \dfrac{dy}{y} = x\,dx \Rightarrow \ln|y| = \dfrac{x^2}{2} + C \Rightarrow y = Ae^{x^2/2}\)</span></p>
+<hr>
+</section>
+<section id="integrating-factor-linear-first-order-1.3" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="integrating-factor-linear-first-order-1.3"><span class="header-section-number">1.3</span> Integrating Factor / Linear First-Order (§1.3)</h2>
+<p><strong>When to use:</strong> Equation is linear in <span class="math inline">\(y\)</span> (or can be put in standard linear form).</p>
+<p><strong>Standard form:</strong> <span class="math inline">\(y' + p(x)\,y = q(x)\)</span></p>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li>Identify <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(q(x)\)</span>.</li>
+<li>Compute integrating factor: <span class="math inline">\(\mu(x) = e^{\int p(x)\,dx}\)</span>.</li>
+<li>Multiply both sides by <span class="math inline">\(\mu\)</span>: <span class="math inline">\(\big(\mu\,y\big)' = \mu\,q(x)\)</span>.</li>
+<li>Integrate: <span class="math inline">\(\mu\,y = \displaystyle\int \mu\,q(x)\,dx + C\)</span>.</li>
+<li>Solve: <span class="math inline">\(y = \dfrac{1}{\mu}\left(\displaystyle\int \mu\,q\,dx + C\right)\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Tip:</strong> The general solution is <span class="math inline">\(y = y_h + y_p\)</span> where <span class="math inline">\(y_h = C/\mu\)</span> is the homogeneous solution and <span class="math inline">\(y_p = \frac{1}{\mu}\int \mu q\,dx\)</span> is a particular solution.</p>
+</div>
+</div>
+<p><strong>Example:</strong> <span class="math inline">\(y' - 2xy = x\)</span><br>
+<span class="math inline">\(p(x) = -2x\)</span>, <span class="math inline">\(\mu = e^{-x^2}\)</span>, then <span class="math inline">\((e^{-x^2}y)' = xe^{-x^2}\)</span>, giving <span class="math inline">\(y = -\tfrac{1}{2} + Ce^{x^2}\)</span>.</p>
+<hr>
+</section>
+<section id="exact-equations-1.4" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="exact-equations-1.4"><span class="header-section-number">1.4</span> Exact Equations (§1.4)</h2>
+<p><strong>When to use:</strong> Equation written as <span class="math inline">\(M(x,y)\,dx + N(x,y)\,dy = 0\)</span> with <span class="math inline">\(\dfrac{\partial M}{\partial y} = \dfrac{\partial N}{\partial x}\)</span>.</p>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li>Check exactness: <span class="math inline">\(M_y = N_x\)</span>?</li>
+<li>Find potential function <span class="math inline">\(F(x,y)\)</span> such that <span class="math inline">\(F_x = M\)</span>, <span class="math inline">\(F_y = N\)</span>.</li>
+<li>Integrate <span class="math inline">\(M\)</span> w.r.t. <span class="math inline">\(x\)</span>: <span class="math inline">\(F = \displaystyle\int M\,dx + g(y)\)</span>.</li>
+<li>Differentiate <span class="math inline">\(F\)</span> w.r.t. <span class="math inline">\(y\)</span> and set equal to <span class="math inline">\(N\)</span> to find <span class="math inline">\(g'(y)\)</span>; integrate.</li>
+<li>Solution: <span class="math inline">\(F(x,y) = C\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Not exact?</strong> Try integrating factors <span class="math inline">\(\mu(x)\)</span> or <span class="math inline">\(\mu(y)\)</span> to make it exact.<br>
+If <span class="math inline">\(\dfrac{M_y - N_x}{N}\)</span> depends only on <span class="math inline">\(x\)</span>, then <span class="math inline">\(\mu = e^{\int\frac{M_y-N_x}{N}dx}\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="substitution-methods-1.5" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="substitution-methods-1.5"><span class="header-section-number">1.5</span> Substitution Methods (§1.5)</h2>
+<section id="homogeneous-equations" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="homogeneous-equations"><span class="header-section-number">1.5.1</span> Homogeneous Equations</h3>
+<p><strong>Form:</strong> <span class="math inline">\(y' = f\!\left(\dfrac{y}{x}\right)\)</span><br>
+<strong>Substitution:</strong> <span class="math inline">\(v = y/x\)</span>, so <span class="math inline">\(y = vx\)</span> and <span class="math inline">\(y' = v + xv'\)</span>.<br>
+Reduces to a <strong>separable</strong> equation in <span class="math inline">\(v\)</span> and <span class="math inline">\(x\)</span>.</p>
+</section>
+<section id="bernoulli-equations" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="bernoulli-equations"><span class="header-section-number">1.5.2</span> Bernoulli Equations</h3>
+<p><strong>Form:</strong> <span class="math inline">\(y' + p(x)\,y = q(x)\,y^n\)</span>, <span class="math inline">\(n \neq 0, 1\)</span><br>
+<strong>Substitution:</strong> <span class="math inline">\(w = y^{1-n}\)</span>, so <span class="math inline">\(w' = (1-n)y^{-n}y'\)</span>.<br>
+Reduces to a <strong>linear</strong> equation in <span class="math inline">\(w\)</span>.</p>
+</section>
+<section id="linear-substitution" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="linear-substitution"><span class="header-section-number">1.5.3</span> Linear Substitution</h3>
+<p><strong>Form:</strong> <span class="math inline">\(y' = f(ax + by + c)\)</span><br>
+<strong>Substitution:</strong> <span class="math inline">\(v = ax + by + c\)</span>, so <span class="math inline">\(v' = a + by'\)</span>.<br>
+Reduces to a <strong>separable</strong> equation.</p>
+<hr>
+</section>
+</section>
+<section id="autonomous-equations-qualitative-analysis-1.1-1.6" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="autonomous-equations-qualitative-analysis-1.1-1.6"><span class="header-section-number">1.6</span> Autonomous Equations &amp; Qualitative Analysis (§1.1, §1.6)</h2>
+<p><strong>Form:</strong> <span class="math inline">\(y' = f(y)\)</span> (right side depends only on <span class="math inline">\(y\)</span>)</p>
+<p><strong>Key concepts:</strong></p>
+<ul>
+<li><strong>Equilibria (critical points):</strong> Solve <span class="math inline">\(f(y^*) = 0\)</span>.</li>
+<li><strong>Stability:</strong>
+<ul>
+<li><span class="math inline">\(f'(y^*) &lt; 0\)</span>: <strong>stable</strong> (attractor)</li>
+<li><span class="math inline">\(f'(y^*) &gt; 0\)</span>: <strong>unstable</strong> (repeller)</li>
+</ul></li>
+<li><strong>Phase line:</strong> Plot <span class="math inline">\(f(y)\)</span> vs.&nbsp;<span class="math inline">\(y\)</span>; arrows point right where <span class="math inline">\(f &gt; 0\)</span>, left where <span class="math inline">\(f &lt; 0\)</span>.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Tip:</strong> The phase line immediately reveals long-term behavior without solving the ODE explicitly.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="numerical-methods-1.7" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="numerical-methods-1.7"><span class="header-section-number">1.7</span> Numerical Methods (§1.7)</h2>
+<section id="eulers-method" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="eulers-method"><span class="header-section-number">1.7.1</span> Euler’s Method</h3>
+<p><strong>Formula:</strong> <span class="math inline">\(y_{n+1} = y_n + h\,f(x_n, y_n)\)</span>, where <span class="math inline">\(h\)</span> is the step size.</p>
+<p><strong>Error:</strong> <span class="math inline">\(O(h)\)</span> per step — first-order method. Use small <span class="math inline">\(h\)</span> for accuracy.</p>
+</section>
+<section id="improved-euler-heuns-method" class="level3" data-number="1.7.2">
+<h3 data-number="1.7.2" class="anchored" data-anchor-id="improved-euler-heuns-method"><span class="header-section-number">1.7.2</span> Improved Euler (Heun’s Method)</h3>
+<p><strong>Predictor:</strong> <span class="math inline">\(\tilde{y}_{n+1} = y_n + h\,f(x_n, y_n)\)</span><br>
+<strong>Corrector:</strong> <span class="math inline">\(y_{n+1} = y_n + \dfrac{h}{2}\big[f(x_n, y_n) + f(x_{n+1}, \tilde{y}_{n+1})\big]\)</span></p>
+<p><strong>Error:</strong> <span class="math inline">\(O(h^2)\)</span> — second-order method.</p>
+</section>
+<section id="runge-kutta-rk4" class="level3" data-number="1.7.3">
+<h3 data-number="1.7.3" class="anchored" data-anchor-id="runge-kutta-rk4"><span class="header-section-number">1.7.3</span> Runge-Kutta (RK4)</h3>
+<p><span class="math display">\[y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)\]</span> <span class="math display">\[k_1 = f(x_n, y_n), \quad k_2 = f\!\left(x_n+\tfrac{h}{2}, y_n+\tfrac{h}{2}k_1\right)\]</span> <span class="math display">\[k_3 = f\!\left(x_n+\tfrac{h}{2}, y_n+\tfrac{h}{2}k_2\right), \quad k_4 = f(x_n+h, y_n+hk_3)\]</span></p>
+<p><strong>Error:</strong> <span class="math inline">\(O(h^4)\)</span> — standard workhorse for numerical ODEs.</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="second-order-linear-equations-chapter-2" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Second-Order Linear Equations (Chapter 2)</h1>
+<section id="quick-decision-guide-1" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="quick-decision-guide-1"><span class="header-section-number">2.1</span> Quick Decision Guide</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Equation Type</th>
+<th>Technique</th>
+<th>See Section</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(ay'' + by' + cy = 0\)</span></td>
+<td>Characteristic Equation</td>
+<td>§2.1</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(ay'' + by' + cy = g(t)\)</span>, <span class="math inline">\(g\)</span> = poly/exp/sin/cos</td>
+<td>Undetermined Coefficients</td>
+<td>§2.3</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(ay'' + by' + cy = g(t)\)</span>, <span class="math inline">\(g\)</span> = other</td>
+<td>Variation of Parameters</td>
+<td>§2.4</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(x^2y'' + xy' + \alpha y = 0\)</span></td>
+<td>Cauchy–Euler Equation</td>
+<td>§2.5</td>
+</tr>
+<tr class="odd">
+<td>Two solutions <span class="math inline">\(y_1, y_2\)</span> needed</td>
+<td>Reduction of Order</td>
+<td>§2.2</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="homogeneous-linear-equations-characteristic-equation-2.1" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="homogeneous-linear-equations-characteristic-equation-2.1"><span class="header-section-number">2.2</span> Homogeneous Linear Equations: Characteristic Equation (§2.1)</h2>
+<p><strong>Standard form:</strong> <span class="math inline">\(ay'' + by' + cy = 0\)</span></p>
+<p><strong>Characteristic equation:</strong> <span class="math inline">\(ar^2 + br + c = 0\)</span>, with roots <span class="math inline">\(r = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}\)</span>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Discriminant</th>
+<th>Roots</th>
+<th>General Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(b^2 - 4ac &gt; 0\)</span></td>
+<td>Two real: <span class="math inline">\(r_1 \neq r_2\)</span></td>
+<td><span class="math inline">\(y = C_1 e^{r_1 t} + C_2 e^{r_2 t}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(b^2 - 4ac = 0\)</span></td>
+<td>Repeated: <span class="math inline">\(r_1 = r_2 = r\)</span></td>
+<td><span class="math inline">\(y = (C_1 + C_2 t)\,e^{rt}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(b^2 - 4ac &lt; 0\)</span></td>
+<td>Complex: <span class="math inline">\(r = \alpha \pm \beta i\)</span></td>
+<td><span class="math inline">\(y = e^{\alpha t}(C_1 \cos\beta t + C_2 \sin\beta t)\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For complex roots <span class="math inline">\(r = \alpha \pm \beta i\)</span>: <span class="math inline">\(\alpha = -b/(2a)\)</span>, <span class="math inline">\(\beta = \sqrt{4ac - b^2}/(2a)\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="reduction-of-order-2.2" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="reduction-of-order-2.2"><span class="header-section-number">2.3</span> Reduction of Order (§2.2)</h2>
+<p><strong>When to use:</strong> One solution <span class="math inline">\(y_1\)</span> is known; find a second linearly independent solution <span class="math inline">\(y_2\)</span>.</p>
+<p><strong>Substitution:</strong> <span class="math inline">\(y_2 = v(t)\,y_1(t)\)</span></p>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li>Substitute <span class="math inline">\(y = v\,y_1\)</span> into the ODE.</li>
+<li>Use <span class="math inline">\(y_1'' + p(t)y_1' + q(t)y_1 = 0\)</span> to eliminate terms.</li>
+<li>Let <span class="math inline">\(w = v'\)</span> to get a first-order linear ODE in <span class="math inline">\(w\)</span>.</li>
+<li>Solve for <span class="math inline">\(w\)</span>, then integrate to find <span class="math inline">\(v\)</span>, then <span class="math inline">\(y_2 = v\,y_1\)</span>.</li>
+</ol>
+<p><strong>Wronskian:</strong> <span class="math inline">\(W(y_1, y_2) = y_1 y_2' - y_1' y_2 \neq 0\)</span> confirms linear independence.</p>
+<p><strong>Abel’s Formula:</strong> <span class="math inline">\(W(t) = W(t_0)\,e^{-\int p(t)\,dt}\)</span></p>
+<hr>
+</section>
+<section id="undetermined-coefficients-2.3" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="undetermined-coefficients-2.3"><span class="header-section-number">2.4</span> Undetermined Coefficients (§2.3)</h2>
+<p><strong>When to use:</strong> <span class="math inline">\(ay'' + by' + cy = g(t)\)</span> where <span class="math inline">\(g(t)\)</span> is a combination of polynomials, exponentials, sines, or cosines.</p>
+<p><strong>General solution:</strong> <span class="math inline">\(y = y_h + y_p\)</span></p>
+<section id="particular-solution-guesses" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="particular-solution-guesses"><span class="header-section-number">2.4.1</span> Particular Solution Guesses</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Forcing <span class="math inline">\(g(t)\)</span></th>
+<th>Guess for <span class="math inline">\(y_p\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(P_n(t)\)</span> (degree-<span class="math inline">\(n\)</span> poly)</td>
+<td><span class="math inline">\(A_n t^n + \cdots + A_1 t + A_0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e^{\alpha t}\)</span></td>
+<td><span class="math inline">\(Ae^{\alpha t}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\sin(\beta t)\)</span> or <span class="math inline">\(\cos(\beta t)\)</span></td>
+<td><span class="math inline">\(A\cos(\beta t) + B\sin(\beta t)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e^{\alpha t}\sin(\beta t)\)</span> or <span class="math inline">\(e^{\alpha t}\cos(\beta t)\)</span></td>
+<td><span class="math inline">\(e^{\alpha t}(A\cos\beta t + B\sin\beta t)\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(P_n(t)\,e^{\alpha t}\)</span></td>
+<td><span class="math inline">\((A_n t^n + \cdots + A_0)\,e^{\alpha t}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Modification Rule:</strong> If any term of the guess solves the <em>homogeneous</em> equation, multiply the entire guess by <span class="math inline">\(t\)</span> (or <span class="math inline">\(t^2\)</span> if needed for repeated roots).</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="variation-of-parameters-2.4" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="variation-of-parameters-2.4"><span class="header-section-number">2.5</span> Variation of Parameters (§2.4)</h2>
+<p><strong>When to use:</strong> <span class="math inline">\(y'' + p(t)y' + q(t)y = g(t)\)</span> when <span class="math inline">\(g(t)\)</span> is not of the “undetermined coefficients” type, or the coefficients are non-constant.</p>
+<p><strong>Requires:</strong> Two known linearly independent solutions <span class="math inline">\(y_1\)</span>, <span class="math inline">\(y_2\)</span> of the homogeneous equation.</p>
+<p><strong>Formulas:</strong> <span class="math display">\[y_p = -y_1 \int \frac{y_2\,g}{W}\,dt + y_2 \int \frac{y_1\,g}{W}\,dt\]</span></p>
+<p>where <span class="math inline">\(W = W(y_1, y_2) = y_1 y_2' - y_1' y_2\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always write the ODE in <strong>standard form</strong> (leading coefficient 1) before applying this formula.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="cauchyeuler-equations-2.5" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="cauchyeuler-equations-2.5"><span class="header-section-number">2.6</span> Cauchy–Euler Equations (§2.5)</h2>
+<p><strong>Form:</strong> <span class="math inline">\(x^2 y'' + \alpha x y' + \beta y = 0\)</span>, <span class="math inline">\(x &gt; 0\)</span></p>
+<p><strong>Substitution:</strong> <span class="math inline">\(x = e^t\)</span> (or try <span class="math inline">\(y = x^r\)</span>)</p>
+<p><strong>Characteristic equation:</strong> <span class="math inline">\(r(r-1) + \alpha r + \beta = 0 \Rightarrow r^2 + (\alpha - 1)r + \beta = 0\)</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Roots</th>
+<th>General Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Two real: <span class="math inline">\(r_1 \neq r_2\)</span></td>
+<td><span class="math inline">\(y = C_1 x^{r_1} + C_2 x^{r_2}\)</span></td>
+</tr>
+<tr class="even">
+<td>Repeated: <span class="math inline">\(r_1 = r_2 = r\)</span></td>
+<td><span class="math inline">\(y = x^r(C_1 + C_2 \ln x)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Complex: <span class="math inline">\(r = \lambda \pm \mu i\)</span></td>
+<td><span class="math inline">\(y = x^\lambda\big(C_1 \cos(\mu \ln x) + C_2 \sin(\mu \ln x)\big)\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="applications-spring-mass-system-2.12.3" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="applications-spring-mass-system-2.12.3"><span class="header-section-number">2.7</span> Applications: Spring-Mass System (§2.1–§2.3)</h2>
+<p><strong>Equation of motion:</strong> <span class="math inline">\(my'' + \gamma y' + ky = F(t)\)</span></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(m &gt; 0\)</span></td>
+<td>Mass</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\gamma \geq 0\)</span></td>
+<td>Damping coefficient</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(k &gt; 0\)</span></td>
+<td>Spring constant</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(F(t)\)</span></td>
+<td>External forcing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Damping regimes</strong> (unforced, <span class="math inline">\(F = 0\)</span>):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Regime</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\gamma^2 - 4mk &gt; 0\)</span></td>
+<td>Overdamped</td>
+<td>Exponential decay, no oscillation</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\gamma^2 - 4mk = 0\)</span></td>
+<td>Critically damped</td>
+<td>Fastest decay without oscillation</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\gamma^2 - 4mk &lt; 0\)</span></td>
+<td>Underdamped</td>
+<td>Oscillates with decaying amplitude</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\gamma = 0\)</span></td>
+<td>Undamped</td>
+<td>Pure oscillation at <span class="math inline">\(\omega_0 = \sqrt{k/m}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Resonance:</strong> Occurs when <span class="math inline">\(F(t) = F_0\cos(\omega_0 t)\)</span> and <span class="math inline">\(\gamma = 0\)</span>. The amplitude grows without bound — use the <strong>Modification Rule</strong> (multiply guess by <span class="math inline">\(t\)</span>).</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="laplace-transforms-chapter-3" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Laplace Transforms (Chapter 3)</h1>
+<section id="definition-key-properties" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="definition-key-properties"><span class="header-section-number">3.1</span> Definition &amp; Key Properties</h2>
+<p><span class="math display">\[\mathcal{L}\{f(t)\} = F(s) = \int_0^\infty e^{-st} f(t)\,dt, \quad s &gt; 0\]</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linearity</td>
+<td><span class="math inline">\(\mathcal{L}\{af + bg\} = aF(s) + bG(s)\)</span></td>
+</tr>
+<tr class="even">
+<td>Derivative</td>
+<td><span class="math inline">\(\mathcal{L}\{f'\} = sF(s) - f(0)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Derivative</td>
+<td><span class="math inline">\(\mathcal{L}\{f''\} = s^2F(s) - sf(0) - f'(0)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n\)</span>-th Derivative</td>
+<td><span class="math inline">\(\mathcal{L}\{f^{(n)}\} = s^n F(s) - s^{n-1}f(0) - \cdots - f^{(n-1)}(0)\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(s\)</span>-shifting</td>
+<td><span class="math inline">\(\mathcal{L}\{e^{at}f(t)\} = F(s-a)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t\)</span>-shifting</td>
+<td><span class="math inline">\(\mathcal{L}\{u_c(t)f(t-c)\} = e^{-cs}F(s)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Convolution</td>
+<td><span class="math inline">\(\mathcal{L}\{f * g\} = F(s)\,G(s)\)</span></td>
+</tr>
+<tr class="even">
+<td>Multiplication by <span class="math inline">\(t\)</span></td>
+<td><span class="math inline">\(\mathcal{L}\{t\,f(t)\} = -F'(s)\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="common-laplace-transform-table" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="common-laplace-transform-table"><span class="header-section-number">3.2</span> Common Laplace Transform Table</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><span class="math inline">\(f(t)\)</span></th>
+<th><span class="math inline">\(F(s) = \mathcal{L}\{f\}\)</span></th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(1\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{s}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t^n\)</span></td>
+<td><span class="math inline">\(\dfrac{n!}{s^{n+1}}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(e^{at}\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{s-a}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sin(bt)\)</span></td>
+<td><span class="math inline">\(\dfrac{b}{s^2+b^2}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\cos(bt)\)</span></td>
+<td><span class="math inline">\(\dfrac{s}{s^2+b^2}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e^{at}\sin(bt)\)</span></td>
+<td><span class="math inline">\(\dfrac{b}{(s-a)^2+b^2}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(e^{at}\cos(bt)\)</span></td>
+<td><span class="math inline">\(\dfrac{s-a}{(s-a)^2+b^2}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t^n e^{at}\)</span></td>
+<td><span class="math inline">\(\dfrac{n!}{(s-a)^{n+1}}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(u_c(t)\)</span> (unit step at <span class="math inline">\(c\)</span>)</td>
+<td><span class="math inline">\(\dfrac{e^{-cs}}{s}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\delta(t - c)\)</span> (Dirac delta)</td>
+<td><span class="math inline">\(e^{-cs}\)</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="solving-ivps-with-laplace-transforms-3.13.3" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="solving-ivps-with-laplace-transforms-3.13.3"><span class="header-section-number">3.3</span> Solving IVPs with Laplace Transforms (§3.1–§3.3)</h2>
+<p><strong>When to use:</strong> Constant-coefficient ODEs (any order), especially with discontinuous/impulsive forcing.</p>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li>Take <span class="math inline">\(\mathcal{L}\)</span> of both sides; use initial conditions automatically.</li>
+<li>Solve algebraically for <span class="math inline">\(Y(s) = \mathcal{L}\{y(t)\}\)</span>.</li>
+<li>Use <strong>partial fractions</strong> to decompose <span class="math inline">\(Y(s)\)</span>.</li>
+<li>Apply <span class="math inline">\(\mathcal{L}^{-1}\)</span> (use table) to find <span class="math inline">\(y(t)\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Partial Fractions Reminder:</strong></p>
+<ul>
+<li>Distinct linear factors: <span class="math inline">\(\dfrac{A}{s-a} + \dfrac{B}{s-b}\)</span></li>
+<li>Repeated factor: <span class="math inline">\(\dfrac{A}{s-a} + \dfrac{B}{(s-a)^2}\)</span></li>
+<li>Irreducible quadratic: <span class="math inline">\(\dfrac{As+B}{s^2+b^2}\)</span> — complete the square if needed</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-functions-piecewise-forcing-3.2" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="step-functions-piecewise-forcing-3.2"><span class="header-section-number">3.4</span> Step Functions &amp; Piecewise Forcing (§3.2)</h2>
+<p><strong>Heaviside (unit step) function:</strong> <span class="math display">\[u_c(t) = \begin{cases} 0, &amp; t &lt; c \\ 1, &amp; t \geq c \end{cases}\]</span></p>
+<p><strong>Writing piecewise functions:</strong> Any piecewise function can be written using <span class="math inline">\(u_c\)</span>: <span class="math display">\[f(t) = \begin{cases} g(t), &amp; t &lt; c \\ h(t), &amp; t \geq c \end{cases} = g(t) + [h(t) - g(t)]\,u_c(t)\]</span></p>
+<p><strong>Key formula:</strong> <span class="math inline">\(\mathcal{L}\{u_c(t)\,f(t-c)\} = e^{-cs}F(s)\)</span><br>
+(shift the function, then multiply by <span class="math inline">\(e^{-cs}\)</span>)</p>
+<hr>
+</section>
+<section id="impulse-functions-dirac-delta-3.3" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="impulse-functions-dirac-delta-3.3"><span class="header-section-number">3.5</span> Impulse Functions &amp; Dirac Delta (§3.3)</h2>
+<p><strong>Dirac delta:</strong> <span class="math inline">\(\delta(t - c)\)</span> models an instantaneous impulse at <span class="math inline">\(t = c\)</span>.</p>
+<p><span class="math display">\[\mathcal{L}\{\delta(t-c)\} = e^{-cs}, \quad c \geq 0\]</span></p>
+<p><span class="math display">\[\int_{-\infty}^{\infty} f(t)\,\delta(t-c)\,dt = f(c)\]</span></p>
+<p><strong>Physical meaning:</strong> An impulsive force (hammer blow, lightning strike) applied at time <span class="math inline">\(t = c\)</span>.</p>
+<hr>
+</section>
+<section id="convolution-3.4" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="convolution-3.4"><span class="header-section-number">3.6</span> Convolution (§3.4)</h2>
+<p><strong>Definition:</strong> <span class="math inline">\((f * g)(t) = \displaystyle\int_0^t f(t-\tau)\,g(\tau)\,d\tau\)</span></p>
+<p><strong>Convolution Theorem:</strong> <span class="math inline">\(\mathcal{L}\{f * g\} = F(s)\,G(s)\)</span></p>
+<p><strong>When to use:</strong> Invert a product <span class="math inline">\(F(s)G(s)\)</span> when partial fractions are unwieldy, or express solutions to IVPs with general forcing as a convolution integral.</p>
+<hr>
+</section>
+</section>
+<section id="linear-systems-chapter-4" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Linear Systems (Chapter 4)</h1>
+<section id="system-setup" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="system-setup"><span class="header-section-number">4.1</span> System Setup</h2>
+<p>A <strong>first-order linear system:</strong> <span class="math display">\[\mathbf{x}' = A\mathbf{x} + \mathbf{b}(t), \quad \mathbf{x} \in \mathbb{R}^n\]</span></p>
+<p>For a homogeneous system (<span class="math inline">\(\mathbf{b} = \mathbf{0}\)</span>), seek solutions <span class="math inline">\(\mathbf{x} = \mathbf{v}\,e^{\lambda t}\)</span>, giving the <strong>eigenvalue problem</strong> <span class="math inline">\(A\mathbf{v} = \lambda\mathbf{v}\)</span>.</p>
+</section>
+<section id="quick-decision-guide-2-times-2-systems" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="quick-decision-guide-2-times-2-systems"><span class="header-section-number">4.2</span> Quick Decision Guide: <span class="math inline">\(2 \times 2\)</span> Systems</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Eigenvalues of <span class="math inline">\(A\)</span></th>
+<th>Solution Form</th>
+<th>Phase Portrait</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Real, distinct, same sign</td>
+<td><span class="math inline">\(C_1\mathbf{v}_1 e^{\lambda_1 t} + C_2\mathbf{v}_2 e^{\lambda_2 t}\)</span></td>
+<td>Node (stable if <span class="math inline">\(\lambda &lt; 0\)</span>, unstable if <span class="math inline">\(\lambda &gt; 0\)</span>)</td>
+</tr>
+<tr class="even">
+<td>Real, distinct, opposite sign</td>
+<td><span class="math inline">\(C_1\mathbf{v}_1 e^{\lambda_1 t} + C_2\mathbf{v}_2 e^{\lambda_2 t}\)</span></td>
+<td>Saddle (always unstable)</td>
+</tr>
+<tr class="odd">
+<td>Repeated real <span class="math inline">\(\lambda\)</span></td>
+<td>See below</td>
+<td>Improper node</td>
+</tr>
+<tr class="even">
+<td>Complex <span class="math inline">\(\lambda = \alpha \pm \beta i\)</span></td>
+<td><span class="math inline">\(e^{\alpha t}(\ldots\cos\beta t + \ldots\sin\beta t)\)</span></td>
+<td>Spiral or center</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="solving-2-times-2-homogeneous-systems-4.14.2" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="solving-2-times-2-homogeneous-systems-4.14.2"><span class="header-section-number">4.3</span> Solving <span class="math inline">\(2 \times 2\)</span> Homogeneous Systems (§4.1–§4.2)</h2>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li>Find eigenvalues: <span class="math inline">\(\det(A - \lambda I) = 0 \Rightarrow \lambda^2 - \text{tr}(A)\lambda + \det(A) = 0\)</span>.</li>
+<li>For each <span class="math inline">\(\lambda\)</span>, find eigenvector <span class="math inline">\(\mathbf{v}\)</span>: <span class="math inline">\((A - \lambda I)\mathbf{v} = \mathbf{0}\)</span>.</li>
+<li>Write general solution.</li>
+</ol>
+<section id="case-1-distinct-real-eigenvalues" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="case-1-distinct-real-eigenvalues"><span class="header-section-number">4.3.1</span> Case 1: Distinct Real Eigenvalues</h3>
+<p><span class="math display">\[\mathbf{x}(t) = C_1\mathbf{v}_1 e^{\lambda_1 t} + C_2\mathbf{v}_2 e^{\lambda_2 t}\]</span></p>
+</section>
+<section id="case-2-complex-eigenvalues-lambda-alpha-pm-beta-i" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="case-2-complex-eigenvalues-lambda-alpha-pm-beta-i"><span class="header-section-number">4.3.2</span> Case 2: Complex Eigenvalues <span class="math inline">\(\lambda = \alpha \pm \beta i\)</span></h3>
+<p>Compute one complex solution <span class="math inline">\(\mathbf{x}_1 = e^{\alpha t}(\mathbf{p}\cos\beta t - \mathbf{q}\sin\beta t)\)</span> using the real and imaginary parts of the complex eigenvector <span class="math inline">\(\mathbf{v} = \mathbf{p} + i\mathbf{q}\)</span>: <span class="math display">\[\mathbf{x}(t) = C_1 e^{\alpha t}(\mathbf{p}\cos\beta t - \mathbf{q}\sin\beta t) + C_2 e^{\alpha t}(\mathbf{p}\sin\beta t + \mathbf{q}\cos\beta t)\]</span></p>
+</section>
+<section id="case-3-repeated-eigenvalue-lambda-defective" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="case-3-repeated-eigenvalue-lambda-defective"><span class="header-section-number">4.3.3</span> Case 3: Repeated Eigenvalue <span class="math inline">\(\lambda\)</span> (defective)</h3>
+<p>One eigenvector <span class="math inline">\(\mathbf{v}\)</span>; find <strong>generalized eigenvector</strong> <span class="math inline">\(\mathbf{w}\)</span>: <span class="math inline">\((A - \lambda I)\mathbf{w} = \mathbf{v}\)</span>. <span class="math display">\[\mathbf{x}(t) = C_1\mathbf{v}\,e^{\lambda t} + C_2(\mathbf{v}\,t + \mathbf{w})\,e^{\lambda t}\]</span></p>
+<hr>
+</section>
+</section>
+<section id="phase-plane-analysis-4.3" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="phase-plane-analysis-4.3"><span class="header-section-number">4.4</span> Phase Plane Analysis (§4.3)</h2>
+<p><strong>Trace-Determinant Plane:</strong> For <span class="math inline">\(A = \begin{pmatrix}a &amp; b \\ c &amp; d\end{pmatrix}\)</span>, let <span class="math inline">\(\tau = \text{tr}(A) = a+d\)</span> and <span class="math inline">\(\Delta = \det(A) = ad - bc\)</span>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Region</th>
+<th>Eigenvalue Type</th>
+<th>Equilibrium</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\Delta &lt; 0\)</span></td>
+<td>Real, opposite signs</td>
+<td>Saddle (unstable)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\Delta &gt; 0\)</span>, <span class="math inline">\(\tau^2 - 4\Delta &gt; 0\)</span>, <span class="math inline">\(\tau &lt; 0\)</span></td>
+<td>Real, both negative</td>
+<td>Stable node</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Delta &gt; 0\)</span>, <span class="math inline">\(\tau^2 - 4\Delta &gt; 0\)</span>, <span class="math inline">\(\tau &gt; 0\)</span></td>
+<td>Real, both positive</td>
+<td>Unstable node</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\Delta &gt; 0\)</span>, <span class="math inline">\(\tau^2 - 4\Delta &lt; 0\)</span>, <span class="math inline">\(\tau &lt; 0\)</span></td>
+<td>Complex, <span class="math inline">\(\alpha &lt; 0\)</span></td>
+<td>Stable spiral</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Delta &gt; 0\)</span>, <span class="math inline">\(\tau^2 - 4\Delta &lt; 0\)</span>, <span class="math inline">\(\tau &gt; 0\)</span></td>
+<td>Complex, <span class="math inline">\(\alpha &gt; 0\)</span></td>
+<td>Unstable spiral</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\Delta &gt; 0\)</span>, <span class="math inline">\(\tau = 0\)</span></td>
+<td>Pure imaginary</td>
+<td>Center (stable)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="nonhomogeneous-systems-variation-of-parameters-4.4" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="nonhomogeneous-systems-variation-of-parameters-4.4"><span class="header-section-number">4.5</span> Nonhomogeneous Systems: Variation of Parameters (§4.4)</h2>
+<p><strong>System:</strong> <span class="math inline">\(\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t)\)</span></p>
+<p><strong>Fundamental matrix:</strong> <span class="math inline">\(\Phi(t)\)</span> — columns are linearly independent solutions of <span class="math inline">\(\mathbf{x}' = A\mathbf{x}\)</span>.</p>
+<p><strong>Particular solution:</strong> <span class="math display">\[\mathbf{x}_p(t) = \Phi(t)\int \Phi(t)^{-1}\mathbf{f}(t)\,dt\]</span></p>
+<p><strong>General solution:</strong> <span class="math inline">\(\mathbf{x}(t) = \Phi(t)\mathbf{c} + \mathbf{x}_p(t)\)</span></p>
+<hr>
+</section>
+</section>
+<section id="nonlinear-systems-stability-chapter-5" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Nonlinear Systems &amp; Stability (Chapter 5)</h1>
+<section id="linearization-at-equilibria-5.1" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="linearization-at-equilibria-5.1"><span class="header-section-number">5.1</span> Linearization at Equilibria (§5.1)</h2>
+<p><strong>System:</strong> <span class="math inline">\(\mathbf{x}' = \mathbf{F}(\mathbf{x})\)</span>, equilibrium at <span class="math inline">\(\mathbf{x}^* = (x^*, y^*)\)</span> where <span class="math inline">\(\mathbf{F}(\mathbf{x}^*) = \mathbf{0}\)</span>.</p>
+<p><strong>Jacobian matrix at <span class="math inline">\(\mathbf{x}^*\)</span>:</strong> <span class="math display">\[J = \begin{pmatrix} \partial F_1/\partial x &amp; \partial F_1/\partial y \\ \partial F_2/\partial x &amp; \partial F_2/\partial y \end{pmatrix}\Bigg|_{\mathbf{x}^*}\]</span></p>
+<p><strong>Linearized system near <span class="math inline">\(\mathbf{x}^*\)</span>:</strong> <span class="math inline">\(\mathbf{u}' = J\mathbf{u}\)</span> where <span class="math inline">\(\mathbf{u} = \mathbf{x} - \mathbf{x}^*\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The stability of <span class="math inline">\(\mathbf{x}^*\)</span> for the <strong>nonlinear</strong> system matches the Jacobian classification — <strong>except</strong> when the Jacobian gives a center (<span class="math inline">\(\tau = 0\)</span>, <span class="math inline">\(\Delta &gt; 0\)</span>): the nonlinear system may be a center or a spiral. Further analysis (e.g., Lyapunov function) is needed.</p>
+</div>
+</div>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li>Find all equilibria: <span class="math inline">\(F_1(x,y) = 0\)</span> and <span class="math inline">\(F_2(x,y) = 0\)</span> simultaneously.</li>
+<li>Compute <span class="math inline">\(J\)</span> and evaluate at each equilibrium.</li>
+<li>Find eigenvalues of <span class="math inline">\(J\)</span>; classify stability.</li>
+<li>Sketch phase portrait near each equilibrium.</li>
+</ol>
+<hr>
+</section>
+<section id="stability-definitions-5.15.2" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="stability-definitions-5.15.2"><span class="header-section-number">5.2</span> Stability Definitions (§5.1–§5.2)</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Stable</strong></td>
+<td>Nearby trajectories stay nearby</td>
+</tr>
+<tr class="even">
+<td><strong>Asymptotically stable</strong></td>
+<td>Nearby trajectories stay nearby <strong>and</strong> converge to <span class="math inline">\(\mathbf{x}^*\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Unstable</strong></td>
+<td>Trajectories move away from <span class="math inline">\(\mathbf{x}^*\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="lyapunov-functions-5.2" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="lyapunov-functions-5.2"><span class="header-section-number">5.3</span> Lyapunov Functions (§5.2)</h2>
+<p><strong>When to use:</strong> Proving stability/instability without solving the system; especially useful when linearization is inconclusive (center case).</p>
+<p>A function <span class="math inline">\(V(\mathbf{x})\)</span> is a <strong>Lyapunov function</strong> for <span class="math inline">\(\mathbf{x}' = \mathbf{F}(\mathbf{x})\)</span> near <span class="math inline">\(\mathbf{x}^*\)</span> if:</p>
+<ul>
+<li><span class="math inline">\(V(\mathbf{x}^*) = 0\)</span> and <span class="math inline">\(V(\mathbf{x}) &gt; 0\)</span> for <span class="math inline">\(\mathbf{x} \neq \mathbf{x}^*\)</span> (positive definite).</li>
+<li><span class="math inline">\(\dot{V} = \nabla V \cdot \mathbf{F} \leq 0\)</span> along trajectories.</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Condition on <span class="math inline">\(\dot{V}\)</span></th>
+<th>Conclusion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\dot{V} \leq 0\)</span></td>
+<td><span class="math inline">\(\mathbf{x}^*\)</span> is <strong>stable</strong></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\dot{V} &lt; 0\)</span></td>
+<td><span class="math inline">\(\mathbf{x}^*\)</span> is <strong>asymptotically stable</strong></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\dot{V} &gt; 0\)</span> (with <span class="math inline">\(V(\mathbf{x}^*)=0\)</span>)</td>
+<td><span class="math inline">\(\mathbf{x}^*\)</span> is <strong>unstable</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Common Lyapunov candidates:</strong> <span class="math inline">\(V = x^2 + y^2\)</span>, <span class="math inline">\(V = ax^2 + by^2\)</span>, energy functions <span class="math inline">\(H(x,y)\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="limit-cycles-periodic-orbits-5.3" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="limit-cycles-periodic-orbits-5.3"><span class="header-section-number">5.4</span> Limit Cycles &amp; Periodic Orbits (§5.3)</h2>
+<p><strong>Limit cycle:</strong> An isolated closed trajectory in the phase plane.</p>
+<p><strong>Poincaré–Bendixson Theorem:</strong> If a trajectory of <span class="math inline">\(\mathbf{x}' = \mathbf{F}(\mathbf{x})\)</span> in <span class="math inline">\(\mathbb{R}^2\)</span> remains in a bounded region containing no equilibrium, then it must approach a <strong>closed orbit</strong> (limit cycle).</p>
+<p><strong>Bendixson’s Criterion (no limit cycles):</strong> If <span class="math inline">\(\dfrac{\partial F_1}{\partial x} + \dfrac{\partial F_2}{\partial y}\)</span> has constant sign in a simply connected region, then there are <strong>no closed orbits</strong> in that region.</p>
+<hr>
+</section>
+</section>
+<section id="overall-strategy-flowchart" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Overall Strategy Flowchart</h1>
+<pre><code>Given an ODE/System:
+│
+├─ Single ODE, 1st order?
+│   ├─ Separable? → Separation of Variables
+│   ├─ Linear? → Integrating Factor
+│   ├─ Exact? → Exact Equations
+│   ├─ Bernoulli? → Bernoulli Substitution
+│   ├─ Homogeneous (y/x)? → Substitution v = y/x
+│   ├─ Autonomous? → Phase Line / Qualitative Analysis
+│   └─ None of above → Numerical Methods (Euler / RK4)
+│
+├─ Single ODE, 2nd order, linear, const. coefficients?
+│   ├─ Homogeneous → Characteristic Equation
+│   └─ Nonhomogeneous?
+│       ├─ g(t) = poly/exp/sin/cos → Undetermined Coefficients
+│       └─ Other g(t) → Variation of Parameters
+│
+├─ Cauchy-Euler? → Substitution x = e^t
+│
+├─ Use Laplace Transform when:
+│   ├─ Initial conditions given
+│   ├─ Forcing is piecewise (step functions)
+│   └─ Impulse forcing (Dirac delta)
+│
+└─ System of ODEs?
+    ├─ Linear, const. coefficients → Eigenvalue Method
+    │   ├─ Distinct real → Standard solution
+    │   ├─ Complex → Euler's formula
+    │   └─ Repeated → Generalized eigenvectors
+    ├─ Nonhomogeneous → Variation of Parameters
+    └─ Nonlinear → Linearize at equilibria (Jacobian)
+        └─ Stability unclear? → Lyapunov Functions</code></pre>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Quick Reminders
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Always verify your solution satisfies the original ODE.</li>
+<li>Apply initial/boundary conditions <strong>after</strong> finding the general solution.</li>
+<li>For systems, always check whether the phase portrait classification from the <strong>trace-determinant plane</strong> matches your computed eigenvalues.</li>
+<li>When using Laplace transforms, write the ODE in <strong>standard form</strong> before taking the transform.</li>
+</ul>
+</div>
+</div>
+<hr>
+<p><em>MATH 341 — University of Scranton — Fall Semester</em><br>
+<em>Based on Logan, J.D., A First Course in Differential Equations, 3rd ed., Springer, 2015.</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

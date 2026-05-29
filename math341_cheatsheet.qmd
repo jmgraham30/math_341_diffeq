@@ -1,0 +1,603 @@
+---
+title: "MATH 341 — Differential Equations"
+subtitle: "Methods & Techniques Quick Reference"
+author: "University of Scranton, Mathematics Department"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Contents"
+    number-sections: true
+    theme: cosmo
+    css: |
+      body { font-size: 15px; }
+      h2 { color: #2c5f8a; border-bottom: 2px solid #2c5f8a; padding-bottom: 4px; }
+      h3 { color: #3a7abf; }
+      .callout-tip { border-left: 4px solid #28a745; }
+      .callout-note { border-left: 4px solid #17a2b8; }
+      .callout-warning { border-left: 4px solid #ffc107; }
+      table { font-size: 14px; }
+      th { background-color: #2c5f8a; color: white; }
+  pdf:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    geometry: "margin=1in"
+    fontsize: 11pt
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{array}
+        \usepackage{xcolor}
+        \definecolor{scranton}{RGB}{0,75,135}
+        \usepackage{mdframed}
+execute:
+  echo: false
+---
+
+::: {.callout-note}
+**Textbook:** Logan, J.D. *A First Course in Differential Equations*, 3rd ed. (Springer, 2015).  
+**Sections covered:** All sections except §2.6.  
+**Course website:** <https://math341diffeq.netlify.app/>
+:::
+
+---
+
+# First-Order Equations (Chapter 1)
+
+## Quick Decision Guide
+
+| Form of Equation | Technique | See Section |
+|---|---|---|
+| $y' = f(x)\,g(y)$ | Separation of Variables | §1.2 |
+| $y' + p(x)\,y = q(x)$ | Integrating Factor | §1.3 |
+| $M\,dx + N\,dy = 0$, $M_y = N_x$ | Exact Equation | §1.4 |
+| $y' = f(y/x)$ | Substitution $v = y/x$ | §1.5 |
+| $y' = f(ax + by + c)$ | Substitution $v = ax+by+c$ | §1.5 |
+| $y' + p(x)\,y = q(x)\,y^n$ | Bernoulli Substitution | §1.5 |
+| None of the above | Numerical Methods (§1.6) or Qualitative Analysis | §1.1 |
+
+---
+
+## Separation of Variables (§1.2)
+
+**When to use:** The right-hand side factors as $f(x) \cdot g(y)$.
+
+**Form:** $\dfrac{dy}{dx} = f(x)\,g(y)$
+
+**Steps:**
+
+1. Rewrite as $\dfrac{dy}{g(y)} = f(x)\,dx$ (check $g(y) \neq 0$).
+2. Integrate both sides: $\displaystyle\int \frac{dy}{g(y)} = \int f(x)\,dx + C$.
+3. Solve for $y$ (if possible); apply initial condition to find $C$.
+
+::: {.callout-warning}
+**Watch out:** Always check for **equilibrium solutions** where $g(y) = 0$ — these may be lost when dividing.
+:::
+
+**Example:** $y' = xy$  
+$\Rightarrow \dfrac{dy}{y} = x\,dx \Rightarrow \ln|y| = \dfrac{x^2}{2} + C \Rightarrow y = Ae^{x^2/2}$
+
+---
+
+## Integrating Factor / Linear First-Order (§1.3)
+
+**When to use:** Equation is linear in $y$ (or can be put in standard linear form).
+
+**Standard form:** $y' + p(x)\,y = q(x)$
+
+**Steps:**
+
+1. Identify $p(x)$ and $q(x)$.
+2. Compute integrating factor: $\mu(x) = e^{\int p(x)\,dx}$.
+3. Multiply both sides by $\mu$: $\big(\mu\,y\big)' = \mu\,q(x)$.
+4. Integrate: $\mu\,y = \displaystyle\int \mu\,q(x)\,dx + C$.
+5. Solve: $y = \dfrac{1}{\mu}\left(\displaystyle\int \mu\,q\,dx + C\right)$.
+
+::: {.callout-tip}
+**Tip:** The general solution is $y = y_h + y_p$ where $y_h = C/\mu$ is the homogeneous solution and $y_p = \frac{1}{\mu}\int \mu q\,dx$ is a particular solution.
+:::
+
+**Example:** $y' - 2xy = x$  
+$p(x) = -2x$, $\mu = e^{-x^2}$, then $(e^{-x^2}y)' = xe^{-x^2}$, giving $y = -\tfrac{1}{2} + Ce^{x^2}$.
+
+---
+
+## Exact Equations (§1.4)
+
+**When to use:** Equation written as $M(x,y)\,dx + N(x,y)\,dy = 0$ with $\dfrac{\partial M}{\partial y} = \dfrac{\partial N}{\partial x}$.
+
+**Steps:**
+
+1. Check exactness: $M_y = N_x$?
+2. Find potential function $F(x,y)$ such that $F_x = M$, $F_y = N$.
+3. Integrate $M$ w.r.t. $x$: $F = \displaystyle\int M\,dx + g(y)$.
+4. Differentiate $F$ w.r.t. $y$ and set equal to $N$ to find $g'(y)$; integrate.
+5. Solution: $F(x,y) = C$.
+
+::: {.callout-warning}
+**Not exact?** Try integrating factors $\mu(x)$ or $\mu(y)$ to make it exact.  
+If $\dfrac{M_y - N_x}{N}$ depends only on $x$, then $\mu = e^{\int\frac{M_y-N_x}{N}dx}$.
+:::
+
+---
+
+## Substitution Methods (§1.5)
+
+### Homogeneous Equations
+
+**Form:** $y' = f\!\left(\dfrac{y}{x}\right)$  
+**Substitution:** $v = y/x$, so $y = vx$ and $y' = v + xv'$.  
+Reduces to a **separable** equation in $v$ and $x$.
+
+### Bernoulli Equations
+
+**Form:** $y' + p(x)\,y = q(x)\,y^n$, $n \neq 0, 1$  
+**Substitution:** $w = y^{1-n}$, so $w' = (1-n)y^{-n}y'$.  
+Reduces to a **linear** equation in $w$.
+
+### Linear Substitution
+
+**Form:** $y' = f(ax + by + c)$  
+**Substitution:** $v = ax + by + c$, so $v' = a + by'$.  
+Reduces to a **separable** equation.
+
+---
+
+## Autonomous Equations & Qualitative Analysis (§1.1, §1.6)
+
+**Form:** $y' = f(y)$ (right side depends only on $y$)
+
+**Key concepts:**
+
+- **Equilibria (critical points):** Solve $f(y^*) = 0$.
+- **Stability:**
+  - $f'(y^*) < 0$: **stable** (attractor)
+  - $f'(y^*) > 0$: **unstable** (repeller)
+- **Phase line:** Plot $f(y)$ vs. $y$; arrows point right where $f > 0$, left where $f < 0$.
+
+::: {.callout-tip}
+**Tip:** The phase line immediately reveals long-term behavior without solving the ODE explicitly.
+:::
+
+---
+
+## Numerical Methods (§1.7)
+
+### Euler's Method
+
+**Formula:** $y_{n+1} = y_n + h\,f(x_n, y_n)$, where $h$ is the step size.
+
+**Error:** $O(h)$ per step — first-order method. Use small $h$ for accuracy.
+
+### Improved Euler (Heun's Method)
+
+**Predictor:** $\tilde{y}_{n+1} = y_n + h\,f(x_n, y_n)$  
+**Corrector:** $y_{n+1} = y_n + \dfrac{h}{2}\big[f(x_n, y_n) + f(x_{n+1}, \tilde{y}_{n+1})\big]$
+
+**Error:** $O(h^2)$ — second-order method.
+
+### Runge-Kutta (RK4)
+
+$$y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)$$
+$$k_1 = f(x_n, y_n), \quad k_2 = f\!\left(x_n+\tfrac{h}{2}, y_n+\tfrac{h}{2}k_1\right)$$
+$$k_3 = f\!\left(x_n+\tfrac{h}{2}, y_n+\tfrac{h}{2}k_2\right), \quad k_4 = f(x_n+h, y_n+hk_3)$$
+
+**Error:** $O(h^4)$ — standard workhorse for numerical ODEs.
+
+---
+
+# Second-Order Linear Equations (Chapter 2)
+
+## Quick Decision Guide
+
+| Equation Type | Technique | See Section |
+|---|---|---|
+| $ay'' + by' + cy = 0$ | Characteristic Equation | §2.1 |
+| $ay'' + by' + cy = g(t)$, $g$ = poly/exp/sin/cos | Undetermined Coefficients | §2.3 |
+| $ay'' + by' + cy = g(t)$, $g$ = other | Variation of Parameters | §2.4 |
+| $x^2y'' + xy' + \alpha y = 0$ | Cauchy–Euler Equation | §2.5 |
+| Two solutions $y_1, y_2$ needed | Reduction of Order | §2.2 |
+
+---
+
+## Homogeneous Linear Equations: Characteristic Equation (§2.1)
+
+**Standard form:** $ay'' + by' + cy = 0$
+
+**Characteristic equation:** $ar^2 + br + c = 0$, with roots $r = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+
+| Discriminant | Roots | General Solution |
+|---|---|---|
+| $b^2 - 4ac > 0$ | Two real: $r_1 \neq r_2$ | $y = C_1 e^{r_1 t} + C_2 e^{r_2 t}$ |
+| $b^2 - 4ac = 0$ | Repeated: $r_1 = r_2 = r$ | $y = (C_1 + C_2 t)\,e^{rt}$ |
+| $b^2 - 4ac < 0$ | Complex: $r = \alpha \pm \beta i$ | $y = e^{\alpha t}(C_1 \cos\beta t + C_2 \sin\beta t)$ |
+
+::: {.callout-tip}
+For complex roots $r = \alpha \pm \beta i$: $\alpha = -b/(2a)$, $\beta = \sqrt{4ac - b^2}/(2a)$.
+:::
+
+---
+
+## Reduction of Order (§2.2)
+
+**When to use:** One solution $y_1$ is known; find a second linearly independent solution $y_2$.
+
+**Substitution:** $y_2 = v(t)\,y_1(t)$
+
+**Steps:**
+
+1. Substitute $y = v\,y_1$ into the ODE.
+2. Use $y_1'' + p(t)y_1' + q(t)y_1 = 0$ to eliminate terms.
+3. Let $w = v'$ to get a first-order linear ODE in $w$.
+4. Solve for $w$, then integrate to find $v$, then $y_2 = v\,y_1$.
+
+**Wronskian:** $W(y_1, y_2) = y_1 y_2' - y_1' y_2 \neq 0$ confirms linear independence.
+
+**Abel's Formula:** $W(t) = W(t_0)\,e^{-\int p(t)\,dt}$
+
+---
+
+## Undetermined Coefficients (§2.3)
+
+**When to use:** $ay'' + by' + cy = g(t)$ where $g(t)$ is a combination of polynomials, exponentials, sines, or cosines.
+
+**General solution:** $y = y_h + y_p$
+
+### Particular Solution Guesses
+
+| Forcing $g(t)$ | Guess for $y_p$ |
+|---|---|
+| $P_n(t)$ (degree-$n$ poly) | $A_n t^n + \cdots + A_1 t + A_0$ |
+| $e^{\alpha t}$ | $Ae^{\alpha t}$ |
+| $\sin(\beta t)$ or $\cos(\beta t)$ | $A\cos(\beta t) + B\sin(\beta t)$ |
+| $e^{\alpha t}\sin(\beta t)$ or $e^{\alpha t}\cos(\beta t)$ | $e^{\alpha t}(A\cos\beta t + B\sin\beta t)$ |
+| $P_n(t)\,e^{\alpha t}$ | $(A_n t^n + \cdots + A_0)\,e^{\alpha t}$ |
+
+::: {.callout-warning}
+**Modification Rule:** If any term of the guess solves the *homogeneous* equation, multiply the entire guess by $t$ (or $t^2$ if needed for repeated roots).
+:::
+
+---
+
+## Variation of Parameters (§2.4)
+
+**When to use:** $y'' + p(t)y' + q(t)y = g(t)$ when $g(t)$ is not of the "undetermined coefficients" type, or the coefficients are non-constant.
+
+**Requires:** Two known linearly independent solutions $y_1$, $y_2$ of the homogeneous equation.
+
+**Formulas:**
+$$y_p = -y_1 \int \frac{y_2\,g}{W}\,dt + y_2 \int \frac{y_1\,g}{W}\,dt$$
+
+where $W = W(y_1, y_2) = y_1 y_2' - y_1' y_2$.
+
+::: {.callout-note}
+Always write the ODE in **standard form** (leading coefficient 1) before applying this formula.
+:::
+
+---
+
+## Cauchy–Euler Equations (§2.5)
+
+**Form:** $x^2 y'' + \alpha x y' + \beta y = 0$, $x > 0$
+
+**Substitution:** $x = e^t$ (or try $y = x^r$)
+
+**Characteristic equation:** $r(r-1) + \alpha r + \beta = 0 \Rightarrow r^2 + (\alpha - 1)r + \beta = 0$
+
+| Roots | General Solution |
+|---|---|
+| Two real: $r_1 \neq r_2$ | $y = C_1 x^{r_1} + C_2 x^{r_2}$ |
+| Repeated: $r_1 = r_2 = r$ | $y = x^r(C_1 + C_2 \ln x)$ |
+| Complex: $r = \lambda \pm \mu i$ | $y = x^\lambda\big(C_1 \cos(\mu \ln x) + C_2 \sin(\mu \ln x)\big)$ |
+
+---
+
+## Applications: Spring-Mass System (§2.1–§2.3)
+
+**Equation of motion:** $my'' + \gamma y' + ky = F(t)$
+
+| Parameter | Meaning |
+|---|---|
+| $m > 0$ | Mass |
+| $\gamma \geq 0$ | Damping coefficient |
+| $k > 0$ | Spring constant |
+| $F(t)$ | External forcing |
+
+**Damping regimes** (unforced, $F = 0$):
+
+| Condition | Regime | Behavior |
+|---|---|---|
+| $\gamma^2 - 4mk > 0$ | Overdamped | Exponential decay, no oscillation |
+| $\gamma^2 - 4mk = 0$ | Critically damped | Fastest decay without oscillation |
+| $\gamma^2 - 4mk < 0$ | Underdamped | Oscillates with decaying amplitude |
+| $\gamma = 0$ | Undamped | Pure oscillation at $\omega_0 = \sqrt{k/m}$ |
+
+::: {.callout-warning}
+**Resonance:** Occurs when $F(t) = F_0\cos(\omega_0 t)$ and $\gamma = 0$. The amplitude grows without bound — use the **Modification Rule** (multiply guess by $t$).
+:::
+
+---
+
+# Laplace Transforms (Chapter 3)
+
+## Definition & Key Properties
+
+$$\mathcal{L}\{f(t)\} = F(s) = \int_0^\infty e^{-st} f(t)\,dt, \quad s > 0$$
+
+| Property | Formula |
+|---|---|
+| Linearity | $\mathcal{L}\{af + bg\} = aF(s) + bG(s)$ |
+| Derivative | $\mathcal{L}\{f'\} = sF(s) - f(0)$ |
+| Derivative | $\mathcal{L}\{f''\} = s^2F(s) - sf(0) - f'(0)$ |
+| $n$-th Derivative | $\mathcal{L}\{f^{(n)}\} = s^n F(s) - s^{n-1}f(0) - \cdots - f^{(n-1)}(0)$ |
+| $s$-shifting | $\mathcal{L}\{e^{at}f(t)\} = F(s-a)$ |
+| $t$-shifting | $\mathcal{L}\{u_c(t)f(t-c)\} = e^{-cs}F(s)$ |
+| Convolution | $\mathcal{L}\{f * g\} = F(s)\,G(s)$ |
+| Multiplication by $t$ | $\mathcal{L}\{t\,f(t)\} = -F'(s)$ |
+
+---
+
+## Common Laplace Transform Table
+
+| $f(t)$ | $F(s) = \mathcal{L}\{f\}$ | Condition |
+|---|---|---|
+| $1$ | $\dfrac{1}{s}$ | $s > 0$ |
+| $t^n$ | $\dfrac{n!}{s^{n+1}}$ | $s > 0$ |
+| $e^{at}$ | $\dfrac{1}{s-a}$ | $s > a$ |
+| $\sin(bt)$ | $\dfrac{b}{s^2+b^2}$ | $s > 0$ |
+| $\cos(bt)$ | $\dfrac{s}{s^2+b^2}$ | $s > 0$ |
+| $e^{at}\sin(bt)$ | $\dfrac{b}{(s-a)^2+b^2}$ | $s > a$ |
+| $e^{at}\cos(bt)$ | $\dfrac{s-a}{(s-a)^2+b^2}$ | $s > a$ |
+| $t^n e^{at}$ | $\dfrac{n!}{(s-a)^{n+1}}$ | $s > a$ |
+| $u_c(t)$ (unit step at $c$) | $\dfrac{e^{-cs}}{s}$ | $s > 0$ |
+| $\delta(t - c)$ (Dirac delta) | $e^{-cs}$ | |
+
+---
+
+## Solving IVPs with Laplace Transforms (§3.1–§3.3)
+
+**When to use:** Constant-coefficient ODEs (any order), especially with discontinuous/impulsive forcing.
+
+**Steps:**
+
+1. Take $\mathcal{L}$ of both sides; use initial conditions automatically.
+2. Solve algebraically for $Y(s) = \mathcal{L}\{y(t)\}$.
+3. Use **partial fractions** to decompose $Y(s)$.
+4. Apply $\mathcal{L}^{-1}$ (use table) to find $y(t)$.
+
+::: {.callout-note}
+**Partial Fractions Reminder:**
+
+- Distinct linear factors: $\dfrac{A}{s-a} + \dfrac{B}{s-b}$
+- Repeated factor: $\dfrac{A}{s-a} + \dfrac{B}{(s-a)^2}$
+- Irreducible quadratic: $\dfrac{As+B}{s^2+b^2}$ — complete the square if needed
+:::
+
+---
+
+## Step Functions & Piecewise Forcing (§3.2)
+
+**Heaviside (unit step) function:**
+$$u_c(t) = \begin{cases} 0, & t < c \\ 1, & t \geq c \end{cases}$$
+
+**Writing piecewise functions:** Any piecewise function can be written using $u_c$:
+$$f(t) = \begin{cases} g(t), & t < c \\ h(t), & t \geq c \end{cases} = g(t) + [h(t) - g(t)]\,u_c(t)$$
+
+**Key formula:** $\mathcal{L}\{u_c(t)\,f(t-c)\} = e^{-cs}F(s)$  
+(shift the function, then multiply by $e^{-cs}$)
+
+---
+
+## Impulse Functions & Dirac Delta (§3.3)
+
+**Dirac delta:** $\delta(t - c)$ models an instantaneous impulse at $t = c$.
+
+$$\mathcal{L}\{\delta(t-c)\} = e^{-cs}, \quad c \geq 0$$
+
+$$\int_{-\infty}^{\infty} f(t)\,\delta(t-c)\,dt = f(c)$$
+
+**Physical meaning:** An impulsive force (hammer blow, lightning strike) applied at time $t = c$.
+
+---
+
+## Convolution (§3.4)
+
+**Definition:** $(f * g)(t) = \displaystyle\int_0^t f(t-\tau)\,g(\tau)\,d\tau$
+
+**Convolution Theorem:** $\mathcal{L}\{f * g\} = F(s)\,G(s)$
+
+**When to use:** Invert a product $F(s)G(s)$ when partial fractions are unwieldy, or express solutions to IVPs with general forcing as a convolution integral.
+
+---
+
+# Linear Systems (Chapter 4)
+
+## System Setup
+
+A **first-order linear system:**
+$$\mathbf{x}' = A\mathbf{x} + \mathbf{b}(t), \quad \mathbf{x} \in \mathbb{R}^n$$
+
+For a homogeneous system ($\mathbf{b} = \mathbf{0}$), seek solutions $\mathbf{x} = \mathbf{v}\,e^{\lambda t}$, giving the **eigenvalue problem** $A\mathbf{v} = \lambda\mathbf{v}$.
+
+## Quick Decision Guide: $2 \times 2$ Systems
+
+| Eigenvalues of $A$ | Solution Form | Phase Portrait |
+|---|---|---|
+| Real, distinct, same sign | $C_1\mathbf{v}_1 e^{\lambda_1 t} + C_2\mathbf{v}_2 e^{\lambda_2 t}$ | Node (stable if $\lambda < 0$, unstable if $\lambda > 0$) |
+| Real, distinct, opposite sign | $C_1\mathbf{v}_1 e^{\lambda_1 t} + C_2\mathbf{v}_2 e^{\lambda_2 t}$ | Saddle (always unstable) |
+| Repeated real $\lambda$ | See below | Improper node |
+| Complex $\lambda = \alpha \pm \beta i$ | $e^{\alpha t}(\ldots\cos\beta t + \ldots\sin\beta t)$ | Spiral or center |
+
+---
+
+## Solving $2 \times 2$ Homogeneous Systems (§4.1–§4.2)
+
+**Steps:**
+
+1. Find eigenvalues: $\det(A - \lambda I) = 0 \Rightarrow \lambda^2 - \text{tr}(A)\lambda + \det(A) = 0$.
+2. For each $\lambda$, find eigenvector $\mathbf{v}$: $(A - \lambda I)\mathbf{v} = \mathbf{0}$.
+3. Write general solution.
+
+### Case 1: Distinct Real Eigenvalues
+$$\mathbf{x}(t) = C_1\mathbf{v}_1 e^{\lambda_1 t} + C_2\mathbf{v}_2 e^{\lambda_2 t}$$
+
+### Case 2: Complex Eigenvalues $\lambda = \alpha \pm \beta i$
+
+Compute one complex solution $\mathbf{x}_1 = e^{\alpha t}(\mathbf{p}\cos\beta t - \mathbf{q}\sin\beta t)$ using the real and imaginary parts of the complex eigenvector $\mathbf{v} = \mathbf{p} + i\mathbf{q}$:
+$$\mathbf{x}(t) = C_1 e^{\alpha t}(\mathbf{p}\cos\beta t - \mathbf{q}\sin\beta t) + C_2 e^{\alpha t}(\mathbf{p}\sin\beta t + \mathbf{q}\cos\beta t)$$
+
+### Case 3: Repeated Eigenvalue $\lambda$ (defective)
+
+One eigenvector $\mathbf{v}$; find **generalized eigenvector** $\mathbf{w}$: $(A - \lambda I)\mathbf{w} = \mathbf{v}$.
+$$\mathbf{x}(t) = C_1\mathbf{v}\,e^{\lambda t} + C_2(\mathbf{v}\,t + \mathbf{w})\,e^{\lambda t}$$
+
+---
+
+## Phase Plane Analysis (§4.3)
+
+**Trace-Determinant Plane:** For $A = \begin{pmatrix}a & b \\ c & d\end{pmatrix}$, let $\tau = \text{tr}(A) = a+d$ and $\Delta = \det(A) = ad - bc$.
+
+| Region | Eigenvalue Type | Equilibrium |
+|---|---|---|
+| $\Delta < 0$ | Real, opposite signs | Saddle (unstable) |
+| $\Delta > 0$, $\tau^2 - 4\Delta > 0$, $\tau < 0$ | Real, both negative | Stable node |
+| $\Delta > 0$, $\tau^2 - 4\Delta > 0$, $\tau > 0$ | Real, both positive | Unstable node |
+| $\Delta > 0$, $\tau^2 - 4\Delta < 0$, $\tau < 0$ | Complex, $\alpha < 0$ | Stable spiral |
+| $\Delta > 0$, $\tau^2 - 4\Delta < 0$, $\tau > 0$ | Complex, $\alpha > 0$ | Unstable spiral |
+| $\Delta > 0$, $\tau = 0$ | Pure imaginary | Center (stable) |
+
+---
+
+## Nonhomogeneous Systems: Variation of Parameters (§4.4)
+
+**System:** $\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t)$
+
+**Fundamental matrix:** $\Phi(t)$ — columns are linearly independent solutions of $\mathbf{x}' = A\mathbf{x}$.
+
+**Particular solution:**
+$$\mathbf{x}_p(t) = \Phi(t)\int \Phi(t)^{-1}\mathbf{f}(t)\,dt$$
+
+**General solution:** $\mathbf{x}(t) = \Phi(t)\mathbf{c} + \mathbf{x}_p(t)$
+
+---
+
+# Nonlinear Systems & Stability (Chapter 5)
+
+## Linearization at Equilibria (§5.1)
+
+**System:** $\mathbf{x}' = \mathbf{F}(\mathbf{x})$, equilibrium at $\mathbf{x}^* = (x^*, y^*)$ where $\mathbf{F}(\mathbf{x}^*) = \mathbf{0}$.
+
+**Jacobian matrix at $\mathbf{x}^*$:**
+$$J = \begin{pmatrix} \partial F_1/\partial x & \partial F_1/\partial y \\ \partial F_2/\partial x & \partial F_2/\partial y \end{pmatrix}\Bigg|_{\mathbf{x}^*}$$
+
+**Linearized system near $\mathbf{x}^*$:** $\mathbf{u}' = J\mathbf{u}$ where $\mathbf{u} = \mathbf{x} - \mathbf{x}^*$.
+
+::: {.callout-note}
+The stability of $\mathbf{x}^*$ for the **nonlinear** system matches the Jacobian classification — **except** when the Jacobian gives a center ($\tau = 0$, $\Delta > 0$): the nonlinear system may be a center or a spiral. Further analysis (e.g., Lyapunov function) is needed.
+:::
+
+**Steps:**
+
+1. Find all equilibria: $F_1(x,y) = 0$ and $F_2(x,y) = 0$ simultaneously.
+2. Compute $J$ and evaluate at each equilibrium.
+3. Find eigenvalues of $J$; classify stability.
+4. Sketch phase portrait near each equilibrium.
+
+---
+
+## Stability Definitions (§5.1–§5.2)
+
+| Type | Definition |
+|---|---|
+| **Stable** | Nearby trajectories stay nearby |
+| **Asymptotically stable** | Nearby trajectories stay nearby **and** converge to $\mathbf{x}^*$ |
+| **Unstable** | Trajectories move away from $\mathbf{x}^*$ |
+
+---
+
+## Lyapunov Functions (§5.2)
+
+**When to use:** Proving stability/instability without solving the system; especially useful when linearization is inconclusive (center case).
+
+A function $V(\mathbf{x})$ is a **Lyapunov function** for $\mathbf{x}' = \mathbf{F}(\mathbf{x})$ near $\mathbf{x}^*$ if:
+
+- $V(\mathbf{x}^*) = 0$ and $V(\mathbf{x}) > 0$ for $\mathbf{x} \neq \mathbf{x}^*$ (positive definite).
+- $\dot{V} = \nabla V \cdot \mathbf{F} \leq 0$ along trajectories.
+
+| Condition on $\dot{V}$ | Conclusion |
+|---|---|
+| $\dot{V} \leq 0$ | $\mathbf{x}^*$ is **stable** |
+| $\dot{V} < 0$ | $\mathbf{x}^*$ is **asymptotically stable** |
+| $\dot{V} > 0$ (with $V(\mathbf{x}^*)=0$) | $\mathbf{x}^*$ is **unstable** |
+
+::: {.callout-tip}
+**Common Lyapunov candidates:** $V = x^2 + y^2$, $V = ax^2 + by^2$, energy functions $H(x,y)$.
+:::
+
+---
+
+## Limit Cycles & Periodic Orbits (§5.3)
+
+**Limit cycle:** An isolated closed trajectory in the phase plane.
+
+**Poincaré–Bendixson Theorem:** If a trajectory of $\mathbf{x}' = \mathbf{F}(\mathbf{x})$ in $\mathbb{R}^2$ remains in a bounded region containing no equilibrium, then it must approach a **closed orbit** (limit cycle).
+
+**Bendixson's Criterion (no limit cycles):** If $\dfrac{\partial F_1}{\partial x} + \dfrac{\partial F_2}{\partial y}$ has constant sign in a simply connected region, then there are **no closed orbits** in that region.
+
+---
+
+# Overall Strategy Flowchart
+
+```
+Given an ODE/System:
+│
+├─ Single ODE, 1st order?
+│   ├─ Separable? → Separation of Variables
+│   ├─ Linear? → Integrating Factor
+│   ├─ Exact? → Exact Equations
+│   ├─ Bernoulli? → Bernoulli Substitution
+│   ├─ Homogeneous (y/x)? → Substitution v = y/x
+│   ├─ Autonomous? → Phase Line / Qualitative Analysis
+│   └─ None of above → Numerical Methods (Euler / RK4)
+│
+├─ Single ODE, 2nd order, linear, const. coefficients?
+│   ├─ Homogeneous → Characteristic Equation
+│   └─ Nonhomogeneous?
+│       ├─ g(t) = poly/exp/sin/cos → Undetermined Coefficients
+│       └─ Other g(t) → Variation of Parameters
+│
+├─ Cauchy-Euler? → Substitution x = e^t
+│
+├─ Use Laplace Transform when:
+│   ├─ Initial conditions given
+│   ├─ Forcing is piecewise (step functions)
+│   └─ Impulse forcing (Dirac delta)
+│
+└─ System of ODEs?
+    ├─ Linear, const. coefficients → Eigenvalue Method
+    │   ├─ Distinct real → Standard solution
+    │   ├─ Complex → Euler's formula
+    │   └─ Repeated → Generalized eigenvectors
+    ├─ Nonhomogeneous → Variation of Parameters
+    └─ Nonlinear → Linearize at equilibria (Jacobian)
+        └─ Stability unclear? → Lyapunov Functions
+```
+
+---
+
+::: {.callout-note}
+## Quick Reminders
+
+- Always verify your solution satisfies the original ODE.
+- Apply initial/boundary conditions **after** finding the general solution.
+- For systems, always check whether the phase portrait classification from the **trace-determinant plane** matches your computed eigenvalues.
+- When using Laplace transforms, write the ODE in **standard form** before taking the transform.
+:::
+
+---
+
+*MATH 341 — University of Scranton — Fall Semester*  
+*Based on Logan, J.D., A First Course in Differential Equations, 3rd ed., Springer, 2015.*
