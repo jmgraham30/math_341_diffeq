@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Classical Mechanics and the Spring–Mass System – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#newtons-second-law-and-the-program-of-classical-mechanics" id="toc-newtons-second-law-and-the-program-of-classical-mechanics" class="nav-link active" data-scroll-target="#newtons-second-law-and-the-program-of-classical-mechanics">Newton’s Second Law and the Program of Classical Mechanics</a></li>
+  <li><a href="#the-springmass-system" id="toc-the-springmass-system" class="nav-link" data-scroll-target="#the-springmass-system">The Spring–Mass System</a>
+  <ul class="collapse">
+  <li><a href="#setup-and-free-body-diagram" id="toc-setup-and-free-body-diagram" class="nav-link" data-scroll-target="#setup-and-free-body-diagram">Setup and Free-Body Diagram</a></li>
+  <li><a href="#measuring-the-spring-constant" id="toc-measuring-the-spring-constant" class="nav-link" data-scroll-target="#measuring-the-spring-constant">Measuring the Spring Constant</a></li>
+  <li><a href="#the-general-solution-of-the-sho" id="toc-the-general-solution-of-the-sho" class="nav-link" data-scroll-target="#the-general-solution-of-the-sho">The General Solution of the SHO</a></li>
+  </ul></li>
+  <li><a href="#the-damped-oscillator" id="toc-the-damped-oscillator" class="nav-link" data-scroll-target="#the-damped-oscillator">The Damped Oscillator</a>
+  <ul class="collapse">
+  <li><a href="#the-three-regimes-physical-interpretation" id="toc-the-three-regimes-physical-interpretation" class="nav-link" data-scroll-target="#the-three-regimes-physical-interpretation">The Three Regimes: Physical Interpretation</a></li>
+  </ul></li>
+  <li><a href="#energy-conservation-and-dissipation" id="toc-energy-conservation-and-dissipation" class="nav-link" data-scroll-target="#energy-conservation-and-dissipation">Energy: Conservation and Dissipation</a>
+  <ul class="collapse">
+  <li><a href="#conservation-of-energy-undamped" id="toc-conservation-of-energy-undamped" class="nav-link" data-scroll-target="#conservation-of-energy-undamped">Conservation of Energy (Undamped)</a></li>
+  <li><a href="#energy-dissipation-damped" id="toc-energy-dissipation-damped" class="nav-link" data-scroll-target="#energy-dissipation-damped">Energy Dissipation (Damped)</a></li>
+  </ul></li>
+  <li><a href="#the-mechanicalelectrical-analogy" id="toc-the-mechanicalelectrical-analogy" class="nav-link" data-scroll-target="#the-mechanicalelectrical-analogy">The Mechanical–Electrical Analogy</a></li>
+  <li><a href="#forced-oscillations-and-resonance" id="toc-forced-oscillations-and-resonance" class="nav-link" data-scroll-target="#forced-oscillations-and-resonance">Forced Oscillations and Resonance</a>
+  <ul class="collapse">
+  <li><a href="#adding-an-external-force" id="toc-adding-an-external-force" class="nav-link" data-scroll-target="#adding-an-external-force">Adding an External Force</a></li>
+  <li><a href="#the-steady-state-amplitude" id="toc-the-steady-state-amplitude" class="nav-link" data-scroll-target="#the-steady-state-amplitude">The Steady-State Amplitude</a></li>
+  <li><a href="#resonance-in-engineering-and-nature" id="toc-resonance-in-engineering-and-nature" class="nav-link" data-scroll-target="#resonance-in-engineering-and-nature">Resonance in Engineering and Nature</a></li>
+  </ul></li>
+  <li><a href="#the-vertical-springmass-system" id="toc-the-vertical-springmass-system" class="nav-link" data-scroll-target="#the-vertical-springmass-system">The Vertical Spring–Mass System</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Classical Mechanics and the Spring–Mass System</h1>
+<p class="subtitle lead">Section 2.1 of Logan — A Deeper Look</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="f94e1c09" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>This section provides a deeper look at the classical mechanics background for the second-order linear ODEs studied in Chapter 2 of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>, corresponding to <strong>Section 2.1</strong>. We develop the spring–mass system from first principles — deriving the governing ODE from Newton’s second law and Hooke’s law — analyze the three damping regimes in detail, investigate energy conservation and dissipation, and conclude with a discussion of forced oscillations and resonance from a physical perspective. The mechanical– electrical analogy, which shows that RLC circuits obey the same mathematics, is highlighted throughout.</p>
+<p>The material here supplements and expands upon <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span> §2.1 and connects directly to the solution methods of §2.2–2.3 covered in Notes 4.</p>
+<hr>
+<section id="newtons-second-law-and-the-program-of-classical-mechanics" class="level2">
+<h2 class="anchored" data-anchor-id="newtons-second-law-and-the-program-of-classical-mechanics">Newton’s Second Law and the Program of Classical Mechanics</h2>
+<p><a href="https://en.wikipedia.org/wiki/Classical_mechanics">Classical mechanics</a> is the branch of physics governing the motion of macroscopic objects. Its foundation is <strong><a href="https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion">Newton’s second law</a></strong>:</p>
+<p><span class="math display">\[
+F = ma \quad\Longleftrightarrow\quad m\,x'' = F(t, x, x'),
+\]</span></p>
+<p>where <span class="math inline">\(x(t)\)</span> is the position of a particle of mass <span class="math inline">\(m\)</span>, <span class="math inline">\(x'\)</span> is its velocity, <span class="math inline">\(x''\)</span> its acceleration, and <span class="math inline">\(F\)</span> is the total external force (which may depend on time, position, and velocity).</p>
+<p>For a mechanical system we always impose <strong>two initial conditions</strong>, <span class="math display">\[
+x(0) = x_0 \quad\text{(initial position)}, \qquad x'(0) = v_0 \quad\text{(initial velocity)},
+\]</span> making this an <strong>initial value problem</strong> (IVP) for a second-order ODE.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Determinism in Classical Mechanics
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Picard–Lindelöf theorem guarantees that — under mild smoothness conditions on <span class="math inline">\(F\)</span> — the IVP has a unique solution. This is the mathematical expression of <strong><a href="https://en.wikipedia.org/wiki/Laplace%27s_demon">Laplacian determinism</a></strong>: knowing the complete state <span class="math inline">\((x_0, v_0)\)</span> of a particle at one instant, together with all the forces acting on it, uniquely determines its entire future (and past) motion. This was the philosophical bedrock of 18th- and 19th-century physics.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="the-springmass-system" class="level2">
+<h2 class="anchored" data-anchor-id="the-springmass-system">The Spring–Mass System</h2>
+<section id="setup-and-free-body-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="setup-and-free-body-diagram">Setup and Free-Body Diagram</h3>
+<p>Consider a mass <span class="math inline">\(m\)</span> on a frictionless horizontal surface, attached to a spring of natural length <span class="math inline">\(\ell_0\)</span> with spring constant <span class="math inline">\(k &gt; 0\)</span>, the other end fixed to a wall. We measure the displacement <span class="math inline">\(x(t)\)</span> from the <strong>equilibrium position</strong> (where the spring is neither stretched nor compressed), with <span class="math inline">\(x &gt; 0\)</span> to the right.</p>
+<p><strong><a href="https://en.wikipedia.org/wiki/Hooke%27s_law">Hooke’s law</a></strong> states that for small displacements the spring exerts a restoring force proportional to the displacement: <span class="math display">\[
+F_s = -kx.
+\]</span> The minus sign is essential: the spring always pulls the mass <em>back</em> toward equilibrium.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Justification of Hooke’s Law via Taylor Expansion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If we allow the spring force <span class="math inline">\(F_s = F_s(x)\)</span> to be any smooth function of displacement with <span class="math inline">\(F_s(0) = 0\)</span>, then by Taylor’s theorem: <span class="math display">\[
+F_s(x) = F_s(0) + F_s'(0)\,x + \tfrac{1}{2}F_s''(0)\,x^2 + \cdots = -kx + O(x^2),
+\]</span> where <span class="math inline">\(k = -F_s'(0) &gt; 0\)</span>. Hooke’s law is the <strong>linear approximation</strong> valid for small displacements. It is an empirical constitutive relation — a model for springs, not a law of nature — and breaks down for large displacements or non-linear springs.</p>
+</div>
+</div>
+<p>Applying Newton’s second law: <span class="math display">\[
+m\,x'' = F_s = -kx \quad\Longrightarrow\quad \boxed{m\,x'' + kx = 0.}
+\]</span> Dividing by <span class="math inline">\(m\)</span> and setting <span class="math inline">\(\omega_0 = \sqrt{k/m}\)</span> (the <strong>natural angular frequency</strong>): <span class="math display">\[
+x'' + \omega_0^2\,x = 0. \tag{SHO}
+\]</span> This is the <strong><a href="https://en.wikipedia.org/wiki/Simple_harmonic_oscillator">simple harmonic oscillator (SHO)</a></strong> equation.</p>
+</section>
+<section id="measuring-the-spring-constant" class="level3">
+<h3 class="anchored" data-anchor-id="measuring-the-spring-constant">Measuring the Spring Constant</h3>
+<p>A practical way to determine <span class="math inline">\(k\)</span>: hang the spring vertically, attach mass <span class="math inline">\(m\)</span>, and measure the static elongation <span class="math inline">\(\Delta L\)</span>. At equilibrium, gravity <span class="math inline">\(mg\)</span> (downward) balances the spring restoring force <span class="math inline">\(k\Delta L\)</span> (upward): <span class="math display">\[
+mg = k\Delta L \quad\Longrightarrow\quad k = \frac{mg}{\Delta L}.
+\]</span></p>
+<div id="752bb37f" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="fl">9.81</span>  <span class="co"># m/s^2</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m_kg, DL_m <span class="kw">in</span> [(<span class="fl">0.3</span>, <span class="fl">0.05</span>), (<span class="fl">0.5</span>, <span class="fl">0.08</span>), (<span class="fl">1.0</span>, <span class="fl">0.12</span>)]:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    k <span class="op">=</span> m_kg <span class="op">*</span> g <span class="op">/</span> DL_m</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    omega0 <span class="op">=</span> np.sqrt(k <span class="op">/</span> m_kg)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    period  <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">/</span> omega0</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"m=</span><span class="sc">{</span>m_kg<span class="sc">}</span><span class="ss"> kg, ΔL=</span><span class="sc">{</span>DL_m<span class="sc">}</span><span class="ss"> m: k=</span><span class="sc">{</span>k<span class="sc">:.2f}</span><span class="ss"> N/m, ω₀=</span><span class="sc">{</span>omega0<span class="sc">:.3f}</span><span class="ss"> rad/s, T=</span><span class="sc">{</span>period<span class="sc">:.3f}</span><span class="ss"> s"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>m=0.3 kg, ΔL=0.05 m: k=58.86 N/m, ω₀=14.007 rad/s, T=0.449 s
+m=0.5 kg, ΔL=0.08 m: k=61.31 N/m, ω₀=11.074 rad/s, T=0.567 s
+m=1.0 kg, ΔL=0.12 m: k=81.75 N/m, ω₀=9.042 rad/s, T=0.695 s</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="the-general-solution-of-the-sho" class="level3">
+<h3 class="anchored" data-anchor-id="the-general-solution-of-the-sho">The General Solution of the SHO</h3>
+<p>The characteristic equation of (SHO) is <span class="math inline">\(\lambda^2 + \omega_0^2 = 0\)</span>, giving pure imaginary eigenvalues <span class="math inline">\(\lambda = \pm i\omega_0\)</span>. The general solution is: <span class="math display">\[
+x(t) = C_1\cos(\omega_0 t) + C_2\sin(\omega_0 t).
+\]</span> This can equivalently be written in <strong>amplitude-phase form</strong>: <span class="math display">\[
+\boxed{x(t) = A\cos(\omega_0 t - \phi),}
+\]</span> where the <strong>amplitude</strong> <span class="math inline">\(A = \sqrt{C_1^2 + C_2^2}\)</span> and the <strong>phase</strong> <span class="math inline">\(\phi = \arctan(C_2/C_1)\)</span> are determined by the initial conditions: <span class="math display">\[
+C_1 = x_0, \qquad C_2 = \frac{v_0}{\omega_0},
+\qquad A = \sqrt{x_0^2 + \frac{v_0^2}{\omega_0^2}}.
+\]</span></p>
+<p>Key properties of the SHO:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th>Formula</th>
+<th>Physical meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Natural frequency</td>
+<td><span class="math inline">\(\omega_0 = \sqrt{k/m}\)</span></td>
+<td>Radians per second</td>
+</tr>
+<tr class="even">
+<td>Period</td>
+<td><span class="math inline">\(T = 2\pi/\omega_0 = 2\pi\sqrt{m/k}\)</span></td>
+<td>Time for one full oscillation</td>
+</tr>
+<tr class="odd">
+<td>Frequency</td>
+<td><span class="math inline">\(f = 1/T = \omega_0/(2\pi)\)</span></td>
+<td>Oscillations per second (Hz)</td>
+</tr>
+<tr class="even">
+<td>Amplitude</td>
+<td><span class="math inline">\(A = \sqrt{x_0^2 + v_0^2/\omega_0^2}\)</span></td>
+<td>Maximum displacement</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The period <span class="math inline">\(T = 2\pi\sqrt{m/k}\)</span> is <strong>independent of amplitude</strong> — a heavier mass oscillates more slowly, a stiffer spring oscillates faster. This <a href="https://en.wikipedia.org/wiki/Isochronism">isochronism</a> (equal-time property) was first noted by Galileo for the pendulum (which obeys the same equation for small angles) and is the operating principle behind pendulum clocks.</p>
+</div>
+</div>
+<div id="cell-fig-sho" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>omega0 <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>k_v, m_v <span class="op">=</span> omega0<span class="op">**</span><span class="dv">2</span>, <span class="fl">1.0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">500</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-domain solutions</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ICs <span class="op">=</span> [(<span class="fl">1.5</span>, <span class="fl">0.0</span>, <span class="st">'steelblue'</span>, <span class="st">'$x_0=1.5,</span><span class="ch">\\</span><span class="st"> v_0=0$'</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>       (<span class="fl">0.5</span>, <span class="fl">2.0</span>, <span class="st">'darkorange'</span>, <span class="st">'$x_0=0.5,</span><span class="ch">\\</span><span class="st"> v_0=2$'</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>       (<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="st">'crimson'</span>,  <span class="st">'$x_0=0,</span><span class="ch">\\</span><span class="st"> v_0=3$'</span>)]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sho_ode(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span>omega0<span class="op">**</span><span class="dv">2</span><span class="op">*</span>y[<span class="dv">0</span>]]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, v0, color, lbl <span class="kw">in</span> ICs:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(sho_ode, (<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi), [x0, v0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(t_plot, sol.sol(t_plot)[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r'SHO: </span><span class="dv">$</span><span class="vs">x</span><span class="ch">\'\'</span><span class="op">+</span><span class="vs">4x=0</span><span class="dv">$</span><span class="vs">, three initial conditions'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticks([<span class="dv">0</span>, np.pi<span class="op">/</span><span class="dv">2</span>, np.pi, <span class="dv">3</span><span class="op">*</span>np.pi<span class="op">/</span><span class="dv">2</span>, <span class="dv">2</span><span class="op">*</span>np.pi])</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticklabels([<span class="st">'$0$'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pi/2</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pi</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">3</span><span class="er">\</span><span class="vs">pi/2</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">2</span><span class="er">\</span><span class="vs">pi</span><span class="dv">$</span><span class="vs">'</span>])</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Phase portrait</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>x_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>, <span class="dv">400</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>v_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">4.5</span>, <span class="fl">4.5</span>, <span class="dv">400</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>X, V <span class="op">=</span> np.meshgrid(x_grid, v_grid)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Energy levels E = 0.5*m*V^2 + 0.5*k*X^2</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>E_grid <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>m_v<span class="op">*</span>V<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">*</span>k_v<span class="op">*</span>X<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>E_levels <span class="op">=</span> [<span class="fl">0.5</span><span class="op">*</span>k_v<span class="op">*</span>A<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> A <span class="kw">in</span> [<span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, np.sqrt(<span class="fl">0.5</span><span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (<span class="dv">2</span><span class="op">/</span>omega0)<span class="op">**</span><span class="dv">2</span>), <span class="dv">3</span><span class="op">/</span>omega0]]</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>E_levels <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">set</span>([<span class="bu">round</span>(e, <span class="dv">3</span>) <span class="cf">for</span> e <span class="kw">in</span> E_levels]))</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, v0, color, lbl <span class="kw">in</span> ICs:</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    sol2 <span class="op">=</span> solve_ivp(sho_ode, (<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi), [x0, v0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    t_ph <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">600</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    xp, vp <span class="op">=</span> sol2.sol(t_ph)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(xp, vp, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(<span class="dv">0</span>, <span class="dv">0</span>, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="dv">8</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Equilibrium'</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">"$x'$"</span>)</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Phase portrait'</span>)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-sho" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sho-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_05_files/figure-html/fig-sho-output-1.png" width="1368" height="657" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sho-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Simple harmonic oscillator <span class="math inline">\(x''+4x=0\)</span> (<span class="math inline">\(\omega_0=2\)</span>). Left: solution curves for three different initial conditions, all with period <span class="math inline">\(T=\pi\)</span>. Right: phase portrait — each closed ellipse is a trajectory; the amplitude <span class="math inline">\(A=\sqrt{x_0^2+v_0^2/\omega_0^2}\)</span> is conserved. The energy level <span class="math inline">\(E=\frac{1}{2}kA^2=2A^2\)</span> labels each ellipse.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-damped-oscillator" class="level2">
+<h2 class="anchored" data-anchor-id="the-damped-oscillator">The Damped Oscillator</h2>
+<p>In reality, friction, air resistance, and internal material damping dissipate energy from the system. The simplest model takes the <strong>damping force</strong> proportional to velocity: <span class="math display">\[
+F_d = -\gamma\,x', \qquad \gamma &gt; 0 \;\text{(damping coefficient, units: kg/s)}.
+\]</span> This is a <strong>viscous damping</strong> model. The minus sign ensures that the damping force always opposes motion.</p>
+<p>Applying Newton’s second law with both spring and damping forces: <span class="math display">\[
+m\,x'' = F_s + F_d = -kx - \gamma x'.
+\]</span> Rearranging: <span class="math display">\[
+\boxed{m\,x'' + \gamma\,x' + kx = 0.} \tag{DO}
+\]</span> This is the <strong><a href="https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator">damped oscillator equation</a></strong>.</p>
+<p>Dividing by <span class="math inline">\(m\)</span> and writing <span class="math inline">\(2\gamma_m = \gamma/m\)</span> (the damping ratio per unit mass) and <span class="math inline">\(\omega_0^2 = k/m\)</span>: <span class="math display">\[
+x'' + 2\gamma_m\,x' + \omega_0^2\,x = 0.
+\]</span> The characteristic equation is <span class="math inline">\(\lambda^2 + 2\gamma_m\lambda + \omega_0^2 = 0\)</span>, with discriminant <span class="math inline">\(\Delta = 4(\gamma_m^2 - \omega_0^2)\)</span>, yielding the three damping regimes of Notes 4.</p>
+<section id="the-three-regimes-physical-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="the-three-regimes-physical-interpretation">The Three Regimes: Physical Interpretation</h3>
+<p><strong>Underdamped</strong> (<span class="math inline">\(\gamma_m &lt; \omega_0\)</span>, i.e., <span class="math inline">\(\gamma &lt; 2\sqrt{mk}\)</span>): <span class="math display">\[
+x(t) = e^{-\gamma_m t}(C_1\cos\omega_d t + C_2\sin\omega_d t)
+= A\,e^{-\gamma_m t}\cos(\omega_d t - \phi),
+\]</span> where <span class="math inline">\(\omega_d = \sqrt{\omega_0^2 - \gamma_m^2}\)</span> is the <strong>damped natural frequency</strong>. The system oscillates at a slightly <em>lower</em> frequency than the undamped case, with amplitude decaying like <span class="math inline">\(e^{-\gamma_m t}\)</span>.</p>
+<p><strong>Critically damped</strong> (<span class="math inline">\(\gamma_m = \omega_0\)</span>, i.e., <span class="math inline">\(\gamma = 2\sqrt{mk}\)</span>): <span class="math display">\[
+x(t) = (C_1 + C_2 t)\,e^{-\gamma_m t}.
+\]</span> No oscillation. The system returns to equilibrium <strong>as fast as possible</strong> without overshooting. Critical damping is optimal for many engineering applications — door closers, shock absorbers, galvanometers.</p>
+<p><strong>Overdamped</strong> (<span class="math inline">\(\gamma_m &gt; \omega_0\)</span>, i.e., <span class="math inline">\(\gamma &gt; 2\sqrt{mk}\)</span>): <span class="math display">\[
+x(t) = C_1\,e^{\lambda_1 t} + C_2\,e^{\lambda_2 t},
+\quad \lambda_{1,2} = -\gamma_m \pm \sqrt{\gamma_m^2 - \omega_0^2} &lt; 0.
+\]</span> Both eigenvalues are negative, so the solution decays without oscillation — but more slowly than critically damped because the strong damping impedes motion back to equilibrium.</p>
+<div id="cell-fig-damped-regimes" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>omega0 <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">600</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x0, v0 <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">0.0</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>regimes <span class="op">=</span> [</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.3</span>,  <span class="st">'steelblue'</span>,  <span class="st">'Underdamped $</span><span class="ch">\\</span><span class="st">gamma_m=0.3$'</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">2.0</span>,  <span class="st">'darkorange'</span>, <span class="st">'Critically damped $</span><span class="ch">\\</span><span class="st">gamma_m=2.0$'</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">3.5</span>,  <span class="st">'crimson'</span>,    <span class="st">'Overdamped $</span><span class="ch">\\</span><span class="st">gamma_m=3.5$'</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gamma_m, color, lbl <span class="kw">in</span> regimes:</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> dho(t, y, g<span class="op">=</span>gamma_m):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">2</span><span class="op">*</span>g<span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> omega0<span class="op">**</span><span class="dv">2</span><span class="op">*</span>y[<span class="dv">0</span>]]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(dho, (<span class="dv">0</span>, <span class="dv">8</span>), [x0, v0], t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(sol.y[<span class="dv">0</span>], sol.y[<span class="dv">1</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Underdamped envelope</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>gamma_m_ud <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot,  np.exp(<span class="op">-</span>gamma_m_ud<span class="op">*</span>t_plot), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">':'</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="st">'Envelope $</span><span class="ch">\\</span><span class="st">pm e^{-</span><span class="ch">\\</span><span class="st">gamma_m t}$'</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, <span class="op">-</span>np.exp(<span class="op">-</span>gamma_m_ud<span class="op">*</span>t_plot), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r'Damped oscillator: three regimes </span><span class="kw">(</span><span class="dv">$</span><span class="er">\</span><span class="vs">omega_0=2</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(x0, v0, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="dv">7</span>, label<span class="op">=</span><span class="st">'IC $(1,0)$'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(<span class="dv">0</span>,  <span class="dv">0</span>,  <span class="st">'k*'</span>, markersize<span class="op">=</span><span class="dv">10</span>, label<span class="op">=</span><span class="st">'Equilibrium'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">"$x'$"</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Phase portrait'</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-damped-regimes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-damped-regimes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_05_files/figure-html/fig-damped-regimes-output-1.png" width="1422" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-damped-regimes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Damped oscillator <span class="math inline">\(x''+2\gamma_m x'+4x=0\)</span> (<span class="math inline">\(\omega_0=2\)</span>, <span class="math inline">\(x(0)=1\)</span>, <span class="math inline">\(x'(0)=0\)</span>). Left: position vs.&nbsp;time for all three regimes. The underdamped case shows decaying oscillations; the dotted envelope <span class="math inline">\(\pm e^{-\gamma_m t}\)</span> bounds the oscillation amplitude. Right: phase portrait. The underdamped spiral converges to the origin; the overdamped and critically damped cases arrive along the positive-<span class="math inline">\(x\)</span> axis without orbiting.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="energy-conservation-and-dissipation" class="level2">
+<h2 class="anchored" data-anchor-id="energy-conservation-and-dissipation">Energy: Conservation and Dissipation</h2>
+<section id="conservation-of-energy-undamped" class="level3">
+<h3 class="anchored" data-anchor-id="conservation-of-energy-undamped">Conservation of Energy (Undamped)</h3>
+<p>For the undamped SHO, multiply the equation <span class="math inline">\(mx'' + kx = 0\)</span> by <span class="math inline">\(x'\)</span>: <span class="math display">\[
+m\,x'\,x'' + k\,x\,x' = 0.
+\]</span> Using the chain rule <span class="math inline">\(\frac{d}{dt}(x')^2 = 2x'x''\)</span> and <span class="math inline">\(\frac{d}{dt}x^2 = 2xx'\)</span>: <span class="math display">\[
+\frac{d}{dt}\!\left[\frac{1}{2}m(x')^2 + \frac{1}{2}kx^2\right] = 0.
+\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Conservation of Energy
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For the undamped spring–mass system, <span class="math display">\[
+E = T + V = \frac{1}{2}m(x')^2 + \frac{1}{2}kx^2 = \text{const},
+\]</span> where <span class="math inline">\(T = \frac{1}{2}m(x')^2\)</span> is the <strong>kinetic energy</strong> and <span class="math inline">\(V = \frac{1}{2}kx^2\)</span> is the <strong>potential energy</strong> (elastic energy stored in the spring). Energy oscillates between kinetic and potential but the total is conserved.</p>
+</div>
+</div>
+<p>The constant <span class="math inline">\(E\)</span> is determined by the initial conditions: <span class="math inline">\(E = \frac{1}{2}mv_0^2 + \frac{1}{2}kx_0^2\)</span>. The <strong>amplitude</strong> of oscillation satisfies <span class="math inline">\(E = \frac{1}{2}kA^2\)</span>, giving <span class="math inline">\(A = \sqrt{2E/k}\)</span>.</p>
+<p>In the phase plane, the energy conservation law <span class="math inline">\(E = \frac{1}{2}m(x')^2 + \frac{1}{2}kx^2\)</span> defines an <strong>ellipse</strong> for each value of <span class="math inline">\(E\)</span> — these are precisely the closed orbits in the phase portrait.</p>
+</section>
+<section id="energy-dissipation-damped" class="level3">
+<h3 class="anchored" data-anchor-id="energy-dissipation-damped">Energy Dissipation (Damped)</h3>
+<p>For the damped oscillator, the same multiplication by <span class="math inline">\(x'\)</span> gives: <span class="math display">\[
+\frac{d}{dt}\!\left[\frac{1}{2}m(x')^2 + \frac{1}{2}kx^2\right] = -\gamma(x')^2.
+\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Energy Dissipation Law
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\frac{dE}{dt} = -\gamma(x')^2 \leq 0.
+\]</span> The total mechanical energy <span class="math inline">\(E = T + V\)</span> decreases at a rate equal to the <strong>power dissipated</strong> by damping. Since <span class="math inline">\((x')^2 \geq 0\)</span>, energy is monotonically non-increasing. The damping force converts mechanical energy to heat.</p>
+</div>
+</div>
+<p>For the RLC circuit, the analogous equation is <span class="math display">\[\frac{d}{dt}\!\left[\frac{1}{2}LI^2 + \frac{Q^2}{2C}\right] = -RI^2,\]</span> where <span class="math inline">\(\frac{1}{2}LI^2\)</span> is the magnetic energy stored in the inductor, <span class="math inline">\(Q^2/(2C)\)</span> is the electric energy stored in the capacitor, and <span class="math inline">\(RI^2\)</span> is the <a href="https://en.wikipedia.org/wiki/Joule_heating">Joule heating</a> power dissipated by the resistor.</p>
+<div id="cell-fig-energy" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m_v, k_v <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">4.0</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>omega0 <span class="op">=</span> np.sqrt(k_v<span class="op">/</span>m_v)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Undamped</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sho(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span>(k_v<span class="op">/</span>m_v)<span class="op">*</span>y[<span class="dv">0</span>]]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">400</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>sol_u <span class="op">=</span> solve_ivp(sho, (<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi), [<span class="fl">1.5</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>x_u, v_u <span class="op">=</span> sol_u.sol(t_plot)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>T_u <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>m_v<span class="op">*</span>v_u<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>V_u <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>k_v<span class="op">*</span>x_u<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>E_u <span class="op">=</span> T_u <span class="op">+</span> V_u</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, T_u, color<span class="op">=</span><span class="st">'steelblue'</span>,  lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$T = </span><span class="ch">\\</span><span class="st">frac</span><span class="sc">{1}{2}</span><span class="st">m(x</span><span class="ch">\'</span><span class="st">)^2$'</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, V_u, color<span class="op">=</span><span class="st">'crimson'</span>,    lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$V = </span><span class="ch">\\</span><span class="st">frac</span><span class="sc">{1}{2}</span><span class="st">kx^2$'</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, E_u, color<span class="op">=</span><span class="st">'black'</span>,      lw<span class="op">=</span><span class="dv">2</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'$E = T+V$ (conserved)'</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Energy'</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Undamped: energy conservation'</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticks([<span class="dv">0</span>, np.pi<span class="op">/</span><span class="dv">2</span>, np.pi, <span class="dv">3</span><span class="op">*</span>np.pi<span class="op">/</span><span class="dv">2</span>, <span class="dv">2</span><span class="op">*</span>np.pi])</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticklabels([<span class="st">'$0$'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pi/2</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pi</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">3</span><span class="er">\</span><span class="vs">pi/2</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">2</span><span class="er">\</span><span class="vs">pi</span><span class="dv">$</span><span class="vs">'</span>])</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Damped</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>gamma_v <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dho_en(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span>(gamma_v<span class="op">/</span>m_v)<span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> (k_v<span class="op">/</span>m_v)<span class="op">*</span>y[<span class="dv">0</span>]]</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>t_plot2 <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">600</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>sol_d <span class="op">=</span> solve_ivp(dho_en, (<span class="dv">0</span>, <span class="dv">8</span>), [<span class="fl">1.5</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>x_d, v_d <span class="op">=</span> sol_d.sol(t_plot2)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>T_d <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>m_v<span class="op">*</span>v_d<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>V_d <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>k_v<span class="op">*</span>x_d<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>E_d <span class="op">=</span> T_d <span class="op">+</span> V_d</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>E0  <span class="op">=</span> E_d[<span class="dv">0</span>]</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot2, T_d, color<span class="op">=</span><span class="st">'steelblue'</span>,  lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$T$'</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot2, V_d, color<span class="op">=</span><span class="st">'crimson'</span>,    lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$V$'</span>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot2, E_d, color<span class="op">=</span><span class="st">'black'</span>,      lw<span class="op">=</span><span class="fl">2.5</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'$E = T+V$'</span>)</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].fill_between(t_plot2, E_d, E0, alpha<span class="op">=</span><span class="fl">0.15</span>, color<span class="op">=</span><span class="st">'seagreen'</span>,</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                     label<span class="op">=</span><span class="st">'Energy dissipated'</span>)</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Energy'</span>)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Damped ($</span><span class="ch">\\</span><span class="ss">gamma=</span><span class="sc">{</span>gamma_v<span class="sc">}</span><span class="ss">$): energy dissipation'</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-energy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_05_files/figure-html/fig-energy-output-1.png" width="1635" height="658" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Energy in the spring–mass system (<span class="math inline">\(m=1\)</span>, <span class="math inline">\(k=4\)</span>, <span class="math inline">\(x(0)=1.5\)</span>, <span class="math inline">\(x'(0)=0\)</span>). Left: undamped (<span class="math inline">\(\gamma=0\)</span>) — total energy <span class="math inline">\(E\)</span> (black dashed) is constant; kinetic <span class="math inline">\(T\)</span> and potential <span class="math inline">\(V\)</span> oscillate out of phase, trading energy back and forth. Right: damped (<span class="math inline">\(\gamma=1\)</span>) — total energy decays exponentially; the shaded area represents energy dissipated.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-mechanicalelectrical-analogy" class="level2">
+<h2 class="anchored" data-anchor-id="the-mechanicalelectrical-analogy">The Mechanical–Electrical Analogy</h2>
+<p>One of the most elegant facts in applied mathematics is that the <strong>damped spring–mass equation</strong> and the <strong><a href="https://en.wikipedia.org/wiki/RLC_circuit">RLC circuit</a> equation</strong> are mathematically identical:</p>
+<p><span class="math display">\[
+m\,x'' + \gamma\,x' + k\,x = F(t) \qquad\text{(spring–mass)}
+\]</span></p>
+<p><span class="math display">\[
+L\,Q'' + R\,Q' + \frac{1}{C}\,Q = E(t) \qquad\text{(RLC circuit)}
+\]</span></p>
+<p>The correspondence between mechanical and electrical quantities:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 31%">
+<col style="width: 18%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Mechanical</th>
+<th style="text-align: center;">Symbol</th>
+<th>Electrical</th>
+<th style="text-align: center;">Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mass (inertia)</td>
+<td style="text-align: center;"><span class="math inline">\(m\)</span></td>
+<td>Inductance</td>
+<td style="text-align: center;"><span class="math inline">\(L\)</span></td>
+</tr>
+<tr class="even">
+<td>Damping coefficient</td>
+<td style="text-align: center;"><span class="math inline">\(\gamma\)</span></td>
+<td>Resistance</td>
+<td style="text-align: center;"><span class="math inline">\(R\)</span></td>
+</tr>
+<tr class="odd">
+<td>Spring stiffness</td>
+<td style="text-align: center;"><span class="math inline">\(k\)</span></td>
+<td>Inverse capacitance</td>
+<td style="text-align: center;"><span class="math inline">\(1/C\)</span></td>
+</tr>
+<tr class="even">
+<td>Position</td>
+<td style="text-align: center;"><span class="math inline">\(x\)</span></td>
+<td>Charge</td>
+<td style="text-align: center;"><span class="math inline">\(Q\)</span></td>
+</tr>
+<tr class="odd">
+<td>Velocity</td>
+<td style="text-align: center;"><span class="math inline">\(x'\)</span></td>
+<td>Current</td>
+<td style="text-align: center;"><span class="math inline">\(I = Q'\)</span></td>
+</tr>
+<tr class="even">
+<td>Applied force</td>
+<td style="text-align: center;"><span class="math inline">\(F(t)\)</span></td>
+<td>Electromotive force (emf)</td>
+<td style="text-align: center;"><span class="math inline">\(E(t)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Kinetic energy <span class="math inline">\(\frac{1}{2}mv^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(T\)</span></td>
+<td>Magnetic energy <span class="math inline">\(\frac{1}{2}LI^2\)</span></td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td>Potential energy <span class="math inline">\(\frac{1}{2}kx^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(V\)</span></td>
+<td>Electric energy <span class="math inline">\(Q^2/2C\)</span></td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="odd">
+<td>Power dissipated <span class="math inline">\(\gamma v^2\)</span></td>
+<td style="text-align: center;">—</td>
+<td>Joule heating <span class="math inline">\(RI^2\)</span></td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why the Analogy Matters
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This analogy is not merely a curiosity. It means that every mathematical result derived for one system applies immediately to the other. Engineers routinely build <strong>analog electrical circuits</strong> to simulate mechanical systems — before digital computers, this was the standard way to study the dynamics of aircraft, ships, and engines. The analogy also shows that mathematics unifies apparently different physical domains under the same abstract structure.</p>
+</div>
+</div>
+<div id="cell-fig-analogy" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>omega0 <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>gamma_m <span class="op">=</span> <span class="fl">0.4</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">6</span>, <span class="dv">400</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sys(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">2</span><span class="op">*</span>gamma_m<span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> omega0<span class="op">**</span><span class="dv">2</span><span class="op">*</span>y[<span class="dv">0</span>]]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(sys, (<span class="dv">0</span>, <span class="dv">6</span>), [<span class="fl">1.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>x_t <span class="op">=</span> sol.sol(t_plot)[<span class="dv">0</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Mechanical</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, x_t, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Displacement $x(t)$'</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r'Spring–mass: </span><span class="dv">$</span><span class="vs">mx</span><span class="ch">\'\'</span><span class="op">+</span><span class="er">\</span><span class="vs">gamma x</span><span class="ch">\'</span><span class="op">+</span><span class="vs">kx=0</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1.2</span>)<span class="op">;</span> axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Electrical (same ODE, different variable name)</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot, x_t, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Charge $Q(t)$'</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$Q(t)$'</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="vs">r'RLC circuit: </span><span class="dv">$</span><span class="vs">LQ</span><span class="ch">\'\'</span><span class="op">+</span><span class="vs">RQ</span><span class="ch">\'</span><span class="op">+</span><span class="vs">Q/C=0</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylim(<span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1.2</span>)<span class="op">;</span> axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="ss">f'Mechanical–Electrical Analogy ($</span><span class="ch">\\</span><span class="ss">omega_0=</span><span class="sc">{</span>omega0<span class="sc">}</span><span class="ss">$, '</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>             <span class="ss">f'$</span><span class="ch">\\</span><span class="ss">gamma_m=</span><span class="sc">{</span>gamma_m<span class="sc">}</span><span class="ss">$, identical ODEs)'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-analogy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-analogy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_05_files/figure-html/fig-analogy-output-1.png" width="1631" height="595" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-analogy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The mechanical–electrical analogy. Spring–mass (left) and RLC circuit (right) obey identical ODEs. The simulation shows <span class="math inline">\(x(t)\)</span> for the mechanical system (blue) and <span class="math inline">\(Q(t)\)</span> for the circuit (orange dashed) with matching dimensionless parameters <span class="math inline">\(\omega_0=2\)</span>, <span class="math inline">\(\gamma_m=0.4\)</span>, both starting from the same initial conditions. The curves are identical — up to the choice of units.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="forced-oscillations-and-resonance" class="level2">
+<h2 class="anchored" data-anchor-id="forced-oscillations-and-resonance">Forced Oscillations and Resonance</h2>
+<section id="adding-an-external-force" class="level3">
+<h3 class="anchored" data-anchor-id="adding-an-external-force">Adding an External Force</h3>
+<p>In many applications the spring–mass system is subjected to an <strong>external periodic force</strong> <span class="math inline">\(F(t) = F_0\cos(\Omega t)\)</span> (from an engine, an earthquake, a loudspeaker, etc.). The equation of motion becomes:</p>
+<p><span class="math display">\[
+m\,x'' + \gamma\,x' + kx = F_0\cos(\Omega t). \tag{FO}
+\]</span></p>
+<p>Here <span class="math inline">\(\Omega\)</span> is the <strong>driving frequency</strong> (set externally) and <span class="math inline">\(\omega_0 = \sqrt{k/m}\)</span> is the <strong>natural frequency</strong> (set by the system). The long-time behavior is governed by the particular solution — the <strong>steady-state response</strong> — which oscillates at the driving frequency <span class="math inline">\(\Omega\)</span>.</p>
+</section>
+<section id="the-steady-state-amplitude" class="level3">
+<h3 class="anchored" data-anchor-id="the-steady-state-amplitude">The Steady-State Amplitude</h3>
+<p>By the method of undetermined coefficients (Notes 4), the steady-state solution of (FO) is: <span class="math display">\[
+x_p(t) = G(\Omega)\cos(\Omega t - \phi),
+\]</span> where the <strong>amplitude response function</strong> is: <span class="math display">\[
+G(\Omega) = \frac{F_0/m}{\sqrt{(\omega_0^2 - \Omega^2)^2 + (2\gamma_m\Omega)^2}}.
+\]</span></p>
+<p>This function is large when <span class="math inline">\(\Omega \approx \omega_0\)</span> and the damping is small — this is <strong><a href="https://en.wikipedia.org/wiki/Resonance">resonance</a></strong>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Resonance (Undamped Case)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When <span class="math inline">\(\gamma = 0\)</span> and <span class="math inline">\(\Omega = \omega_0\)</span>, the particular solution is: <span class="math display">\[x_p(t) = \frac{F_0}{2m\omega_0}\,t\sin(\omega_0 t).\]</span> The amplitude grows <strong>linearly without bound</strong> — physical resonance.</p>
+</div>
+</div>
+<p>The resonant frequency (peak of <span class="math inline">\(G\)</span>) for the damped system is: <span class="math display">\[
+\Omega_{\rm res} = \sqrt{\omega_0^2 - 2\gamma_m^2} &lt; \omega_0,
+\]</span> which is slightly below the natural frequency.</p>
+<div id="cell-fig-frequency-response" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>omega0 <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span> gamma_m_vals <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Omega_arr <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">5</span>, <span class="dv">600</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>colors_amp <span class="op">=</span> plt.cm.plasma(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.85</span>, <span class="bu">len</span>(gamma_m_vals)))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gm, color <span class="kw">in</span> <span class="bu">zip</span>(gamma_m_vals, colors_amp):</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    G <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> np.sqrt((omega0<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> Omega_arr<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (<span class="dv">2</span><span class="op">*</span>gm<span class="op">*</span>Omega_arr)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(Omega_arr, G, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$</span><span class="ch">\\</span><span class="ss">gamma_m=</span><span class="sc">{</span>gm<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> gm <span class="op">&lt;</span> omega0<span class="op">/</span>np.sqrt(<span class="dv">2</span>):</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        Omega_res <span class="op">=</span> np.sqrt(omega0<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>gm<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        axes[<span class="dv">0</span>].plot(Omega_res, <span class="dv">1</span><span class="op">/</span>np.sqrt((omega0<span class="op">**</span><span class="dv">2</span><span class="op">-</span>Omega_res<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span><span class="op">+</span>(<span class="dv">2</span><span class="op">*</span>gm<span class="op">*</span>Omega_res)<span class="op">**</span><span class="dv">2</span>),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'o'</span>, color<span class="op">=</span>color, markersize<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvline(omega0, color<span class="op">=</span><span class="st">'k'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'$</span><span class="ch">\\</span><span class="ss">omega_0=</span><span class="sc">{</span>omega0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Driving frequency $</span><span class="ch">\\</span><span class="st">Omega$'</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Amplitude $G(</span><span class="ch">\\</span><span class="st">Omega)$'</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Amplitude response function'</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylim(<span class="dv">0</span>, <span class="dv">6</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-domain for three Omega values</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>gm_fixed <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">800</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> Omega_val, color, lbl <span class="kw">in</span> [(<span class="fl">1.0</span>, <span class="st">'steelblue'</span>, <span class="st">'$</span><span class="ch">\\</span><span class="st">Omega=1$ (below)'</span>),</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>                               (<span class="fl">2.0</span>, <span class="st">'crimson'</span>,   <span class="st">'$</span><span class="ch">\\</span><span class="st">Omega=2=</span><span class="ch">\\</span><span class="st">omega_0$ (resonance)'</span>),</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                               (<span class="fl">3.5</span>, <span class="st">'seagreen'</span>,  <span class="st">'$</span><span class="ch">\\</span><span class="st">Omega=3.5$ (above)'</span>)]:</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forced(t, y, Ov<span class="op">=</span>Omega_val):</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">2</span><span class="op">*</span>gm_fixed<span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> omega0<span class="op">**</span><span class="dv">2</span><span class="op">*</span>y[<span class="dv">0</span>] <span class="op">+</span> np.cos(Ov<span class="op">*</span>t)]</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    sol_f <span class="op">=</span> solve_ivp(forced, (<span class="dv">0</span>, <span class="dv">20</span>), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(sol_f.t, sol_f.y[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Forced oscillations ($</span><span class="ch">\\</span><span class="ss">gamma_m=</span><span class="sc">{</span>gm_fixed<span class="sc">}</span><span class="ss">$, zero ICs)'</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-frequency-response" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-frequency-response-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_05_files/figure-html/fig-frequency-response-output-1.png" width="1633" height="657" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-frequency-response-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Frequency response of the forced damped oscillator (<span class="math inline">\(\omega_0=2\)</span>, <span class="math inline">\(F_0/m=1\)</span>). Left: amplitude <span class="math inline">\(G(\Omega)\)</span> vs.&nbsp;driving frequency for several damping ratios. The peak shifts below <span class="math inline">\(\omega_0=2\)</span> (vertical dashed line) and broadens as damping increases. Right: time-domain steady-state solutions for three driving frequencies with <span class="math inline">\(\gamma_m=0.3\)</span>, illustrating below-resonance, at-resonance, and above-resonance behavior.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="resonance-in-engineering-and-nature" class="level3">
+<h3 class="anchored" data-anchor-id="resonance-in-engineering-and-nature">Resonance in Engineering and Nature</h3>
+<p>Resonance is one of the most important phenomena arising from second-order linear ODEs, with consequences ranging from catastrophic to beneficial.</p>
+<p><strong>Destructive resonance:</strong></p>
+<ul>
+<li><strong><a href="https://en.wikipedia.org/wiki/Tacoma_Narrows_Bridge_(1940)">Tacoma Narrows Bridge</a></strong> (1940): aerodynamic forcing matched the bridge’s torsional natural frequency, causing collapse.</li>
+<li><strong>Mechanical fatigue</strong>: repeated forcing near resonance builds up stress amplitude, eventually causing fracture even when each individual loading is far below the static failure load.</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/Broughton_Suspension_Bridge">Resonance disaster in Broughton Suspension Bridge</a></strong> (1831): soldiers marching in step caused resonant oscillations that destroyed the bridge.</li>
+</ul>
+<p><strong>Beneficial resonance:</strong></p>
+<ul>
+<li><strong><a href="https://en.wikipedia.org/wiki/Magnetic_resonance_imaging">MRI scanners</a></strong>: radio-frequency pulses are tuned to the resonant frequency of nuclear spins (<span class="math inline">\(\omega_0 = \gamma B_0\)</span>, where <span class="math inline">\(B_0\)</span> is the magnetic field strength and <span class="math inline">\(\gamma\)</span> is the gyromagnetic ratio).</li>
+<li><strong>Musical instruments</strong>: the resonant frequencies of strings, air columns, and membranes determine the pitches of notes.</li>
+<li><strong>Radio tuning</strong>: a variable capacitor adjusts <span class="math inline">\(\omega_0 = 1/\sqrt{LC}\)</span> to match the carrier frequency of the desired station.</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/Crystal_oscillator">Quartz oscillators</a></strong>: the precise resonant frequency of a quartz crystal (in the MHz range) drives digital clocks and computers.</li>
+</ul>
+<div id="cell-fig-resonance-buildup" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>omega0 <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">800</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sho_forced_res(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span>omega0<span class="op">**</span><span class="dv">2</span><span class="op">*</span>y[<span class="dv">0</span>] <span class="op">+</span> np.cos(omega0<span class="op">*</span>t)]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>sol_res <span class="op">=</span> solve_ivp(sho_forced_res, (<span class="dv">0</span>, <span class="dv">20</span>), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ax.plot(sol_res.t, sol_res.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Resonant solution $x(t)$'</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot,  t_plot<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Envelope $</span><span class="ch">\\</span><span class="st">pm t/4$'</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, <span class="op">-</span>t_plot<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Resonance: </span><span class="dv">$</span><span class="vs">x''</span><span class="op">+</span><span class="vs">4x=</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=x'</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">undamped</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-resonance-buildup" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-resonance-buildup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_05_files/figure-html/fig-resonance-buildup-output-1.png" width="1481" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resonance-buildup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Resonance amplitude buildup (<span class="math inline">\(\omega_0=2\)</span>, <span class="math inline">\(\gamma=0\)</span>, zero ICs). Without damping, the resonant particular solution <span class="math inline">\(x_p = (t/4)\sin(2t)\)</span> grows linearly without bound (dashed line shows the envelope <span class="math inline">\(\pm t/4\)</span>). In practice, material nonlinearities or structural failure occur before infinite amplitude is reached.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-vertical-springmass-system" class="level2">
+<h2 class="anchored" data-anchor-id="the-vertical-springmass-system">The Vertical Spring–Mass System</h2>
+<p>It is natural to ask whether the spring–mass equation changes when the spring is oriented <strong>vertically</strong> (e.g., a mass hanging from a spring attached to the ceiling). The answer is no — the equation of motion is identical.</p>
+<p><strong>Derivation.</strong> Let <span class="math inline">\(y\)</span> measure displacement from the ceiling attachment point (downward positive). At the unstretched length <span class="math inline">\(L\)</span> of the spring the mass is at position <span class="math inline">\(y=L\)</span>. At the static equilibrium position <span class="math inline">\(y = L + \Delta L\)</span>, gravity <span class="math inline">\(mg\)</span> balances the spring force <span class="math inline">\(k\Delta L\)</span>: <span class="math display">\[k\Delta L = mg.\]</span> Let <span class="math inline">\(x = y - (L + \Delta L)\)</span> measure displacement from equilibrium. Then: <span class="math display">\[
+m\,x'' = mg - k(x + \Delta L) = mg - kx - k\Delta L = -kx,
+\]</span> since <span class="math inline">\(k\Delta L = mg\)</span>. The gravitational term cancels exactly, and we recover <span class="math inline">\(mx'' + kx = 0\)</span> — <strong>gravity does not appear in the equation of motion about the equilibrium position</strong>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Physical Insight
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Gravity merely shifts the equilibrium position downward by <span class="math inline">\(\Delta L = mg/k\)</span>. Measuring from this new equilibrium, the oscillation is governed by the same SHO equation. The spring carries gravity “for free.” This is why pendulum clocks tick at the same rate regardless of whether they hang vertically or (approximately) on a tilted wall.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Formula</th>
+<th>Physical meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Newton’s second law</td>
+<td><span class="math inline">\(mx'' = F(t,x,x')\)</span></td>
+<td>Governs all particle motion</td>
+</tr>
+<tr class="even">
+<td>SHO</td>
+<td><span class="math inline">\(x'' + \omega_0^2 x = 0\)</span>, <span class="math inline">\(\omega_0=\sqrt{k/m}\)</span></td>
+<td>Frictionless spring</td>
+</tr>
+<tr class="odd">
+<td>SHO solution</td>
+<td><span class="math inline">\(A\cos(\omega_0 t - \phi)\)</span></td>
+<td>Amplitude <span class="math inline">\(A\)</span>, phase <span class="math inline">\(\phi\)</span> from ICs</td>
+</tr>
+<tr class="even">
+<td>Period</td>
+<td><span class="math inline">\(T = 2\pi/\omega_0\)</span></td>
+<td>Independent of amplitude</td>
+</tr>
+<tr class="odd">
+<td>Damped oscillator</td>
+<td><span class="math inline">\(mx''+\gamma x'+kx=0\)</span></td>
+<td>With viscous damping</td>
+</tr>
+<tr class="even">
+<td>Energy conservation</td>
+<td>$E = T+V = $ const (undamped)</td>
+<td>Elliptic phase orbits</td>
+</tr>
+<tr class="odd">
+<td>Energy dissipation</td>
+<td><span class="math inline">\(dE/dt = -\gamma(x')^2\)</span> (damped)</td>
+<td>Heat generation rate</td>
+</tr>
+<tr class="even">
+<td>Mechanical–electrical analogy</td>
+<td><span class="math inline">\(m\leftrightarrow L\)</span>, <span class="math inline">\(\gamma\leftrightarrow R\)</span>, <span class="math inline">\(k\leftrightarrow 1/C\)</span></td>
+<td>Same ODE, different physics</td>
+</tr>
+<tr class="odd">
+<td>Steady-state amplitude</td>
+<td><span class="math inline">\(G(\Omega) = (F_0/m)/\sqrt{(\omega_0^2-\Omega^2)^2+4\gamma_m^2\Omega^2}\)</span></td>
+<td>Peaks near <span class="math inline">\(\omega_0\)</span></td>
+</tr>
+<tr class="even">
+<td>Resonance (undamped)</td>
+<td><span class="math inline">\(x_p = (F_0/2m\omega_0)t\sin(\omega_0 t)\)</span></td>
+<td>Amplitude grows like <span class="math inline">\(t\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-logan2015first" class="csl-entry" role="listitem">
+Logan, J David. 2015. <em>A First Course in Differential Equations Third Edition</em>.
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="e7ab4772" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
