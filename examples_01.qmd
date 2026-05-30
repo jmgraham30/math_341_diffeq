@@ -39,7 +39,7 @@ satisfies $\dfrac{dx}{dt} = x(1-x)$ for every value of the constant $A$.
 
 Write $x(t) = \bigl(1 + Ae^{-t}\bigr)^{-1}$ and apply the chain rule:
 $$
-\frac{dx}{dt} = -\bigl(1 + Ae^{-t}\bigr)^{-2} \cdot \frac{d}{dt}\!\left(Ae^{-t}\right)
+\frac{dx}{dt} = -\bigl(1 + Ae^{-t}\bigr)^{-2} \cdot \frac{d}{dt}\!\left(1 + Ae^{-t}\right)
 = -\frac{-Ae^{-t}}{\bigl(1+Ae^{-t}\bigr)^{2}}
 = \frac{Ae^{-t}}{\bigl(1+Ae^{-t}\bigr)^{2}}.
 $$
@@ -106,7 +106,7 @@ We now confirm the above calculation symbolically using [SymPy](https://www.symp
 ```{python}
 t, A, x0 = sym.symbols('t A x_0', real=True)
 
-x = sym.Rational(1, 1) / (1 + A * sym.exp(-t))
+x = sym.S(1) / (1 + A * sym.exp(-t))
 
 from IPython.display import Math, display
 display(Math(r'x(t) = ' + sym.latex(x)))
