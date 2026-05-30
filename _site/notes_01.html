@@ -476,7 +476,7 @@ window.Quarto = {
 </header>
 
 
-<div id="43cbf04b" class="cell" data-execution_count="1">
+<div id="1e096b9f" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -493,9 +493,9 @@ window.Quarto = {
 </div>
 <section id="goals" class="level2">
 <h2 class="anchored" data-anchor-id="goals">Goals</h2>
-<p>In this session, we will cover the following topics:</p>
+<p>In this section, we will cover the following topics:</p>
 <ol type="1">
-<li><p>Define the notion of a differential equation and what it means to have a solution, with an emphasis on the case of ordinary differential equations (ODEs).</p></li>
+<li><p>The notion of a differential equation and what it means to have a solution, with an emphasis on the case of ordinary differential equations (ODEs).</p></li>
 <li><p>Introduce the classification of ODEs by order, linearity, homogeneity, autonomy, and coefficient type.</p></li>
 <li><p>Introduce the concept of an initial value problem (IVP).</p></li>
 <li><p>Learn about some common situations where ODEs arise in applications.</p></li>
@@ -518,7 +518,7 @@ Note
 <h2 class="anchored" data-anchor-id="the-concept-of-a-differential-equation">The Concept of a Differential Equation</h2>
 <section id="essential-notation-and-terminology" class="level3">
 <h3 class="anchored" data-anchor-id="essential-notation-and-terminology">Essential Notation and Terminology</h3>
-<p>Informally, a <strong><a href="https://en.wikipedia.org/wiki/Differential_equation">differential equation</a></strong> is any equation that involves an unknown function together with one or more of its derivatives. The goal is not to find an unknown <em>number</em> (as in an algebraic equation like <span class="math inline">\(x^2 - 4 = 0\)</span>) but to find an unknown <em>function</em> that satisfies the equation.</p>
+<p>Informally, a <strong><a href="https://en.wikipedia.org/wiki/Differential_equation">differential equation</a></strong> is any equation that involves an unknown <strong>function</strong> together with one or more of its derivatives. The goal is not to find an unknown <em>number</em> (as in an algebraic equation like <span class="math inline">\(x^2 - 4 = 0\)</span>) but to find an unknown <em>function</em> that satisfies the equation.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -534,11 +534,11 @@ Important
 </div>
 <p>For example, the equation <span class="math display">\[
 \frac{dy}{dx} = y
-\]</span> asks: <em>what function <span class="math inline">\(y(x)\)</span> equals its own derivative?</em> The answer is <span class="math inline">\(y(x) = Ce^{x}\)</span> for any constant <span class="math inline">\(C\)</span>, since <span class="math inline">\((Ce^x)' = Ce^x\)</span>.</p>
-<p>It is rare that we study a general differential equation in complete isolation. Typically, we study a specific class of equations or a specific equation that arises in a particular context or an application. (See <a href="https://en.wikipedia.org/wiki/List_of_named_differential_equations">this list on named differential equations</a> to get a sense of where one can find differential equations in mathematics and its applications.) To understand the landscape of possibilities, we need to classify equations according to their properties.</p>
+\]</span> asks: <em>what function <span class="math inline">\(y(x)\)</span> equals its own derivative?</em> Of course, the answer is <span class="math inline">\(y(x) = Ce^{x}\)</span> for any constant <span class="math inline">\(C\)</span>, since <span class="math inline">\((Ce^x)' = Ce^x\)</span>!</p>
+<p>It is rare that we study a general differential equation in complete isolation. Typically, we study a specific class of equations or a specific equation that arises in a particular context or an application. (See <a href="https://en.wikipedia.org/wiki/List_of_named_differential_equations">this list on named differential equations</a> to get a sense of where one can find differential equations in mathematics and its applications.) To understand the landscape of possibilities, it is useful to classify equations according to their properties.</p>
 <p><strong>Ordinary vs.&nbsp;Partial Differential Equations.</strong> The nature of the unknown function’s domain leads to the first major distinction:</p>
 <ul>
-<li><p>An <strong><a href="https://en.wikipedia.org/wiki/Ordinary_differential_equation">ordinary differential equation (ODE)</a></strong> involves a function of a <em>single</em> independent variable and its ordinary derivatives. For example, if <span class="math inline">\(x = x(t)\)</span> describes the position of a mass at time <span class="math inline">\(t\)</span>, then <span class="math inline">\(\ddot{x} = -\omega^2 x\)</span> is an ODE. Note that we sometimes use the notation <span class="math inline">\(\dot{x}\)</span> for time derivatives.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
+<li><p>An <strong><a href="https://en.wikipedia.org/wiki/Ordinary_differential_equation">ordinary differential equation (ODE)</a></strong> involves a function of a <em>single</em> independent variable and its ordinary derivatives. For example, if <span class="math inline">\(x = x(t)\)</span> describes the position of a mass at time <span class="math inline">\(t\)</span>, then <span class="math inline">\(\frac{d^2 x}{dt^2} = -\omega^2 x\)</span> (or as physicists write, <span class="math inline">\(\ddot{x} = -\omega^2 x\)</span>) is an ODE. Note that we sometimes use the notation <span class="math inline">\(\dot{x}\)</span> for time derivatives.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
 <li><p>A <strong><a href="https://en.wikipedia.org/wiki/Partial_differential_equation">partial differential equation (PDE)</a></strong> involves a function of <em>several</em> independent variables and its partial derivatives. For example, the <a href="https://en.wikipedia.org/wiki/Heat_equation">heat equation</a> <span class="math inline">\(u_t = k\,u_{xx}\)</span>, where <span class="math inline">\(u = u(x,t)\)</span> is a temperature field, is a PDE.</p></li>
 </ul>
 <p>In this course we focus exclusively on <strong>ODEs</strong>.</p>
@@ -569,7 +569,7 @@ Important
 </table>
 <p>A general <span class="math inline">\(n\)</span>th-order ODE can be written as <span class="math display">\[
 F\!\left(t,\, y,\, y',\, y'',\, \ldots,\, y^{(n)}\right) = 0,
-\]</span> or, if it can be solved for the highest derivative, <span class="math display">\[
+\]</span> or, if it can be solved for the highest derivative (usually the case in applications), <span class="math display">\[
 y^{(n)} = f\!\left(t,\, y,\, y',\, \ldots,\, y^{(n-1)}\right).
 \]</span></p>
 <p><strong>Linearity.</strong> An ODE is <strong><a href="https://en.wikipedia.org/wiki/Linear_differential_equation">linear</a></strong> if it can be written as <span class="math display">\[
@@ -650,7 +650,7 @@ Tip
 y' = f(y) \quad \text{(autonomous)}, \qquad y' = f(t, y) \quad \text{(non-autonomous)}.
 \]</span> Autonomous equations arise naturally in population models and physical systems where the “rules” do not change over time.</p>
 <hr>
-<p><strong>Examples.</strong> Let us practice classifying a handful of equations.</p>
+<p><strong>Examples.</strong> Let’s practice classifying a handful of equations.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1200,7 +1200,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations Third Edition
 </div>
 <div id="callout-15" class="callout-15-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="4af42fcc" class="cell" data-execution_count="7">
+<div id="7e7b22aa" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
