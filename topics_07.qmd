@@ -1,0 +1,752 @@
+---
+title: "Power Series Solutions of Differential Equations"
+subtitle: "Following Said-Houari, Chapter 5"
+jupyter: diffeq_py
+license: "CC BY-NC-SA 4.0"
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from scipy.special import airy
+from math import factorial
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+So far in this course we have solved ODEs whose solutions are composed of
+familiar functions — exponentials, sines, cosines, polynomials, and their
+combinations.  But many important ODEs arising in physics and engineering have
+solutions that cannot be expressed in terms of these elementary functions at
+all.  The method of **power series** provides a systematic way to find solutions
+to such equations, and in particular to linear ODEs with variable coefficients.
+
+The idea is beautifully simple: assume the solution has the form of an infinite
+polynomial (a power series), substitute it into the ODE, and determine the
+coefficients term by term.  The resulting solutions — convergent power series —
+define new functions whose properties can then be studied in depth.  Some of the
+most important functions in mathematical physics (Bessel functions, Legendre
+polynomials, Airy functions) are defined in exactly this way.
+
+This section follows **Chapter 5** of Said-Houari, *Differential Equations:
+Methods and Applications* [@saidhouari2015].
+
+---
+
+## Part 1 — Review of Power Series
+
+### What Is a Power Series?
+
+A **[power series](https://en.wikipedia.org/wiki/Power_series)** centered at
+$t_0$ is an infinite sum of the form
+$$
+\sum_{n=0}^{\infty} a_n(t-t_0)^n = a_0 + a_1(t-t_0) + a_2(t-t_0)^2 + \cdots
+$$
+where the **coefficients** $a_n$ are constants.  Taking $t_0 = 0$ (centering
+at the origin) gives the simpler form
+$$
+\sum_{n=0}^{\infty} a_n t^n = a_0 + a_1 t + a_2 t^2 + \cdots
+$$
+
+::: {.callout-tip}
+## Intuition
+Think of a power series as an "infinite polynomial."  Just as a finite
+polynomial $p(t) = 3 + 2t - t^2$ is determined by its coefficients $(3, 2, -1)$,
+a power series is determined by its (infinite) sequence of coefficients
+$(a_0, a_1, a_2, \ldots)$.  When the series converges, it defines a function.
+:::
+
+**Three canonical examples:**
+
+| Series | Coefficients $a_n$ | Converges to | Interval |
+|---|---|---|---|
+| $\displaystyle\sum_{n=0}^{\infty} t^n$ | $a_n = 1$ | $\dfrac{1}{1-t}$ | $\|t\|<1$ |
+| $\displaystyle\sum_{n=0}^{\infty} \dfrac{t^n}{n!}$ | $a_n = \dfrac{1}{n!}$ | $e^t$ | all $t$ |
+| $\displaystyle\sum_{n=0}^{\infty} \dfrac{(-1)^n t^{2n}}{(2n)!}$ | special | $\cos t$ | all $t$ |
+
+---
+
+### Convergence and the Radius of Convergence
+
+A series may converge at some values of $t$ and diverge at others.
+
+::: {.callout-important}
+## Theorem: Radius of Convergence
+For every power series $\sum_{n=0}^{\infty} a_n(t-t_0)^n$ there exists a number
+$r$ with $0 \leq r \leq \infty$ — the **[radius of convergence](https://en.wikipedia.org/wiki/Radius_of_convergence)** — such that:
+- The series **converges absolutely** for $|t-t_0| < r$.
+- The series **diverges** for $|t-t_0| > r$.
+- At the endpoints $|t-t_0|=r$ the behavior must be checked separately.
+
+If $r = \infty$ the series converges for all $t$; if $r = 0$ only at $t_0$.
+:::
+
+The radius of convergence can often be found by the **ratio test**:
+$$
+r = \lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right|.
+$$
+
+**Example.** For $\displaystyle\sum_{n=0}^{\infty}\frac{n+1}{3^n}t^n$:
+$$
+r = \lim_{n\to\infty}\left|\frac{(n+1)/3^n}{(n+2)/3^{n+1}}\right| = \lim_{n\to\infty}\frac{3(n+1)}{n+2} = 3.
+$$
+
+The convergence of partial sums to the exact function is beautifully visible in
+the geometric series:
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-partial-sums
+#| fig-cap: "Partial sums $S_N(t) = \\sum_{n=0}^N t^n$ converging to $f(t)=1/(1-t)$ (black dashed) for $|t|<1$. Each successive partial sum adds one more term and fits the true function better. Outside $|t|\\geq 1$ the partial sums diverge — the radius of convergence $r=1$ is sharp."
+
+t_plot = np.linspace(-0.95, 0.95, 400)
+f_exact = 1/(1 - t_plot)
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+# Left: partial sums
+colors = plt.cm.viridis(np.linspace(0.1, 0.9, 6))
+for N_ps, color in zip([0, 1, 2, 3, 5, 10], colors):
+    S_N = sum(t_plot**n for n in range(N_ps+1))
+    axes[0].plot(t_plot, S_N, color=color, lw=1.8, label=f'$S_{{{N_ps}}}$')
+axes[0].plot(t_plot, f_exact, 'k--', lw=2.5, label=r'$1/(1-t)$ (exact)')
+axes[0].set_ylim(-4, 6); axes[0].axhline(0, color='k', lw=0.5)
+axes[0].set_xlabel('$t$'); axes[0].set_ylabel('$S_N(t)$')
+axes[0].set_title(r'Partial sums of $\sum t^n$ converging to $1/(1-t)$')
+axes[0].legend(fontsize=8.5, ncol=2)
+
+# Right: error vs N at t=0.5
+N_arr = np.arange(1, 25)
+errors = [abs(sum(0.5**n for n in range(N+1)) - 2.0) for N in N_arr]
+axes[1].semilogy(N_arr, errors, 'o-', color='steelblue', lw=2, markersize=6)
+axes[1].set_xlabel('Number of terms $N$')
+axes[1].set_ylabel('$|S_N(0.5) - f(0.5)|$')
+axes[1].set_title('Exponential convergence at $t=0.5$')
+axes[1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Analytic Functions
+
+::: {.callout-important}
+## Definition: Analytic at $t_0$
+A function $f(t)$ is **[analytic](https://en.wikipedia.org/wiki/Analytic_function)** at $t_0$ if it has a valid power series expansion
+$f(t) = \sum_{n=0}^{\infty} a_n(t-t_0)^n$ in some neighborhood of $t_0$, with
+$$a_n = \frac{f^{(n)}(t_0)}{n!}.$$
+This is the **[Taylor series](https://en.wikipedia.org/wiki/Taylor_series)** of $f$ at $t_0$.
+:::
+
+**When is a function analytic?**
+- Polynomials and $e^t$ are analytic **everywhere**.
+- $\sin t$, $\cos t$, $\ln(1+t)$, $(1+t)^p$ are analytic at $t_0 = 0$.
+- Every rational function $p(t)/q(t)$ is analytic wherever $q(t) \neq 0$.
+- Sums, products, and quotients (when denominator $\neq 0$) of analytic
+  functions are analytic.
+
+---
+
+## Part 2 — Power Series Operations
+
+### Term-by-Term Differentiation
+
+The most important property for our purposes:
+
+::: {.callout-important}
+## Theorem: Term-by-Term Differentiation
+If $f(t) = \sum_{n=0}^{\infty} a_n(t-t_0)^n$ converges for $|t-t_0|<r$, then $f$ is
+differentiable and
+$$
+f'(t) = \sum_{n=1}^{\infty} n\,a_n(t-t_0)^{n-1}, \qquad
+f''(t) = \sum_{n=2}^{\infty} n(n-1)\,a_n(t-t_0)^{n-2},
+$$
+both converging for $|t-t_0|<r$. The radius of convergence is unchanged by differentiation.
+:::
+
+This is what makes power series so useful for ODEs: we can differentiate term by
+term and then substitute directly into the equation.
+
+**Example.** Starting from $\dfrac{1}{1-t} = \sum_{n=0}^{\infty}t^n$:
+$$
+\frac{d}{dt}\frac{1}{1-t} = \frac{1}{(1-t)^2} = \sum_{n=1}^{\infty} n\,t^{n-1} = 1 + 2t + 3t^2 + \cdots
+$$
+
+### The Identity Principle
+
+::: {.callout-important}
+## Theorem: Identity Principle
+If $\displaystyle\sum_{n=0}^{\infty} a_n t^n = \sum_{n=0}^{\infty} b_n t^n$ for all $t$ in some open interval,
+then $a_n = b_n$ for all $n \geq 0$.
+:::
+
+This is the key theorem that lets us **equate coefficients** when we substitute
+a power series into an ODE.  It says a power series representation is unique.
+
+### Re-indexing Summations
+
+When working with ODEs, we frequently need to shift the summation index so
+that all series have the same power of $t$.  The rule is:
+$$
+\sum_{n=0}^{\infty} a_{n+k}\,t^{n+k} = \sum_{m=k}^{\infty} a_m\,t^m
+\quad\text{(substitute } m = n+k\text{)}.
+$$
+
+**Example.** To combine $\displaystyle\sum_{n=2}^{\infty} n(n-1)a_n t^{n-2}$ and $\displaystyle\sum_{n=0}^{\infty} a_n t^n$
+into a single series in $t^n$, re-index the first:
+
+Let $m = n-2$ (equivalently $n = m+2$):
+$$
+\sum_{n=2}^{\infty} n(n-1)a_n t^{n-2} = \sum_{m=0}^{\infty}(m+2)(m+1)a_{m+2}\,t^m.
+$$
+Both series now run from $m=0$ and have the same power $t^m$, so we can add
+them and apply the Identity Principle to each coefficient of $t^m$.
+
+---
+
+## Part 3 — Series Solutions of First-Order ODEs
+
+### The Strategy
+
+Given a first-order linear ODE, we:
+1. **Assume** a power series solution $y(t) = \sum_{n=0}^{\infty} a_n t^n$.
+2. **Differentiate** term by term.
+3. **Substitute** into the ODE.
+4. **Re-index** all series to the same power of $t$.
+5. **Collect** terms and apply the Identity Principle to get a **recurrence relation** for the coefficients $a_n$.
+6. **Solve** the recurrence to find all $a_n$ in terms of $a_0$ (and $a_1$ if
+   second order).
+7. **Write** the series solution and determine its radius of convergence.
+
+---
+
+### Example 1 — $y' - y = 0$
+
+The simplest non-trivial example: the equation whose solution is $e^t$.
+
+**Assume** $y = \sum_{n=0}^{\infty} a_n t^n$, so $y' = \sum_{n=1}^{\infty} n a_n t^{n-1}$.
+
+**Substitute** and re-index $y'$ ($m = n-1$):
+$$
+\sum_{n=0}^{\infty}(n+1)a_{n+1}\,t^n - \sum_{n=0}^{\infty}a_n\,t^n = 0.
+$$
+
+**Identity Principle:**
+$$
+(n+1)a_{n+1} - a_n = 0 \quad\Longrightarrow\quad a_{n+1} = \frac{a_n}{n+1}.
+$$
+
+This is the **recurrence relation**.  Unwinding it:
+$$
+a_1 = a_0, \quad a_2 = \frac{a_1}{2} = \frac{a_0}{2}, \quad a_3 = \frac{a_0}{6}, \quad\ldots\quad a_n = \frac{a_0}{n!}.
+$$
+
+**Solution:**
+$$
+y(t) = a_0\sum_{n=0}^{\infty}\frac{t^n}{n!} = a_0\,e^t.
+$$
+
+The series converges for all $t$ (radius $r = \infty$), as expected for $e^t$.
+
+---
+
+### Example 2 — $(t-3)y' + 2y = 0$
+
+**Standard form:** $y' + \dfrac{2}{t-3}y = 0$.  The coefficient $2/(t-3)$ is analytic for $t\neq 3$, so we expand about $t_0=0$ with radius of convergence $r=3$ (the distance from $t_0=0$ to the nearest singular point $t=3$).
+
+**Assume** $y = \sum_{n=0}^{\infty}a_n t^n$, $y' = \sum_{n=1}^{\infty}n a_n t^{n-1}$.
+
+**Substitute:**
+$$
+(t-3)\sum_{n=1}^{\infty}n a_n t^{n-1} + 2\sum_{n=0}^{\infty}a_n t^n = 0.
+$$
+
+Expanding and re-indexing (one can show) leads to the recurrence
+$$
+a_{n+1} = \frac{n+2}{3(n+1)}a_n, \quad n \geq 0.
+$$
+
+Computing the first terms: $a_1 = \frac{2}{3}a_0$, $a_2 = \frac{3}{9}a_0$, $a_3 = \frac{4}{27}a_0$,
+giving the pattern $a_n = \frac{n+1}{3^n}a_0$.
+
+$$
+y(t) = a_0\sum_{n=0}^{\infty}\frac{n+1}{3^n}t^n.
+$$
+
+The radius of convergence is $r=3$.  Differentiating $\frac{1}{(3-t)^2}$ shows this series equals $\dfrac{a_0/9}{(1-t/3)^2} = \dfrac{a_0}{(3-t)^2}$, which is indeed the exact solution.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-first-order
+#| fig-cap: "Series solution of $(t-3)y'+2y=0$, $y(0)=1/9$. Left: partial sums converging to the exact solution $y=1/(3-t)^2$ (black dashed) for $|t|<3$. The series diverges outside the radius of convergence $r=3$ (dashed vertical lines). Right: partial-sum errors at $t=1.5$ decreasing toward zero, demonstrating convergence."
+
+N_terms_list = [3, 5, 8, 15, 30]
+t_plot = np.linspace(-2.8, 2.8, 500)
+y_exact = 1/(3 - t_plot)**2 / 9  # a0=1/9 so y=1/(3-t)^2
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+colors = plt.cm.Blues(np.linspace(0.4, 0.9, len(N_terms_list)))
+for N_ps, color in zip(N_terms_list, colors):
+    coeffs = [(n+1)/3**n / 9 for n in range(N_ps)]  # a_n = (n+1)/3^n * a0, a0=1/9
+    y_ps = sum(coeffs[n]*t_plot**n for n in range(N_ps))
+    axes[0].plot(t_plot, np.clip(y_ps, -1, 5), color=color, lw=1.8, label=f'$N={N_ps}$')
+
+axes[0].plot(t_plot, y_exact, 'k--', lw=2.5, label=r'$y=1/(3-t)^2$ (exact)')
+axes[0].axvline(3, color='gray', ls=':', lw=1.5, label='$r=3$')
+axes[0].axvline(-3, color='gray', ls=':', lw=1.5)
+axes[0].set_ylim(-0.5, 5); axes[0].set_xlabel('$t$'); axes[0].set_ylabel('$y(t)$')
+axes[0].set_title(r'$(t-3)y\prime+2y=0$: partial sums')
+axes[0].legend(fontsize=8)
+
+# Error at t=1.5
+t_val = 1.5
+y_true = 1/(3-t_val)**2 / 9
+N_arr = np.arange(1, 40)
+errors = []
+for N_ps in N_arr:
+    y_ps_val = sum((n+1)/3**n/9 * t_val**n for n in range(N_ps))
+    errors.append(abs(y_ps_val - y_true))
+axes[1].semilogy(N_arr, errors, 'o-', color='steelblue', lw=2, markersize=5)
+axes[1].set_xlabel('$N$ (number of terms)')
+axes[1].set_ylabel(r'$|S_N(1.5) - y(1.5)|$')
+axes[1].set_title('Convergence at $t=1.5$')
+axes[1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Part 4 — Series Solutions of Second-Order ODEs
+
+### Ordinary and Singular Points
+
+For the second-order equation in **standard form**:
+$$
+y'' + P(t)\,y' + Q(t)\,y = 0,
+$$
+
+::: {.callout-important}
+## Definition: Ordinary and Singular Points
+- $t_0$ is an **ordinary point** if both $P(t)$ and $Q(t)$ are **analytic** at $t_0$.
+- $t_0$ is a **singular point** if $P(t)$ or $Q(t)$ fails to be analytic there.
+:::
+
+**Examples:**
+
+| Equation | $P(t)$ | $Q(t)$ | Ordinary points | Singular points |
+|---|---|---|---|---|
+| $y'' + y = 0$ | $0$ | $1$ | All $t$ | None |
+| $y'' - ty = 0$ (Airy) | $0$ | $-t$ | All $t$ | None |
+| $(1-t^2)y''-2ty'+\lambda y=0$ (Legendre) | $\frac{-2t}{1-t^2}$ | $\frac{\lambda}{1-t^2}$ | $t\neq\pm 1$ | $t=\pm 1$ |
+
+::: {.callout-important}
+## Theorem (Existence near ordinary points)
+If $t_0$ is an ordinary point of $y''+P(t)y'+Q(t)y=0$, and if $P$, $Q$ have
+power series expansions valid for $|t-t_0|<r$, then the ODE has two linearly
+independent analytic solutions $y_1$, $y_2$ with power series valid for
+$|t-t_0|<r$.  The general solution is $y=C_1 y_1 + C_2 y_2$.
+:::
+
+This theorem guarantees that our method will work and gives us the radius of
+convergence in advance.
+
+---
+
+### Example 3 — $y'' + y = 0$ (Recovering $\cos t$ and $\sin t$)
+
+This is Example 5.8 of Said-Houari — the series method applied to an equation
+whose solutions we already know, serving as a verification.
+
+**Assume** $y = \sum_{n=0}^{\infty}a_n t^n$.
+
+**Compute:**
+$$
+y'' = \sum_{n=2}^{\infty}n(n-1)a_n t^{n-2} = \sum_{n=0}^{\infty}(n+2)(n+1)a_{n+2}\,t^n.
+$$
+
+**Substitute** $y'' + y = 0$:
+$$
+\sum_{n=0}^{\infty}\bigl[(n+2)(n+1)a_{n+2} + a_n\bigr]t^n = 0.
+$$
+
+**Identity Principle:**
+$$
+a_{n+2} = -\frac{a_n}{(n+2)(n+1)}, \quad n = 0, 1, 2, \ldots
+$$
+
+This splits into **even** and **odd** coefficients:
+
+**Even** (determined by $a_0$):
+$$a_2 = -\frac{a_0}{2},\quad a_4 = \frac{a_0}{24},\quad a_6 = -\frac{a_0}{720},\quad\ldots\quad a_{2k} = \frac{(-1)^k}{(2k)!}a_0.$$
+
+**Odd** (determined by $a_1$):
+$$a_3 = -\frac{a_1}{6},\quad a_5 = \frac{a_1}{120},\quad\ldots\quad a_{2k+1} = \frac{(-1)^k}{(2k+1)!}a_1.$$
+
+**Two independent solutions:**
+$$
+\boxed{y_1(t) = \sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}t^{2k} = \cos t,}
+\qquad
+\boxed{y_2(t) = \sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)!}t^{2kC+1} = \sin t.}
+$$
+
+Both series converge for all $t$ (radius $r=\infty$).  The general solution is $y = a_0\cos t + a_1\sin t$.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-cos-sin-series
+#| fig-cap: "Power series partial sums recovering $\\cos t$ (left) and $\\sin t$ (right). Even-indexed terms build $\\cos t$; odd-indexed terms build $\\sin t$. More terms are needed to capture the oscillations accurately over a larger interval."
+
+t_plot = np.linspace(-2*np.pi, 2*np.pi, 500)
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+for ax, (a0, a1), y_exact, name in [
+    (axes[0], (1, 0), np.cos(t_plot), r'$\cos t$'),
+    (axes[1], (0, 1), np.sin(t_plot), r'$\sin t$'),
+]:
+    ax.plot(t_plot, y_exact, 'k--', lw=2.5, label=f'Exact {name}', zorder=5)
+    colors = plt.cm.viridis(np.linspace(0.15, 0.9, 5))
+    for N_terms, color in zip([1, 2, 3, 5, 8], colors):
+        a = [0.0]*(2*N_terms+2)
+        a[0] = a0; a[1] = a1
+        for n_v in range(len(a)-2):
+            a[n_v+2] = -a[n_v]/((n_v+2)*(n_v+1))
+        y_ps = sum(a[n]*t_plot**n for n in range(len(a)))
+        ax.plot(t_plot, np.clip(y_ps, -5, 5), color=color, lw=1.8, label=f'$N={2*N_terms}$ terms')
+    ax.set_ylim(-3, 3); ax.axhline(0, color='k', lw=0.5)
+    ax.set_xlabel('$t$'); ax.set_ylabel('$y$')
+    ax.set_title(f'Series for {name}')
+    ax.legend(fontsize=8)
+
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 4 — The Airy Equation: $y'' - ty = 0$
+
+The **[Airy equation](https://en.wikipedia.org/wiki/Airy_function)** arises in quantum mechanics (near classical turning points), optics (diffraction theory), and fluid dynamics (stability of flows).  Its solutions **cannot** be expressed in terms of elementary functions.
+
+**Assume** $y = \sum_{n=0}^{\infty}a_n t^n$.
+
+**Compute** $y'' = \sum_{n=0}^{\infty}(n+2)(n+1)a_{n+2}t^n$ and $ty = \sum_{n=1}^{\infty}a_{n-1}t^n$.
+
+**Substitute** $y'' - ty = 0$:
+$$
+2a_2 + \sum_{n=1}^{\infty}\bigl[(n+2)(n+1)a_{n+2} - a_{n-1}\bigr]t^n = 0.
+$$
+
+**Identity Principle** gives $a_2 = 0$ and for $n \geq 1$:
+$$
+a_{n+2} = \frac{a_{n-1}}{(n+2)(n+1)}.
+$$
+
+This **three-term recurrence** ($a_{n+2}$ depends on $a_{n-1}$, not $a_n$) means the coefficients split into **three families** based on their index mod 3:
+
+- **$n \equiv 0 \pmod{3}$**: depends on $a_0$
+- **$n \equiv 1 \pmod{3}$**: depends on $a_1$
+- **$n \equiv 2 \pmod{3}$**: all zero (since $a_2 = 0$)
+
+Computing the non-zero terms for each independent initial condition:
+
+**Solution $y_1$** ($a_0=1$, $a_1=0$):
+$$
+a_3 = \frac{a_0}{3\cdot 2} = \frac{1}{6}, \quad a_6 = \frac{a_3}{6\cdot 5} = \frac{1}{180}, \quad a_9 = \frac{a_6}{9\cdot 8}, \quad\ldots
+$$
+
+$$y_1(t) = 1 + \frac{t^3}{6} + \frac{t^6}{180} + \cdots = 1 + \sum_{k=1}^{\infty}\frac{1\cdot 4\cdot 7\cdots(3k-2)}{(3k)!}t^{3k}.$$
+
+**Solution $y_2$** ($a_0=0$, $a_1=1$):
+$$
+a_4 = \frac{a_1}{4\cdot 3} = \frac{1}{12}, \quad a_7 = \frac{a_4}{7\cdot 6} = \frac{1}{504}, \quad\ldots
+$$
+
+$$y_2(t) = t + \frac{t^4}{12} + \frac{t^7}{504} + \cdots = t + \sum_{k=1}^{\infty}\frac{2\cdot 5\cdot 8\cdots(3k-1)}{(3k+1)!}t^{3kC+1}.$$
+
+Both series converge for **all** $t$ (radius $r=\infty$), verified by the ratio test.  The general solution $y = C_1 y_1 + C_2 y_2$ defines the **Airy functions** $\text{Ai}(t)$ and $\text{Bi}(t)$ up to linear combinations.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-airy
+#| fig-cap: "Airy equation $y''-ty=0$: the two linearly independent series solutions $y_1(t)$ (blue) and $y_2(t)$ (orange) satisfying $y_1(0)=1$, $y_1'(0)=0$ and $y_2(0)=0$, $y_2'(0)=1$. For $t<0$ both solutions oscillate (the ODE has no dissipation and the coefficient $-t>0$); for $t>0$ they grow or decay. Red dots confirm the series against a direct numerical ODE solve."
+
+N_a = 50
+a_y1 = [0.0]*N_a; a_y1[0] = 1.0
+a_y2 = [0.0]*N_a; a_y2[1] = 1.0
+for n_v in range(1, N_a-2):
+    a_y1[n_v+2] = a_y1[n_v-1]/((n_v+2)*(n_v+1))
+    a_y2[n_v+2] = a_y2[n_v-1]/((n_v+2)*(n_v+1))
+
+t_plot = np.linspace(-4, 2.5, 500)
+
+# Series evaluation (safe range — N=50 terms converge well for |t|<=3)
+def eval_series(coeffs, t_arr):
+    result = np.zeros_like(t_arr)
+    for k, ck in enumerate(coeffs):
+        result = result + ck * t_arr**k
+    return result
+
+y1_ser = eval_series(a_y1, t_plot)
+y2_ser = eval_series(a_y2, t_plot)
+
+# Numerical ODE solve for comparison
+def airy_ode(t, y): return [y[1], t*y[0]]
+sol1 = solve_ivp(airy_ode, (-4, 2.5), [1.0, 0.0], dense_output=True, max_step=0.01)
+sol2 = solve_ivp(airy_ode, (-4, 2.5), [0.0, 1.0], dense_output=True, max_step=0.01)
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+for ax, y_ser, sol, lbl, color in [
+    (axes[0], y1_ser, sol1, r'$y_1$ ($a_0=1$, $a_1=0$)', 'steelblue'),
+    (axes[1], y2_ser, sol2, r'$y_2$ ($a_0=0$, $a_1=1$)', 'darkorange'),
+]:
+    ax.plot(t_plot, np.clip(y_ser, -6, 8), color=color, lw=2.5, label='Series (N=50)')
+    t_dots = np.linspace(-3, 2, 20)
+    ax.plot(t_dots, sol.sol(t_dots)[0], 'ro', markersize=5, label='Numerical')
+    ax.axhline(0, color='k', lw=0.5); ax.axvline(0, color='k', lw=0.5, ls='--')
+    ax.set_xlabel('$t$'); ax.set_ylabel('$y(t)$')
+    ax.set_title(f'Airy: {lbl}')
+    ax.legend(fontsize=8.5); ax.set_ylim(-6, 8)
+
+plt.suptitle(r"Airy equation $y'' - ty = 0$", fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+## The Airy Functions
+The Airy functions $\text{Ai}(t)$ and $\text{Bi}(t)$ are specific linear
+combinations of $y_1$ and $y_2$ normalized to have standard asymptotics as
+$t\to+\infty$.  For $t<0$ they oscillate; for $t>0$, $\text{Ai}(t)\to 0$
+(decay) while $\text{Bi}(t)\to+\infty$ (growth).  They appear in the
+Schrödinger equation near potential barriers, the theory of caustics in
+optics, and uniform asymptotic expansions in applied mathematics.
+:::
+
+---
+
+### Example 5 — Legendre's Equation
+
+**[Legendre's equation](https://en.wikipedia.org/wiki/Legendre_polynomials)**
+$$
+(1-t^2)y'' - 2ty' + p(p+1)y = 0
+$$
+arises in potential theory, electrostatics, and quantum mechanics whenever a
+problem is formulated in spherical coordinates.  Here $p$ is a real parameter.
+
+**Standard form** ($t_0 = 0$ is an ordinary point):
+$$
+y'' - \frac{2t}{1-t^2}y' + \frac{p(p+1)}{1-t^2}y = 0.
+$$
+
+The nearest singular points are $t = \pm 1$, so the series about $t_0 = 0$
+has radius of convergence $r = 1$.
+
+The series method (Exercise 5.1 of Said-Houari) gives the recurrence:
+$$
+a_{n+2} = -\frac{(p-n)(p+n+1)}{(n+2)(n+1)}\,a_n, \quad n \geq 0.
+$$
+
+The general solution is $y = a_0 y_{\rm even}(t) + a_1 y_{\rm odd}(t)$ where
+$y_{\rm even}$ contains only even powers of $t$ (determined by $a_0$) and
+$y_{\rm odd}$ only odd powers (determined by $a_1$).
+
+**The key observation:** if $p = N$ is a non-negative integer, then $a_{N+2} = 0$
+(since the numerator $(p-n) = (N-N) = 0$ when $n=N$), so the series
+**terminates** — it becomes a polynomial!  These polynomial solutions, properly
+normalized so that $y(1) = 1$, are the **[Legendre polynomials](https://en.wikipedia.org/wiki/Legendre_polynomials)** $P_N(t)$.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-legendre
+#| fig-cap: "Left: power series partial sums for $y_1$ (even) and $y_2$ (odd) solutions of Legendre's equation with $p=2.5$ (non-integer — infinite series, $r=1$). Right: Legendre polynomials $P_0,\\ldots,P_4$ obtained when $p$ is an integer — the series terminates and gives a polynomial. The recurrence coefficient $(p-n)=0$ at $n=p$ causes early termination."
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+# Non-integer p: series solution
+p_val = 2.5
+N_leg = 40
+t_plot = np.linspace(-0.95, 0.95, 400)
+
+a_even = [0.0]*N_leg; a_even[0] = 1.0
+a_odd  = [0.0]*N_leg; a_odd[1]  = 1.0
+for n_v in range(N_leg-2):
+    coeff = -(p_val-n_v)*(p_val+n_v+1)/((n_v+2)*(n_v+1))
+    a_even[n_v+2] = coeff*a_even[n_v]
+    a_odd [n_v+2] = coeff*a_odd[n_v]
+
+y_even = sum(a_even[k]*t_plot**k for k in range(N_leg))
+y_odd  = sum(a_odd[k]*t_plot**k  for k in range(N_leg))
+
+# Numerical verification
+def legendre_ode(t, y):
+    if abs(1-t**2) < 1e-10: return [0.0, 0.0]
+    return [y[1], (2*t*y[1] - p_val*(p_val+1)*y[0])/(1-t**2)]
+sol_e = solve_ivp(legendre_ode, (0, 0.9), [1.0, 0.0], dense_output=True, max_step=0.005)
+sol_o = solve_ivp(legendre_ode, (0, 0.9), [0.0, 1.0], dense_output=True, max_step=0.005)
+
+t_pos = np.linspace(0, 0.9, 200)
+axes[0].plot(t_plot, y_even, color='steelblue', lw=2, label=f'$y_{{\\rm even}}$, $p={p_val}$')
+axes[0].plot(t_plot, y_odd,  color='darkorange', lw=2, label=f'$y_{{\\rm odd}}$, $p={p_val}$')
+axes[0].plot(t_pos, sol_e.sol(t_pos)[0], 'r:', lw=1.5, label='Numerical $y_{\\rm even}$')
+axes[0].plot(t_pos, sol_o.sol(t_pos)[0], 'g:', lw=1.5, label='Numerical $y_{\\rm odd}$')
+axes[0].axhline(0, color='k', lw=0.5)
+axes[0].set_xlabel('$t$'); axes[0].set_ylabel('$y$')
+axes[0].set_title(f'Legendre series ($p={p_val}$, $r=1$)')
+axes[0].legend(fontsize=8)
+
+# Integer p: Legendre polynomials (terminating series)
+t_leg = np.linspace(-1, 1, 300)
+colors_leg = plt.cm.tab10(np.linspace(0, 0.5, 5))
+for p_int, color in zip([0, 1, 2, 3, 4], colors_leg):
+    N_lp = 20
+    if p_int % 2 == 0:
+        a = [0.0]*N_lp; a[0] = 1.0
+    else:
+        a = [0.0]*N_lp; a[1] = 1.0
+    for n_v in range(N_lp-2):
+        a[n_v+2] = -(p_int-n_v)*(p_int+n_v+1)/((n_v+2)*(n_v+1)) * a[n_v]
+    y_ps = sum(a[k]*t_leg**k for k in range(N_lp))
+    # Normalize: P_p(1) = 1
+    val_at_1 = sum(a[k] for k in range(N_lp))
+    if abs(val_at_1) > 1e-12:
+        y_ps = y_ps / val_at_1
+    axes[1].plot(t_leg, y_ps, color=color, lw=2, label=f'$P_{{{p_int}}}(t)$')
+
+axes[1].axhline(0, color='k', lw=0.5)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$P_p(t)$')
+axes[1].set_title('Legendre polynomials $P_0,\\ldots,P_4$ (terminating series)')
+axes[1].legend(fontsize=8.5)
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-tip}
+## Why Do the Series Terminate for Integer $p$?
+
+The recurrence $a_{n+2} = -\dfrac{(p-n)(p+n+1)}{(n+2)(n+1)}a_n$ contains the
+factor $(p-n)$ in the numerator.  When $p = N$ is a non-negative integer and
+$n = N$, this factor equals zero, making $a_{N+2} = 0$.  Since all subsequent
+coefficients are determined by $a_{N+2}$, the entire series truncates.  The
+result is a polynomial of degree $N$ — the $N$th Legendre polynomial $P_N(t)$.
+These polynomials are orthogonal on $[-1,1]$, which is why they arise so
+naturally in Fourier-type expansions in spherical geometry.
+:::
+
+---
+
+### Using SymPy: The Series Method in Practice
+
+SymPy can find series solutions automatically using `dsolve` (for known
+equations) or by working with the recurrence relation manually.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_sym = sym.Symbol('t')
+y_sym = sym.Function('y')
+
+print("SymPy series solutions to key equations:\n")
+
+# y'' + y = 0
+ode1 = sym.Eq(y_sym(t_sym).diff(t_sym, 2) + y_sym(t_sym), 0)
+sol1 = sym.dsolve(ode1, y_sym(t_sym))
+print("y''+y=0:")
+display(Math(sym.latex(sol1)))
+print()
+
+# y' - y = 0
+ode2 = sym.Eq(y_sym(t_sym).diff(t_sym) - y_sym(t_sym), 0)
+sol2 = sym.dsolve(ode2, y_sym(t_sym))
+print("y'-y=0:")
+display(Math(sym.latex(sol2)))
+print()
+
+# First few terms of Airy series via Taylor expansion
+t_s = sym.Symbol('t')
+y_s = sym.Function('y')
+# For Airy, use explicit series representation via sympy.functions
+airy_sym = sym.airyai(t_s)
+airy_series = sym.series(airy_sym, t_s, 0, 10)
+print("Ai(t) Taylor series about t=0:")
+display(Math(sym.latex(airy_series)))
+```
+
+---
+
+## Summary
+
+| Concept | Key Point |
+|---|---|
+| **Power series** | $\sum a_n(t-t_0)^n$ — "infinite polynomial" centered at $t_0$ |
+| **Radius of convergence** | $r = \lim|a_n/a_{n+1}|$ — series valid for $|t-t_0|<r$ |
+| **Analytic function** | Has a valid power series in a neighborhood of $t_0$ |
+| **Term-by-term differentiation** | $(\sum a_n t^n)' = \sum n a_n t^{n-1}$, same $r$ |
+| **Identity principle** | Equal series $\Rightarrow$ equal coefficients |
+| **Ordinary point** | $P(t)$, $Q(t)$ analytic at $t_0$ — series method works |
+| **Recurrence relation** | The algebraic equation linking $a_{n+2}$ to earlier $a_k$ |
+| **Two free parameters** | $a_0$, $a_1$ determine the two independent solutions |
+| **Terminating series** | Integer parameter $\Rightarrow$ polynomial solution (e.g., Legendre $P_N$) |
+
+::: {.callout-tip}
+## Why This Matters
+The series method is not just a technique for specific equations — it is the
+foundation of the entire theory of special functions.
+[Bessel functions](https://en.wikipedia.org/wiki/Bessel_function) (vibrating
+membranes, waveguides), 
+[Legendre polynomials](https://en.wikipedia.org/wiki/Legendre_polynomials) 
+(electrostatics, quantum mechanics),
+[Hermite polynomials](https://en.wikipedia.org/wiki/Hermite_polynomials)
+(quantum harmonic oscillator),
+[Laguerre polynomials](https://en.wikipedia.org/wiki/Laguerre_polynomials)
+(hydrogen atom wavefunctions), and
+[Airy functions](https://en.wikipedia.org/wiki/Airy_function) (optics, quantum
+tunnelling) are all defined as series solutions to ODEs that have no
+elementary-function solutions.  Every one of them emerges from the same
+three-step process: assume a series, derive a recurrence, identify the pattern.
+:::
+
+---
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)

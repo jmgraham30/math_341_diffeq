@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Power Series Solutions of Differential Equations – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1-review-of-power-series" id="toc-part-1-review-of-power-series" class="nav-link active" data-scroll-target="#part-1-review-of-power-series">Part 1 — Review of Power Series</a>
+  <ul class="collapse">
+  <li><a href="#what-is-a-power-series" id="toc-what-is-a-power-series" class="nav-link" data-scroll-target="#what-is-a-power-series">What Is a Power Series?</a></li>
+  <li><a href="#convergence-and-the-radius-of-convergence" id="toc-convergence-and-the-radius-of-convergence" class="nav-link" data-scroll-target="#convergence-and-the-radius-of-convergence">Convergence and the Radius of Convergence</a></li>
+  <li><a href="#analytic-functions" id="toc-analytic-functions" class="nav-link" data-scroll-target="#analytic-functions">Analytic Functions</a></li>
+  </ul></li>
+  <li><a href="#part-2-power-series-operations" id="toc-part-2-power-series-operations" class="nav-link" data-scroll-target="#part-2-power-series-operations">Part 2 — Power Series Operations</a>
+  <ul class="collapse">
+  <li><a href="#term-by-term-differentiation" id="toc-term-by-term-differentiation" class="nav-link" data-scroll-target="#term-by-term-differentiation">Term-by-Term Differentiation</a></li>
+  <li><a href="#the-identity-principle" id="toc-the-identity-principle" class="nav-link" data-scroll-target="#the-identity-principle">The Identity Principle</a></li>
+  <li><a href="#re-indexing-summations" id="toc-re-indexing-summations" class="nav-link" data-scroll-target="#re-indexing-summations">Re-indexing Summations</a></li>
+  </ul></li>
+  <li><a href="#part-3-series-solutions-of-first-order-odes" id="toc-part-3-series-solutions-of-first-order-odes" class="nav-link" data-scroll-target="#part-3-series-solutions-of-first-order-odes">Part 3 — Series Solutions of First-Order ODEs</a>
+  <ul class="collapse">
+  <li><a href="#the-strategy" id="toc-the-strategy" class="nav-link" data-scroll-target="#the-strategy">The Strategy</a></li>
+  <li><a href="#example-1-y---y-0" id="toc-example-1-y---y-0" class="nav-link" data-scroll-target="#example-1-y---y-0">Example 1 — <span class="math inline">\(y' - y = 0\)</span></a></li>
+  <li><a href="#example-2-t-3y-2y-0" id="toc-example-2-t-3y-2y-0" class="nav-link" data-scroll-target="#example-2-t-3y-2y-0">Example 2 — <span class="math inline">\((t-3)y' + 2y = 0\)</span></a></li>
+  </ul></li>
+  <li><a href="#part-4-series-solutions-of-second-order-odes" id="toc-part-4-series-solutions-of-second-order-odes" class="nav-link" data-scroll-target="#part-4-series-solutions-of-second-order-odes">Part 4 — Series Solutions of Second-Order ODEs</a>
+  <ul class="collapse">
+  <li><a href="#ordinary-and-singular-points" id="toc-ordinary-and-singular-points" class="nav-link" data-scroll-target="#ordinary-and-singular-points">Ordinary and Singular Points</a></li>
+  <li><a href="#example-3-y-y-0-recovering-cos-t-and-sin-t" id="toc-example-3-y-y-0-recovering-cos-t-and-sin-t" class="nav-link" data-scroll-target="#example-3-y-y-0-recovering-cos-t-and-sin-t">Example 3 — <span class="math inline">\(y'' + y = 0\)</span> (Recovering <span class="math inline">\(\cos t\)</span> and <span class="math inline">\(\sin t\)</span>)</a></li>
+  <li><a href="#example-4-the-airy-equation-y---ty-0" id="toc-example-4-the-airy-equation-y---ty-0" class="nav-link" data-scroll-target="#example-4-the-airy-equation-y---ty-0">Example 4 — The Airy Equation: <span class="math inline">\(y'' - ty = 0\)</span></a></li>
+  <li><a href="#example-5-legendres-equation" id="toc-example-5-legendres-equation" class="nav-link" data-scroll-target="#example-5-legendres-equation">Example 5 — Legendre’s Equation</a></li>
+  <li><a href="#using-sympy-the-series-method-in-practice" id="toc-using-sympy-the-series-method-in-practice" class="nav-link" data-scroll-target="#using-sympy-the-series-method-in-practice">Using SymPy: The Series Method in Practice</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Power Series Solutions of Differential Equations</h1>
+<p class="subtitle lead">Following Said-Houari, Chapter 5</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="c2ac076e" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> airy</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> factorial</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>So far in this course we have solved ODEs whose solutions are composed of familiar functions — exponentials, sines, cosines, polynomials, and their combinations. But many important ODEs arising in physics and engineering have solutions that cannot be expressed in terms of these elementary functions at all. The method of <strong>power series</strong> provides a systematic way to find solutions to such equations, and in particular to linear ODEs with variable coefficients.</p>
+<p>The idea is beautifully simple: assume the solution has the form of an infinite polynomial (a power series), substitute it into the ODE, and determine the coefficients term by term. The resulting solutions — convergent power series — define new functions whose properties can then be studied in depth. Some of the most important functions in mathematical physics (Bessel functions, Legendre polynomials, Airy functions) are defined in exactly this way.</p>
+<p>This section follows <strong>Chapter 5</strong> of Said-Houari, <em>Differential Equations: Methods and Applications</em> <span class="citation" data-cites="saidhouari2015">(<a href="#ref-saidhouari2015" role="doc-biblioref">Said-Houari 2015</a>)</span>.</p>
+<hr>
+<section id="part-1-review-of-power-series" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-review-of-power-series">Part 1 — Review of Power Series</h2>
+<section id="what-is-a-power-series" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-power-series">What Is a Power Series?</h3>
+<p>A <strong><a href="https://en.wikipedia.org/wiki/Power_series">power series</a></strong> centered at <span class="math inline">\(t_0\)</span> is an infinite sum of the form <span class="math display">\[
+\sum_{n=0}^{\infty} a_n(t-t_0)^n = a_0 + a_1(t-t_0) + a_2(t-t_0)^2 + \cdots
+\]</span> where the <strong>coefficients</strong> <span class="math inline">\(a_n\)</span> are constants. Taking <span class="math inline">\(t_0 = 0\)</span> (centering at the origin) gives the simpler form <span class="math display">\[
+\sum_{n=0}^{\infty} a_n t^n = a_0 + a_1 t + a_2 t^2 + \cdots
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Intuition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Think of a power series as an “infinite polynomial.” Just as a finite polynomial <span class="math inline">\(p(t) = 3 + 2t - t^2\)</span> is determined by its coefficients <span class="math inline">\((3, 2, -1)\)</span>, a power series is determined by its (infinite) sequence of coefficients <span class="math inline">\((a_0, a_1, a_2, \ldots)\)</span>. When the series converges, it defines a function.</p>
+</div>
+</div>
+<p><strong>Three canonical examples:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Series</th>
+<th>Coefficients <span class="math inline">\(a_n\)</span></th>
+<th>Converges to</th>
+<th>Interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\displaystyle\sum_{n=0}^{\infty} t^n\)</span></td>
+<td><span class="math inline">\(a_n = 1\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{1-t}\)</span></td>
+<td><span class="math inline">\(\|t\|&lt;1\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\displaystyle\sum_{n=0}^{\infty} \dfrac{t^n}{n!}\)</span></td>
+<td><span class="math inline">\(a_n = \dfrac{1}{n!}\)</span></td>
+<td><span class="math inline">\(e^t\)</span></td>
+<td>all <span class="math inline">\(t\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\displaystyle\sum_{n=0}^{\infty} \dfrac{(-1)^n t^{2n}}{(2n)!}\)</span></td>
+<td>special</td>
+<td><span class="math inline">\(\cos t\)</span></td>
+<td>all <span class="math inline">\(t\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="convergence-and-the-radius-of-convergence" class="level3">
+<h3 class="anchored" data-anchor-id="convergence-and-the-radius-of-convergence">Convergence and the Radius of Convergence</h3>
+<p>A series may converge at some values of <span class="math inline">\(t\)</span> and diverge at others.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem: Radius of Convergence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For every power series <span class="math inline">\(\sum_{n=0}^{\infty} a_n(t-t_0)^n\)</span> there exists a number <span class="math inline">\(r\)</span> with <span class="math inline">\(0 \leq r \leq \infty\)</span> — the <strong><a href="https://en.wikipedia.org/wiki/Radius_of_convergence">radius of convergence</a></strong> — such that: - The series <strong>converges absolutely</strong> for <span class="math inline">\(|t-t_0| &lt; r\)</span>. - The series <strong>diverges</strong> for <span class="math inline">\(|t-t_0| &gt; r\)</span>. - At the endpoints <span class="math inline">\(|t-t_0|=r\)</span> the behavior must be checked separately.</p>
+<p>If <span class="math inline">\(r = \infty\)</span> the series converges for all <span class="math inline">\(t\)</span>; if <span class="math inline">\(r = 0\)</span> only at <span class="math inline">\(t_0\)</span>.</p>
+</div>
+</div>
+<p>The radius of convergence can often be found by the <strong>ratio test</strong>: <span class="math display">\[
+r = \lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right|.
+\]</span></p>
+<p><strong>Example.</strong> For <span class="math inline">\(\displaystyle\sum_{n=0}^{\infty}\frac{n+1}{3^n}t^n\)</span>: <span class="math display">\[
+r = \lim_{n\to\infty}\left|\frac{(n+1)/3^n}{(n+2)/3^{n+1}}\right| = \lim_{n\to\infty}\frac{3(n+1)}{n+2} = 3.
+\]</span></p>
+<p>The convergence of partial sums to the exact function is beautifully visible in the geometric series:</p>
+<div id="cell-fig-partial-sums" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.95</span>, <span class="fl">0.95</span>, <span class="dv">400</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>f_exact <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span> <span class="op">-</span> t_plot)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Left: partial sums</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="dv">6</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> N_ps, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>], colors):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    S_N <span class="op">=</span> <span class="bu">sum</span>(t_plot<span class="op">**</span>n <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(N_ps<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(t_plot, S_N, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="ss">f'$S_</span><span class="ch">{{</span><span class="sc">{</span>N_ps<span class="sc">}</span><span class="ch">}}</span><span class="ss">$'</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, f_exact, <span class="st">'k--'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">1/</span><span class="kw">(</span><span class="vs">1-t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">exact</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">6</span>)<span class="op">;</span> axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$S_N(t)$'</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r'Partial sums of </span><span class="dv">$\s</span><span class="vs">um t</span><span class="dv">^</span><span class="vs">n</span><span class="dv">$</span><span class="vs"> converging to </span><span class="dv">$</span><span class="vs">1/</span><span class="kw">(</span><span class="vs">1-t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Right: error vs N at t=0.5</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>N_arr <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">25</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> [<span class="bu">abs</span>(<span class="bu">sum</span>(<span class="fl">0.5</span><span class="op">**</span>n <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(N<span class="op">+</span><span class="dv">1</span>)) <span class="op">-</span> <span class="fl">2.0</span>) <span class="cf">for</span> N <span class="kw">in</span> N_arr]</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].semilogy(N_arr, errors, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Number of terms $N$'</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$|S_N(0.5) - f(0.5)|$'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Exponential convergence at $t=0.5$'</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-partial-sums" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-partial-sums-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_07_files/figure-html/fig-partial-sums-output-1.png" width="1631" height="658" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-partial-sums-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Partial sums <span class="math inline">\(S_N(t) = \sum_{n=0}^N t^n\)</span> converging to <span class="math inline">\(f(t)=1/(1-t)\)</span> (black dashed) for <span class="math inline">\(|t|&lt;1\)</span>. Each successive partial sum adds one more term and fits the true function better. Outside <span class="math inline">\(|t|\geq 1\)</span> the partial sums diverge — the radius of convergence <span class="math inline">\(r=1\)</span> is sharp.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="analytic-functions" class="level3">
+<h3 class="anchored" data-anchor-id="analytic-functions">Analytic Functions</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Definition: Analytic at <span class="math inline">\(t_0\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A function <span class="math inline">\(f(t)\)</span> is <strong><a href="https://en.wikipedia.org/wiki/Analytic_function">analytic</a></strong> at <span class="math inline">\(t_0\)</span> if it has a valid power series expansion <span class="math inline">\(f(t) = \sum_{n=0}^{\infty} a_n(t-t_0)^n\)</span> in some neighborhood of <span class="math inline">\(t_0\)</span>, with <span class="math display">\[a_n = \frac{f^{(n)}(t_0)}{n!}.\]</span> This is the <strong><a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series</a></strong> of <span class="math inline">\(f\)</span> at <span class="math inline">\(t_0\)</span>.</p>
+</div>
+</div>
+<p><strong>When is a function analytic?</strong> - Polynomials and <span class="math inline">\(e^t\)</span> are analytic <strong>everywhere</strong>. - <span class="math inline">\(\sin t\)</span>, <span class="math inline">\(\cos t\)</span>, <span class="math inline">\(\ln(1+t)\)</span>, <span class="math inline">\((1+t)^p\)</span> are analytic at <span class="math inline">\(t_0 = 0\)</span>. - Every rational function <span class="math inline">\(p(t)/q(t)\)</span> is analytic wherever <span class="math inline">\(q(t) \neq 0\)</span>. - Sums, products, and quotients (when denominator <span class="math inline">\(\neq 0\)</span>) of analytic functions are analytic.</p>
+<hr>
+</section>
+</section>
+<section id="part-2-power-series-operations" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-power-series-operations">Part 2 — Power Series Operations</h2>
+<section id="term-by-term-differentiation" class="level3">
+<h3 class="anchored" data-anchor-id="term-by-term-differentiation">Term-by-Term Differentiation</h3>
+<p>The most important property for our purposes:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem: Term-by-Term Differentiation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(f(t) = \sum_{n=0}^{\infty} a_n(t-t_0)^n\)</span> converges for <span class="math inline">\(|t-t_0|&lt;r\)</span>, then <span class="math inline">\(f\)</span> is differentiable and <span class="math display">\[
+f'(t) = \sum_{n=1}^{\infty} n\,a_n(t-t_0)^{n-1}, \qquad
+f''(t) = \sum_{n=2}^{\infty} n(n-1)\,a_n(t-t_0)^{n-2},
+\]</span> both converging for <span class="math inline">\(|t-t_0|&lt;r\)</span>. The radius of convergence is unchanged by differentiation.</p>
+</div>
+</div>
+<p>This is what makes power series so useful for ODEs: we can differentiate term by term and then substitute directly into the equation.</p>
+<p><strong>Example.</strong> Starting from <span class="math inline">\(\dfrac{1}{1-t} = \sum_{n=0}^{\infty}t^n\)</span>: <span class="math display">\[
+\frac{d}{dt}\frac{1}{1-t} = \frac{1}{(1-t)^2} = \sum_{n=1}^{\infty} n\,t^{n-1} = 1 + 2t + 3t^2 + \cdots
+\]</span></p>
+</section>
+<section id="the-identity-principle" class="level3">
+<h3 class="anchored" data-anchor-id="the-identity-principle">The Identity Principle</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem: Identity Principle
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(\displaystyle\sum_{n=0}^{\infty} a_n t^n = \sum_{n=0}^{\infty} b_n t^n\)</span> for all <span class="math inline">\(t\)</span> in some open interval, then <span class="math inline">\(a_n = b_n\)</span> for all <span class="math inline">\(n \geq 0\)</span>.</p>
+</div>
+</div>
+<p>This is the key theorem that lets us <strong>equate coefficients</strong> when we substitute a power series into an ODE. It says a power series representation is unique.</p>
+</section>
+<section id="re-indexing-summations" class="level3">
+<h3 class="anchored" data-anchor-id="re-indexing-summations">Re-indexing Summations</h3>
+<p>When working with ODEs, we frequently need to shift the summation index so that all series have the same power of <span class="math inline">\(t\)</span>. The rule is: <span class="math display">\[
+\sum_{n=0}^{\infty} a_{n+k}\,t^{n+k} = \sum_{m=k}^{\infty} a_m\,t^m
+\quad\text{(substitute } m = n+k\text{)}.
+\]</span></p>
+<p><strong>Example.</strong> To combine <span class="math inline">\(\displaystyle\sum_{n=2}^{\infty} n(n-1)a_n t^{n-2}\)</span> and <span class="math inline">\(\displaystyle\sum_{n=0}^{\infty} a_n t^n\)</span> into a single series in <span class="math inline">\(t^n\)</span>, re-index the first:</p>
+<p>Let <span class="math inline">\(m = n-2\)</span> (equivalently <span class="math inline">\(n = m+2\)</span>): <span class="math display">\[
+\sum_{n=2}^{\infty} n(n-1)a_n t^{n-2} = \sum_{m=0}^{\infty}(m+2)(m+1)a_{m+2}\,t^m.
+\]</span> Both series now run from <span class="math inline">\(m=0\)</span> and have the same power <span class="math inline">\(t^m\)</span>, so we can add them and apply the Identity Principle to each coefficient of <span class="math inline">\(t^m\)</span>.</p>
+<hr>
+</section>
+</section>
+<section id="part-3-series-solutions-of-first-order-odes" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-series-solutions-of-first-order-odes">Part 3 — Series Solutions of First-Order ODEs</h2>
+<section id="the-strategy" class="level3">
+<h3 class="anchored" data-anchor-id="the-strategy">The Strategy</h3>
+<p>Given a first-order linear ODE, we: 1. <strong>Assume</strong> a power series solution <span class="math inline">\(y(t) = \sum_{n=0}^{\infty} a_n t^n\)</span>. 2. <strong>Differentiate</strong> term by term. 3. <strong>Substitute</strong> into the ODE. 4. <strong>Re-index</strong> all series to the same power of <span class="math inline">\(t\)</span>. 5. <strong>Collect</strong> terms and apply the Identity Principle to get a <strong>recurrence relation</strong> for the coefficients <span class="math inline">\(a_n\)</span>. 6. <strong>Solve</strong> the recurrence to find all <span class="math inline">\(a_n\)</span> in terms of <span class="math inline">\(a_0\)</span> (and <span class="math inline">\(a_1\)</span> if second order). 7. <strong>Write</strong> the series solution and determine its radius of convergence.</p>
+<hr>
+</section>
+<section id="example-1-y---y-0" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-y---y-0">Example 1 — <span class="math inline">\(y' - y = 0\)</span></h3>
+<p>The simplest non-trivial example: the equation whose solution is <span class="math inline">\(e^t\)</span>.</p>
+<p><strong>Assume</strong> <span class="math inline">\(y = \sum_{n=0}^{\infty} a_n t^n\)</span>, so <span class="math inline">\(y' = \sum_{n=1}^{\infty} n a_n t^{n-1}\)</span>.</p>
+<p><strong>Substitute</strong> and re-index <span class="math inline">\(y'\)</span> (<span class="math inline">\(m = n-1\)</span>): <span class="math display">\[
+\sum_{n=0}^{\infty}(n+1)a_{n+1}\,t^n - \sum_{n=0}^{\infty}a_n\,t^n = 0.
+\]</span></p>
+<p><strong>Identity Principle:</strong> <span class="math display">\[
+(n+1)a_{n+1} - a_n = 0 \quad\Longrightarrow\quad a_{n+1} = \frac{a_n}{n+1}.
+\]</span></p>
+<p>This is the <strong>recurrence relation</strong>. Unwinding it: <span class="math display">\[
+a_1 = a_0, \quad a_2 = \frac{a_1}{2} = \frac{a_0}{2}, \quad a_3 = \frac{a_0}{6}, \quad\ldots\quad a_n = \frac{a_0}{n!}.
+\]</span></p>
+<p><strong>Solution:</strong> <span class="math display">\[
+y(t) = a_0\sum_{n=0}^{\infty}\frac{t^n}{n!} = a_0\,e^t.
+\]</span></p>
+<p>The series converges for all <span class="math inline">\(t\)</span> (radius <span class="math inline">\(r = \infty\)</span>), as expected for <span class="math inline">\(e^t\)</span>.</p>
+<hr>
+</section>
+<section id="example-2-t-3y-2y-0" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-t-3y-2y-0">Example 2 — <span class="math inline">\((t-3)y' + 2y = 0\)</span></h3>
+<p><strong>Standard form:</strong> <span class="math inline">\(y' + \dfrac{2}{t-3}y = 0\)</span>. The coefficient <span class="math inline">\(2/(t-3)\)</span> is analytic for <span class="math inline">\(t\neq 3\)</span>, so we expand about <span class="math inline">\(t_0=0\)</span> with radius of convergence <span class="math inline">\(r=3\)</span> (the distance from <span class="math inline">\(t_0=0\)</span> to the nearest singular point <span class="math inline">\(t=3\)</span>).</p>
+<p><strong>Assume</strong> <span class="math inline">\(y = \sum_{n=0}^{\infty}a_n t^n\)</span>, <span class="math inline">\(y' = \sum_{n=1}^{\infty}n a_n t^{n-1}\)</span>.</p>
+<p><strong>Substitute:</strong> <span class="math display">\[
+(t-3)\sum_{n=1}^{\infty}n a_n t^{n-1} + 2\sum_{n=0}^{\infty}a_n t^n = 0.
+\]</span></p>
+<p>Expanding and re-indexing (one can show) leads to the recurrence <span class="math display">\[
+a_{n+1} = \frac{n+2}{3(n+1)}a_n, \quad n \geq 0.
+\]</span></p>
+<p>Computing the first terms: <span class="math inline">\(a_1 = \frac{2}{3}a_0\)</span>, <span class="math inline">\(a_2 = \frac{3}{9}a_0\)</span>, <span class="math inline">\(a_3 = \frac{4}{27}a_0\)</span>, giving the pattern <span class="math inline">\(a_n = \frac{n+1}{3^n}a_0\)</span>.</p>
+<p><span class="math display">\[
+y(t) = a_0\sum_{n=0}^{\infty}\frac{n+1}{3^n}t^n.
+\]</span></p>
+<p>The radius of convergence is <span class="math inline">\(r=3\)</span>. Differentiating <span class="math inline">\(\frac{1}{(3-t)^2}\)</span> shows this series equals <span class="math inline">\(\dfrac{a_0/9}{(1-t/3)^2} = \dfrac{a_0}{(3-t)^2}\)</span>, which is indeed the exact solution.</p>
+<div id="cell-fig-first-order" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>N_terms_list <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">30</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.8</span>, <span class="fl">2.8</span>, <span class="dv">500</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y_exact <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">3</span> <span class="op">-</span> t_plot)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">9</span>  <span class="co"># a0=1/9 so y=1/(3-t)^2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.Blues(np.linspace(<span class="fl">0.4</span>, <span class="fl">0.9</span>, <span class="bu">len</span>(N_terms_list)))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> N_ps, color <span class="kw">in</span> <span class="bu">zip</span>(N_terms_list, colors):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    coeffs <span class="op">=</span> [(n<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">3</span><span class="op">**</span>n <span class="op">/</span> <span class="dv">9</span> <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(N_ps)]  <span class="co"># a_n = (n+1)/3^n * a0, a0=1/9</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    y_ps <span class="op">=</span> <span class="bu">sum</span>(coeffs[n]<span class="op">*</span>t_plot<span class="op">**</span>n <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(N_ps))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(t_plot, np.clip(y_ps, <span class="op">-</span><span class="dv">1</span>, <span class="dv">5</span>), color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="ss">f'$N=</span><span class="sc">{</span>N_ps<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, y_exact, <span class="st">'k--'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">y=1/</span><span class="kw">(</span><span class="vs">3-t</span><span class="kw">)</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">exact</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvline(<span class="dv">3</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'$r=3$'</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvline(<span class="op">-</span><span class="dv">3</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">5</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$y(t)$'</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r'</span><span class="dv">$</span><span class="kw">(</span><span class="vs">t-3</span><span class="kw">)</span><span class="vs">y</span><span class="er">\</span><span class="vs">prime</span><span class="op">+</span><span class="vs">2y=0</span><span class="dv">$</span><span class="vs">: partial sums'</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Error at t=1.5</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>t_val <span class="op">=</span> <span class="fl">1.5</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">3</span><span class="op">-</span>t_val)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">9</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>N_arr <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">40</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> []</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> N_ps <span class="kw">in</span> N_arr:</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    y_ps_val <span class="op">=</span> <span class="bu">sum</span>((n<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">3</span><span class="op">**</span>n<span class="op">/</span><span class="dv">9</span> <span class="op">*</span> t_val<span class="op">**</span>n <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(N_ps))</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    errors.append(<span class="bu">abs</span>(y_ps_val <span class="op">-</span> y_true))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].semilogy(N_arr, errors, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$N$ (number of terms)'</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="cf">|</span><span class="vs">S_N</span><span class="kw">(</span><span class="vs">1</span><span class="dv">.</span><span class="vs">5</span><span class="kw">)</span><span class="vs"> - y</span><span class="kw">(</span><span class="vs">1</span><span class="dv">.</span><span class="vs">5</span><span class="kw">)</span><span class="cf">|</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Convergence at $t=1.5$'</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-first-order" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-first-order-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_07_files/figure-html/fig-first-order-output-1.png" width="1631" height="656" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-first-order-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Series solution of <span class="math inline">\((t-3)y'+2y=0\)</span>, <span class="math inline">\(y(0)=1/9\)</span>. Left: partial sums converging to the exact solution <span class="math inline">\(y=1/(3-t)^2\)</span> (black dashed) for <span class="math inline">\(|t|&lt;3\)</span>. The series diverges outside the radius of convergence <span class="math inline">\(r=3\)</span> (dashed vertical lines). Right: partial-sum errors at <span class="math inline">\(t=1.5\)</span> decreasing toward zero, demonstrating convergence.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-4-series-solutions-of-second-order-odes" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-series-solutions-of-second-order-odes">Part 4 — Series Solutions of Second-Order ODEs</h2>
+<section id="ordinary-and-singular-points" class="level3">
+<h3 class="anchored" data-anchor-id="ordinary-and-singular-points">Ordinary and Singular Points</h3>
+<p>For the second-order equation in <strong>standard form</strong>: <span class="math display">\[
+y'' + P(t)\,y' + Q(t)\,y = 0,
+\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Definition: Ordinary and Singular Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(t_0\)</span> is an <strong>ordinary point</strong> if both <span class="math inline">\(P(t)\)</span> and <span class="math inline">\(Q(t)\)</span> are <strong>analytic</strong> at <span class="math inline">\(t_0\)</span>.</li>
+<li><span class="math inline">\(t_0\)</span> is a <strong>singular point</strong> if <span class="math inline">\(P(t)\)</span> or <span class="math inline">\(Q(t)\)</span> fails to be analytic there.</li>
+</ul>
+</div>
+</div>
+<p><strong>Examples:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Equation</th>
+<th><span class="math inline">\(P(t)\)</span></th>
+<th><span class="math inline">\(Q(t)\)</span></th>
+<th>Ordinary points</th>
+<th>Singular points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y'' + y = 0\)</span></td>
+<td><span class="math inline">\(0\)</span></td>
+<td><span class="math inline">\(1\)</span></td>
+<td>All <span class="math inline">\(t\)</span></td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y'' - ty = 0\)</span> (Airy)</td>
+<td><span class="math inline">\(0\)</span></td>
+<td><span class="math inline">\(-t\)</span></td>
+<td>All <span class="math inline">\(t\)</span></td>
+<td>None</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\((1-t^2)y''-2ty'+\lambda y=0\)</span> (Legendre)</td>
+<td><span class="math inline">\(\frac{-2t}{1-t^2}\)</span></td>
+<td><span class="math inline">\(\frac{\lambda}{1-t^2}\)</span></td>
+<td><span class="math inline">\(t\neq\pm 1\)</span></td>
+<td><span class="math inline">\(t=\pm 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem (Existence near ordinary points)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(t_0\)</span> is an ordinary point of <span class="math inline">\(y''+P(t)y'+Q(t)y=0\)</span>, and if <span class="math inline">\(P\)</span>, <span class="math inline">\(Q\)</span> have power series expansions valid for <span class="math inline">\(|t-t_0|&lt;r\)</span>, then the ODE has two linearly independent analytic solutions <span class="math inline">\(y_1\)</span>, <span class="math inline">\(y_2\)</span> with power series valid for <span class="math inline">\(|t-t_0|&lt;r\)</span>. The general solution is <span class="math inline">\(y=C_1 y_1 + C_2 y_2\)</span>.</p>
+</div>
+</div>
+<p>This theorem guarantees that our method will work and gives us the radius of convergence in advance.</p>
+<hr>
+</section>
+<section id="example-3-y-y-0-recovering-cos-t-and-sin-t" class="level3">
+<h3 class="anchored" data-anchor-id="example-3-y-y-0-recovering-cos-t-and-sin-t">Example 3 — <span class="math inline">\(y'' + y = 0\)</span> (Recovering <span class="math inline">\(\cos t\)</span> and <span class="math inline">\(\sin t\)</span>)</h3>
+<p>This is Example 5.8 of Said-Houari — the series method applied to an equation whose solutions we already know, serving as a verification.</p>
+<p><strong>Assume</strong> <span class="math inline">\(y = \sum_{n=0}^{\infty}a_n t^n\)</span>.</p>
+<p><strong>Compute:</strong> <span class="math display">\[
+y'' = \sum_{n=2}^{\infty}n(n-1)a_n t^{n-2} = \sum_{n=0}^{\infty}(n+2)(n+1)a_{n+2}\,t^n.
+\]</span></p>
+<p><strong>Substitute</strong> <span class="math inline">\(y'' + y = 0\)</span>: <span class="math display">\[
+\sum_{n=0}^{\infty}\bigl[(n+2)(n+1)a_{n+2} + a_n\bigr]t^n = 0.
+\]</span></p>
+<p><strong>Identity Principle:</strong> <span class="math display">\[
+a_{n+2} = -\frac{a_n}{(n+2)(n+1)}, \quad n = 0, 1, 2, \ldots
+\]</span></p>
+<p>This splits into <strong>even</strong> and <strong>odd</strong> coefficients:</p>
+<p><strong>Even</strong> (determined by <span class="math inline">\(a_0\)</span>): <span class="math display">\[a_2 = -\frac{a_0}{2},\quad a_4 = \frac{a_0}{24},\quad a_6 = -\frac{a_0}{720},\quad\ldots\quad a_{2k} = \frac{(-1)^k}{(2k)!}a_0.\]</span></p>
+<p><strong>Odd</strong> (determined by <span class="math inline">\(a_1\)</span>): <span class="math display">\[a_3 = -\frac{a_1}{6},\quad a_5 = \frac{a_1}{120},\quad\ldots\quad a_{2k+1} = \frac{(-1)^k}{(2k+1)!}a_1.\]</span></p>
+<p><strong>Two independent solutions:</strong> <span class="math display">\[
+\boxed{y_1(t) = \sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}t^{2k} = \cos t,}
+\qquad
+\boxed{y_2(t) = \sum_{k=0}^{\infty}\frac{(-1)^k}{(2k+1)!}t^{2kC+1} = \sin t.}
+\]</span></p>
+<p>Both series converge for all <span class="math inline">\(t\)</span> (radius <span class="math inline">\(r=\infty\)</span>). The general solution is <span class="math inline">\(y = a_0\cos t + a_1\sin t\)</span>.</p>
+<div id="cell-fig-cos-sin-series" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">500</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (a0, a1), y_exact, name <span class="kw">in</span> [</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    (axes[<span class="dv">0</span>], (<span class="dv">1</span>, <span class="dv">0</span>), np.cos(t_plot), <span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">cos t</span><span class="dv">$</span><span class="vs">'</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    (axes[<span class="dv">1</span>], (<span class="dv">0</span>, <span class="dv">1</span>), np.sin(t_plot), <span class="vs">r'</span><span class="dv">$\s</span><span class="vs">in t</span><span class="dv">$</span><span class="vs">'</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, y_exact, <span class="st">'k--'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="ss">f'Exact </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.15</span>, <span class="fl">0.9</span>, <span class="dv">5</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> N_terms, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>], colors):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> [<span class="fl">0.0</span>]<span class="op">*</span>(<span class="dv">2</span><span class="op">*</span>N_terms<span class="op">+</span><span class="dv">2</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        a[<span class="dv">0</span>] <span class="op">=</span> a0<span class="op">;</span> a[<span class="dv">1</span>] <span class="op">=</span> a1</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n_v <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(a)<span class="op">-</span><span class="dv">2</span>):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            a[n_v<span class="op">+</span><span class="dv">2</span>] <span class="op">=</span> <span class="op">-</span>a[n_v]<span class="op">/</span>((n_v<span class="op">+</span><span class="dv">2</span>)<span class="op">*</span>(n_v<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        y_ps <span class="op">=</span> <span class="bu">sum</span>(a[n]<span class="op">*</span>t_plot<span class="op">**</span>n <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(a)))</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        ax.plot(t_plot, np.clip(y_ps, <span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>), color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="ss">f'$N=</span><span class="sc">{</span><span class="dv">2</span><span class="op">*</span>N_terms<span class="sc">}</span><span class="ss">$ terms'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>)<span class="op">;</span> ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$y$'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'Series for </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-cos-sin-series" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cos-sin-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_07_files/figure-html/fig-cos-sin-series-output-1.png" width="1634" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cos-sin-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Power series partial sums recovering <span class="math inline">\(\cos t\)</span> (left) and <span class="math inline">\(\sin t\)</span> (right). Even-indexed terms build <span class="math inline">\(\cos t\)</span>; odd-indexed terms build <span class="math inline">\(\sin t\)</span>. More terms are needed to capture the oscillations accurately over a larger interval.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-4-the-airy-equation-y---ty-0" class="level3">
+<h3 class="anchored" data-anchor-id="example-4-the-airy-equation-y---ty-0">Example 4 — The Airy Equation: <span class="math inline">\(y'' - ty = 0\)</span></h3>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Airy_function">Airy equation</a></strong> arises in quantum mechanics (near classical turning points), optics (diffraction theory), and fluid dynamics (stability of flows). Its solutions <strong>cannot</strong> be expressed in terms of elementary functions.</p>
+<p><strong>Assume</strong> <span class="math inline">\(y = \sum_{n=0}^{\infty}a_n t^n\)</span>.</p>
+<p><strong>Compute</strong> <span class="math inline">\(y'' = \sum_{n=0}^{\infty}(n+2)(n+1)a_{n+2}t^n\)</span> and <span class="math inline">\(ty = \sum_{n=1}^{\infty}a_{n-1}t^n\)</span>.</p>
+<p><strong>Substitute</strong> <span class="math inline">\(y'' - ty = 0\)</span>: <span class="math display">\[
+2a_2 + \sum_{n=1}^{\infty}\bigl[(n+2)(n+1)a_{n+2} - a_{n-1}\bigr]t^n = 0.
+\]</span></p>
+<p><strong>Identity Principle</strong> gives <span class="math inline">\(a_2 = 0\)</span> and for <span class="math inline">\(n \geq 1\)</span>: <span class="math display">\[
+a_{n+2} = \frac{a_{n-1}}{(n+2)(n+1)}.
+\]</span></p>
+<p>This <strong>three-term recurrence</strong> (<span class="math inline">\(a_{n+2}\)</span> depends on <span class="math inline">\(a_{n-1}\)</span>, not <span class="math inline">\(a_n\)</span>) means the coefficients split into <strong>three families</strong> based on their index mod 3:</p>
+<ul>
+<li><strong><span class="math inline">\(n \equiv 0 \pmod{3}\)</span></strong>: depends on <span class="math inline">\(a_0\)</span></li>
+<li><strong><span class="math inline">\(n \equiv 1 \pmod{3}\)</span></strong>: depends on <span class="math inline">\(a_1\)</span></li>
+<li><strong><span class="math inline">\(n \equiv 2 \pmod{3}\)</span></strong>: all zero (since <span class="math inline">\(a_2 = 0\)</span>)</li>
+</ul>
+<p>Computing the non-zero terms for each independent initial condition:</p>
+<p><strong>Solution <span class="math inline">\(y_1\)</span></strong> (<span class="math inline">\(a_0=1\)</span>, <span class="math inline">\(a_1=0\)</span>): <span class="math display">\[
+a_3 = \frac{a_0}{3\cdot 2} = \frac{1}{6}, \quad a_6 = \frac{a_3}{6\cdot 5} = \frac{1}{180}, \quad a_9 = \frac{a_6}{9\cdot 8}, \quad\ldots
+\]</span></p>
+<p><span class="math display">\[y_1(t) = 1 + \frac{t^3}{6} + \frac{t^6}{180} + \cdots = 1 + \sum_{k=1}^{\infty}\frac{1\cdot 4\cdot 7\cdots(3k-2)}{(3k)!}t^{3k}.\]</span></p>
+<p><strong>Solution <span class="math inline">\(y_2\)</span></strong> (<span class="math inline">\(a_0=0\)</span>, <span class="math inline">\(a_1=1\)</span>): <span class="math display">\[
+a_4 = \frac{a_1}{4\cdot 3} = \frac{1}{12}, \quad a_7 = \frac{a_4}{7\cdot 6} = \frac{1}{504}, \quad\ldots
+\]</span></p>
+<p><span class="math display">\[y_2(t) = t + \frac{t^4}{12} + \frac{t^7}{504} + \cdots = t + \sum_{k=1}^{\infty}\frac{2\cdot 5\cdot 8\cdots(3k-1)}{(3k+1)!}t^{3kC+1}.\]</span></p>
+<p>Both series converge for <strong>all</strong> <span class="math inline">\(t\)</span> (radius <span class="math inline">\(r=\infty\)</span>), verified by the ratio test. The general solution <span class="math inline">\(y = C_1 y_1 + C_2 y_2\)</span> defines the <strong>Airy functions</strong> <span class="math inline">\(\text{Ai}(t)\)</span> and <span class="math inline">\(\text{Bi}(t)\)</span> up to linear combinations.</p>
+<div id="cell-fig-airy" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>N_a <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>a_y1 <span class="op">=</span> [<span class="fl">0.0</span>]<span class="op">*</span>N_a<span class="op">;</span> a_y1[<span class="dv">0</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>a_y2 <span class="op">=</span> [<span class="fl">0.0</span>]<span class="op">*</span>N_a<span class="op">;</span> a_y2[<span class="dv">1</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_v <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N_a<span class="op">-</span><span class="dv">2</span>):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    a_y1[n_v<span class="op">+</span><span class="dv">2</span>] <span class="op">=</span> a_y1[n_v<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>((n_v<span class="op">+</span><span class="dv">2</span>)<span class="op">*</span>(n_v<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    a_y2[n_v<span class="op">+</span><span class="dv">2</span>] <span class="op">=</span> a_y2[n_v<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>((n_v<span class="op">+</span><span class="dv">2</span>)<span class="op">*</span>(n_v<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="fl">2.5</span>, <span class="dv">500</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Series evaluation (safe range — N=50 terms converge well for |t|&lt;=3)</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eval_series(coeffs, t_arr):</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> np.zeros_like(t_arr)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, ck <span class="kw">in</span> <span class="bu">enumerate</span>(coeffs):</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> result <span class="op">+</span> ck <span class="op">*</span> t_arr<span class="op">**</span>k</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>y1_ser <span class="op">=</span> eval_series(a_y1, t_plot)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>y2_ser <span class="op">=</span> eval_series(a_y2, t_plot)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical ODE solve for comparison</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> airy_ode(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], t<span class="op">*</span>y[<span class="dv">0</span>]]</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>sol1 <span class="op">=</span> solve_ivp(airy_ode, (<span class="op">-</span><span class="dv">4</span>, <span class="fl">2.5</span>), [<span class="fl">1.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>sol2 <span class="op">=</span> solve_ivp(airy_ode, (<span class="op">-</span><span class="dv">4</span>, <span class="fl">2.5</span>), [<span class="fl">0.0</span>, <span class="fl">1.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, y_ser, sol, lbl, color <span class="kw">in</span> [</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    (axes[<span class="dv">0</span>], y1_ser, sol1, <span class="vs">r'</span><span class="dv">$</span><span class="vs">y_1</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="dv">$</span><span class="vs">a_0=1</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">a_1=0</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>, <span class="st">'steelblue'</span>),</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    (axes[<span class="dv">1</span>], y2_ser, sol2, <span class="vs">r'</span><span class="dv">$</span><span class="vs">y_2</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="dv">$</span><span class="vs">a_0=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">a_1=1</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>, <span class="st">'darkorange'</span>),</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_plot, np.clip(y_ser, <span class="op">-</span><span class="dv">6</span>, <span class="dv">8</span>), color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Series (N=50)'</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    t_dots <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">20</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    ax.plot(t_dots, sol.sol(t_dots)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical'</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span> ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$y(t)$'</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'Airy: </span><span class="sc">{</span>lbl<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    ax.legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)<span class="op">;</span> ax.set_ylim(<span class="op">-</span><span class="dv">6</span>, <span class="dv">8</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="vs">r"Airy equation </span><span class="dv">$</span><span class="vs">y'' - ty = 0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-airy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-airy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_07_files/figure-html/fig-airy-output-1.png" width="1632" height="669" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-airy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Airy equation <span class="math inline">\(y''-ty=0\)</span>: the two linearly independent series solutions <span class="math inline">\(y_1(t)\)</span> (blue) and <span class="math inline">\(y_2(t)\)</span> (orange) satisfying <span class="math inline">\(y_1(0)=1\)</span>, <span class="math inline">\(y_1'(0)=0\)</span> and <span class="math inline">\(y_2(0)=0\)</span>, <span class="math inline">\(y_2'(0)=1\)</span>. For <span class="math inline">\(t&lt;0\)</span> both solutions oscillate (the ODE has no dissipation and the coefficient <span class="math inline">\(-t&gt;0\)</span>); for <span class="math inline">\(t&gt;0\)</span> they grow or decay. Red dots confirm the series against a direct numerical ODE solve.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The Airy Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Airy functions <span class="math inline">\(\text{Ai}(t)\)</span> and <span class="math inline">\(\text{Bi}(t)\)</span> are specific linear combinations of <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span> normalized to have standard asymptotics as <span class="math inline">\(t\to+\infty\)</span>. For <span class="math inline">\(t&lt;0\)</span> they oscillate; for <span class="math inline">\(t&gt;0\)</span>, <span class="math inline">\(\text{Ai}(t)\to 0\)</span> (decay) while <span class="math inline">\(\text{Bi}(t)\to+\infty\)</span> (growth). They appear in the Schrödinger equation near potential barriers, the theory of caustics in optics, and uniform asymptotic expansions in applied mathematics.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-5-legendres-equation" class="level3">
+<h3 class="anchored" data-anchor-id="example-5-legendres-equation">Example 5 — Legendre’s Equation</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Legendre_polynomials">Legendre’s equation</a></strong> <span class="math display">\[
+(1-t^2)y'' - 2ty' + p(p+1)y = 0
+\]</span> arises in potential theory, electrostatics, and quantum mechanics whenever a problem is formulated in spherical coordinates. Here <span class="math inline">\(p\)</span> is a real parameter.</p>
+<p><strong>Standard form</strong> (<span class="math inline">\(t_0 = 0\)</span> is an ordinary point): <span class="math display">\[
+y'' - \frac{2t}{1-t^2}y' + \frac{p(p+1)}{1-t^2}y = 0.
+\]</span></p>
+<p>The nearest singular points are <span class="math inline">\(t = \pm 1\)</span>, so the series about <span class="math inline">\(t_0 = 0\)</span> has radius of convergence <span class="math inline">\(r = 1\)</span>.</p>
+<p>The series method (Exercise 5.1 of Said-Houari) gives the recurrence: <span class="math display">\[
+a_{n+2} = -\frac{(p-n)(p+n+1)}{(n+2)(n+1)}\,a_n, \quad n \geq 0.
+\]</span></p>
+<p>The general solution is <span class="math inline">\(y = a_0 y_{\rm even}(t) + a_1 y_{\rm odd}(t)\)</span> where <span class="math inline">\(y_{\rm even}\)</span> contains only even powers of <span class="math inline">\(t\)</span> (determined by <span class="math inline">\(a_0\)</span>) and <span class="math inline">\(y_{\rm odd}\)</span> only odd powers (determined by <span class="math inline">\(a_1\)</span>).</p>
+<p><strong>The key observation:</strong> if <span class="math inline">\(p = N\)</span> is a non-negative integer, then <span class="math inline">\(a_{N+2} = 0\)</span> (since the numerator <span class="math inline">\((p-n) = (N-N) = 0\)</span> when <span class="math inline">\(n=N\)</span>), so the series <strong>terminates</strong> — it becomes a polynomial! These polynomial solutions, properly normalized so that <span class="math inline">\(y(1) = 1\)</span>, are the <strong><a href="https://en.wikipedia.org/wiki/Legendre_polynomials">Legendre polynomials</a></strong> <span class="math inline">\(P_N(t)\)</span>.</p>
+<div id="cell-fig-legendre" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-integer p: series solution</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>p_val <span class="op">=</span> <span class="fl">2.5</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>N_leg <span class="op">=</span> <span class="dv">40</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.95</span>, <span class="fl">0.95</span>, <span class="dv">400</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>a_even <span class="op">=</span> [<span class="fl">0.0</span>]<span class="op">*</span>N_leg<span class="op">;</span> a_even[<span class="dv">0</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>a_odd  <span class="op">=</span> [<span class="fl">0.0</span>]<span class="op">*</span>N_leg<span class="op">;</span> a_odd[<span class="dv">1</span>]  <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_v <span class="kw">in</span> <span class="bu">range</span>(N_leg<span class="op">-</span><span class="dv">2</span>):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    coeff <span class="op">=</span> <span class="op">-</span>(p_val<span class="op">-</span>n_v)<span class="op">*</span>(p_val<span class="op">+</span>n_v<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span>((n_v<span class="op">+</span><span class="dv">2</span>)<span class="op">*</span>(n_v<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    a_even[n_v<span class="op">+</span><span class="dv">2</span>] <span class="op">=</span> coeff<span class="op">*</span>a_even[n_v]</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    a_odd [n_v<span class="op">+</span><span class="dv">2</span>] <span class="op">=</span> coeff<span class="op">*</span>a_odd[n_v]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>y_even <span class="op">=</span> <span class="bu">sum</span>(a_even[k]<span class="op">*</span>t_plot<span class="op">**</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(N_leg))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>y_odd  <span class="op">=</span> <span class="bu">sum</span>(a_odd[k]<span class="op">*</span>t_plot<span class="op">**</span>k  <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(N_leg))</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical verification</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> legendre_ode(t, y):</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">abs</span>(<span class="dv">1</span><span class="op">-</span>t<span class="op">**</span><span class="dv">2</span>) <span class="op">&lt;</span> <span class="fl">1e-10</span>: <span class="cf">return</span> [<span class="fl">0.0</span>, <span class="fl">0.0</span>]</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [y[<span class="dv">1</span>], (<span class="dv">2</span><span class="op">*</span>t<span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> p_val<span class="op">*</span>(p_val<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>y[<span class="dv">0</span>])<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>t<span class="op">**</span><span class="dv">2</span>)]</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>sol_e <span class="op">=</span> solve_ivp(legendre_ode, (<span class="dv">0</span>, <span class="fl">0.9</span>), [<span class="fl">1.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>sol_o <span class="op">=</span> solve_ivp(legendre_ode, (<span class="dv">0</span>, <span class="fl">0.9</span>), [<span class="fl">0.0</span>, <span class="fl">1.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>t_pos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.9</span>, <span class="dv">200</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, y_even, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$y_</span><span class="ch">{{\\</span><span class="ss">rm even</span><span class="ch">}}</span><span class="ss">$, $p=</span><span class="sc">{</span>p_val<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot, y_odd,  color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$y_</span><span class="ch">{{\\</span><span class="ss">rm odd</span><span class="ch">}}</span><span class="ss">$, $p=</span><span class="sc">{</span>p_val<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_pos, sol_e.sol(t_pos)[<span class="dv">0</span>], <span class="st">'r:'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'Numerical $y_{</span><span class="ch">\\</span><span class="st">rm even}$'</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_pos, sol_o.sol(t_pos)[<span class="dv">0</span>], <span class="st">'g:'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'Numerical $y_{</span><span class="ch">\\</span><span class="st">rm odd}$'</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$y$'</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="ss">f'Legendre series ($p=</span><span class="sc">{</span>p_val<span class="sc">}</span><span class="ss">$, $r=1$)'</span>)</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Integer p: Legendre polynomials (terminating series)</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>t_leg <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">300</span>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>colors_leg <span class="op">=</span> plt.cm.tab10(np.linspace(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">5</span>))</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p_int, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>], colors_leg):</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    N_lp <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> p_int <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> [<span class="fl">0.0</span>]<span class="op">*</span>N_lp<span class="op">;</span> a[<span class="dv">0</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> [<span class="fl">0.0</span>]<span class="op">*</span>N_lp<span class="op">;</span> a[<span class="dv">1</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n_v <span class="kw">in</span> <span class="bu">range</span>(N_lp<span class="op">-</span><span class="dv">2</span>):</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        a[n_v<span class="op">+</span><span class="dv">2</span>] <span class="op">=</span> <span class="op">-</span>(p_int<span class="op">-</span>n_v)<span class="op">*</span>(p_int<span class="op">+</span>n_v<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span>((n_v<span class="op">+</span><span class="dv">2</span>)<span class="op">*</span>(n_v<span class="op">+</span><span class="dv">1</span>)) <span class="op">*</span> a[n_v]</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    y_ps <span class="op">=</span> <span class="bu">sum</span>(a[k]<span class="op">*</span>t_leg<span class="op">**</span>k <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(N_lp))</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize: P_p(1) = 1</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    val_at_1 <span class="op">=</span> <span class="bu">sum</span>(a[k] <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(N_lp))</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">abs</span>(val_at_1) <span class="op">&gt;</span> <span class="fl">1e-12</span>:</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        y_ps <span class="op">=</span> y_ps <span class="op">/</span> val_at_1</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(t_leg, y_ps, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$P_</span><span class="ch">{{</span><span class="sc">{</span>p_int<span class="sc">}</span><span class="ch">}}</span><span class="ss">(t)$'</span>)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$P_p(t)$'</span>)</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Legendre polynomials $P_0,</span><span class="ch">\\</span><span class="st">ldots,P_4$ (terminating series)'</span>)</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-legendre" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-legendre-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_07_files/figure-html/fig-legendre-output-1.png" width="1634" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-legendre-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Left: power series partial sums for <span class="math inline">\(y_1\)</span> (even) and <span class="math inline">\(y_2\)</span> (odd) solutions of Legendre’s equation with <span class="math inline">\(p=2.5\)</span> (non-integer — infinite series, <span class="math inline">\(r=1\)</span>). Right: Legendre polynomials <span class="math inline">\(P_0,\ldots,P_4\)</span> obtained when <span class="math inline">\(p\)</span> is an integer — the series terminates and gives a polynomial. The recurrence coefficient <span class="math inline">\((p-n)=0\)</span> at <span class="math inline">\(n=p\)</span> causes early termination.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why Do the Series Terminate for Integer <span class="math inline">\(p\)</span>?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The recurrence <span class="math inline">\(a_{n+2} = -\dfrac{(p-n)(p+n+1)}{(n+2)(n+1)}a_n\)</span> contains the factor <span class="math inline">\((p-n)\)</span> in the numerator. When <span class="math inline">\(p = N\)</span> is a non-negative integer and <span class="math inline">\(n = N\)</span>, this factor equals zero, making <span class="math inline">\(a_{N+2} = 0\)</span>. Since all subsequent coefficients are determined by <span class="math inline">\(a_{N+2}\)</span>, the entire series truncates. The result is a polynomial of degree <span class="math inline">\(N\)</span> — the <span class="math inline">\(N\)</span>th Legendre polynomial <span class="math inline">\(P_N(t)\)</span>. These polynomials are orthogonal on <span class="math inline">\([-1,1]\)</span>, which is why they arise so naturally in Fourier-type expansions in spherical geometry.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="using-sympy-the-series-method-in-practice" class="level3">
+<h3 class="anchored" data-anchor-id="using-sympy-the-series-method-in-practice">Using SymPy: The Series Method in Practice</h3>
+<p>SymPy can find series solutions automatically using <code>dsolve</code> (for known equations) or by working with the recurrence relation manually.</p>
+<div id="50bd5d66" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y_sym <span class="op">=</span> sym.Function(<span class="st">'y'</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"SymPy series solutions to key equations:</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># y'' + y = 0</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ode1 <span class="op">=</span> sym.Eq(y_sym(t_sym).diff(t_sym, <span class="dv">2</span>) <span class="op">+</span> y_sym(t_sym), <span class="dv">0</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>sol1 <span class="op">=</span> sym.dsolve(ode1, y_sym(t_sym))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"y''+y=0:"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(sol1)))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># y' - y = 0</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ode2 <span class="op">=</span> sym.Eq(y_sym(t_sym).diff(t_sym) <span class="op">-</span> y_sym(t_sym), <span class="dv">0</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>sol2 <span class="op">=</span> sym.dsolve(ode2, y_sym(t_sym))</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"y'-y=0:"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(sol2)))</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># First few terms of Airy series via Taylor expansion</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>t_s <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>y_s <span class="op">=</span> sym.Function(<span class="st">'y'</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># For Airy, use explicit series representation via sympy.functions</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>airy_sym <span class="op">=</span> sym.airyai(t_s)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>airy_series <span class="op">=</span> sym.series(airy_sym, t_s, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ai(t) Taylor series about t=0:"</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(airy_series)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>SymPy series solutions to key equations:
+
+y''+y=0:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle y{\left(t \right)} = C_{1} \sin{\left(t \right)} + C_{2} \cos{\left(t \right)}\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+y'-y=0:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle y{\left(t \right)} = C_{1} e^{t}\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Ai(t) Taylor series about t=0:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \frac{3^{\frac{5}{6}} \Gamma\left(\frac{1}{3}\right)}{6 \pi} - \frac{\sqrt[6]{3} t \Gamma\left(\frac{2}{3}\right)}{2 \pi} + \frac{3^{\frac{5}{6}} t^{3} \Gamma\left(\frac{4}{3}\right)}{12 \pi} - \frac{\sqrt[6]{3} t^{4} \Gamma\left(\frac{5}{3}\right)}{16 \pi} + \frac{3^{\frac{5}{6}} t^{6} \Gamma\left(\frac{7}{3}\right)}{480 \pi} - \frac{\sqrt[6]{3} t^{7} \Gamma\left(\frac{8}{3}\right)}{1120 \pi} + \frac{3^{\frac{5}{6}} t^{9} \Gamma\left(\frac{10}{3}\right)}{80640 \pi} + O\left(t^{10}\right)\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key Point</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Power series</strong></td>
+<td><span class="math inline">\(\sum a_n(t-t_0)^n\)</span> — “infinite polynomial” centered at <span class="math inline">\(t_0\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Radius of convergence</strong></td>
+<td><span class="math inline">\(r = \lim|a_n/a_{n+1}|\)</span> — series valid for <span class="math inline">\(|t-t_0|&lt;r\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Analytic function</strong></td>
+<td>Has a valid power series in a neighborhood of <span class="math inline">\(t_0\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Term-by-term differentiation</strong></td>
+<td><span class="math inline">\((\sum a_n t^n)' = \sum n a_n t^{n-1}\)</span>, same <span class="math inline">\(r\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Identity principle</strong></td>
+<td>Equal series <span class="math inline">\(\Rightarrow\)</span> equal coefficients</td>
+</tr>
+<tr class="even">
+<td><strong>Ordinary point</strong></td>
+<td><span class="math inline">\(P(t)\)</span>, <span class="math inline">\(Q(t)\)</span> analytic at <span class="math inline">\(t_0\)</span> — series method works</td>
+</tr>
+<tr class="odd">
+<td><strong>Recurrence relation</strong></td>
+<td>The algebraic equation linking <span class="math inline">\(a_{n+2}\)</span> to earlier <span class="math inline">\(a_k\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Two free parameters</strong></td>
+<td><span class="math inline">\(a_0\)</span>, <span class="math inline">\(a_1\)</span> determine the two independent solutions</td>
+</tr>
+<tr class="odd">
+<td><strong>Terminating series</strong></td>
+<td>Integer parameter <span class="math inline">\(\Rightarrow\)</span> polynomial solution (e.g., Legendre <span class="math inline">\(P_N\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why This Matters
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The series method is not just a technique for specific equations — it is the foundation of the entire theory of special functions. <a href="https://en.wikipedia.org/wiki/Bessel_function">Bessel functions</a> (vibrating membranes, waveguides), <a href="https://en.wikipedia.org/wiki/Legendre_polynomials">Legendre polynomials</a> (electrostatics, quantum mechanics), <a href="https://en.wikipedia.org/wiki/Hermite_polynomials">Hermite polynomials</a> (quantum harmonic oscillator), <a href="https://en.wikipedia.org/wiki/Laguerre_polynomials">Laguerre polynomials</a> (hydrogen atom wavefunctions), and <a href="https://en.wikipedia.org/wiki/Airy_function">Airy functions</a> (optics, quantum tunnelling) are all defined as series solutions to ODEs that have no elementary-function solutions. Every one of them emerges from the same three-step process: assume a series, derive a recurrence, identify the pattern.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-saidhouari2015" class="csl-entry" role="listitem">
+Said-Houari, Belkacem. 2015. <em>Differential Equations: Methods and Applications</em>. Springer.
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="b4778873" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
