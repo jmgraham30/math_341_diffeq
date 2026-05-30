@@ -1,0 +1,610 @@
+---
+title: "Notes 5"
+subtitle: "Variation of Parameters for Second-Order Linear ODEs"
+jupyter: diffeq_py
+license: "CC BY-NC-SA 4.0"
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+## Goals
+
+In this section we will cover the following topics:
+
+1. State the general theory for **second-order linear ODEs with variable coefficients** and explain when the method of undetermined coefficients fails.
+
+2. Develop the **method of variation of parameters** as a general technique for finding particular solutions — applicable to any second-order linear ODE, including those with variable coefficients.
+
+3. Work through a suite of **detailed examples**, including equations with trigonometric, exponential, and rational forcing functions, as well as an Euler equation with variable-coefficient homogeneous part.
+
+4. Use **SymPy** and **Python** to verify solutions and visualize particular solutions alongside their homogeneous counterparts.
+
+::: {.callout-note}
+This material corresponds to **Section 2.4.2** of @logan2015first.
+:::
+
+---
+
+## Variable-Coefficient Second-Order ODEs
+
+### The General Equation
+
+A **second-order linear ODE with variable coefficients** has the form
+$$
+p(t)\,x'' + q(t)\,x' + r(t)\,x = f(t), \tag{VC}
+$$
+where the coefficient functions $p(t)$, $q(t)$, $r(t)$ and the forcing
+function $f(t)$ are continuous on some interval $I$, with $p(t) \neq 0$ on $I$.
+Dividing by $p(t)$ puts the equation in **standard form**:
+$$
+x'' + P(t)\,x' + Q(t)\,x = g(t), \tag{SF}
+$$
+where $P = q/p$, $Q = r/p$, and $g = f/p$.
+
+The **Superposition Principle** and the **general solution structure**
+$x = x_h + x_p$ hold for (SF) exactly as for the constant-coefficient case.
+What changes is the method we use to find $x_h$ and $x_p$, since the
+exponential ansatz $e^{\lambda t}$ no longer works when the coefficients vary.
+
+### When Undetermined Coefficients Fails
+
+The method of undetermined coefficients requires the right-hand side $g(t)$
+to be a polynomial, exponential, sine, cosine, or product thereof.  For
+variable-coefficient equations the homogeneous solution $x_h$ no longer
+consists of these simple forms, so there is no longer a predictable guess for
+$x_p$.  Moreover, even for constant-coefficient equations, forcing functions
+such as $\sec t$, $\tan t$, $\ln t$, $1/t$, or $e^t/t$ lie **outside** the
+undetermined-coefficients table and cannot be handled by guessing.
+
+**Variation of parameters** resolves both issues.
+
+---
+
+## The Method of Variation of Parameters
+
+### Derivation
+
+Suppose we know two **linearly independent** solutions $x_1(t)$ and $x_2(t)$
+of the homogeneous equation
+$$
+x'' + P(t)\,x' + Q(t)\,x = 0. \tag{H}
+$$
+Their general solution is $x_h = C_1 x_1 + C_2 x_2$.  In variation of
+parameters, we *allow the constants to vary*: seek a particular solution of
+the form
+$$
+x_p(t) = u_1(t)\,x_1(t) + u_2(t)\,x_2(t)
+$$
+where $u_1(t)$ and $u_2(t)$ are functions to be determined.
+
+**Computing $x_p'$:**
+$$
+x_p' = u_1'x_1 + u_1 x_1' + u_2'x_2 + u_2 x_2'.
+$$
+We impose the **side condition**
+$$
+u_1'x_1 + u_2'x_2 = 0 \tag{SC}
+$$
+to eliminate second derivatives of $u_1$, $u_2$ when we differentiate again.
+This gives $x_p' = u_1 x_1' + u_2 x_2'$ and
+$$
+x_p'' = u_1'x_1' + u_1 x_1'' + u_2'x_2' + u_2 x_2''.
+$$
+**Substituting** into (SF) and using the fact that $x_1$, $x_2$ satisfy (H):
+$$
+u_1'x_1' + u_2'x_2' = g(t). \tag{D}
+$$
+Equations (SC) and (D) form the **$2\times 2$ linear system** for $u_1'$ and
+$u_2'$:
+$$
+\begin{pmatrix} x_1 & x_2 \\ x_1' & x_2' \end{pmatrix}
+\begin{pmatrix} u_1' \\ u_2' \end{pmatrix}
+=
+\begin{pmatrix} 0 \\ g(t) \end{pmatrix}.
+$$
+The coefficient matrix is the **[Wronskian matrix](https://en.wikipedia.org/wiki/Wronskian)**
+whose determinant
+$$
+W(x_1, x_2) = x_1 x_2' - x_2 x_1' \neq 0
+$$
+is non-zero since $x_1$, $x_2$ are linearly independent.  Solving by
+Cramer's rule:
+$$
+u_1' = -\frac{x_2\,g}{W}, \qquad u_2' = \frac{x_1\,g}{W}.
+$$
+Integrating:
+$$
+u_1 = -\int\frac{x_2\,g}{W}\,dt, \qquad u_2 = \int\frac{x_1\,g}{W}\,dt.
+$$
+
+::: {.callout-important}
+## Variation of Parameters Formula
+Given two linearly independent solutions $x_1$, $x_2$ of (H) with Wronskian
+$W = x_1 x_2' - x_2 x_1'$, a particular solution of $x'' + Px' + Qx = g$ is
+$$
+\boxed{x_p(t) = -x_1(t)\int\frac{x_2(t)\,g(t)}{W(t)}\,dt \;+\; x_2(t)\int\frac{x_1(t)\,g(t)}{W(t)}\,dt.}
+$$
+The **general solution** is $x(t) = C_1 x_1(t) + C_2 x_2(t) + x_p(t)$.
+:::
+
+### Abel's Identity
+
+The Wronskian of any two solutions of (H) satisfies
+**[Abel's identity](https://en.wikipedia.org/wiki/Abel%27s_identity)**:
+$$
+W(t) = W(t_0)\,\exp\!\left(-\int_{t_0}^t P(s)\,ds\right).
+$$
+For constant-coefficient equations ($P$ constant) this gives $W(t) = W(t_0)\,e^{-P(t-t_0)}$,
+and in particular $W \neq 0$ everywhere if it is non-zero at one point.
+
+---
+
+## Step-by-Step Procedure
+
+::: {.callout-important}
+## Algorithm for Variation of Parameters
+1. **Write the ODE in standard form:** $x'' + P(t)x' + Q(t)x = g(t)$.
+2. **Find $x_1$, $x_2$:** two linearly independent solutions of the homogeneous equation.
+3. **Compute the Wronskian:** $W = x_1 x_2' - x_2 x_1'$.
+4. **Compute $u_1'$ and $u_2'$:**
+   $u_1' = -x_2 g/W$, $\quad u_2' = x_1 g/W$.
+5. **Integrate** to find $u_1$ and $u_2$.
+6. **Assemble:** $x_p = u_1 x_1 + u_2 x_2$.
+7. **Write the general solution:** $x = C_1 x_1 + C_2 x_2 + x_p$.
+:::
+
+---
+
+## Worked Examples
+
+### Example 1 — $x'' + x = \sec t$
+
+The forcing function $\sec t$ is not in the undetermined-coefficients table —
+we must use variation of parameters.
+
+**Step 1.** Already in standard form; $g(t) = \sec t$.
+
+**Step 2.** Homogeneous equation $x'' + x = 0$ has eigenvalues
+$\lambda = \pm i$, giving
+$$x_1 = \cos t, \qquad x_2 = \sin t.$$
+
+**Step 3.** Wronskian:
+$$W = \cos t\cdot\cos t - \sin t\cdot(-\sin t) = \cos^2 t + \sin^2 t = 1.$$
+
+**Step 4.**
+$$u_1' = -\frac{\sin t\cdot\sec t}{1} = -\tan t, \qquad u_2' = \frac{\cos t\cdot\sec t}{1} = 1.$$
+
+**Step 5.**
+$$u_1 = \ln|\cos t|, \qquad u_2 = t.$$
+
+**Step 6.**
+$$x_p = \cos t\cdot\ln|\cos t| + t\sin t.$$
+
+**General solution:**
+$$\boxed{x(t) = C_1\cos t + C_2\sin t + \cos t\ln|\cos t| + t\sin t.}$$
+
+::: {.callout-note}
+The solution exists only on intervals where $\sec t$ is defined: $t\neq \pi/2 + n\pi$.  The particular solution $x_p = \cos t\ln|\cos t| + t\sin t$ grows **linearly** in amplitude because of the $t\sin t$ term — behavior that undetermined coefficients never produces.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex1
+#| fig-cap: "Example 1: $x''+x=\\sec t$, $x(0)=1$, $x'(0)=0$ (solved on $[0,\\pi/2)$ before the singularity). The full solution (blue) is the sum of the homogeneous part (orange dashed) and the particular solution $x_p=\\cos t\\ln|\\cos t|+t\\sin t$ (green). Red dots confirm the analytical formula via numerical ODE solve."
+
+t_plot = np.linspace(0, 1.4, 400)
+
+# Particular solution (no constants)
+xp1 = np.cos(t_plot)*np.log(np.cos(t_plot)) + t_plot*np.sin(t_plot)
+# IVP: xp(0)=0, xp'(0)=0, so x(0)=C1=1, x'(0)=C2=0
+xh1 = np.cos(t_plot)          # C1=1, C2=0
+x1_full = xh1 + xp1
+
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.plot(t_plot, x1_full, color='steelblue', lw=2.5, label='Full solution $x(t)$')
+ax.plot(t_plot, xh1,     color='darkorange', lw=1.8, ls='--', label='Homogeneous $x_h=\\cos t$')
+ax.plot(t_plot, xp1,     color='seagreen',   lw=1.8, ls='-.',
+        label='Particular $x_p=\\cos t\\ln|\\cos t|+t\\sin t$')
+
+# Numerical check
+def ode1(t, y):
+    return [y[1], -y[0] + 1/np.cos(t)]
+sol1 = solve_ivp(ode1, (0, 1.4), [1.0, 0.0], dense_output=True, max_step=0.005)
+t_dots = np.linspace(0, 1.4, 18)
+ax.plot(t_dots, sol1.sol(t_dots)[0], 'ro', markersize=5, label='Numerical check')
+
+ax.axvline(np.pi/2, color='gray', ls=':', lw=1.2, label=r'Singularity $t=\pi/2$')
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"$x''+x=\sec t$, $x(0)=1$, $x'(0)=0$")
+ax.legend(fontsize=8.5); ax.set_ylim(-0.5, 2.5)
+plt.tight_layout(); plt.show()
+```
+
+---
+
+### Example 2 — $x'' - 2x' + x = e^t/t$
+
+This equation has a **repeated eigenvalue** — the homogeneous solutions are
+$x_1 = e^t$ and $x_2 = te^t$, and the forcing $e^t/t$ is outside the
+undetermined-coefficients table (the $1/t$ factor makes it inadmissible).
+
+**Step 1.** Already in standard form; $g(t) = e^t/t$.
+
+**Step 2.** Characteristic equation $(\lambda-1)^2 = 0$ gives $\lambda = 1$
+(repeated):
+$$x_1 = e^t, \qquad x_2 = te^t.$$
+
+**Step 3.** Wronskian:
+$$W = e^t(e^t + te^t) - te^t\cdot e^t = e^{2t} + te^{2t} - te^{2t} = e^{2t}.$$
+
+**Step 4.**
+$$u_1' = -\frac{te^t\cdot(e^t/t)}{e^{2t}} = -\frac{e^{2t}}{e^{2t}} = -1, \qquad u_2' = \frac{e^t\cdot(e^t/t)}{e^{2t}} = \frac{1}{t}.$$
+
+**Step 5.**
+$$u_1 = -t, \qquad u_2 = \ln t \quad (t > 0).$$
+
+**Step 6.**
+$$x_p = e^t\cdot(-t) + te^t\cdot\ln t = te^t(\ln t - 1).$$
+
+**General solution:**
+$$\boxed{x(t) = C_1 e^t + C_2 te^t + te^t(\ln t - 1), \quad t > 0.}$$
+
+::: {.callout-note}
+Note that $te^t(\ln t - 1) = te^t\ln t - te^t$, and the $-te^t$ part could
+be absorbed into the $C_2 te^t$ term by redefining $C_2$.  In practice we
+keep the particular solution as found and let the constants adjust when ICs
+are applied.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# SymPy verification
+t_sym = sym.Symbol('t', positive=True)
+x_sym = sym.Function('x')
+ode2_sym = sym.Eq(x_sym(t_sym).diff(t_sym,2) - 2*x_sym(t_sym).diff(t_sym) + x_sym(t_sym),
+                  sym.exp(t_sym)/t_sym)
+sol2_sym = sym.dsolve(ode2_sym, x_sym(t_sym))
+print("SymPy solution:")
+display(Math(sym.latex(sol2_sym)))
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex2
+#| fig-cap: "Example 2: $x''-2x'+x=e^t/t$ with $x(1)=0$, $x'(1)=0$. The particular solution $te^t(\\ln t-1)$ (green) grows rapidly for large $t$ since it inherits the $e^t$ factor of the homogeneous solutions. Red dots confirm the analytical formula."
+
+t_plot2 = np.linspace(1.0, 2.8, 400)
+
+# IVP: x(1)=0, x'(1)=0
+# x = e^t + t*e^t*(ln(t)-1)  [verified: C1=1, C2=0]
+xp2  = t_plot2 * np.exp(t_plot2) * (np.log(t_plot2) - 1)
+xh2  = np.exp(t_plot2)   # C1=1, C2=0
+x2_full = xh2 + xp2
+
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.plot(t_plot2, x2_full, color='steelblue', lw=2.5, label='Full solution $x(t)$')
+ax.plot(t_plot2, xh2,     color='darkorange', lw=1.8, ls='--', label='$x_h = e^t$ (with $C_1=1$, $C_2=0$)')
+ax.plot(t_plot2, xp2,     color='seagreen',   lw=1.8, ls='-.', label='$x_p = te^t(\\ln t-1)$')
+
+def ode2(t, y): return [y[1], 2*y[1] - y[0] + np.exp(t)/t]
+sol2n = solve_ivp(ode2, (1.0, 2.8), [0.0, 0.0], dense_output=True, max_step=0.005)
+t_dots2 = np.linspace(1.0, 2.8, 18)
+ax.plot(t_dots2, sol2n.sol(t_dots2)[0], 'ro', markersize=5, label='Numerical check')
+
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"$x''-2x'+x=e^t/t$, $x(1)=0$, $x'(1)=0$")
+ax.legend(fontsize=8.5)
+plt.tight_layout(); plt.show()
+```
+
+---
+
+### Example 3 — Euler Equation: $t^2 x'' - 2tx' + 2x = t^3\sin t$
+
+This is a second-order linear ODE with **variable coefficients** — the
+coefficients $-2t$ and $2$ are functions of $t$, not constants.  The
+homogeneous part is an **[Euler–Cauchy equation](https://en.wikipedia.org/wiki/Cauchy%E2%80%93Euler_equation)**,
+whose solutions are powers of $t$.
+
+**Step 1.** Divide by $t^2$ (standard form, $t \neq 0$):
+$$x'' - \frac{2}{t}\,x' + \frac{2}{t^2}\,x = t\sin t. \qquad g(t) = t\sin t.$$
+
+**Step 2.** For the homogeneous Euler equation $t^2 x'' - 2tx' + 2x = 0$,
+try $x = t^r$:
+$$r(r-1)t^r - 2rt^r + 2t^r = t^r[r^2 - 3r + 2] = t^r(r-1)(r-2) = 0.$$
+So $r = 1$ and $r = 2$, giving:
+$$x_1 = t, \qquad x_2 = t^2.$$
+
+**Step 3.** Wronskian:
+$$W = t\cdot 2t - t^2\cdot 1 = 2t^2 - t^2 = t^2.$$
+
+**Step 4.**
+$$u_1' = -\frac{t^2\cdot t\sin t}{t^2} = -t\sin t, \qquad u_2' = \frac{t\cdot t\sin t}{t^2} = \sin t.$$
+
+**Step 5.** Using integration by parts for $u_1$:
+$$u_1 = -\int t\sin t\,dt = t\cos t - \sin t, \qquad u_2 = \int\sin t\,dt = -\cos t.$$
+
+**Step 6.**
+$$x_p = t(t\cos t - \sin t) + t^2(-\cos t) = t^2\cos t - t\sin t - t^2\cos t = -t\sin t.$$
+
+**General solution:**
+$$\boxed{x(t) = C_1 t + C_2 t^2 - t\sin t.}$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# SymPy verification
+t_sym = sym.Symbol('t', positive=True)
+x_sym = sym.Function('x')
+ode3_sym = sym.Eq(t_sym**2*x_sym(t_sym).diff(t_sym,2)
+                  - 2*t_sym*x_sym(t_sym).diff(t_sym)
+                  + 2*x_sym(t_sym),
+                  t_sym**3*sym.sin(t_sym))
+sol3_sym = sym.dsolve(ode3_sym, x_sym(t_sym))
+print("SymPy solution:")
+display(Math(sym.latex(sol3_sym)))
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex3
+#| fig-cap: "Example 3: Euler equation $t^2 x''-2tx'+2x=t^3\\sin t$ with $x(\\pi)=\\pi^2$, $x'(\\pi)=2\\pi$. The variable-coefficient homogeneous part has power-law solutions $t$ and $t^2$ rather than exponentials. The particular solution $x_p=-t\\sin t$ (green) oscillates with linearly growing envelope. Red dots are the numerical check."
+
+t_plot3 = np.linspace(np.pi, 3*np.pi, 500)
+
+# IVP: x(pi) = pi^2, x'(pi) = 2*pi
+# x = C1*t + C2*t^2 - t*sin(t)
+# x(pi): C1*pi + C2*pi^2 - pi*0 = pi*(C1 + C2*pi) = pi^2 => C1 + C2*pi = pi => C1 = pi - C2*pi
+# x'(t) = C1 + 2*C2*t - sin(t) - t*cos(t)
+# x'(pi): C1 + 2*C2*pi - 0 - pi*(-1) = C1 + 2*C2*pi + pi = 2*pi
+# => C1 + 2*C2*pi = pi; with C1 = pi - C2*pi: pi - C2*pi + 2*C2*pi = pi + C2*pi = pi => C2=0, C1=pi
+
+xp3   = -t_plot3 * np.sin(t_plot3)
+xh3   = np.pi * t_plot3                        # C1=pi, C2=0
+x3_full = xh3 + xp3
+
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.plot(t_plot3, x3_full, color='steelblue', lw=2.5, label='Full solution $x(t)$')
+ax.plot(t_plot3, xh3,     color='darkorange', lw=1.8, ls='--', label='$x_h = \\pi t$ (with $C_1=\\pi$, $C_2=0$)')
+ax.plot(t_plot3, xp3,     color='seagreen',   lw=1.8, ls='-.', label='$x_p = -t\\sin t$')
+
+def ode3(t, y):
+    return [y[1], (2*t*y[1] - 2*y[0] + t**3*np.sin(t))/t**2]
+x0_3  = np.pi**2
+xp0_3 = 2*np.pi
+sol3n = solve_ivp(ode3, (np.pi, 3*np.pi), [x0_3, xp0_3], dense_output=True, max_step=0.01)
+t_dots3 = np.linspace(np.pi, 3*np.pi, 20)
+ax.plot(t_dots3, sol3n.sol(t_dots3)[0], 'ro', markersize=5, label='Numerical check')
+
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"Euler eq: $t^2x''-2tx'+2x=t^3\sin t$, $x(\pi)=\pi^2$, $x'(\pi)=2\pi$")
+ax.legend(fontsize=8.5)
+plt.tight_layout(); plt.show()
+```
+
+---
+
+### Example 4 — $x'' + x = \csc t$
+
+Another trigonometric forcing function outside the undetermined-coefficients
+table.
+
+**Step 1.** Already in standard form; $g(t) = \csc t$.
+
+**Step 2.** Same homogeneous equation as Example 1:
+$$x_1 = \cos t, \qquad x_2 = \sin t, \qquad W = 1.$$
+
+**Step 3.**
+$$u_1' = -\frac{\sin t\cdot\csc t}{1} = -1, \qquad u_2' = \frac{\cos t\cdot\csc t}{1} = \cot t = \frac{\cos t}{\sin t}.$$
+
+**Step 4.**
+$$u_1 = -t, \qquad u_2 = \int\cot t\,dt = \ln|\sin t|.$$
+
+**Step 5.**
+$$x_p = \cos t\cdot(-t) + \sin t\cdot\ln|\sin t| = -t\cos t + \sin t\ln|\sin t|.$$
+
+**General solution:**
+$$\boxed{x(t) = C_1\cos t + C_2\sin t - t\cos t + \sin t\ln|\sin t|.}$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex4
+#| fig-cap: "Example 4: $x''+x=\\csc t$, $x(\\pi/2)=\\pi/2$, $x'(\\pi/2)=0$. The particular solution $x_p=-t\\cos t+\\sin t\\ln|\\sin t|$ (green) combines the linear-growth feature $-t\\cos t$ of a near-resonant response with the logarithmic term $\\sin t\\ln|\\sin t|$ that vanishes at $t=0,\\pi,\\ldots$ (where $\\csc t$ is singular). Red dots confirm numerically."
+
+t_plot4 = np.linspace(0.1, np.pi - 0.05, 400)  # between singularities
+
+xp4   = -t_plot4*np.cos(t_plot4) + np.sin(t_plot4)*np.log(np.sin(t_plot4))
+# IVP: x(pi/2)=pi/2, x'(pi/2)=0
+# x = C1*cos(t) + C2*sin(t) + xp
+# xp(pi/2) = -pi/2*0 + 1*ln(1) = 0
+# xp'(t) = -cos(t) + t*sin(t) + cos(t)*ln(sin(t)) + sin(t)*cos(t)/sin(t)
+#         = -cos(t) + t*sin(t) + cos(t)*ln(sin(t)) + cos(t)
+#         = t*sin(t) + cos(t)*ln(sin(t))
+# xp'(pi/2) = pi/2*1 + 0*ln(1) = pi/2
+# x(pi/2): C1*0 + C2*1 + 0 = pi/2 => C2 = pi/2
+# x'(pi/2): -C1*0 + C2*0 + pi/2 = ... wait
+# x'(t) = -C1*sin(t) + C2*cos(t) + xp'(t)
+# x'(pi/2) = -C1*1 + C2*0 + pi/2 = 0 => C1 = pi/2
+C1_4, C2_4 = np.pi/2, np.pi/2
+xh4   = C1_4*np.cos(t_plot4) + C2_4*np.sin(t_plot4)
+x4_full = xh4 + xp4
+
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.plot(t_plot4, x4_full, color='steelblue', lw=2.5, label='Full solution $x(t)$')
+ax.plot(t_plot4, xh4,     color='darkorange', lw=1.8, ls='--',
+        label=f'$x_h = \\frac{{\\pi}}{{2}}\\cos t + \\frac{{\\pi}}{{2}}\\sin t$')
+ax.plot(t_plot4, xp4,     color='seagreen',   lw=1.8, ls='-.', label='$x_p=-t\\cos t+\\sin t\\ln|\\sin t|$')
+
+def ode4(t, y):
+    return [y[1], -y[0] + 1/np.sin(t)]
+sol4n = solve_ivp(ode4, (np.pi/2, np.pi-0.05), [np.pi/2, 0.0], dense_output=True, max_step=0.005)
+t_dots4 = np.linspace(np.pi/2, np.pi-0.08, 10)
+ax.plot(t_dots4, sol4n.sol(t_dots4)[0], 'ro', markersize=5, label='Numerical check')
+
+ax.axhline(0, color='k', lw=0.5)
+ax.axvline(np.pi, color='gray', ls=':', lw=1.2, label=r'Singularity at $t=\pi$')
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"$x''+x=\csc t$, $x(\pi/2)=\pi/2$, $x'(\pi/2)=0$, on $(0,\pi)$")
+ax.legend(fontsize=8); ax.set_ylim(-1.5, 3)
+plt.tight_layout(); plt.show()
+```
+
+---
+
+### SymPy: Solving All Four Examples Symbolically
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_sym = sym.Symbol('t', positive=True)
+x_sym = sym.Function('x')
+
+examples = {
+    r"x''+x=\sec t":
+        sym.Eq(x_sym(t_sym).diff(t_sym,2) + x_sym(t_sym),  sym.sec(t_sym)),
+    r"x''-2x'+x=e^t/t":
+        sym.Eq(x_sym(t_sym).diff(t_sym,2) - 2*x_sym(t_sym).diff(t_sym) + x_sym(t_sym),
+               sym.exp(t_sym)/t_sym),
+    r"t^2x''-2tx'+2x=t^3\sin t":
+        sym.Eq(t_sym**2*x_sym(t_sym).diff(t_sym,2) - 2*t_sym*x_sym(t_sym).diff(t_sym)
+               + 2*x_sym(t_sym),  t_sym**3*sym.sin(t_sym)),
+    r"x''+x=\csc t":
+        sym.Eq(x_sym(t_sym).diff(t_sym,2) + x_sym(t_sym),  sym.csc(t_sym)),
+}
+
+for label, ode in examples.items():
+    print(f"${label}$")
+    sol = sym.dsolve(ode, x_sym(t_sym))
+    display(Math(r"x(t)=" + sym.latex(sol.rhs)))
+    print()
+```
+
+---
+
+## Summary of the Four Examples
+
+| Example | Homog. solutions | $W$ | Forcing | Key feature |
+|---|---|:---:|---|---|
+| $x''+x=\sec t$ | $\cos t$, $\sin t$ | $1$ | Outside UC table | $x_p$ grows like $t\sin t$ |
+| $x''-2x'+x=e^t/t$ | $e^t$, $te^t$ | $e^{2t}$ | Repeated eigenvalue + $1/t$ | $x_p$ grows like $te^t\ln t$ |
+| $t^2x''-2tx'+2x=t^3\sin t$ | $t$, $t^2$ | $t^2$ | Variable coefficients | Power-law homog. solutions |
+| $x''+x=\csc t$ | $\cos t$, $\sin t$ | $1$ | Outside UC table | Log term in $x_p$ |
+
+---
+
+## When to Use Each Method
+
+| Method | Use when |
+|---|---|
+| **Undetermined coefficients** | $f(t)$ is a polynomial, exponential, $\sin$, $\cos$, or their products; **and** the ODE has constant coefficients |
+| **Variation of parameters** | $f(t)$ is any continuous function ($\sec t$, $\tan t$, $\ln t$, $1/t$, etc.) **or** the ODE has variable coefficients |
+
+::: {.callout-tip}
+Always try undetermined coefficients first when applicable — it is faster and avoids potentially difficult integrals. Switch to variation of parameters when the forcing falls outside the UC table, or when the coefficients of the ODE depend on $t$.
+:::
+
+---
+
+## Summary
+
+### Key Takeaways
+
+
+- Variation of parameters applies to **any** second-order linear ODE in standard form — constant or variable coefficients, any continuous $g(t)$.
+
+- The **side condition** $u_1'x_1+u_2'x_2=0$ is what makes the system solvable and keeps the algebra manageable.
+
+- The **Wronskian** $W=x_1 x_2'-x_2 x_1'$ is the key quantity — it must be non-zero on the interval (guaranteed by linear independence of $x_1$, $x_2$).
+
+- Forcing functions outside the UC table ($\sec t$, $\csc t$, $1/t$, $\ln t$, etc.) lead to **non-elementary integrals** — but SymPy handles them automatically.
+
+- For **Euler equations**, the homogeneous solutions are powers $t^r$ rather than exponentials; variation of parameters proceeds identically once $x_1$, $x_2$ are found.
+
+These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_05_slides.html){target="_blank"}
+
+::: {.callout-note}
+**Next:** Introduction to Laplace Transform — Logan §3.1.
+:::
+
+---
+
+## Relevant Videos
+
+
+### The Wronskian:
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/4z5aL3aGVQs?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+
+### Variation of Parameters: 
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/wSMad7QpaqE?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
