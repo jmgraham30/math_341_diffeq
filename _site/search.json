@@ -22,7 +22,7 @@
     "href": "notes.html",
     "title": "Notes",
     "section": "",
-    "text": "This page contains the lectures notes for MATH 341 Differential Equations.\n\nSection 1 introduces the basic idea of a differential equation with an emphasis on ordinary differential equations (ODEs).\nSection 2 covers first-order ODEs inlcuding slope-fields, separable equations, linear equations, integrating factors, and applications.\nSection 3 covers one-dimensional dynamical system including topics such as equilibrium points, stability, phase-line, and bifurcations.\nSection 4 covers second-order linear constant-coefficient ODEs and applications.\nSection 5 covers the method of variation of parameters for second-order linear ODEs that do not necessarily have constant coefficients.\n\n\n\n\nReuseCC BY-NC-SA 4.0",
+    "text": "This page contains the lectures notes for MATH 341 Differential Equations.\n\nSection 1 introduces the basic idea of a differential equation with an emphasis on ordinary differential equations (ODEs).\nSection 2 covers first-order ODEs inlcuding slope-fields, separable equations, linear equations, integrating factors, and applications.\nSection 3 covers one-dimensional dynamical system including topics such as equilibrium points, stability, phase-line, and bifurcations.\nSection 4 covers second-order linear constant-coefficient ODEs and applications.\nSection 5 covers the method of variation of parameters for second-order linear ODEs that do not necessarily have constant coefficients.\nSection 6 covers the defintion and basic properties of Laplace Transforms.\n\n\n\n\nReuseCC BY-NC-SA 4.0",
     "crumbs": [
       "Notes"
     ]
@@ -2602,5 +2602,264 @@
     "title": "One-Dimensional Dynamical Systems",
     "section": "",
     "text": "Autonomous ODEs \\(x'=f(x)\\) as one-dimensional dynamical systems\nEquilibrium solutions and stability via the phase line\nLinearization — the algebraic stability criterion \\(f'(x^*)\\)\nBifurcations — qualitative changes in equilibrium structure\nBifurcation diagrams for the three classical cases\n\n\n\n\n\n\n\n\nNote\n\n\n\nSection 1.5 of Logan (2015)."
+  },
+  {
+    "objectID": "notes_06.html",
+    "href": "notes_06.html",
+    "title": "Notes 6",
+    "section": "",
+    "text": "Show the code\nimport numpy as np\nimport sympy as sym\nimport matplotlib as mpl\nimport matplotlib.pyplot as plt\nfrom scipy.integrate import solve_ivp, quad\nfrom IPython.display import Math, display\nmpl.rcParams['figure.dpi'] = 150\nmpl.rcParams['axes.spines.top'] = False\nmpl.rcParams['axes.spines.right'] = False"
+  },
+  {
+    "objectID": "notes_06.html#goals",
+    "href": "notes_06.html#goals",
+    "title": "Notes 6",
+    "section": "Goals",
+    "text": "Goals\n\nUnderstand the big picture: what the Laplace transform does and why it is useful.\nLearn the definition \\(\\mathcal{L}[x(t)](s) = \\int_0^\\infty x(t)e^{-st}\\,dt\\) and compute transforms directly from it.\nKnow the linearity of \\(\\mathcal{L}\\) and use it to build up transforms from a table.\nUnderstand the inverse transform \\(\\mathcal{L}^{-1}\\) and use partial fractions.\nWork with the Heaviside function to represent piecewise-defined forcing.\nApply the shift property and switching property as time-saving tools.\nUse all of the above to solve constant-coefficient IVPs with discontinuous forcing.\n\n\n\n\n\n\n\nNote\n\n\n\nThis material corresponds to Section 3.1 of Logan (2015)."
+  },
+  {
+    "objectID": "notes_06.html#the-big-picture",
+    "href": "notes_06.html#the-big-picture",
+    "title": "Notes 6",
+    "section": "The Big Picture",
+    "text": "The Big Picture\nBefore computing anything, it is worth pausing to appreciate what the Laplace transform accomplishes and why it is worth learning an entirely new technique.\nThe methods we have developed — undetermined coefficients and variation of parameters — break down when the forcing function \\(f(t)\\) is discontinuous (a switch being flipped, a pulse applied for a finite time, a sudden impact). These situations are not exotic mathematical curiosities; they are among the most common scenarios in electrical engineering, mechanical engineering, and control theory.\n\n\n\n\n\n\nImportantThe Core Strategy\n\n\n\n\\[\\underbrace{ax''+bx'+cx = f(t)}_{\\text{ODE (hard to solve)}} \\xrightarrow{\\;\\mathcal{L}\\;}\n\\underbrace{(as^2+bs+c)X(s) = F(s) + \\text{ICs}}_{\\text{algebraic equation (easy to solve)}}\n\\xrightarrow{\\;\\mathcal{L}^{-1}\\;} \\underbrace{x(t)}_{\\text{solution}}\\]\nThe Laplace transform converts differentiation into multiplication by \\(s\\). What was a differential equation becomes an algebraic equation for \\(X(s)\\). We solve algebraically, then invert.\n\n\nThink of it as translating a hard problem in one language (differential equations) into an easier problem in another language (algebra), solving there, then translating back. The same philosophy underlies logarithms (which convert multiplication into addition), the Fourier transform (which converts convolution into multiplication), and many other transforms throughout mathematics."
+  },
+  {
+    "objectID": "notes_06.html#definition",
+    "href": "notes_06.html#definition",
+    "title": "Notes 6",
+    "section": "Definition",
+    "text": "Definition\n\n\n\n\n\n\nImportantDefinition: The Laplace Transform\n\n\n\nLet \\(x = x(t)\\) be defined on \\([0, \\infty)\\). The Laplace transform of \\(x(t)\\) is the function \\(X(s)\\) defined by \\[\n\\mathcal{L}[x(t)](s) = X(s) = \\int_0^\\infty x(t)\\,e^{-st}\\,dt,\n\\] provided the improper integral converges. We also write \\(\\mathcal{L}[x] = X(s)\\).\n\n\nUnpacking the definition. The integrand \\(x(t)e^{-st}\\) is a function of both \\(t\\) and \\(s\\). We integrate over \\(t\\) from \\(0\\) to \\(\\infty\\), which eliminates the \\(t\\) dependence and leaves a function of \\(s\\) alone. The factor \\(e^{-st}\\) is a damping kernel that forces the integrand to zero as \\(t\\to\\infty\\) (provided \\(s\\) is large enough), making the improper integral converge.\nThe variable \\(s\\) lives in the transform domain (sometimes called the frequency domain or the \\(s\\)-domain), while \\(t\\) lives in the time domain. We use uppercase letters for transform-domain functions: \\(x(t) \\leftrightarrow X(s)\\)."
+  },
+  {
+    "objectID": "notes_06.html#computing-transforms-from-the-definition",
+    "href": "notes_06.html#computing-transforms-from-the-definition",
+    "title": "Notes 6",
+    "section": "Computing Transforms from the Definition",
+    "text": "Computing Transforms from the Definition\n\nExample 1 — \\(\\mathcal{L}[e^{at}]\\)\n\\[X(s) = \\int_0^\\infty e^{at}e^{-st}\\,dt = \\int_0^\\infty e^{(a-s)t}\\,dt = \\frac{1}{a-s}e^{(a-s)t}\\Bigg|_{t=0}^{t=\\infty}.\\]\nFor the upper limit to vanish we need \\(a - s &lt; 0\\), i.e., \\(s &gt; a\\). Then:\n\\[\\boxed{\\mathcal{L}[e^{at}] = \\frac{1}{s-a}, \\quad s &gt; a.}\\]\nSpecial case \\(a=0\\): \\(\\mathcal{L}[1] = \\frac{1}{s}\\), \\(s &gt; 0\\).\n\n\nExample 2 — \\(\\mathcal{L}[t]\\)\nIntegration by parts with \\(u = t\\), \\(dv = e^{-st}dt\\):\n\\[X(s) = \\int_0^\\infty t\\,e^{-st}\\,dt = \\left[t\\cdot\\frac{e^{-st}}{-s}\\right]_0^\\infty + \\frac{1}{s}\\int_0^\\infty e^{-st}\\,dt = 0 + \\frac{1}{s}\\cdot\\frac{1}{s} = \\frac{1}{s^2}.\\]\n\\[\\boxed{\\mathcal{L}[t] = \\frac{1}{s^2}, \\quad s &gt; 0.}\\]\nThe pattern continues: \\(\\mathcal{L}[t^n] = n!/s^{n+1}\\).\n\n\nExample 3 — \\(\\mathcal{L}[\\sin kt]\\) and \\(\\mathcal{L}[\\cos kt]\\)\nUsing \\(\\sin kt = \\frac{1}{2i}(e^{ikt}-e^{-ikt})\\) and the formula for \\(\\mathcal{L}[e^{at}]\\):\n\\[\\mathcal{L}[\\sin kt] = \\frac{1}{2i}\\left(\\frac{1}{s-ik}-\\frac{1}{s+ik}\\right) = \\frac{1}{2i}\\cdot\\frac{2ik}{s^2+k^2} = \\frac{k}{s^2+k^2}.\\]\nSimilarly \\(\\mathcal{L}[\\cos kt] = s/(s^2+k^2)\\).\n\n\n\n\n\n\nTipA Pattern Worth Noting\n\n\n\nCompare \\(\\mathcal{L}[\\sin kt] = k/(s^2+k^2)\\) and \\(\\mathcal{L}[\\cos kt] = s/(s^2+k^2)\\). The numerator of the cosine transform involves \\(s\\) (the transform variable), while the sine transform has a constant numerator \\(k\\). This asymmetry reflects the fact that \\(\\cos(0)=1\\) and \\(\\sin(0)=0\\) — the cosine has a nonzero initial value.\n\n\n\n\nShow the code\nt_plot = np.linspace(0, 5, 400)\nfig, axes = plt.subplots(1, 2, figsize=(11, 4.5))\n\n# Left: damped integrand for two values of s\nx_func = np.sin(2*t_plot)\nfor s_val, color, lbl in [(0.5, 'steelblue', '$s=0.5$'), (2.0, 'crimson', '$s=2.0$')]:\n    damp = np.exp(-s_val*t_plot)\n    integrand = x_func * damp\n    axes[0].plot(t_plot, integrand, color=color, lw=2, label=f'$\\\\sin(2t)e^{{-{s_val}t}}$ ({lbl})')\n    axes[0].fill_between(t_plot, 0, integrand, where=(integrand&gt;0), alpha=0.12, color=color)\n    axes[0].fill_between(t_plot, 0, integrand, where=(integrand&lt;0), alpha=0.12, color=color)\n\naxes[0].plot(t_plot, x_func, 'k--', lw=1.2, alpha=0.5, label='$\\\\sin(2t)$ (undamped)')\naxes[0].axhline(0, color='k', lw=0.5)\naxes[0].set_xlabel('$t$'); axes[0].set_ylabel('integrand')\naxes[0].set_title(r'Integrand $\\sin(2t)\\,e^{-st}$ for two values of $s$')\naxes[0].legend(fontsize=8.5)\n\n# Right: X(s) = 2/(s^2+4)\ns_arr = np.linspace(0.01, 6, 400)\nX_s   = 2/(s_arr**2 + 4)\naxes[1].plot(s_arr, X_s, color='seagreen', lw=2.5, label=r'$X(s)=\\frac{2}{s^2+4}$')\nfor s_val, color in [(0.5, 'steelblue'), (2.0, 'crimson')]:\n    val = 2/(s_val**2+4)\n    axes[1].plot(s_val, val, 'o', color=color, markersize=9,\n                 label=f'$X({s_val})={val:.3f}$ (area under left plot)')\naxes[1].set_xlabel('$s$'); axes[1].set_ylabel('$X(s)$')\naxes[1].set_title(r'$\\mathcal{L}[\\sin 2t](s) = 2/(s^2+4)$')\naxes[1].legend(fontsize=8.5); axes[1].set_ylim(0, 0.55)\n\nplt.suptitle('How the Laplace transform works', fontsize=12)\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nFigure 1: Geometric picture of the Laplace transform. The integrand \\(x(t)e^{-st}\\) is the original function multiplied by the exponential damping factor \\(e^{-st}\\) (gray dashed). The integral of the damped product (shaded area) gives the value of \\(X(s)\\) at that particular \\(s\\). Left: \\(x(t)=\\sin(2t)\\) at two values of \\(s\\) — larger \\(s\\) damps the function more aggressively, reducing the area. Right: \\(X(s) = 2/(s^2+4)\\) as a function of \\(s\\), showing how the transform encodes the entire function in one curve."
+  },
+  {
+    "objectID": "notes_06.html#linearity",
+    "href": "notes_06.html#linearity",
+    "title": "Notes 6",
+    "section": "Linearity",
+    "text": "Linearity\n\n\n\n\n\n\nImportantTheorem: Linearity\n\n\n\nFor any constants \\(\\alpha\\), \\(\\beta\\) and functions \\(x(t)\\), \\(y(t)\\): \\[\\mathcal{L}[\\alpha x + \\beta y] = \\alpha\\mathcal{L}[x] + \\beta\\mathcal{L}[y].\\]\n\n\nThis follows immediately from the linearity of the integral and means we can build up transforms of complicated functions from the table, one term at a time.\nExample. \\[\\mathcal{L}[3e^{-2t} + 5\\sin 4t] = 3\\cdot\\frac{1}{s+2} + 5\\cdot\\frac{4}{s^2+16} = \\frac{3}{s+2} + \\frac{20}{s^2+16}.\\]"
+  },
+  {
+    "objectID": "notes_06.html#existence-of-the-transform",
+    "href": "notes_06.html#existence-of-the-transform",
+    "title": "Notes 6",
+    "section": "Existence of the Transform",
+    "text": "Existence of the Transform\nNot every function has a Laplace transform. Two sufficient conditions guarantee existence:\n\nPiecewise continuity (PWC): on any bounded subinterval \\([0,b]\\), \\(x(t)\\) has only finitely many jump discontinuities, and at each jump the one-sided limits exist (are finite).\nExponential order: there exist constants \\(M &gt; 0\\) and \\(r\\) such that \\(|x(t)| \\leq Me^{rt}\\) for all \\(t &gt; t_0\\).\n\nIf both conditions hold, then \\(X(s)\\) exists for all \\(s &gt; r\\).\nFunctions that fail: - \\(x(t) = e^{t^2}\\): grows faster than any exponential, so not of exponential order. - \\(x(t) = 1/t\\): not PWC on \\([0,b]\\) (blows up at \\(t=0\\)). - \\(X(s) = (1/s)e^s\\): fails the \\(X(s)\\to 0\\) test as \\(s\\to\\infty\\), so cannot be a Laplace transform."
+  },
+  {
+    "objectID": "notes_06.html#the-inverse-transform",
+    "href": "notes_06.html#the-inverse-transform",
+    "title": "Notes 6",
+    "section": "The Inverse Transform",
+    "text": "The Inverse Transform\nGiven \\(X(s)\\), we want the function \\(x(t)\\) whose transform is \\(X(s)\\). We write: \\[x(t) = \\mathcal{L}^{-1}[X(s)].\\]\nThe inverse transform is also linear: \\(\\mathcal{L}^{-1}[\\alpha X + \\beta Y] = \\alpha\\mathcal{L}^{-1}[X] + \\beta\\mathcal{L}^{-1}[Y]\\).\nIn practice, we find inverse transforms by: 1. Looking up the form in the table, OR 2. Using partial fractions to decompose \\(X(s)\\) into table-recognizable pieces.\n\nPartial Fractions — The Key Algebraic Skill\nMost \\(X(s)\\) arising from ODEs are rational functions. The partial fractions decomposition rewrites them as sums of simpler fractions, each of which appears in the table.\nType 1 — Distinct real poles. If \\(X(s) = P(s)/[(s-a)(s-b)]\\): \\[X(s) = \\frac{A}{s-a} + \\frac{B}{s-b} \\;\\Longrightarrow\\; x(t) = Ae^{at} + Be^{bt}.\\]\nType 2 — Repeated real pole. If \\(X(s) = P(s)/(s-a)^2\\): \\[X(s) = \\frac{A}{s-a} + \\frac{B}{(s-a)^2} \\;\\Longrightarrow\\; x(t) = Ae^{at} + Bte^{at}.\\]\nType 3 — Complex conjugate poles. If \\(X(s) = P(s)/[(s-\\alpha)^2+\\beta^2]\\):\nComplete the square in the denominator, then match to \\(\\mathcal{L}[e^{\\alpha t}\\sin\\beta t]\\) and \\(\\mathcal{L}[e^{\\alpha t}\\cos\\beta t]\\).\nExample. Find \\(\\mathcal{L}^{-1}\\!\\left[\\frac{2s+9}{(s+1)(s+3)}\\right]\\).\n\\[\\frac{2s+9}{(s+1)(s+3)} = \\frac{A}{s+1}+\\frac{B}{s+3}.\\]\nCover-up rule: \\(A = (2(-1)+9)/(-1+3) = 7/2\\); \\(B = (2(-3)+9)/(-3+1) = -3/2\\).\n\\[x(t) = \\frac{7}{2}e^{-t} - \\frac{3}{2}e^{-3t}.\\]\n\n\nShow the code\ns_v = sym.Symbol('s')\nt_v = sym.Symbol('t', positive=True)\n\n# Demonstrate partial fractions with SymPy\nexamples_inv = [\n    (r\"\\frac{2s+9}{(s+1)(s+3)}\",          (2*s_v+9)/((s_v+1)*(s_v+3))),\n    (r\"\\frac{3}{s^2-4}\",                    3/(s_v**2-4)),\n    (r\"\\frac{2s+3}{s^2+2s+5}\",             (2*s_v+3)/(s_v**2+2*s_v+5)),\n    (r\"\\frac{1}{s(s+2)}\",                   1/(s_v*(s_v+2))),\n]\n\nfor label, expr in examples_inv:\n    pf = sym.apart(expr, s_v)\n    inv = sym.inverse_laplace_transform(expr, s_v, t_v)\n    print(f\"$X(s) = {label}$\")\n    display(Math(r\"\\text{PF: } \" + sym.latex(pf)))\n    display(Math(r\"x(t) = \" + sym.latex(sym.simplify(inv))))\n    print()\n\n\n$X(s) = \\frac{2s+9}{(s+1)(s+3)}$\n\n\n\\(\\displaystyle \\text{PF: } - \\frac{3}{2 \\left(s + 3\\right)} + \\frac{7}{2 \\left(s + 1\\right)}\\)\n\n\n\\(\\displaystyle x(t) = \\frac{\\left(7 e^{2 t} - 3\\right) e^{- 3 t}}{2}\\)\n\n\n\n$X(s) = \\frac{3}{s^2-4}$\n\n\n\\(\\displaystyle \\text{PF: } - \\frac{3}{4 \\left(s + 2\\right)} + \\frac{3}{4 \\left(s - 2\\right)}\\)\n\n\n\\(\\displaystyle x(t) = \\frac{3 \\sinh{\\left(2 t \\right)}}{2}\\)\n\n\n\n$X(s) = \\frac{2s+3}{s^2+2s+5}$\n\n\n\\(\\displaystyle \\text{PF: } \\frac{2 s + 3}{s^{2} + 2 s + 5}\\)\n\n\n\\(\\displaystyle x(t) = \\frac{\\left(\\sin{\\left(2 t \\right)} + 4 \\cos{\\left(2 t \\right)}\\right) e^{- t}}{2}\\)\n\n\n\n$X(s) = \\frac{1}{s(s+2)}$\n\n\n\\(\\displaystyle \\text{PF: } - \\frac{1}{2 \\left(s + 2\\right)} + \\frac{1}{2 s}\\)\n\n\n\\(\\displaystyle x(t) = \\frac{1}{2} - \\frac{e^{- 2 t}}{2}\\)"
+  },
+  {
+    "objectID": "notes_06.html#the-transform-of-a-derivative-the-ode-connection",
+    "href": "notes_06.html#the-transform-of-a-derivative-the-ode-connection",
+    "title": "Notes 6",
+    "section": "The Transform of a Derivative — The ODE Connection",
+    "text": "The Transform of a Derivative — The ODE Connection\nThe single most important property for solving ODEs is:\n\n\n\n\n\n\nImportantTransform of Derivatives\n\n\n\n\\[\\mathcal{L}[x'(t)] = s\\,X(s) - x(0)\\] \\[\\mathcal{L}[x''(t)] = s^2 X(s) - s\\,x(0) - x'(0)\\]\nMore generally: \\(\\mathcal{L}[x^{(n)}] = s^n X(s) - s^{n-1}x(0) - \\cdots - x^{(n-1)}(0)\\).\n\n\nDerivation (for \\(x'\\)): integrate by parts with \\(u = e^{-st}\\), \\(dv = x'(t)dt\\): \\[\\mathcal{L}[x'] = \\int_0^\\infty x'(t)e^{-st}dt = \\left[x(t)e^{-st}\\right]_0^\\infty + s\\int_0^\\infty x(t)e^{-st}dt = -x(0) + sX(s).\\]\n\n\n\n\n\n\nTipWhy This Transforms an ODE Into Algebra\n\n\n\nApplying \\(\\mathcal{L}\\) to \\(ax''+bx'+cx = f(t)\\) and using linearity: \\[a\\mathcal{L}[x''] + b\\mathcal{L}[x'] + c\\mathcal{L}[x] = \\mathcal{L}[f].\\] Substituting the derivative formulas: \\[\\bigl(as^2+bs+c\\bigr)X(s) = F(s) + a\\bigl(sx(0)+x'(0)\\bigr) + b\\,x(0).\\] The initial conditions are automatically incorporated — no separate step needed. Solving for \\(X(s)\\) is pure algebra.\n\n\n\nFull ODE Example\nSolve \\(x'' + 4x' + 3x = 0\\), \\(x(0) = 2\\), \\(x'(0) = 1\\).\nStep 1. Apply \\(\\mathcal{L}\\): \\[[s^2X - 2s - 1] + 4[sX - 2] + 3X = 0\\] \\[(s^2+4s+3)X = 2s+9.\\]\nStep 2. Solve for \\(X(s)\\): \\[X(s) = \\frac{2s+9}{(s+1)(s+3)}.\\]\nStep 3. Partial fractions: \\[X(s) = \\frac{7/2}{s+1} + \\frac{-3/2}{s+3}.\\]\nStep 4. Invert term by term: \\[\\boxed{x(t) = \\frac{7}{2}e^{-t} - \\frac{3}{2}e^{-3t}.}\\]\n\n\nShow the code\nt_plot = np.linspace(0, 4, 300)\nx_exact = 3.5*np.exp(-t_plot) - 1.5*np.exp(-3*t_plot)\n\ndef ode_ex1(t, y): return [y[1], -4*y[1] - 3*y[0]]\nsol = solve_ivp(ode_ex1, (0, 4), [2.0, 1.0], dense_output=True, max_step=0.02)\nt_dots = np.linspace(0, 4, 20)\n\nfig, ax = plt.subplots(figsize=(8, 4))\nax.plot(t_plot, x_exact, color='steelblue', lw=2.5, label=r'$\\frac{7}{2}e^{-t}-\\frac{3}{2}e^{-3t}$')\nax.plot(t_dots, sol.sol(t_dots)[0], 'ro', markersize=6, label='Numerical (solve_ivp)')\nax.axhline(0, color='k', lw=0.5)\nax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')\nax.set_title(r\"$x''+4x'+3x=0$, $x(0)=2$, $x'(0)=1$\")\nax.legend(fontsize=9)\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nFigure 2: Solution of \\(x''+4x'+3x=0\\), \\(x(0)=2\\), \\(x'(0)=1\\) via Laplace transform (solid blue) confirmed by solve_ivp (red dots). The overdamped solution decays monotonically to zero — both eigenvalues \\(\\lambda=-1,-3\\) are negative real."
+  },
+  {
+    "objectID": "notes_06.html#the-heaviside-function-modeling-switches",
+    "href": "notes_06.html#the-heaviside-function-modeling-switches",
+    "title": "Notes 6",
+    "section": "The Heaviside Function — Modeling Switches",
+    "text": "The Heaviside Function — Modeling Switches\nMany real forcing functions are piecewise defined: a voltage switched on at \\(t=3\\), a force applied for exactly \\(2\\) seconds, a pump turned off at \\(t=5\\). The Heaviside function is the mathematical on/off switch:\n\\[H(t-a) = \\begin{cases} 0, & t &lt; a \\\\ 1, & t \\geq a. \\end{cases}\\]\nIts Laplace transform is: \\[\\mathcal{L}[H(t-a)] = \\int_a^\\infty e^{-st}\\,dt = \\frac{e^{-as}}{s}, \\quad s &gt; 0.\\]\n\nBuilding Piecewise Functions from Heaviside Steps\nAny piecewise-constant function can be written as a sum of Heaviside steps. The key insight is that \\(H(t-a) - H(t-b)\\) equals \\(1\\) only on the interval \\([a,b)\\) and \\(0\\) elsewhere — it is a pulse.\nExample (Logan §3.1, Example 3.8). The function \\[f(t) = \\begin{cases} 3, & 0 \\leq t &lt; 2 \\\\ 4, & 2 \\leq t &lt; 3 \\\\ 2, & 3 \\leq t &lt; 6 \\\\ 0, & t &gt; 6 \\end{cases}\\] can be written as: \\[f(t) = 3H(t) + 1\\cdot H(t-2) - 2\\cdot H(t-3) - 2\\cdot H(t-6).\\]\nEach term “adjusts” the running value at the moment of the jump:\n\n\n\nTerm\nWhat it does\nAt \\(t=\\)\n\n\n\n\n\\(3H(t)\\)\nSwitches on value \\(3\\)\n\\(0\\)\n\n\n\\(+1\\cdot H(t-2)\\)\nAdds \\(1\\) (making value \\(4\\))\n\\(2\\)\n\n\n\\(-2\\cdot H(t-3)\\)\nSubtracts \\(2\\) (making value \\(2\\))\n\\(3\\)\n\n\n\\(-2\\cdot H(t-6)\\)\nSubtracts \\(2\\) (making value \\(0\\))\n\\(6\\)\n\n\n\nBy linearity: \\[F(s) = \\frac{3}{s} + \\frac{e^{-2s}}{s} - \\frac{2e^{-3s}}{s} - \\frac{2e^{-6s}}{s} = \\frac{1}{s}\\!\\left(3 + e^{-2s} - 2e^{-3s} - 2e^{-6s}\\right).\\]\n\n\nShow the code\nt_plot = np.linspace(-0.3, 8, 600)\nfig, axes = plt.subplots(2, 1, figsize=(10, 7))\n\n# Piecewise function\ndef f_piece(tv):\n    return np.where(tv&lt;0, 0,\n           np.where(tv&lt;2, 3,\n           np.where(tv&lt;3, 4,\n           np.where(tv&lt;6, 2, 0))))\n\naxes[0].step(t_plot, f_piece(t_plot), where='post', color='k', lw=2.5,\n             label='$f(t)$', zorder=5)\n\n# Individual Heaviside contributions\nH = lambda tv, a: np.where(tv &gt;= a, 1.0, 0.0)\ncontribs = [\n    (3*H(t_plot,0),      'steelblue',  '+3$H(t)$'),\n    (1*H(t_plot,2),      'darkorange', '+1$H(t-2)$'),\n    (-2*H(t_plot,3),     'seagreen',   '-2$H(t-3)$'),\n    (-2*H(t_plot,6),     'crimson',    '-2$H(t-6)$'),\n]\nrunning = np.zeros_like(t_plot)\nfor contrib, color, lbl in contribs:\n    axes[0].fill_between(t_plot, running, running+contrib, alpha=0.25, color=color)\n    running += contrib\n\nfor _, color, lbl in contribs:\n    axes[0].plot([], [], color=color, linewidth=8, alpha=0.4, label=lbl)\n\naxes[0].set_xlabel('$t$'); axes[0].set_ylabel('$f(t)$')\naxes[0].set_title('Piecewise function as Heaviside steps')\naxes[0].legend(fontsize=9, ncol=4)\naxes[0].set_xlim(-0.3, 8); axes[0].set_ylim(-0.5, 5)\n\n# Laplace transform F(s)\ns_arr = np.linspace(0.01, 4, 400)\nF_s = (3 + np.exp(-2*s_arr) - 2*np.exp(-3*s_arr) - 2*np.exp(-6*s_arr))/s_arr\naxes[1].plot(s_arr, F_s, color='seagreen', lw=2.5)\naxes[1].axhline(0, color='k', lw=0.5)\naxes[1].set_xlabel('$s$'); axes[1].set_ylabel('$F(s)$')\naxes[1].set_title(r'Laplace transform $F(s) = \\frac{1}{s}(3+e^{-2s}-2e^{-3s}-2e^{-6s})$')\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nFigure 3: Top: the piecewise function \\(f(t)\\) decomposed as a sum of Heaviside steps (each colored step is one term). Bottom: its Laplace transform \\(F(s)\\) as a function of \\(s\\), showing how the exponential factors \\(e^{-as}\\) create oscillatory decay."
+  },
+  {
+    "objectID": "notes_06.html#two-key-operational-properties",
+    "href": "notes_06.html#two-key-operational-properties",
+    "title": "Notes 6",
+    "section": "Two Key Operational Properties",
+    "text": "Two Key Operational Properties\n\nThe Shift Property\n\n\n\n\n\n\nImportantShift Property\n\n\n\n\\[\\mathcal{L}[f(t)e^{at}] = F(s-a),\\] where \\(F(s) = \\mathcal{L}[f(t)]\\).\nMultiplying a time-domain function by \\(e^{at}\\) shifts its transform \\(a\\) units to the right in the \\(s\\)-domain.\n\n\nThis is proved directly from the definition: \\(\\int_0^\\infty f(t)e^{at}e^{-st}dt = \\int_0^\\infty f(t)e^{-(s-a)t}dt = F(s-a)\\).\nExamples.\n\n\n\n\\(f(t)\\)\n\\(F(s)\\)\n\\(f(t)e^{at}\\)\n\\(\\mathcal{L}[f(t)e^{at}]\\)\n\n\n\n\n\\(t\\)\n\\(1/s^2\\)\n\\(te^{-2t}\\)\n\\(1/(s+2)^2\\)\n\n\n\\(\\sin 3t\\)\n\\(3/(s^2+9)\\)\n\\(e^{-t}\\sin 3t\\)\n\\(3/((s+1)^2+9)\\)\n\n\n\\(\\cos 3t\\)\n\\(s/(s^2+9)\\)\n\\(e^{2t}\\cos 3t\\)\n\\((s-2)/((s-2)^2+9)\\)\n\n\n\\(t^2\\)\n\\(2/s^3\\)\n\\(t^2 e^{5t}\\)\n\\(2/(s-5)^3\\)\n\n\n\nThe shift property is essential for inverting transforms with completed-square denominators like \\((s+1)^2+4\\).\n\n\nThe Switching Property\n\n\n\n\n\n\nImportantSwitching Property\n\n\n\n\\[\\mathcal{L}[H(t-a)f(t-a)] = e^{-as}F(s).\\] Equivalently (inverse form): \\[\\mathcal{L}^{-1}[e^{-as}F(s)] = H(t-a)f(t-a).\\]\nA factor of \\(e^{-as}\\) in the transform domain corresponds to a time delay of \\(a\\) in the time domain.\n\n\nIntuition: \\(H(t-a)f(t-a)\\) is the function \\(f(t)\\) “switched on” at \\(t=a\\) (it is zero before \\(a\\) and equals \\(f(t-a)\\) after \\(a\\)). The factor \\(e^{-as}\\) encodes this delay.\nExample. Find \\(\\mathcal{L}^{-1}\\!\\left[\\frac{e^{-3s}}{s-2}\\right]\\).\nWe know \\(\\mathcal{L}^{-1}[1/(s-2)] = e^{2t}\\), so \\(F(s) = 1/(s-2)\\), \\(f(t) = e^{2t}\\). By the switching property: \\[\\mathcal{L}^{-1}\\!\\left[\\frac{e^{-3s}}{s-2}\\right] = H(t-3)\\,e^{2(t-3)}.\\] The exponential grows from \\(t=3\\) onward (not from \\(t=0\\)).\n\n\nShow the code\ns_v = sym.Symbol('s')\nt_v = sym.Symbol('t', positive=True)\n\nprint(\"=== Shift property examples (SymPy verification) ===\")\nfor f_t, lbl in [(t_v*sym.exp(-2*t_v), 'te^{-2t}'),\n                  (sym.exp(-t_v)*sym.sin(3*t_v), 'e^{-t}sin(3t)'),\n                  (sym.exp(2*t_v)*sym.cos(3*t_v), 'e^{2t}cos(3t)')]:\n    F = sym.laplace_transform(f_t, t_v, s_v, noconds=True)\n    display(Math(r\"\\mathcal{L}[\" + lbl + r\"] = \" + sym.latex(sym.simplify(F))))\n\n\n=== Shift property examples (SymPy verification) ===\n\n\n\\(\\displaystyle \\mathcal{L}[te^{-2t}] = \\frac{1}{\\left(s + 2\\right)^{2}}\\)\n\n\n\\(\\displaystyle \\mathcal{L}[e^{-t}sin(3t)] = \\frac{3}{\\left(s + 1\\right)^{2} + 9}\\)\n\n\n\\(\\displaystyle \\mathcal{L}[e^{2t}cos(3t)] = \\frac{s - 2}{\\left(s - 2\\right)^{2} + 9}\\)"
+  },
+  {
+    "objectID": "notes_06.html#application-discontinuous-forcing",
+    "href": "notes_06.html#application-discontinuous-forcing",
+    "title": "Notes 6",
+    "section": "Application: Discontinuous Forcing",
+    "text": "Application: Discontinuous Forcing\nThe true power of the Laplace transform appears when \\(f(t)\\) is discontinuous. Methods from Chapter 2 are helpless here; the Laplace transform handles it in stride.\nExample. Solve the RC circuit equation \\[x' + 2x = f(t), \\quad x(0) = 0,\\] where \\(f(t) = 1\\) for \\(0 \\leq t &lt; 3\\) and \\(f(t) = 0\\) for \\(t \\geq 3\\) (voltage switched off at \\(t = 3\\)).\nStep 1. Write \\(f(t) = H(t) - H(t-3)\\), so \\(F(s) = 1/s - e^{-3s}/s\\).\nStep 2. Transform the ODE: \\[(s+2)X(s) = \\frac{1}{s} - \\frac{e^{-3s}}{s} \\;\\Longrightarrow\\; X(s) = \\frac{1}{s(s+2)} - \\frac{e^{-3s}}{s(s+2)}.\\]\nStep 3. Partial fractions: \\(\\dfrac{1}{s(s+2)} = \\dfrac{1/2}{s} - \\dfrac{1/2}{s+2}\\), so\n\\[\\mathcal{L}^{-1}\\!\\left[\\frac{1}{s(s+2)}\\right] = \\frac{1}{2}(1 - e^{-2t}).\\]\nStep 4. Apply the switching property to the second term:\n\\[\\mathcal{L}^{-1}\\!\\left[\\frac{e^{-3s}}{s(s+2)}\\right] = H(t-3)\\cdot\\frac{1}{2}(1-e^{-2(t-3)}).\\]\nSolution: \\[\\boxed{x(t) = \\frac{1}{2}(1-e^{-2t}) - \\frac{1}{2}H(t-3)(1-e^{-2(t-3)}).}\\]\n\n\nShow the code\nt_plot = np.linspace(0, 8, 600)\nH = lambda tv, a: np.where(tv &gt;= a, 1.0, 0.0)\n\nx_exact = 0.5*(1 - np.exp(-2*t_plot)) - 0.5*H(t_plot, 3)*(1 - np.exp(-2*(t_plot-3)))\nf_plot  = H(t_plot, 0) - H(t_plot, 3)\n\nfig, axes = plt.subplots(2, 1, figsize=(9, 6), sharex=True)\n\naxes[0].step(t_plot, f_plot, where='post', color='crimson', lw=2.5)\naxes[0].set_ylabel('$f(t)$'); axes[0].set_ylim(-0.2, 1.4)\naxes[0].set_title('Forcing $f(t) = H(t)-H(t-3)$')\naxes[0].fill_between(t_plot, 0, f_plot, alpha=0.2, color='crimson')\n\naxes[1].plot(t_plot, x_exact, color='steelblue', lw=2.5, label='Analytical (Laplace)')\ndef rhs(tv, y): return [(-H(tv,0)-H(tv,3))*0 + (1 if tv&lt;3 else 0) - 2*y[0]]\nsol_num = solve_ivp(lambda tv, y: [(1 if tv&lt;3 else 0) - 2*y[0]],\n                   (0, 8), [0.0], dense_output=True, max_step=0.02)\nt_dots = np.linspace(0, 8, 25)\naxes[1].plot(t_dots, sol_num.sol(t_dots)[0], 'ro', markersize=6, label='Numerical')\naxes[1].axhline(0.5, color='gray', ls=':', lw=1.2, label='Steady state $x=0.5$')\naxes[1].axvline(3, color='gray', ls='--', lw=1.2, alpha=0.7)\naxes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')\naxes[1].set_title(\"Solution via Laplace transform\")\naxes[1].legend(fontsize=9)\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nFigure 4: RC circuit \\(x'+2x=f(t)\\), \\(x(0)=0\\) with a voltage pulse \\(f(t)=H(t)-H(t-3)\\). The solution charges toward the steady state \\(x=1/2\\) while the forcing is on, then decays back to zero after the switch-off at \\(t=3\\). The discontinuity in \\(f(t)\\) at \\(t=3\\) causes a kink in \\(x(t)\\) but not a jump — \\(x(t)\\) remains continuous (it is an integral of a bounded forcing)."
+  },
+  {
+    "objectID": "notes_06.html#the-short-table-of-laplace-transforms",
+    "href": "notes_06.html#the-short-table-of-laplace-transforms",
+    "title": "Notes 6",
+    "section": "The Short Table of Laplace Transforms",
+    "text": "The Short Table of Laplace Transforms\nThe following table (from Logan (2015), Table 3.1) collects the transforms needed throughout this chapter. The left column lists time-domain functions \\(x(t)\\) and the right column lists their transforms \\(X(s) = \\mathcal{L}[x]\\).\n\n\n\n\n\n\n\n\n\\(x(t)\\)\n\\(X(s) = \\mathcal{L}[x]\\)\nNotes\n\n\n\n\n\\(e^{at}\\)\n\\(\\dfrac{1}{s-a}\\), \\(\\;s&gt;a\\)\n\n\n\n\\(t^n\\), \\(n=0,1,2,\\ldots\\)\n\\(\\dfrac{n!}{s^{n+1}}\\), \\(\\;s&gt;0\\)\n\\(n=0\\): \\(\\mathcal{L}[1]=1/s\\)\n\n\n\\(f(t)e^{at}\\)\n\\(F(s-a)\\)\nShift property\n\n\n\\(H(t-a)\\)\n\\(\\dfrac{1}{s}e^{-as}\\), \\(\\;s&gt;0\\)\n\n\n\n\\(H(t-a)f(t-a)\\)\n\\(e^{-as}F(s)\\)\nSwitching property\n\n\n\\(f(t)H(t-a)\\)\n\\(e^{-as}\\mathcal{L}[f(t+a)]\\)\n\n\n\n\\(\\sin kt\\)\n\\(\\dfrac{k}{s^2+k^2}\\)\n\n\n\n\\(\\cos kt\\)\n\\(\\dfrac{s}{s^2+k^2}\\)\n\n\n\n\\(\\sinh kt\\)\n\\(\\dfrac{k}{s^2-k^2}\\)\n\n\n\n\\(\\cosh kt\\)\n\\(\\dfrac{s}{s^2-k^2}\\)\n\n\n\n\\(e^{at}\\sin kt\\)\n\\(\\dfrac{k}{(s-a)^2+k^2}\\)\nShift applied to \\(\\sin\\)\n\n\n\\(e^{at}\\cos kt\\)\n\\(\\dfrac{s-a}{(s-a)^2+k^2}\\)\nShift applied to \\(\\cos\\)\n\n\n\\(t\\sin kt\\)\n\\(\\dfrac{2ks}{(s^2+k^2)^2}\\)\n\n\n\n\\(t\\cos kt\\)\n\\(\\dfrac{s^2-k^2}{(s^2+k^2)^2}\\)\n\n\n\n\\(\\dfrac{1}{a-b}(e^{at}-e^{bt})\\)\n\\(\\dfrac{1}{(s-a)(s-b)}\\)\n\\(a\\neq b\\); covers PF\n\n\n\\(x^{(n)}(t)\\)\n\\(s^n X(s) - s^{n-1}x(0) - \\cdots - x^{(n-1)}(0)\\)\nKey ODE formula\n\n\n\\(f(at)\\)\n\\(\\dfrac{1}{a}F\\!\\left(\\dfrac{s}{a}\\right)\\), \\(\\;a&gt;0\\)\nScaling\n\n\n\\(t^a\\)\n\\(\\dfrac{\\Gamma(a+1)}{s^{a+1}}\\), \\(\\;s&gt;0\\)\nNon-integer powers\n\n\n\\(\\delta_a(t)\\)\n\\(e^{-as}\\)\nDirac delta at \\(t=a\\)\n\n\n\\(\\delta_0(t)\\)\n\\(1\\)\nUnit impulse\n\n\n\\(\\displaystyle\\int_0^t f(\\tau)g(t-\\tau)\\,d\\tau\\)\n\\(F(s)G(s)\\)\nConvolution theorem\n\n\n\\(\\displaystyle\\int_0^t f(\\tau)\\,d\\tau\\)\n\\(\\dfrac{1}{s}F(s)\\)\n\n\n\n\\(t\\,f(t)\\)\n\\(-F'(s)\\)\n\n\n\n\\(t^n f(t)\\)\n\\((-1)^n F^{(n)}(s)\\)\n\n\n\n\n\n\nShow the code\n# Verify a selection of table entries with SymPy\ns_v = sym.Symbol('s', positive=True)\nt_v = sym.Symbol('t', positive=True)\nk_v = sym.Symbol('k', positive=True)\na_v = sym.Symbol('a', positive=True)\n\nentries = [\n    (sym.sin(k_v*t_v), f'sin(kt)',     k_v/(s_v**2+k_v**2)),\n    (sym.cos(k_v*t_v), f'cos(kt)',     s_v/(s_v**2+k_v**2)),\n    (sym.exp(a_v*t_v)*sym.sin(k_v*t_v), 'e^{at}sin(kt)',\n     k_v/((s_v-a_v)**2+k_v**2)),\n    (t_v*sym.sin(k_v*t_v), 't*sin(kt)',\n     2*k_v*s_v/(s_v**2+k_v**2)**2),\n]\n\nprint(\"Spot-checking table entries via SymPy:\")\nfor f_t, name, F_expected in entries:\n    F_computed = sym.laplace_transform(f_t, t_v, s_v, noconds=True)\n    F_diff = sym.simplify(F_computed - F_expected)\n    status = \"✓\" if F_diff == 0 else f\"Diff={F_diff}\"\n    print(f\"  {name}: {status}\")\n\n\nSpot-checking table entries via SymPy:\n  sin(kt): ✓\n  cos(kt): ✓\n  e^{at}sin(kt): ✓\n  t*sin(kt): ✓"
+  },
+  {
+    "objectID": "notes_06.html#summary-of-the-method",
+    "href": "notes_06.html#summary-of-the-method",
+    "title": "Notes 6",
+    "section": "Summary of the Method",
+    "text": "Summary of the Method\nThe complete workflow for solving \\(ax''+bx'+cx = f(t)\\), \\(x(0)=x_0\\), \\(x'(0)=x_1\\) via Laplace transforms:\n\n\n\n\n\n\nImportantThe Five Steps\n\n\n\n\nTransform both sides: apply \\(\\mathcal{L}\\) to the ODE. Use the derivative formula to handle \\(\\mathcal{L}[x'']\\) and \\(\\mathcal{L}[x']\\). Rewrite \\(f(t)\\) using Heaviside steps if piecewise.\nIncorporate ICs: the derivative formula automatically brings in \\(x(0)\\) and \\(x'(0)\\).\nSolve for \\(X(s)\\): this is pure algebra — no differential equations.\nPartial fractions: decompose \\(X(s)\\) into standard forms from the table.\nInvert: apply \\(\\mathcal{L}^{-1}\\) term by term; use the switching property for any \\(e^{-as}\\) factors.\n\n\n\n\n\n\nStep\nWhat you do\nMathematics involved\n\n\n\n\n1\n\\(\\mathcal{L}[\\text{ODE}]\\)\nIntegral transforms, linearity\n\n\n2\nPlug in ICs\nThe formula \\(\\mathcal{L}[x''] = s^2X - sx_0 - x_1\\)\n\n\n3\nSolve for \\(X(s)\\)\nAlgebra\n\n\n4\nPartial fractions\nAlgebra (factoring, cover-up rule)\n\n\n5\n\\(\\mathcal{L}^{-1}\\), switching\nTable lookup\n\n\n\nThese notes are also viewable as a slide deck presentation: Open slides in full screen\n\n\n\n\n\n\nNote\n\n\n\nNext: Applying Laplace Transforms to Differential Equations — Logan §3.2."
+  },
+  {
+    "objectID": "notes_06.html#references",
+    "href": "notes_06.html#references",
+    "title": "Notes 6",
+    "section": "References",
+    "text": "References\n\n\nLogan, J David. 2015. A First Course in Differential Equations Third Edition.\n\n\n\n\n\n\n\n\nTipSession Info\n\n\n\n\n\n\n\nShow the code\nimport sys\nprint(\"Python:\", sys.version)\nprint('\\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m,'__version__',None)))\n\n\nPython: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]\nnumpy==2.4.3\nsympy==1.14.0\nmatplotlib==3.10.8"
+  },
+  {
+    "objectID": "notes_06_slides.html",
+    "href": "notes_06_slides.html",
+    "title": "The Laplace Transform",
+    "section": "",
+    "text": "The big picture — what the transform does and why it works\nDefinition \\(X(s)=\\int_0^\\infty x(t)e^{-st}dt\\) and computing from it\nLinearity and the transform table\nInverse transform and partial fractions\nHeaviside function — modeling switches\nShift and switching properties\nA full IVP with discontinuous forcing\n\n\n\n\n\n\n\n\nNote\n\n\n\nSection 3.1 of Logan (2015).\n\n\n\n\n\n\n\n\nTip\n\n\n\nNew vocabulary: time domain, \\(s\\)-domain, transform pair, exponential order, piecewise continuous."
+  },
+  {
+    "objectID": "notes_06_slides.html#what-we-will-cover-today",
+    "href": "notes_06_slides.html#what-we-will-cover-today",
+    "title": "The Laplace Transform",
+    "section": "What We Will Cover Today",
+    "text": "What We Will Cover Today\n\n\n\nThe big picture — what the transform does and why it works\nDefinition \\(X(s)=\\int_0^\\infty x(t)e^{-st}dt\\) and computing from it\nLinearity and the transform table\nInverse transform and partial fractions\nHeaviside function — modeling switches\nShift and switching properties\nA full IVP with discontinuous forcing\n\n\n\n\n\n\n\n\nNote\n\n\nSection 3.1 of Logan (2015).\n\n\n\n\n\n\n\n\n\nTip\n\n\nNew vocabulary: time domain, \\(s\\)-domain, transform pair, exponential order, piecewise continuous."
+  },
+  {
+    "objectID": "notes_06_slides.html#why-a-new-method",
+    "href": "notes_06_slides.html#why-a-new-method",
+    "title": "The Laplace Transform",
+    "section": "Why a New Method?",
+    "text": "Why a New Method?\nUndetermined coefficients and variation of parameters fail when \\(f(t)\\) is:\n\nDiscontinuous — a switch flipped at \\(t=2\\)\nAn impulse — a hammer blow at \\(t=5\\)\n\nThese are the most common real-world forcing functions in circuits, mechanics, and control.\n\n\n\n\n\n\n\nThe Laplace Strategy\n\n\n\\[\\underbrace{ax''+bx'+cx = f(t)}_{\\text{ODE (hard)}}\n\\xrightarrow{\\;\\mathscr{L}\\;}\n\\underbrace{(as^2+bs+c)X = F(s)+\\text{ICs}}_{\\text{algebra (easy)}}\n\\xrightarrow{\\;\\mathscr{L}^{-1}\\;}\n\\underbrace{x(t)}_{\\text{solution}}\\]\nDifferentiation \\(\\;\\longrightarrow\\;\\) multiplication by \\(s\\).\nICs are automatically incorporated. No separate step.\n\n\n\n\n\nThink of the logarithm analogy: \\(\\log(ab) = \\log a + \\log b\\) converts multiplication to addition. The Laplace transform converts differentiation to multiplication."
+  },
+  {
+    "objectID": "notes_06_slides.html#definition-and-notation",
+    "href": "notes_06_slides.html#definition-and-notation",
+    "title": "The Laplace Transform",
+    "section": "Definition and Notation",
+    "text": "Definition and Notation\n\n\n\n\n\n\nDefinition\n\n\n\\[\\mathscr{L}[x(t)](s) = X(s) = \\int_0^\\infty x(t)\\,e^{-st}\\,dt\\] provided the improper integral converges.\n\n\n\n\n\n\n\n\nTime domain\nTransform domain\n\n\n\n\nVariable\n\\(t\\)\n\\(s\\)\n\n\nFunction\n\\(x(t)\\) (lowercase)\n\\(X(s)\\) (uppercase)\n\n\nLanguage\n“what happens”\n“how fast it oscillates/decays”\n\n\n\n\n\nThe damping kernel \\(e^{-st}\\) forces the integrand to zero as \\(t\\to\\infty\\) (when \\(s&gt;0\\) is large enough), making the integral converge. Larger \\(s\\) damps the function more aggressively."
+  },
+  {
+    "objectID": "notes_06_slides.html#computing-from-the-definition",
+    "href": "notes_06_slides.html#computing-from-the-definition",
+    "title": "The Laplace Transform",
+    "section": "Computing from the Definition",
+    "text": "Computing from the Definition\n\\(\\mathscr{L}[e^{at}]\\): \\[\\int_0^\\infty e^{at}e^{-st}dt = \\int_0^\\infty e^{(a-s)t}dt = \\frac{1}{s-a}, \\quad s&gt;a.\\]\n\n\\(\\mathscr{L}[1]\\) (set \\(a=0\\)): \\(\\quad 1/s\\), \\(\\;s&gt;0\\).\n\n\n\\(\\mathscr{L}[t]\\) (integration by parts, \\(u=t\\), \\(dv=e^{-st}dt\\)): \\[\\int_0^\\infty te^{-st}dt = \\frac{1}{s^2}, \\quad s&gt;0.\\]\n\n\n\\(\\mathscr{L}[\\sin kt]\\) (using \\(\\sin kt = \\frac{1}{2i}(e^{ikt}-e^{-ikt})\\)): \\[\\frac{k}{s^2+k^2}, \\qquad \\mathscr{L}[\\cos kt] = \\frac{s}{s^2+k^2}.\\]\n\n\n\n\n\n\nTip\n\n\nNote: \\(\\mathscr{L}[\\cos kt]\\) has \\(s\\) in the numerator; \\(\\mathscr{L}[\\sin kt]\\) has the constant \\(k\\). This reflects \\(\\cos 0 = 1\\) vs. \\(\\sin 0 = 0\\)."
+  },
+  {
+    "objectID": "notes_06_slides.html#geometric-intuition",
+    "href": "notes_06_slides.html#geometric-intuition",
+    "title": "The Laplace Transform",
+    "section": "Geometric Intuition",
+    "text": "Geometric Intuition\n\n\n\n\n\n\n\n\nFigure 1"
+  },
+  {
+    "objectID": "notes_06_slides.html#linearity-and-existence",
+    "href": "notes_06_slides.html#linearity-and-existence",
+    "title": "The Laplace Transform",
+    "section": "Linearity and Existence",
+    "text": "Linearity and Existence\n\n\n\n\n\n\nLinearity\n\n\n\\[\\mathscr{L}[\\alpha x + \\beta y] = \\alpha\\mathscr{L}[x] + \\beta\\mathscr{L}[y]\\]\n\n\n\nExample: \\(\\mathscr{L}[3e^{-2t}+5\\sin 4t] = \\dfrac{3}{s+2} + \\dfrac{20}{s^2+16}\\)\n\nExistence conditions (sufficient):\n\nPiecewise continuous on every \\([0,b]\\) — finite number of finite-jump discontinuities.\nExponential order — \\(|x(t)| \\leq Me^{rt}\\) for large \\(t\\).\n\n\n\nFailure examples: - \\(e^{t^2}\\): not exponential order (grows too fast) - \\(1/t\\): not piecewise continuous at \\(t=0\\) - If \\(X(s)\\not\\to 0\\) as \\(s\\to\\infty\\), it cannot be a Laplace transform"
+  },
+  {
+    "objectID": "notes_06_slides.html#mathcall-1-and-partial-fractions",
+    "href": "notes_06_slides.html#mathcall-1-and-partial-fractions",
+    "title": "The Laplace Transform",
+    "section": "\\(\\mathcal{L}^{-1}\\) and Partial Fractions",
+    "text": "\\(\\mathcal{L}^{-1}\\) and Partial Fractions\n\\[x(t) = \\mathcal{L}^{-1}[X(s)] \\qquad \\text{(also linear)}\\]\nIn practice: partial fractions decompose \\(X(s)\\) into table-recognizable pieces.\n\nType 1 — Distinct real poles: \\[\\frac{P(s)}{(s-a)(s-b)} = \\frac{A}{s-a}+\\frac{B}{s-b} \\;\\Rightarrow\\; Ae^{at}+Be^{bt}\\]\nType 2 — Repeated pole: \\[\\frac{P(s)}{(s-a)^2} = \\frac{A}{s-a}+\\frac{B}{(s-a)^2} \\;\\Rightarrow\\; Ae^{at}+Bte^{at}\\]\nType 3 — Complex poles (complete the square): \\[\\frac{1}{s^2+2s+5} = \\frac{1}{(s+1)^2+4} \\;\\Rightarrow\\; \\frac{1}{2}e^{-t}\\sin 2t\\]"
+  },
+  {
+    "objectID": "notes_06_slides.html#partial-fractions-worked-example",
+    "href": "notes_06_slides.html#partial-fractions-worked-example",
+    "title": "The Laplace Transform",
+    "section": "Partial Fractions: Worked Example",
+    "text": "Partial Fractions: Worked Example\nFind \\(\\mathscr{L}^{-1}\\!\\left[\\dfrac{2s+9}{(s+1)(s+3)}\\right]\\).\n\nWrite: \\(\\dfrac{2s+9}{(s+1)(s+3)} = \\dfrac{A}{s+1}+\\dfrac{B}{s+3}\\)\n\n\nCover-up rule: \\[A = \\frac{2(-1)+9}{(-1+3)} = \\frac{7}{2}, \\qquad B = \\frac{2(-3)+9}{(-3+1)} = -\\frac{3}{2}.\\]\n\n\nInvert: \\[x(t) = \\frac{7}{2}e^{-t} - \\frac{3}{2}e^{-3t}.\\]\n\ns_v, t_v = sym.symbols('s t', positive=True)\nexpr = (2*s_v+9)/((s_v+1)*(s_v+3))\ndisplay(Math(r\"\\text{PF: }\" + sym.latex(sym.apart(expr,s_v))))\ndisplay(Math(r\"x(t)=\" + sym.latex(sym.inverse_laplace_transform(expr,s_v,t_v))))\n\n\\(\\displaystyle \\text{PF: }- \\frac{3}{2 \\left(s + 3\\right)} + \\frac{7}{2 \\left(s + 1\\right)}\\)\n\n\n\\(\\displaystyle x(t)=\\frac{7 e^{- t}}{2} - \\frac{3 e^{- 3 t}}{2}\\)"
+  },
+  {
+    "objectID": "notes_06_slides.html#the-key-ode-formula",
+    "href": "notes_06_slides.html#the-key-ode-formula",
+    "title": "The Laplace Transform",
+    "section": "The Key ODE Formula",
+    "text": "The Key ODE Formula\n\n\n\n\n\n\nTransform of Derivatives\n\n\n\\[\\mathscr{L}[x'(t)] = s\\,X(s) - x(0)\\] \\[\\mathscr{L}[x''(t)] = s^2 X(s) - s\\,x(0) - x'(0)\\]\n\n\n\nDerivation (integration by parts, \\(u=e^{-st}\\), \\(dv=x'dt\\)): \\[\\int_0^\\infty x'e^{-st}dt = [xe^{-st}]_0^\\infty + s\\int_0^\\infty xe^{-st}dt = -x(0)+sX(s). \\checkmark\\]\n\nWhy this is powerful. Applying \\(\\mathscr{L}\\) to \\(ax''+bx'+cx=f(t)\\): \\[(as^2+bs+c)X(s) = F(s) + a(sx_0+x_1) + bx_0.\\]\nThe ODE becomes an algebraic equation for \\(X(s)\\). ICs appear automatically on the right-hand side — no separate enforcement needed."
+  },
+  {
+    "objectID": "notes_06_slides.html#full-ode-example",
+    "href": "notes_06_slides.html#full-ode-example",
+    "title": "The Laplace Transform",
+    "section": "Full ODE Example",
+    "text": "Full ODE Example\nSolve \\(x''+4x'+3x=0\\), \\(x(0)=2\\), \\(x'(0)=1\\).\n\nStep 1 — Transform: \\[[s^2X-2s-1]+4[sX-2]+3X = 0 \\;\\Rightarrow\\; (s^2+4s+3)X = 2s+9.\\]\nStep 2 — Solve: \\[X(s) = \\frac{2s+9}{(s+1)(s+3)}.\\]\nStep 3 — PF + invert: \\[x(t) = \\tfrac{7}{2}e^{-t} - \\tfrac{3}{2}e^{-3t}.\\]\n\n\n\n\n\n\n\n\nFigure 2"
+  },
+  {
+    "objectID": "notes_06_slides.html#modeling-onoff-switches",
+    "href": "notes_06_slides.html#modeling-onoff-switches",
+    "title": "The Laplace Transform",
+    "section": "Modeling On/Off Switches",
+    "text": "Modeling On/Off Switches\n\\[H(t-a) = \\begin{cases} 0, & t &lt; a \\\\ 1, & t \\geq a \\end{cases}\\]\nA mathematical switch: off before \\(t=a\\), on at \\(t=a\\).\n\\[\\mathscr{L}[H(t-a)] = \\int_a^\\infty e^{-st}dt = \\frac{e^{-as}}{s}, \\quad s&gt;0.\\]\n\nBuilding piecewise functions. The pulse \\(H(t-a)-H(t-b)\\) equals 1 on \\([a,b)\\), zero elsewhere.\nExample (Logan 3.8): \\[f(t) = \\begin{cases}3 & 0\\leq t&lt;2\\\\4 & 2\\leq t&lt;3\\\\2 & 3\\leq t&lt;6\\\\0 & t&gt;6\\end{cases}\n= 3H(t) + H(t-2) - 2H(t-3) - 2H(t-6)\\]\n\\[F(s) = \\frac{1}{s}\\left(3 + e^{-2s} - 2e^{-3s} - 2e^{-6s}\\right)\\]"
+  },
+  {
+    "objectID": "notes_06_slides.html#heaviside-decomposition-visual",
+    "href": "notes_06_slides.html#heaviside-decomposition-visual",
+    "title": "The Laplace Transform",
+    "section": "Heaviside Decomposition — Visual",
+    "text": "Heaviside Decomposition — Visual\n\n\n\n\n\n\n\n\nFigure 3\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nThink of it as a running adjustment: start at \\(3\\), add \\(1\\) at \\(t=2\\), subtract \\(2\\) at \\(t=3\\), subtract \\(2\\) at \\(t=6\\)."
+  },
+  {
+    "objectID": "notes_06_slides.html#shift-property",
+    "href": "notes_06_slides.html#shift-property",
+    "title": "The Laplace Transform",
+    "section": "Shift Property",
+    "text": "Shift Property\n\n\n\n\n\n\nShift Property\n\n\n\\[\\mathscr{L}[f(t)e^{at}] = F(s-a)\\]\nMultiplying by \\(e^{at}\\) in the time domain shifts the transform \\(a\\) units right in the \\(s\\)-domain.\n\n\n\n\n\n\n\\(f(t)\\)\n\\(F(s)\\)\n\\(f(t)e^{at}\\)\n\\(\\mathscr{L}[f(t)e^{at}]\\)\n\n\n\n\n\\(t\\)\n\\(1/s^2\\)\n\\(te^{-2t}\\)\n\\(1/(s+2)^2\\)\n\n\n\\(\\sin 3t\\)\n\\(3/(s^2+9)\\)\n\\(e^{-t}\\sin 3t\\)\n\\(3/((s+1)^2+9)\\)\n\n\n\\(\\cos 3t\\)\n\\(s/(s^2+9)\\)\n\\(e^{2t}\\cos 3t\\)\n\\((s-2)/((s-2)^2+9)\\)\n\n\n\n\nInverse direction. Whenever you see \\((s-a)^2+k^2\\) in the denominator, complete the square and apply the shift property in reverse.\nExample: \\(\\mathscr{L}^{-1}\\!\\left[\\dfrac{3}{(s+1)^2+9}\\right] = e^{-t}\\sin 3t.\\)"
+  },
+  {
+    "objectID": "notes_06_slides.html#switching-property",
+    "href": "notes_06_slides.html#switching-property",
+    "title": "The Laplace Transform",
+    "section": "Switching Property",
+    "text": "Switching Property\n\n\n\n\n\n\nSwitching Property\n\n\n\\[\\mathscr{L}[H(t-a)f(t-a)] = e^{-as}F(s)\\] \\[\\mathscr{L}^{-1}[e^{-as}F(s)] = H(t-a)f(t-a)\\]\nA factor \\(e^{-as}\\) in the \\(s\\)-domain signals a time delay of \\(a\\).\n\n\n\n\nExample. Find \\(\\mathscr{L}^{-1}\\!\\left[\\dfrac{e^{-3s}}{s-2}\\right]\\).\nSince \\(\\mathscr{L}^{-1}[1/(s-2)] = e^{2t}\\), the switching property gives: \\[\\mathscr{L}^{-1}\\!\\left[\\frac{e^{-3s}}{s-2}\\right] = H(t-3)\\,e^{2(t-3)}.\\]\nThe exponential starts growing from \\(t=3\\), not from \\(t=0\\).\n\n\n\n\n\n\n\n\nTip\n\n\nSignal: see an \\(e^{-as}\\) multiplying a transform? That’s a time delay. Strip off the exponential, invert the remaining \\(F(s)\\), replace \\(t\\) with \\(t-a\\), and multiply by \\(H(t-a)\\)."
+  },
+  {
+    "objectID": "notes_06_slides.html#example-rc-circuit-with-switch",
+    "href": "notes_06_slides.html#example-rc-circuit-with-switch",
+    "title": "The Laplace Transform",
+    "section": "Example: RC Circuit with Switch",
+    "text": "Example: RC Circuit with Switch\nSolve \\(x' + 2x = f(t)\\), \\(x(0)=0\\), where \\(f(t)=1\\) for \\(0\\leq t&lt;3\\), \\(f(t)=0\\) for \\(t\\geq 3\\).\n\nStep 1. \\(f(t) = H(t) - H(t-3)\\), so \\(F(s) = \\frac{1}{s} - \\frac{e^{-3s}}{s}\\).\nStep 2. \\((s+2)X = \\frac{1-e^{-3s}}{s}\\), so \\(X(s) = \\frac{1}{s(s+2)} - \\frac{e^{-3s}}{s(s+2)}\\).\nStep 3. PF: \\(\\frac{1}{s(s+2)} = \\frac{1/2}{s} - \\frac{1/2}{s+2}\\), so \\(\\mathscr{L}^{-1}\\!\\left[\\frac{1}{s(s+2)}\\right] = \\frac{1}{2}(1-e^{-2t})\\).\nStep 4. Switching: \\(\\mathscr{L}^{-1}\\!\\left[\\frac{e^{-3s}}{s(s+2)}\\right] = H(t-3)\\cdot\\frac{1}{2}(1-e^{-2(t-3)})\\).\n\\[\\boxed{x(t) = \\frac{1}{2}(1-e^{-2t}) - \\frac{H(t-3)}{2}(1-e^{-2(t-3)})}\\]"
+  },
+  {
+    "objectID": "notes_06_slides.html#discontinuous-example-solution-plot",
+    "href": "notes_06_slides.html#discontinuous-example-solution-plot",
+    "title": "The Laplace Transform",
+    "section": "Discontinuous Example — Solution Plot",
+    "text": "Discontinuous Example — Solution Plot\n\n\n\n\n\n\n\n\nFigure 4\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nThe solution \\(x(t)\\) is continuous even though the forcing is discontinuous. Its derivative \\(x'(t)\\) has a jump at \\(t=3\\)."
+  },
+  {
+    "objectID": "notes_06_slides.html#short-table-of-laplace-transforms",
+    "href": "notes_06_slides.html#short-table-of-laplace-transforms",
+    "title": "The Laplace Transform",
+    "section": "Short Table of Laplace Transforms",
+    "text": "Short Table of Laplace Transforms\n\n\n\n\\(x(t)\\)\n\\(X(s)\\)\n\n\n\n\n\\(e^{at}\\)\n\\(\\frac{1}{s-a}\\)\n\n\n\\(t^n\\)\n\\(\\frac{n!}{s^{n+1}}\\)\n\n\n\\(\\sin kt\\)\n\\(\\frac{k}{s^2+k^2}\\)\n\n\n\\(\\cos kt\\)\n\\(\\frac{s}{s^2+k^2}\\)\n\n\n\\(e^{at}\\sin kt\\)\n\\(\\frac{k}{(s-a)^2+k^2}\\)\n\n\n\\(e^{at}\\cos kt\\)\n\\(\\frac{s-a}{(s-a)^2+k^2}\\)\n\n\n\\(H(t-a)\\)\n\\(\\frac{e^{-as}}{s}\\)\n\n\n\\(H(t-a)f(t-a)\\)\n\\(e^{-as}F(s)\\)\n\n\n\\(f(t)e^{at}\\)\n\\(F(s-a)\\)\n\n\n\\(x^{(n)}(t)\\)\n\\(s^n X - s^{n-1}x(0)-\\cdots-x^{(n-1)}(0)\\)\n\n\n\\(\\delta_a(t)\\)\n\\(e^{-as}\\)\n\n\n\\(\\int_0^t f(\\tau)g(t-\\tau)d\\tau\\)\n\\(F(s)G(s)\\)"
+  },
+  {
+    "objectID": "notes_06_slides.html#summary-the-five-step-method",
+    "href": "notes_06_slides.html#summary-the-five-step-method",
+    "title": "The Laplace Transform",
+    "section": "Summary: The Five-Step Method",
+    "text": "Summary: The Five-Step Method\n\n\n\n\n\n\nAlgorithm\n\n\n\nWrite \\(f(t)\\) using Heaviside steps if piecewise.\nApply \\(\\mathscr{L}\\) to both sides; use the derivative formula.\nSolve for \\(X(s)\\) algebraically.\nPartial fractions to decompose \\(X(s)\\) into table forms.\nInvert term by term; use the switching property for each \\(e^{-as}\\) factor.\n\n\n\n\n\n\nEach \\(e^{-as}\\) factor in \\(X(s)\\) signals a time delay: strip it, invert the rest as \\(f(t)\\), then replace \\(t\\to t-a\\) and multiply by \\(H(t-a)\\).\nComplex poles \\((s-\\alpha)^2+\\beta^2\\): complete the square, then use \\(\\mathscr{L}[e^{\\alpha t}\\sin\\beta t]\\) and \\(\\mathscr{L}[e^{\\alpha t}\\cos\\beta t]\\).\nRepeated poles \\((s-a)^2\\): the inverse is \\(Ae^{at}+Bte^{at}\\).\nInitial conditions are free: they appear automatically when you expand \\(\\mathscr{L}[x'']\\) and \\(\\mathscr{L}[x']\\) — no need to enforce them separately."
+  },
+  {
+    "objectID": "notes_06_slides.html#references",
+    "href": "notes_06_slides.html#references",
+    "title": "The Laplace Transform",
+    "section": "References",
+    "text": "References\n\n\nLogan, J David. 2015. A First Course in Differential Equations Third Edition."
+  },
+  {
+    "objectID": "notes_06_slides.html#mathscrl-1-and-partial-fractions",
+    "href": "notes_06_slides.html#mathscrl-1-and-partial-fractions",
+    "title": "The Laplace Transform",
+    "section": "\\(\\mathscr{L}^{-1}\\) and Partial Fractions",
+    "text": "\\(\\mathscr{L}^{-1}\\) and Partial Fractions\n\\[x(t) = \\mathscr{L}^{-1}[X(s)] \\qquad \\text{(also linear)}\\]\nIn practice: partial fractions decompose \\(X(s)\\) into table-recognizable pieces.\n\nType 1 — Distinct real poles: \\[\\frac{P(s)}{(s-a)(s-b)} = \\frac{A}{s-a}+\\frac{B}{s-b} \\;\\Rightarrow\\; Ae^{at}+Be^{bt}\\]\nType 2 — Repeated pole: \\[\\frac{P(s)}{(s-a)^2} = \\frac{A}{s-a}+\\frac{B}{(s-a)^2} \\;\\Rightarrow\\; Ae^{at}+Bte^{at}\\]\nType 3 — Complex poles (complete the square): \\[\\frac{1}{s^2+2s+5} = \\frac{1}{(s+1)^2+4} \\;\\Rightarrow\\; \\frac{1}{2}e^{-t}\\sin 2t\\]"
+  },
+  {
+    "objectID": "notes_06.html#relevant-videos",
+    "href": "notes_06.html#relevant-videos",
+    "title": "Notes 6",
+    "section": "Relevant Videos",
+    "text": "Relevant Videos\n\nWhat is a Laplace Transform?:\n\n  \n  \n\n\n\nIntro to Laplace Transforms:\n\n  \n  \n\n\n\nProperties of Laplace Transforms:"
   }
 ]
