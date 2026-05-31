@@ -500,7 +500,7 @@ window.Quarto = {
 </header>
 
 
-<div id="c1977a70" class="cell" data-execution_count="1">
+<div id="c322237a" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -546,7 +546,7 @@ Note
 <h3 class="anchored" data-anchor-id="the-geometric-idea">The Geometric Idea</h3>
 <p>A first-order ODE of the form <span class="math display">\[
 x' = f(t, x)
-\]</span> has a natural geometric interpretation. At any point <span class="math inline">\((t, x)\)</span> in the plane, the ODE tells us the <em>slope</em> <span class="math inline">\(x'(t) = f(t, x(t))\)</span> that a solution curve passing through that point must have. If we draw a short line segment at each point with the prescribed slope, the collection of all such segments is called the <strong><a href="https://en.wikipedia.org/wiki/Slope_field">slope field</a></strong> (or <strong>direction field</strong>) of the equation.</p>
+\]</span> has a natural geometric interpretation. At any allowable point <span class="math inline">\((t, x)\)</span> in the plane, the ODE tells us the <em>slope</em> <span class="math inline">\(x'(t) = f(t, x(t))\)</span> that a solution curve passing through that point must have. If we draw a short line segment at each point with the prescribed slope, the collection of all such segments is called the <strong><a href="https://en.wikipedia.org/wiki/Slope_field">slope field</a></strong> (or <strong>direction field</strong>) of the equation.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -557,7 +557,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A slope field is a visualization of the ODE itself — before any solution has been found. Solution curves are precisely those curves that are everywhere tangent to the slope-field segments through which they pass.</p>
+<p>A slope field is a visualization of the ODE itself — before any solution has been found. Solution curves are precisely those curves that are <strong>everywhere tangent</strong> to the slope-field segments through which they pass.</p>
 </div>
 </div>
 <p>In calculus, we are given a function and asked to find its derivative (slopes). Differential equations reverse this: we are <em>given</em> the slopes and asked to recover the function.</p>
@@ -572,9 +572,9 @@ Important
 </section>
 <section id="python-drawing-slope-fields" class="level3">
 <h3 class="anchored" data-anchor-id="python-drawing-slope-fields">Python: Drawing Slope Fields</h3>
-<p>Python’s <code>matplotlib.pyplot.quiver</code> function makes it straightforward to draw slope fields. The idea is to create a grid of <span class="math inline">\((t, x)\)</span> points, evaluate <span class="math inline">\(f(t, x)\)</span> at each point, and draw a unit-length arrow in the direction <span class="math inline">\((1, f(t,x))\)</span> (normalized so all arrows have equal length).</p>
+<p>Python’s <code>matplotlib.pyplot.quiver</code> function makes it straightforward to compute and plot slope fields. The idea is to create a grid of <span class="math inline">\((t, x)\)</span> points, evaluate <span class="math inline">\(f(t, x)\)</span> at each point, and draw a unit-length arrow in the direction <span class="math inline">\((1, f(t,x))\)</span> (normalized so all arrows have equal length).</p>
 <p>A reusable helper function:</p>
-<div id="7a4f329e" class="cell" data-execution_count="2">
+<div id="c8b5327e" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slope_field(f, t_range, x_range, n<span class="op">=</span><span class="dv">20</span>, ax<span class="op">=</span><span class="va">None</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>):</span>
@@ -815,7 +815,7 @@ Tip
 \frac{1}{x}\,dx = r\,dt \quad\Longrightarrow\quad \ln|x| = rt + C \quad\Longrightarrow\quad x(t) = Ce^{rt}.
 \]</span> This is the fundamental <strong><a href="https://en.wikipedia.org/wiki/Exponential_growth">exponential growth/decay</a></strong> model. Applied to a population with <span class="math inline">\(x(0) = x_0\)</span> it gives <span class="math inline">\(x(t) = x_0 e^{rt}\)</span>.</p>
 <p>Let us verify this with SymPy.</p>
-<div id="b38ecda3" class="cell" data-execution_count="6">
+<div id="daff6ffa" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>t, r, C, x0 <span class="op">=</span> sym.symbols(<span class="st">'t r C x_0'</span>, real<span class="op">=</span><span class="va">True</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -847,7 +847,7 @@ IVP solution (x(0)=x0): Eq(x(t), x_0*exp(r*t))</code></pre>
 \]</span> Solving for <span class="math inline">\(x\)</span> and applying <span class="math inline">\(x(0) = x_0\)</span>: <span class="math display">\[
 \boxed{x(t) = \frac{K}{1 + \left(\dfrac{K}{x_0} - 1\right)e^{-rt}}.}
 \]</span></p>
-<div id="5892bc8a" class="cell" data-execution_count="7">
+<div id="eb23edda" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>t_s, r_s, K_s, x0_s <span class="op">=</span> sym.symbols(<span class="st">'t r K x_0'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -1354,7 +1354,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations Third Edition
 </div>
 <div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="84f09d20" class="cell" data-execution_count="14">
+<div id="b1c9ca99" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
