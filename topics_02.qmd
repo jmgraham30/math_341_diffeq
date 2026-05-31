@@ -499,6 +499,238 @@ plt.tight_layout()
 plt.show()
 ```
 
+
+### Ecology: Social Learning and Biological Pest Control
+
+The following example is drawn from @strombom2024modelling, *Modelling the emergence of
+social-bird biological controls to mitigate invasions of the spotted lanternfly and similar
+invasive pests*, [*Royal Society Open Science* **11**, 231671](https://royalsocietypublishing.org/doi/10.1098/rsos.231671).
+
+#### Biological Background
+
+![A spotted lanternfly (*Lycorma delicatula*)](https://cdn.britannica.com/37/244937-050-054E2C29/invasive-spotted-lanternfly-on-host-plant.jpg){#fig-lanternfly width=50% fig-align="center"}
+
+The [spotted lanternfly](https://en.wikipedia.org/wiki/Spotted_lanternfly) (*Lycorma delicatula*) (shown in @fig-lanternfly) is an invasive insect pest that has spread
+rapidly through the northeastern United States since its accidental introduction. Because it
+has few natural predators in North America, pest managers have explored using birds as a
+biological control agent. Great tits (*Parus major*) are promising candidates: they are
+opportunistic foragers and effective social learners. The catch is that some lanternflies are
+**toxic** — those that have fed on the tree-of-heaven (*Ailanthus altissima*) acquire
+chemicals that make them unpalatable or harmful to birds.
+
+This raises a natural question: under what conditions can a flock of socially-learning birds
+collectively "discover" that lanternflies are edible, and begin controlling the pest
+population? @strombom2024modelling built a mathematical model to answer it, and the core of
+that model is a single autonomous ODE — which turns out to be a Bernoulli differential equation.
+
+#### Variables and Parameters
+
+Consider a population of great tit-like predators and a spotted lanternfly-like prey
+population. Define:
+
+| Symbol | Meaning |
+|--------|---------|
+| $p(t)$ | Proportion of birds that currently eat the lanternfly |
+| $1-p(t)$ | Proportion of birds that currently do **not** eat the lanternfly |
+| $q$ | Proportion of lanternflies that are **toxic** (constant) |
+| $r_i$ | Rate at which a predator interacts with a lanternfly (interactions per time step) |
+| $r_o$ | Probability that a given predator–prey interaction is observed by another bird |
+
+#### Deriving Equation (2.1)
+
+Two social-learning processes drive changes in $p$:
+
+**Gaining prey eaters.** A non-prey-eating bird (proportion $1-p$) may observe another
+bird interacting with a lanternfly. This happens at rate $r_i r_o p$. The interaction is
+positive (the lanternfly is not toxic) with probability $1-q$. Hence the rate at which
+non-prey-eaters *become* prey eaters is
+$$
+r_i r_o p (1-q)(1-p).
+$$
+
+**Losing prey eaters.** A prey-eating bird (proportion $p$) may observe a *negative*
+interaction with a toxic lanternfly and be deterred. This observed-deterrence rate is
+$r_i r_o p \cdot q \cdot p = r_i r_o q p^2$. Additionally, each prey-eating bird can
+encounter a toxic lanternfly individually at rate $r_i q$, contributing a further loss of
+$r_i q p$.
+
+Combining gains and losses:
+$$
+\frac{dp}{dt}
+  = r_i r_o p(1-q)(1-p)
+  - r_i r_o q p^2
+  - r_i q p.
+$$
+
+Factoring out $r_i p$ and collecting the terms inside the bracket:
+$$
+\frac{dp}{dt}
+  = r_i p\bigl[r_o(1-q)(1-p) - r_o q p - q\bigr]
+  = r_i p\bigl[r_o(1-q) - q - r_o p\underbrace{((1-q)+q)}_{=1}\bigr],
+$$
+
+which simplifies to equation (2.1) of @strombom2024modelling:
+$$
+\frac{dp}{dt} = r_i p \bigl[r_o(1 - q - p) - q\bigr]. \tag{2.1}
+$$
+
+#### Equation (2.1) is a Bernoulli Equation
+
+Expanding the right-hand side of (2.1):
+$$
+\frac{dp}{dt}
+  = r_i\bigl[r_o(1-q) - q\bigr]\,p - r_i r_o\, p^2.
+$$
+
+Introduce the constants
+$$
+A = r_i\bigl[r_o(1-q) - q\bigr], \qquad B = r_i r_o,
+$$
+so that (2.1) becomes
+$$
+\frac{dp}{dt} = A\,p - B\,p^2. \tag{2.2}
+$$
+
+Comparing with the standard Bernoulli form $x' = a(t)x + g(t)x^n$, we identify
+$a(t) = A$, $g(t) = -B$ (both constants), and $\mathbf{n = 2}$. Equation (2.2) is
+therefore a **Bernoulli equation with $n = 2$** — the same form as the logistic equation
+(see [Example 3](#sec-logistic)).
+
+**Note:** Equation (2.2) is the logistic equation $p' = Ap(1 - p\,B/A)$ in disguise, with intrinsic
+growth rate $A$ and carrying capacity $K = A/B$. Its appearance here has a natural
+interpretation: social learning "saturates" once most birds are already eating the prey, just
+as a population saturates at its carrying capacity.
+
+#### Solving Equation (2.1) by the Bernoulli Substitution
+
+We follow the four-step method.
+
+**Step 1.** Substitute $y = p^{1-2} = p^{-1}$.
+
+**Step 2.** Dividing (2.2) by $p^2$ gives
+$p^{-2}p' = Ap^{-1} - B$.
+With $y' = -p^{-2}p'$ the linear ODE (L) becomes:
+$$
+y' + A\,y = B. \tag{2.3}
+$$
+
+**Step 3.** The integrating factor is $\mu = e^{At}$:
+$$
+\bigl(e^{At}y\bigr)' = B\,e^{At}
+\quad\Longrightarrow\quad
+y(t) = \frac{B}{A} + C\,e^{-At}.
+$$
+Applying the initial condition $p(0) = p_0 > 0$, so $y(0) = 1/p_0$:
+$$
+C = \frac{1}{p_0} - \frac{B}{A}.
+$$
+
+**Step 4.** Recover $p = y^{-1}$:
+$$
+\boxed{p(t) = \frac{A/B}{\displaystyle 1 + \!\left(\frac{A}{B\,p_0} - 1\right)e^{-At}}.}
+\tag{2.4}
+$$
+
+Also, $p(t) \equiv 0$ is a solution (the equilibrium in which no bird ever eats the
+lanternfly).
+
+Important
+
+**Threshold condition for collective biological control.** The long-term behaviour of
+(2.4) depends entirely on the sign of $A = r_i[r_o(1-q)-q]$:
+
+- If $A > 0$ (i.e. $r_o > q/(1-q)$): the exponent $e^{-At} \to 0$ and $p(t) \to A/B = 1-(r_o+1)q/r_o > 0$. A positive fraction of the bird population converges to eating the lanternfly — **collective biological control emerges**.
+- If $A < 0$ (i.e. $r_o < q/(1-q)$): the denominator of (2.4) grows without bound and $p(t) \to 0$. Prey-eating behavior dies out — **collective control does not emerge**.
+- If $A = 0$: equation (2.2) reduces to $p' = -Bp^2$, giving $p(t) = p_0/(1+Bp_0 t) \to 0$.
+
+The critical condition for control to emerge is therefore
+$$
+r_o > \frac{q}{1-q},
+$$
+i.e. the social observation rate must exceed the *odds* that a given lanternfly is toxic.
+This gives an ecologically actionable recommendation: reducing $q$ (e.g. by removing
+tree-of-heaven, the toxicity-inducing host plant) lowers the threshold and makes it easier
+for birds to collectively learn to eat the lanternfly.
+
+**Show the code**
+
+```{python}
+#| code-fold: true
+#| label: fig-lanternfly-results
+#| fig-cap: "Solutions of the social-learning ODE (2.4) for three ecological regimes. **Top:** $A > 0$ ($r_o = 0.8$, $q = 0.3$): all solutions with $p_0 > 0$ converge to the stable equilibrium $p^* = A/B$ (dashed green) — collective biological control emerges. **Middle:** $A = 0$ ($r_o = 0.5$, $q = 1/3$): the borderline case; $p(t) \\to 0$ algebraically as $1/(1+Bt)$. **Bottom:** $A < 0$ ($r_o = 0.2$, $q = 0.3$): all solutions decay to zero — collective control does not emerge. Closed-form solutions (solid) are verified against a direct numerical ODE solve (dots)."
+#| fig-height: 10
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+mpl_rc = {'figure.dpi': 150,
+           'axes.spines.top': False,
+           'axes.spines.right': False}
+
+for k, v in mpl_rc.items():
+    plt.rcParams[k] = v
+
+def closed_form(t, p0, A, B):
+    """Exact solution (2.4); returns NaN where denominator <= 0."""
+    if abs(A) < 1e-12:          # A = 0 case: p' = -B p^2
+        return p0 / (1.0 + B * p0 * t)
+    ratio = A / B
+    denom = 1.0 + (ratio / p0 - 1.0) * np.exp(-A * t)
+    return np.where(np.abs(denom) > 1e-8, ratio / denom, np.nan)
+
+def ode_rhs(t, p, ri, ro, q):
+    return [ri * p[0] * (ro * (1 - q - p[0]) - q)]
+
+ri = 1.0
+scenarios = [
+    dict(ro=0.8, q=0.3,         label_suffix="$A>0$: control emerges",   cmap='viridis'),
+    dict(ro=0.5, q=1.0/3.0,     label_suffix="$A=0$: borderline",        cmap='plasma'),
+    dict(ro=0.2, q=0.3,         label_suffix="$A<0$: control fails",     cmap='coolwarm'),
+]
+
+fig, axes = plt.subplots(3, 1, figsize=(8, 10))
+t_plot = np.linspace(0, 12, 500)
+p0_vals = [0.05, 0.2, 0.5, 0.8]
+
+for ax, sc in zip(axes, scenarios):
+    ro, q = sc['ro'], sc['q']
+    A = ri * (ro * (1 - q) - q)
+    B = ri * ro
+    colors = plt.get_cmap(sc['cmap'])(np.linspace(0.2, 0.85, len(p0_vals)))
+
+    for p0, color in zip(p0_vals, colors):
+        # Closed-form solution
+        p_cf = closed_form(t_plot, p0, A, B)
+        ax.plot(t_plot, p_cf, color=color, lw=2.2, label=f'$p_0={p0}$')
+
+        # Numerical verification (dots)
+        sol = solve_ivp(ode_rhs, (0, 12), [p0], args=(ri, ro, q),
+                        dense_output=True, max_step=0.05)
+        t_dots = np.linspace(0, 12, 18)
+        ax.plot(t_dots, sol.sol(t_dots)[0], 'o', color=color, markersize=4)
+
+    # Mark equilibrium p* when A > 0
+    if A > 1e-10:
+        p_star = A / B
+        ax.axhline(p_star, color='seagreen', ls='--', lw=1.8,
+                   label=f'$p^* = A/B \\approx {p_star:.2f}$')
+
+    ax.axhline(0, color='crimson', ls='--', lw=1.2, label='$p=0$ (unstable)')
+    ax.set_ylim(-0.05, 1.05)
+    ax.set_xlabel('$t$')
+    ax.set_ylabel('$p(t)$')
+    ax.set_title(
+        rf"$r_i={ri},\; r_o={ro},\; q={round(q,3)}$ — {sc['label_suffix']} "
+        rf"($A={A:.3f}$, $B={B:.3f}$)"
+    )
+    ax.legend(fontsize=8, ncol=3)
+
+plt.tight_layout()
+plt.show()
+```
+
+
 ---
 
 ## Summary
