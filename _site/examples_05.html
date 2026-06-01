@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Laplace Transforms — Definition and Basic Properties – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#reference" id="toc-reference" class="nav-link active" data-scroll-target="#reference">Reference: Key Laplace Transform Facts</a>
+  <ul class="collapse">
+  <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table">Short Table</a></li>
+  <li><a href="#properties" id="toc-properties" class="nav-link" data-scroll-target="#properties">Operational Properties</a></li>
+  </ul></li>
+  <li><a href="#forward" id="toc-forward" class="nav-link" data-scroll-target="#forward">Part I — Forward Transforms</a>
+  <ul class="collapse">
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example 1 — Linearity and the Table: <span class="math inline">\(2 - 3e^{4t} + t^2 e^{-t}\)</span></a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example 2 — Switching Property: <span class="math inline">\((t+1)H(t-2)\)</span></a></li>
+  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example 3 — Direct Table Look-up: <span class="math inline">\(\sin 3t\)</span></a></li>
+  <li><a href="#example-4" id="toc-example-4" class="nav-link" data-scroll-target="#example-4">Example 4 — Angle Addition: <span class="math inline">\(\cos(t - \pi/2)\)</span></a></li>
+  <li><a href="#example-5" id="toc-example-5" class="nav-link" data-scroll-target="#example-5">Example 5 — First Shift Property with Hyperbolic Sine: <span class="math inline">\(5e^{2t}\sinh 3t\)</span></a></li>
+  <li><a href="#example-6" id="toc-example-6" class="nav-link" data-scroll-target="#example-6">Example 6 — Switching Property: <span class="math inline">\(H(t-2)\sin(t-2)\)</span></a></li>
+  </ul></li>
+  <li><a href="#inverse" id="toc-inverse" class="nav-link" data-scroll-target="#inverse">Part II — Inverse Transforms</a>
+  <ul class="collapse">
+  <li><a href="#example-7" id="toc-example-7" class="nav-link" data-scroll-target="#example-7">Example 7 — Direct Table: <span class="math inline">\(\dfrac{4}{s-3}\)</span></a></li>
+  <li><a href="#example-8" id="toc-example-8" class="nav-link" data-scroll-target="#example-8">Example 8 — Linearity and Adjusting the Numerator: <span class="math inline">\(\dfrac{5}{s} + \dfrac{3}{s^2+4}\)</span></a></li>
+  <li><a href="#example-9" id="toc-example-9" class="nav-link" data-scroll-target="#example-9">Example 9 — Shifted Power: <span class="math inline">\(\dfrac{6}{(s+4)^3}\)</span></a></li>
+  <li><a href="#example-10" id="toc-example-10" class="nav-link" data-scroll-target="#example-10">Example 10 — Switching Property: <span class="math inline">\(\dfrac{3}{s}e^{-2s}\)</span></a></li>
+  <li><a href="#example-11" id="toc-example-11" class="nav-link" data-scroll-target="#example-11">Example 11 — Partial Fractions with Switching: <span class="math inline">\(\dfrac{2}{s(s+4)}e^{-3s}\)</span></a></li>
+  <li><a href="#example-12" id="toc-example-12" class="nav-link" data-scroll-target="#example-12">Example 12 — Mixed Sinusoidal Numerator: <span class="math inline">\(\dfrac{4s - 3}{s^2 + 9}\)</span></a></li>
+  <li><a href="#example-13" id="toc-example-13" class="nav-link" data-scroll-target="#example-13">Example 13 — Rescaling the Frequency: <span class="math inline">\(\dfrac{5}{3s^2 + 12}\)</span></a></li>
+  <li><a href="#example-14" id="toc-example-14" class="nav-link" data-scroll-target="#example-14">Example 14 — Switching with Sine: <span class="math inline">\(e^{-\pi s/2}\,\dfrac{4}{s^2+4}\)</span></a></li>
+  <li><a href="#example-15" id="toc-example-15" class="nav-link" data-scroll-target="#example-15">Example 15 — Completing the Square: <span class="math inline">\(\dfrac{3s+7}{s^2+6s+13}\)</span></a></li>
+  <li><a href="#example-16" id="toc-example-16" class="nav-link" data-scroll-target="#example-16">Example 16 — Switching with a Delayed Ramp: <span class="math inline">\(\dfrac{5}{s^2}e^{-s}\)</span></a></li>
+  </ul></li>
+  <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Laplace Transforms — Definition and Basic Properties</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="setup" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym                       <span class="co"># SymPy for symbolic mathematics</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np                        <span class="co"># NumPy for numerical computations</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl                  <span class="co"># Matplotlib for plotting</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt           <span class="co"># Matplotlib pyplot interface</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare the symbolic variables used throughout</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>t, s <span class="op">=</span> sym.symbols(<span class="st">'t s'</span>, real<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>In this document we work through fully solved examples for the topics covered in Section 3.1 of the text: the <strong>definition</strong> of the Laplace transform, the basic <strong>operational properties</strong> (linearity, the shift property, the switching property), and techniques for finding <strong>inverse transforms</strong> (table look-up, partial fractions, and completing the square).</p>
+<hr>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference: Key Laplace Transform Facts</h2>
+<p>The <strong>Laplace transform</strong> of <span class="math inline">\(f(t)\)</span>, defined for <span class="math inline">\(t \geq 0\)</span>, is <span class="math display">\[
+F(s) = \mathcal{L}[f(t)] = \int_0^{\infty} e^{-st} f(t)\,dt,
+\]</span> whenever the integral converges.</p>
+<section id="table" class="level3">
+<h3 class="anchored" data-anchor-id="table">Short Table</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><span class="math inline">\(f(t)\)</span></th>
+<th><span class="math inline">\(F(s) = \mathcal{L}[f(t)]\)</span></th>
+<th>Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(1\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{s}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t^n\)</span> (<span class="math inline">\(n = 0,1,2,\ldots\)</span>)</td>
+<td><span class="math inline">\(\dfrac{n!}{s^{n+1}}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(e^{at}\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{s-a}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sin(kt)\)</span></td>
+<td><span class="math inline">\(\dfrac{k}{s^2+k^2}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\cos(kt)\)</span></td>
+<td><span class="math inline">\(\dfrac{s}{s^2+k^2}\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sinh(kt)\)</span></td>
+<td><span class="math inline">\(\dfrac{k}{s^2-k^2}\)</span></td>
+<td><span class="math inline">\(s &gt; |k|\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\cosh(kt)\)</span></td>
+<td><span class="math inline">\(\dfrac{s}{s^2-k^2}\)</span></td>
+<td><span class="math inline">\(s &gt; |k|\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t^n e^{at}\)</span></td>
+<td><span class="math inline">\(\dfrac{n!}{(s-a)^{n+1}}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(e^{at}\sin(kt)\)</span></td>
+<td><span class="math inline">\(\dfrac{k}{(s-a)^2+k^2}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e^{at}\cos(kt)\)</span></td>
+<td><span class="math inline">\(\dfrac{s-a}{(s-a)^2+k^2}\)</span></td>
+<td><span class="math inline">\(s &gt; a\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(H(t-a)\,f(t-a)\)</span></td>
+<td><span class="math inline">\(e^{-as}F(s)\)</span></td>
+<td><span class="math inline">\(s &gt; 0\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="properties" class="level3">
+<h3 class="anchored" data-anchor-id="properties">Operational Properties</h3>
+<p><strong>Linearity.</strong> <span class="math display">\[
+\mathcal{L}[\alpha f(t) + \beta g(t)] = \alpha F(s) + \beta G(s).
+\]</span></p>
+<p><strong>First Shift (Exponential Shift) Property.</strong> If <span class="math inline">\(\mathcal{L}[f(t)] = F(s)\)</span>, then <span class="math display">\[
+\mathcal{L}[e^{at}f(t)] = F(s - a).
+\]</span></p>
+<p><strong>Second Shift (Switching) Property.</strong> If <span class="math inline">\(\mathcal{L}[f(t)] = F(s)\)</span>, then <span class="math display">\[
+\mathcal{L}[H(t-a)\,f(t-a)] = e^{-as}F(s),
+\]</span> or equivalently in inverse form, <span class="math display">\[
+\mathcal{L}^{-1}[e^{-as}F(s)] = H(t-a)\,f(t-a).
+\]</span></p>
+<hr>
+</section>
+</section>
+<section id="forward" class="level2">
+<h2 class="anchored" data-anchor-id="forward">Part I — Forward Transforms</h2>
+<section id="example-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-1">Example 1 — Linearity and the Table: <span class="math inline">\(2 - 3e^{4t} + t^2 e^{-t}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}\!\left[2 - 3e^{4t} + t^2 e^{-t}\right]\)</span>.</p>
+</blockquote>
+<section id="ex1-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex1-by-hand">By Hand</h4>
+<p>Apply linearity and match each term to a table entry.</p>
+<p><strong>Term 1:</strong> <span class="math inline">\(\mathcal{L}[2] = \dfrac{2}{s}.\)</span></p>
+<p><strong>Term 2:</strong> <span class="math inline">\(\mathcal{L}[-3e^{4t}] = -\dfrac{3}{s-4}.\)</span></p>
+<p><strong>Term 3:</strong> <span class="math inline">\(\mathcal{L}[t^2 e^{-t}]\)</span>. The table entry for <span class="math inline">\(t^n e^{at}\)</span> with <span class="math inline">\(n = 2\)</span> and <span class="math inline">\(a = -1\)</span> gives <span class="math display">\[
+\mathcal{L}[t^2 e^{-t}] = \frac{2!}{(s-(-1))^{3}} = \frac{2}{(s+1)^3}.
+\]</span></p>
+<p>Combining by linearity: <span class="math display">\[
+\boxed{\mathcal{L}\!\left[2 - 3e^{4t} + t^2 e^{-t}\right]
+= \frac{2}{s} - \frac{3}{s-4} + \frac{2}{(s+1)^3}.}
+\]</span></p>
+</section>
+<section id="ex1-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex1-sympy">Using SymPy</h4>
+<div id="cell-ex1-sympy" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>sym.exp(<span class="dv">4</span><span class="op">*</span>t) <span class="op">+</span> t<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.exp(<span class="op">-</span>t)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>F1 <span class="op">=</span> sym.laplace_transform(f1, t, s, noconds<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[2 - 3e^{4t} + t^2 e^{-t}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(F1))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex1-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}\!\left[2 - 3e^{4t} + t^2 e^{-t}\right] = \frac{2}{\left(s + 1\right)^{3}} - \frac{3}{s - 4} + \frac{2}{s}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-2" class="level3">
+<h3 class="anchored" data-anchor-id="example-2">Example 2 — Switching Property: <span class="math inline">\((t+1)H(t-2)\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}[(t+1)H(t-2)]\)</span>.</p>
+</blockquote>
+<section id="ex2-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex2-by-hand">By Hand</h4>
+<p>The function <span class="math inline">\((t+1)H(t-2)\)</span> switches on at <span class="math inline">\(t = 2\)</span>, but it is not yet in the standard switching form <span class="math inline">\(H(t-a)f(t-a)\)</span> because the multiplying function is <span class="math inline">\(f(t) = t+1\)</span>, not <span class="math inline">\(f(t-2)\)</span>. We rewrite <span class="math inline">\(t+1\)</span> in terms of <span class="math inline">\((t-2)\)</span>: <span class="math display">\[
+t + 1 = (t - 2) + 3.
+\]</span> Therefore <span class="math display">\[
+(t+1)H(t-2) = (t-2)H(t-2) + 3H(t-2).
+\]</span></p>
+<p>Each piece is now in standard switching form. Apply <span class="math inline">\(\mathcal{L}[H(t-a)f(t-a)] = e^{-as}F(s)\)</span> with <span class="math inline">\(a = 2\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\mathcal{L}[(t-2)H(t-2)]\)</span>: here <span class="math inline">\(f(t) = t\)</span>, so <span class="math inline">\(F(s) = 1/s^2\)</span>, giving <span class="math inline">\(e^{-2s}/s^2\)</span>.</li>
+<li><span class="math inline">\(\mathcal{L}[3H(t-2)]\)</span>: here <span class="math inline">\(f(t) = 3\)</span>, so <span class="math inline">\(F(s) = 3/s\)</span>, giving <span class="math inline">\(3e^{-2s}/s\)</span>.</li>
+</ul>
+<p>Combining: <span class="math display">\[
+\boxed{\mathcal{L}[(t+1)H(t-2)]
+= \frac{e^{-2s}}{s^2} + \frac{3e^{-2s}}{s}
+= \frac{e^{-2s}(1 + 3s)}{s^2}.}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>The rewriting trick.</strong> Whenever you see <span class="math inline">\(f(t)H(t-a)\)</span> and <span class="math inline">\(f(t)\)</span> is not naturally a function of <span class="math inline">\((t-a)\)</span>, write <span class="math inline">\(t = (t-a)+a\)</span> (or expand <span class="math inline">\(f\)</span> about <span class="math inline">\(t=a\)</span>) to put the expression into standard switching form before applying the property.</p>
+</div>
+</div>
+</section>
+<section id="ex2-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex2-sympy">Using SymPy</h4>
+<div id="cell-ex2-sympy" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> (t <span class="op">+</span> <span class="dv">1</span>)<span class="op">*</span>sym.Heaviside(t <span class="op">-</span> <span class="dv">2</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>F2 <span class="op">=</span> sym.laplace_transform(f2, t, s, noconds<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="pp">[(t+1)H(t-2)]</span><span class="vs"> = '</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(F2))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex2-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}[(t+1)H(t-2)] = \frac{\left(3 s + 1\right) e^{- 2 s}}{s^{2}}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-3" class="level3">
+<h3 class="anchored" data-anchor-id="example-3">Example 3 — Direct Table Look-up: <span class="math inline">\(\sin 3t\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}[\sin 3t]\)</span>.</p>
+</blockquote>
+<section id="ex3-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex3-by-hand">By Hand</h4>
+<p>From the table with <span class="math inline">\(k = 3\)</span>: <span class="math display">\[
+\mathcal{L}[\sin(3t)] = \frac{3}{s^2 + 9}.
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}[\sin 3t] = \frac{3}{s^2+9}.}\]</span></p>
+</section>
+<section id="ex3-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex3-sympy">Using SymPy</h4>
+<div id="cell-ex3-sympy" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>F3 <span class="op">=</span> sym.laplace_transform(sym.sin(<span class="dv">3</span><span class="op">*</span>t), t, s, noconds<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="pp">[</span><span class="dv">\s</span><span class="pp">in 3t]</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(F3)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex3-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}[\sin 3t] = \frac{3}{s^{2} + 9}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-4" class="level3">
+<h3 class="anchored" data-anchor-id="example-4">Example 4 — Angle Addition: <span class="math inline">\(\cos(t - \pi/2)\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}[\cos(t - \pi/2)]\)</span>.</p>
+</blockquote>
+<section id="ex4-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex4-by-hand">By Hand</h4>
+<p>Expand using the angle subtraction formula <span class="math inline">\(\cos(\alpha - \beta) = \cos\alpha\cos\beta + \sin\alpha\sin\beta\)</span>: <span class="math display">\[
+\cos\!\left(t - \tfrac{\pi}{2}\right)
+= \cos t\cos\tfrac{\pi}{2} + \sin t\sin\tfrac{\pi}{2}
+= 0 + \sin t = \sin t.
+\]</span></p>
+<p>Therefore: <span class="math display">\[
+\mathcal{L}\!\left[\cos\!\left(t - \tfrac{\pi}{2}\right)\right]
+= \mathcal{L}[\sin t] = \frac{1}{s^2+1}.
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}\!\left[\cos\!\left(t - \tfrac{\pi}{2}\right)\right]
+= \frac{1}{s^2+1}.}\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This makes geometric sense: shifting <span class="math inline">\(\cos t\)</span> to the right by <span class="math inline">\(\pi/2\)</span> produces <span class="math inline">\(\sin t\)</span>. Compare the result with <span class="math inline">\(\mathcal{L}[\cos t] = s/(s^2+1)\)</span> — the transforms are different because the functions differ for <span class="math inline">\(t &gt; 0\)</span>.</p>
+<p>Be careful: <span class="math inline">\(\cos(t - \pi/2)\)</span> here is a simple trig identity, not a <em>switched-on</em> cosine. The switching property applies only when the Heaviside function <span class="math inline">\(H(t-a)\)</span> is present.</p>
+</div>
+</div>
+</section>
+<section id="ex4-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex4-sympy">Using SymPy</h4>
+<div id="cell-ex4-sympy" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f4 <span class="op">=</span> sym.cos(t <span class="op">-</span> sym.pi<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>F4 <span class="op">=</span> sym.laplace_transform(f4, t, s, noconds<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="er">\</span><span class="pp">cos(t-</span><span class="er">\</span><span class="pp">pi/2)</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(F4))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex4-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}\!\left[\cos(t-\pi/2)\right] = \frac{1}{s^{2} + 1}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-5" class="level3">
+<h3 class="anchored" data-anchor-id="example-5">Example 5 — First Shift Property with Hyperbolic Sine: <span class="math inline">\(5e^{2t}\sinh 3t\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}[5e^{2t}\sinh 3t]\)</span>.</p>
+</blockquote>
+<section id="ex5-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex5-by-hand">By Hand</h4>
+<p>Use the <strong>first shift property</strong>: <span class="math inline">\(\mathcal{L}[e^{at}f(t)] = F(s-a)\)</span>.</p>
+<p>Here <span class="math inline">\(a = 2\)</span> and <span class="math inline">\(f(t) = 5\sinh 3t\)</span>.</p>
+<p>From the table with <span class="math inline">\(k = 3\)</span>: <span class="math display">\[
+\mathcal{L}[\sinh 3t] = \frac{3}{s^2-9},
+\qquad\text{so}\qquad
+\mathcal{L}[5\sinh 3t] = \frac{15}{s^2-9} =: F(s).
+\]</span></p>
+<p>Replace <span class="math inline">\(s\)</span> by <span class="math inline">\(s - 2\)</span>: <span class="math display">\[
+\mathcal{L}[5e^{2t}\sinh 3t] = F(s-2) = \frac{15}{(s-2)^2 - 9}.
+\]</span></p>
+<p>Expand the denominator: <span class="math display">\[
+(s-2)^2 - 9 = s^2 - 4s + 4 - 9 = s^2 - 4s - 5 = (s-5)(s+1).
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}[5e^{2t}\sinh 3t] = \frac{15}{(s-2)^2-9} = \frac{15}{(s-5)(s+1)}.}\]</span></p>
+</section>
+<section id="ex5-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex5-sympy">Using SymPy</h4>
+<div id="cell-ex5-sympy" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f5 <span class="op">=</span> <span class="dv">5</span><span class="op">*</span>sym.exp(<span class="dv">2</span><span class="op">*</span>t)<span class="op">*</span>sym.sinh(<span class="dv">3</span><span class="op">*</span>t)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>F5 <span class="op">=</span> sym.laplace_transform(f5, t, s, noconds<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="pp">[5e^{2t}</span><span class="dv">\s</span><span class="pp">inh 3t]</span><span class="vs"> = '</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(F5))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex5-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}[5e^{2t}\sinh 3t] = \frac{15}{\left(s - 2\right)^{2} - 9}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-6" class="level3">
+<h3 class="anchored" data-anchor-id="example-6">Example 6 — Switching Property: <span class="math inline">\(H(t-2)\sin(t-2)\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}[H(t-2)\sin(t-2)]\)</span>.</p>
+</blockquote>
+<section id="ex6-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex6-by-hand">By Hand</h4>
+<p>This is already in standard switching form <span class="math inline">\(H(t-a)f(t-a)\)</span> with <span class="math inline">\(a = 2\)</span> and <span class="math inline">\(f(t) = \sin t\)</span>.</p>
+<p>From the table: <span class="math inline">\(F(s) = \mathcal{L}[\sin t] = \dfrac{1}{s^2+1}\)</span>.</p>
+<p>By the switching property: <span class="math display">\[
+\mathcal{L}[H(t-2)\sin(t-2)] = e^{-2s}\cdot\frac{1}{s^2+1}.
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}[H(t-2)\sin(t-2)] = \frac{e^{-2s}}{s^2+1}.}\]</span></p>
+</section>
+<section id="ex6-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex6-sympy">Using SymPy</h4>
+<div id="cell-ex6-sympy" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f6 <span class="op">=</span> sym.Heaviside(t <span class="op">-</span> <span class="dv">2</span>)<span class="op">*</span>sym.sin(t <span class="op">-</span> <span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>F6 <span class="op">=</span> sym.laplace_transform(f6, t, s, noconds<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="pp">[H(t-2)</span><span class="dv">\s</span><span class="pp">in(t-2)]</span><span class="vs"> = '</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(F6))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex6-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}[H(t-2)\sin(t-2)] = \frac{e^{- 2 s}}{s^{2} + 1}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="inverse" class="level2">
+<h2 class="anchored" data-anchor-id="inverse">Part II — Inverse Transforms</h2>
+<p>The principal techniques for finding inverse Laplace transforms are:</p>
+<ol type="1">
+<li><strong>Direct table look-up</strong> — recognise <span class="math inline">\(F(s)\)</span> immediately.</li>
+<li><strong>Linearity</strong> — split sums and pull out constants.</li>
+<li><strong>Adjust the numerator</strong> — manufacture the table’s required numerator constant.</li>
+<li><strong>Complete the square</strong> — handle shifted quadratic denominators.</li>
+<li><strong>Partial fraction decomposition</strong> — break up rational functions.</li>
+<li><strong>Switching property</strong> — handle factors of <span class="math inline">\(e^{-as}\)</span>.</li>
+</ol>
+<hr>
+<section id="example-7" class="level3">
+<h3 class="anchored" data-anchor-id="example-7">Example 7 — Direct Table: <span class="math inline">\(\dfrac{4}{s-3}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{4}{s-3}\right]\)</span>.</p>
+</blockquote>
+<section id="ex7-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex7-by-hand">By Hand</h4>
+<p>Recognise <span class="math inline">\(\dfrac{1}{s-a}\)</span> with <span class="math inline">\(a = 3\)</span>, scaled by <span class="math inline">\(4\)</span>: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{4}{s-3}\right]
+= 4\,\mathcal{L}^{-1}\!\left[\frac{1}{s-3}\right]
+= 4e^{3t}.
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{4}{s-3}\right] = 4e^{3t}.}\]</span></p>
+</section>
+<section id="ex7-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex7-sympy">Using SymPy</h4>
+<div id="cell-ex7-sympy" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>F7 <span class="op">=</span> sym.Integer(<span class="dv">4</span>)<span class="op">/</span>(s <span class="op">-</span> <span class="dv">3</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>f7 <span class="op">=</span> sym.inverse_laplace_transform(F7, s, t)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{4}{s-3}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(f7)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex7-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{4}{s-3}\right] = 4 e^{3 t} \theta\left(t\right)\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-8" class="level3">
+<h3 class="anchored" data-anchor-id="example-8">Example 8 — Linearity and Adjusting the Numerator: <span class="math inline">\(\dfrac{5}{s} + \dfrac{3}{s^2+4}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{5}{s} + \dfrac{3}{s^2+4}\right]\)</span>.</p>
+</blockquote>
+<section id="ex8-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex8-by-hand">By Hand</h4>
+<p>Split using linearity.</p>
+<p><strong>Term 1:</strong> <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{5}{s}\right] = 5\)</span>.</p>
+<p><strong>Term 2:</strong> <span class="math inline">\(\dfrac{3}{s^2+4}\)</span>. The table entry for <span class="math inline">\(\sin(kt)\)</span> requires the form <span class="math inline">\(\dfrac{k}{s^2+k^2}\)</span>. Here <span class="math inline">\(k^2 = 4\)</span> so <span class="math inline">\(k = 2\)</span>. The numerator needs to be <span class="math inline">\(2\)</span>, not <span class="math inline">\(3\)</span>, so we write: <span class="math display">\[
+\frac{3}{s^2+4} = \frac{3}{2}\cdot\frac{2}{s^2+4}.
+\]</span></p>
+<p>Therefore <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{3}{s^2+4}\right]
+= \dfrac{3}{2}\sin(2t)\)</span>.</p>
+<p>Combining: <span class="math display">\[
+\boxed{\mathcal{L}^{-1}\!\left[\frac{5}{s} + \frac{3}{s^2+4}\right]
+= 5 + \frac{3}{2}\sin(2t).}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Adjusting the numerator.</strong> When the denominator is <span class="math inline">\(s^2 + k^2\)</span> but the numerator is a constant <span class="math inline">\(c \neq k\)</span>, factor as <span class="math inline">\(\dfrac{c}{s^2+k^2} = \dfrac{c}{k}\cdot\dfrac{k}{s^2+k^2}\)</span> and invert to get <span class="math inline">\(\dfrac{c}{k}\sin(kt)\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="ex8-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex8-sympy">Using SymPy</h4>
+<div id="cell-ex8-sympy" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>F8 <span class="op">=</span> sym.Integer(<span class="dv">5</span>)<span class="op">/</span>s <span class="op">+</span> sym.Integer(<span class="dv">3</span>)<span class="op">/</span>(s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">4</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>f8 <span class="op">=</span> sym.inverse_laplace_transform(F8, s, t)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{5}{s}+</span><span class="ch">\f</span><span class="pp">rac{3}{s^2+4}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(f8))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex8-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{5}{s}+\frac{3}{s^2+4}\right] = \frac{\left(3 \sin{\left(2 t \right)} + 10\right) \theta\left(t\right)}{2}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-9" class="level3">
+<h3 class="anchored" data-anchor-id="example-9">Example 9 — Shifted Power: <span class="math inline">\(\dfrac{6}{(s+4)^3}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{6}{(s+4)^3}\right]\)</span>.</p>
+</blockquote>
+<section id="ex9-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex9-by-hand">By Hand</h4>
+<p>Recognise the shifted form <span class="math inline">\(\dfrac{n!}{(s-a)^{n+1}}\)</span> with <span class="math inline">\(a = -4\)</span> and <span class="math inline">\(n = 2\)</span> (so <span class="math inline">\(n! = 2! = 2\)</span> and <span class="math inline">\(n+1 = 3\)</span>): <span class="math display">\[
+\frac{6}{(s+4)^3} = 3\cdot\frac{2!}{(s+4)^3}.
+\]</span></p>
+<p>From the table, <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{2!}{(s-(-4))^3}\right] = t^2 e^{-4t}\)</span>, so: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{6}{(s+4)^3}\right] = 3t^2 e^{-4t}.
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{6}{(s+4)^3}\right] = 3t^2 e^{-4t}.}\]</span></p>
+</section>
+<section id="ex9-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex9-sympy">Using SymPy</h4>
+<div id="cell-ex9-sympy" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>F9 <span class="op">=</span> sym.Integer(<span class="dv">6</span>)<span class="op">/</span>(s <span class="op">+</span> <span class="dv">4</span>)<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>f9 <span class="op">=</span> sym.inverse_laplace_transform(F9, s, t)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{6}{(s+4)^3}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(f9)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex9-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{6}{(s+4)^3}\right] = 3 t^{2} e^{- 4 t} \theta\left(t\right)\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-10" class="level3">
+<h3 class="anchored" data-anchor-id="example-10">Example 10 — Switching Property: <span class="math inline">\(\dfrac{3}{s}e^{-2s}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{3}{s}e^{-2s}\right]\)</span>.</p>
+</blockquote>
+<section id="ex10-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex10-by-hand">By Hand</h4>
+<p>The factor <span class="math inline">\(e^{-2s}\)</span> signals the switching property with <span class="math inline">\(a = 2\)</span>. The remaining factor <span class="math inline">\(F(s) = \dfrac{3}{s}\)</span> inverts to <span class="math inline">\(f(t) = 3\)</span>.</p>
+<p>By the switching property: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{3}{s}e^{-2s}\right]
+= 3H(t-2).
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{3}{s}e^{-2s}\right] = 3H(t-2).}\]</span></p>
+<p>This represents a step function that jumps to the value <span class="math inline">\(3\)</span> at <span class="math inline">\(t = 2\)</span>.</p>
+</section>
+<section id="ex10-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex10-sympy">Using SymPy</h4>
+<div id="cell-ex10-sympy" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>F10 <span class="op">=</span> (sym.Integer(<span class="dv">3</span>)<span class="op">/</span>s)<span class="op">*</span>sym.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>s)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>f10 <span class="op">=</span> sym.inverse_laplace_transform(F10, s, t)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{3}{s}e^{-2s}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(f10)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex10-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{3}{s}e^{-2s}\right] = 3 \theta\left(t - 2\right)\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-11" class="level3">
+<h3 class="anchored" data-anchor-id="example-11">Example 11 — Partial Fractions with Switching: <span class="math inline">\(\dfrac{2}{s(s+4)}e^{-3s}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{2}{s(s+4)}e^{-3s}\right]\)</span>.</p>
+</blockquote>
+<section id="ex11-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex11-by-hand">By Hand</h4>
+<p><strong>Step 1 — Identify <span class="math inline">\(a\)</span> and <span class="math inline">\(F(s)\)</span>.</strong></p>
+<p>The factor <span class="math inline">\(e^{-3s}\)</span> signals the switching property with <span class="math inline">\(a = 3\)</span>. We first find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{2}{s(s+4)}\right]\)</span> and then shift.</p>
+<p><strong>Step 2 — Partial fraction decomposition of <span class="math inline">\(\dfrac{2}{s(s+4)}\)</span>.</strong></p>
+<p><span class="math display">\[
+\frac{2}{s(s+4)} = \frac{A}{s} + \frac{B}{s+4}.
+\]</span></p>
+<p>Multiply through by <span class="math inline">\(s(s+4)\)</span>: <span class="math display">\[
+2 = A(s+4) + Bs.
+\]</span></p>
+<p>Set <span class="math inline">\(s = 0\)</span>: <span class="math inline">\(2 = 4A \Rightarrow A = \dfrac{1}{2}\)</span>.</p>
+<p>Set <span class="math inline">\(s = -4\)</span>: <span class="math inline">\(2 = -4B \Rightarrow B = -\dfrac{1}{2}\)</span>.</p>
+<p><span class="math display">\[
+\frac{2}{s(s+4)} = \frac{1/2}{s} - \frac{1/2}{s+4}.
+\]</span></p>
+<p><strong>Step 3 — Invert.</strong></p>
+<p><span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{2}{s(s+4)}\right]
+= \frac{1}{2} - \frac{1}{2}e^{-4t} =: f(t).
+\]</span></p>
+<p><strong>Step 4 — Apply the switching property with <span class="math inline">\(a = 3\)</span>.</strong></p>
+<p><span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{2}{s(s+4)}e^{-3s}\right]
+= H(t-3)\,f(t-3)
+= H(t-3)\cdot\frac{1}{2}\!\left(1 - e^{-4(t-3)}\right).
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{2}{s(s+4)}e^{-3s}\right]
+= \frac{1}{2}H(t-3)\!\left(1 - e^{-4(t-3)}\right).}\]</span></p>
+</section>
+<section id="ex11-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex11-sympy">Using SymPy</h4>
+<div id="cell-ex11-sympy" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>F11 <span class="op">=</span> (sym.Integer(<span class="dv">2</span>)<span class="op">/</span>(s<span class="op">*</span>(s <span class="op">+</span> <span class="dv">4</span>)))<span class="op">*</span>sym.exp(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>s)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>f11 <span class="op">=</span> sym.inverse_laplace_transform(F11, s, t)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{2}{s(s+4)}e^{-3s}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(f11))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex11-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{2}{s(s+4)}e^{-3s}\right] = \frac{\left(e^{4 t} - e^{12}\right) e^{- 4 t} \theta\left(t - 3\right)}{2}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-12" class="level3">
+<h3 class="anchored" data-anchor-id="example-12">Example 12 — Mixed Sinusoidal Numerator: <span class="math inline">\(\dfrac{4s - 3}{s^2 + 9}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{4s-3}{s^2+9}\right]\)</span>.</p>
+</blockquote>
+<section id="ex12-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex12-by-hand">By Hand</h4>
+<p>Split into a <span class="math inline">\(\cos\)</span> part and a <span class="math inline">\(\sin\)</span> part, matching the table forms <span class="math inline">\(\dfrac{s}{s^2+k^2}\)</span> and <span class="math inline">\(\dfrac{k}{s^2+k^2}\)</span> with <span class="math inline">\(k = 3\)</span>:</p>
+<p><span class="math display">\[
+\frac{4s-3}{s^2+9}
+= 4\cdot\frac{s}{s^2+9} - 3\cdot\frac{1}{s^2+9}.
+\]</span></p>
+<p>For the second term, introduce the required factor of <span class="math inline">\(k = 3\)</span>: <span class="math display">\[
+3\cdot\frac{1}{s^2+9} = 1\cdot\frac{3}{s^2+9}.
+\]</span></p>
+<p>Therefore: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{4s-3}{s^2+9}\right]
+= 4\cos(3t) - \sin(3t).
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{4s-3}{s^2+9}\right]
+= 4\cos(3t) - \sin(3t).}\]</span></p>
+</section>
+<section id="ex12-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex12-sympy">Using SymPy</h4>
+<div id="cell-ex12-sympy" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>F12 <span class="op">=</span> (<span class="dv">4</span><span class="op">*</span>s <span class="op">-</span> <span class="dv">3</span>)<span class="op">/</span>(s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">9</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>f12 <span class="op">=</span> sym.inverse_laplace_transform(F12, s, t)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{4s-3}{s^2+9}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(f12))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex12-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{4s-3}{s^2+9}\right] = \left(- \sin{\left(3 t \right)} + 4 \cos{\left(3 t \right)}\right) \theta\left(t\right)\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-13" class="level3">
+<h3 class="anchored" data-anchor-id="example-13">Example 13 — Rescaling the Frequency: <span class="math inline">\(\dfrac{5}{3s^2 + 12}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{5}{3s^2+12}\right]\)</span>.</p>
+</blockquote>
+<section id="ex13-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex13-by-hand">By Hand</h4>
+<p>Factor out <span class="math inline">\(3\)</span> from the denominator so it matches the table form <span class="math inline">\(s^2 + k^2\)</span>: <span class="math display">\[
+\frac{5}{3s^2+12} = \frac{5}{3}\cdot\frac{1}{s^2+4}.
+\]</span></p>
+<p>Now <span class="math inline">\(k^2 = 4\)</span> so <span class="math inline">\(k = 2\)</span>. Introduce the required numerator factor: <span class="math display">\[
+\frac{5}{3(s^2+4)} = \frac{5}{6}\cdot\frac{2}{s^2+4}.
+\]</span></p>
+<p>Therefore: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{5}{3s^2+12}\right]
+= \frac{5}{6}\sin(2t).
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{5}{3s^2+12}\right]
+= \frac{5}{6}\sin(2t).}\]</span></p>
+</section>
+<section id="ex13-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex13-sympy">Using SymPy</h4>
+<div id="cell-ex13-sympy" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>F13 <span class="op">=</span> sym.Integer(<span class="dv">5</span>)<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">12</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>f13 <span class="op">=</span> sym.inverse_laplace_transform(F13, s, t)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{5}{3s^2+12}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(f13))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex13-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{5}{3s^2+12}\right] = \frac{5 \sin{\left(2 t \right)} \theta\left(t\right)}{6}\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-14" class="level3">
+<h3 class="anchored" data-anchor-id="example-14">Example 14 — Switching with Sine: <span class="math inline">\(e^{-\pi s/2}\,\dfrac{4}{s^2+4}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[e^{-\pi s/2}\,\dfrac{4}{s^2+4}\right]\)</span>.</p>
+</blockquote>
+<section id="ex14-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex14-by-hand">By Hand</h4>
+<p>The factor <span class="math inline">\(e^{-\pi s/2}\)</span> signals the switching property with <span class="math inline">\(a = \pi/2\)</span>. The remaining factor is <span class="math inline">\(F(s) = \dfrac{4}{s^2+4}\)</span>. With <span class="math inline">\(k = 2\)</span>: <span class="math display">\[
+F(s) = \frac{4}{s^2+4} = 2\cdot\frac{2}{s^2+4},
+\]</span> so <span class="math inline">\(f(t) = \mathcal{L}^{-1}[F(s)] = 2\sin(2t)\)</span>.</p>
+<p>Applying the switching property: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[e^{-\pi s/2}\frac{4}{s^2+4}\right]
+= H\!\left(t - \tfrac{\pi}{2}\right)\cdot 2\sin\!\left(2\!\left(t-\tfrac{\pi}{2}\right)\right).
+\]</span></p>
+<p>We can simplify: <span class="math inline">\(2\sin(2t - \pi) = 2\sin(2t)\cos\pi = -2\sin(2t)\)</span>, so the expression can also be written as <span class="math inline">\(-2H(t-\pi/2)\sin(2t)\)</span>, though the shifted form makes the structure clearest.</p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[e^{-\pi s/2}\frac{4}{s^2+4}\right]
+= 2H\!\left(t-\tfrac{\pi}{2}\right)\sin\!\left(2t - \pi\right).}\]</span></p>
+</section>
+<section id="ex14-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex14-sympy">Using SymPy</h4>
+<div id="cell-ex14-sympy" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>F14 <span class="op">=</span> sym.exp(<span class="op">-</span>sym.pi<span class="op">*</span>s<span class="op">/</span><span class="dv">2</span>)<span class="op">*</span>(sym.Integer(<span class="dv">4</span>)<span class="op">/</span>(s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">4</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>f14 <span class="op">=</span> sym.inverse_laplace_transform(F14, s, t)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[e^{-</span><span class="er">\</span><span class="pp">pi s/2}</span><span class="ch">\f</span><span class="pp">rac{4}{s^2+4}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(f14))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex14-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[e^{-\pi s/2}\frac{4}{s^2+4}\right] = - 2 \sin{\left(2 t \right)} \theta\left(t - \frac{\pi}{2}\right)\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-15" class="level3">
+<h3 class="anchored" data-anchor-id="example-15">Example 15 — Completing the Square: <span class="math inline">\(\dfrac{3s+7}{s^2+6s+13}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{3s+7}{s^2+6s+13}\right]\)</span>.</p>
+</blockquote>
+<section id="ex15-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex15-by-hand">By Hand</h4>
+<p><strong>Step 1 — Complete the square in the denominator.</strong></p>
+<p><span class="math display">\[
+s^2 + 6s + 13 = (s^2 + 6s + 9) + 4 = (s+3)^2 + 4.
+\]</span></p>
+<p>So <span class="math inline">\(a = -3\)</span> and <span class="math inline">\(k = 2\)</span> in the shifted table entries.</p>
+<p><strong>Step 2 — Rewrite the numerator in terms of <span class="math inline">\((s+3)\)</span>.</strong></p>
+<p><span class="math display">\[
+3s + 7 = 3(s+3) - 9 + 7 = 3(s+3) - 2.
+\]</span></p>
+<p><strong>Step 3 — Split and match table forms.</strong></p>
+<p><span class="math display">\[
+\frac{3s+7}{(s+3)^2+4}
+= \frac{3(s+3) - 2}{(s+3)^2+4}
+= 3\cdot\frac{s+3}{(s+3)^2+4} - 2\cdot\frac{1}{(s+3)^2+4}.
+\]</span></p>
+<p>For the second term, introduce the factor <span class="math inline">\(k = 2\)</span>: <span class="math display">\[
+2\cdot\frac{1}{(s+3)^2+4} = 1\cdot\frac{2}{(s+3)^2+4}.
+\]</span></p>
+<p><strong>Step 4 — Invert using <span class="math inline">\(a = -3\)</span>, <span class="math inline">\(k = 2\)</span>.</strong></p>
+<p><span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{s+3}{(s+3)^2+4}\right] = e^{-3t}\cos(2t),
+\qquad
+\mathcal{L}^{-1}\!\left[\frac{2}{(s+3)^2+4}\right] = e^{-3t}\sin(2t).
+\]</span></p>
+<p>Therefore: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{3s+7}{s^2+6s+13}\right]
+= 3e^{-3t}\cos(2t) - e^{-3t}\sin(2t).
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{3s+7}{s^2+6s+13}\right]
+= e^{-3t}\!\left[3\cos(2t) - \sin(2t)\right].}\]</span></p>
+</section>
+<section id="ex15-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex15-sympy">Using SymPy</h4>
+<div id="cell-ex15-sympy" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>F15 <span class="op">=</span> (<span class="dv">3</span><span class="op">*</span>s <span class="op">+</span> <span class="dv">7</span>)<span class="op">/</span>(s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">6</span><span class="op">*</span>s <span class="op">+</span> <span class="dv">13</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>f15 <span class="op">=</span> sym.inverse_laplace_transform(F15, s, t)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{3s+7}{s^2+6s+13}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(f15))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex15-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{3s+7}{s^2+6s+13}\right] = \left(- \sin{\left(2 t \right)} + 3 \cos{\left(2 t \right)}\right) e^{- 3 t} \theta\left(t\right)\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex15" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t_vals  <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">600</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>f_vals  <span class="op">=</span> np.exp(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t_vals)<span class="op">*</span>(<span class="dv">3</span><span class="op">*</span>np.cos(<span class="dv">2</span><span class="op">*</span>t_vals) <span class="op">-</span> np.sin(<span class="dv">2</span><span class="op">*</span>t_vals))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>env_pos <span class="op">=</span>  np.sqrt(<span class="dv">10</span>)<span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t_vals)   <span class="co"># amplitude = sqrt(3^2 + 1^2)</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>env_neg <span class="op">=</span> <span class="op">-</span>env_pos</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, f_vals,  color<span class="op">=</span><span class="st">'tomato'</span>,    lw<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">e</span><span class="dv">^</span><span class="vs">{-3t}</span><span class="pp">[3</span><span class="er">\</span><span class="pp">cos(2t)-</span><span class="dv">\s</span><span class="pp">in(2t)]</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, env_pos, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pm</span><span class="dv">\s</span><span class="vs">qrt</span><span class="op">{10}</span><span class="ch">\,</span><span class="vs">e</span><span class="dv">^</span><span class="vs">{-3t}</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">envelope</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, env_neg, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">$\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{3s+7}{s^2+6s+13}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="dv">$</span><span class="vs">'</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex15" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_05_files/figure-html/fig-ex15-output-1.png" width="1032" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The inverse transform <span class="math inline">\(f(t) = e^{-3t}[3\cos(2t)-\sin(2t)]\)</span> from Example 15. The decaying exponential envelope <span class="math inline">\(\pm\sqrt{10}\,e^{-3t}\)</span> is shown dashed.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-16" class="level3">
+<h3 class="anchored" data-anchor-id="example-16">Example 16 — Switching with a Delayed Ramp: <span class="math inline">\(\dfrac{5}{s^2}e^{-s}\)</span></h3>
+<blockquote class="blockquote">
+<p>Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{5}{s^2}e^{-s}\right]\)</span>.</p>
+</blockquote>
+<section id="ex16-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex16-by-hand">By Hand</h4>
+<p>The factor <span class="math inline">\(e^{-s}\)</span> signals the switching property with <span class="math inline">\(a = 1\)</span>. The remaining factor <span class="math inline">\(F(s) = \dfrac{5}{s^2}\)</span> inverts as: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{5}{s^2}\right]
+= 5\,\mathcal{L}^{-1}\!\left[\frac{1!}{s^2}\right]
+= 5t =: f(t).
+\]</span></p>
+<p>Applying the switching property: <span class="math display">\[
+\mathcal{L}^{-1}\!\left[\frac{5}{s^2}e^{-s}\right]
+= H(t-1)\,f(t-1)
+= 5(t-1)H(t-1).
+\]</span></p>
+<p><span class="math display">\[\boxed{\mathcal{L}^{-1}\!\left[\frac{5}{s^2}e^{-s}\right]
+= 5(t-1)H(t-1).}\]</span></p>
+<p>This is a <strong>delayed ramp</strong>: zero for <span class="math inline">\(t &lt; 1\)</span>, then growing with slope <span class="math inline">\(5\)</span> for <span class="math inline">\(t &gt; 1\)</span>.</p>
+</section>
+<section id="ex16-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex16-sympy">Using SymPy</h4>
+<div id="cell-ex16-sympy" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>F16 <span class="op">=</span> (sym.Integer(<span class="dv">5</span>)<span class="op">/</span>s<span class="op">**</span><span class="dv">2</span>)<span class="op">*</span>sym.exp(<span class="op">-</span>s)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>f16 <span class="op">=</span> sym.inverse_laplace_transform(F16, s, t)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>display(Math(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[</span><span class="ch">\f</span><span class="pp">rac{5}{s^2}e^{-s}</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> = '</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> sym.latex(sym.simplify(f16))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex16-sympy" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathcal{L}^{-1}\!\left[\frac{5}{s^2}e^{-s}\right] = 5 \left(t - 1\right) \theta\left(t - 1\right)\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex16" class="cell" data-execution_count="19">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>t_vals     <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">500</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>f_delayed  <span class="op">=</span> <span class="dv">5</span><span class="op">*</span>(t_vals <span class="op">-</span> <span class="dv">1</span>)<span class="op">*</span>np.where(t_vals <span class="op">&gt;=</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>f_undelayed <span class="op">=</span> <span class="dv">5</span><span class="op">*</span>t_vals</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, f_delayed,   color<span class="op">=</span><span class="st">'tomato'</span>,    lw<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">5</span><span class="kw">(</span><span class="vs">t-1</span><span class="kw">)</span><span class="vs">H</span><span class="kw">(</span><span class="vs">t-1</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, f_undelayed, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.4</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">5t</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">undelayed</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">1</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t = 1</span><span class="dv">$</span><span class="vs">'</span>, xy<span class="op">=</span>(<span class="dv">1</span>, <span class="fl">0.15</span>), xytext<span class="op">=</span>(<span class="fl">1.1</span>, <span class="fl">0.5</span>),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">t</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r'</span><span class="dv">$\m</span><span class="vs">athcal{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="ch">\!</span><span class="er">\</span><span class="vs">left</span><span class="pp">[5e^{-s}/s^2</span><span class="ch">\r</span><span class="pp">ight]</span><span class="dv">$</span><span class="vs"> — delayed ramp'</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">16</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex16" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_05_files/figure-html/fig-ex16-output-1.png" width="1033" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The delayed ramp <span class="math inline">\(5(t-1)H(t-1)\)</span> from Example 16 (red) alongside the un-delayed ramp <span class="math inline">\(5t\)</span> (dashed). The switch-on at <span class="math inline">\(t=1\)</span> is clearly visible.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Summary: Strategy for Inverse Laplace Transforms
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Work through these steps in order:</p>
+<ol type="1">
+<li><p><strong>Look for <span class="math inline">\(e^{-as}\)</span>.</strong> If present, factor it out, find <span class="math inline">\(\mathcal{L}^{-1}[F(s)]\)</span> of the remaining piece, then apply the switching property: <span class="math inline">\(\mathcal{L}^{-1}[e^{-as}F(s)] = H(t-a)f(t-a)\)</span>.</p></li>
+<li><p><strong>Check for a direct table match.</strong> <span class="math inline">\(\dfrac{c}{s-a}\)</span>, <span class="math inline">\(\dfrac{c}{s^2+k^2}\)</span>, <span class="math inline">\(\dfrac{cs}{s^2+k^2}\)</span>, <span class="math inline">\(\dfrac{c}{(s-a)^{n+1}}\)</span> all have immediate inverses.</p></li>
+<li><p><strong>Split mixed numerators.</strong> If the numerator is <span class="math inline">\(\alpha s + \beta\)</span> over <span class="math inline">\(s^2 + k^2\)</span> (or <span class="math inline">\((s-a)^2 + k^2\)</span>), separate into <span class="math inline">\(\cos\)</span>/<span class="math inline">\(\sin\)</span> (or <span class="math inline">\(e^{at}\cos\)</span>/<span class="math inline">\(e^{at}\sin\)</span>) terms.</p></li>
+<li><p><strong>Complete the square.</strong> If the denominator is a quadratic <span class="math inline">\(s^2 + bs + c\)</span> with complex roots, write it as <span class="math inline">\((s-a)^2 + k^2\)</span> and rewrite the numerator in terms of <span class="math inline">\((s-a)\)</span> before inverting.</p></li>
+<li><p><strong>Partial fractions.</strong> For a rational <span class="math inline">\(F(s)\)</span> with real roots in the denominator, decompose into simpler fractions first, then invert each piece.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="session-info" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+sympy==1.14.0
+numpy==2.4.3
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid"></a></p>
+</section>
+</section>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
