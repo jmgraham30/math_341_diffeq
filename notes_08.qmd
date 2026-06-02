@@ -1,0 +1,665 @@
+---
+title: "Notes 8"
+subtitle: "The Convolution Property and Impulsive Sources"
+jupyter: diffeq_py
+license: "CC BY-NC-SA 4.0"
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+
+H = lambda tv, a: np.where(np.asarray(tv, dtype=float) >= a, 1.0, 0.0)
+```
+
+## Goals
+
+1. Understand the **convolution** $(x * y)(t) = \int_0^t x(\tau)\,y(t-\tau)\,d\tau$ and compute it directly from the definition.
+2. State and apply the **convolution property** $\mathcal{L}[x * y] = X(s)\,Y(s)$ to invert products of transforms.
+3. Recognize that $\mathcal{L}[x(t)\,y(t)] \neq X(s)\,Y(s)$—the transform of a *product* is **not** the product of the transforms.
+4. Use convolution to write the solution of a DE with an arbitrary forcing function as a single integral formula.
+5. Understand the physical motivation for **impulsive forcing** and the delta function $\delta_a(t)$.
+6. Define the delta function through the **sifting property** and compute $\mathcal{L}[\delta_a(t)] = e^{-as}$.
+7. Solve IVPs with delta-function forcing using Laplace transforms.
+8. Define the **transfer function** $K(s)$ and express the forced response as both a convolution and a product.
+
+::: {.callout-note}
+This material corresponds to **Sections 3.3 and 3.4** of @logan2015first.
+:::
+
+---
+
+## Section 3.3 — The Convolution Property
+
+### Motivation: What Happens to Products?
+
+Recall the **additivity property** of Laplace transforms:
+$$
+\mathcal{L}[x + y] = X(s) + Y(s).
+$$
+
+A natural next question is whether a similar rule holds for *products*. That is, if $\mathcal{L}[x] = X(s)$ and $\mathcal{L}[y] = Y(s)$, what is $\mathcal{L}[xy]$?
+
+::: {.callout-important}
+## Warning
+$$\mathcal{L}[x(t)\,y(t)] \neq X(s)\,Y(s).$$
+The Laplace transform of a **product** is **not** the product of the transforms. This is a very common error — Exercise 2 in §3.3 asks you to produce a concrete counterexample.
+:::
+
+The correct question to ask is the inverse one: *what function has Laplace transform $X(s)\,Y(s)$?* The answer — which is far from obvious — is the **convolution** of $x$ and $y$.
+
+---
+
+### Definition of Convolution
+
+::: {.callout-important}
+## Definition
+Let $x(t)$ and $y(t)$ be two functions defined on $[0,\infty)$. The **convolution** of $x$ and $y$, denoted $x * y$, is the function defined by
+$$
+(x * y)(t) = \int_0^t x(\tau)\,y(t - \tau)\,d\tau.
+$$
+:::
+
+It is sometimes convenient to write the convolution as $x(t) * y(t)$.
+
+::: {.callout-note}
+## How to Read the Convolution Integral
+To evaluate $(x * y)(t)$ at a fixed time $t$, you simultaneously:
+
+- substitute $\tau$ for the argument of $x$, and
+- substitute $t - \tau$ for the argument of $y$ (this "flips and shifts" $y$),
+
+then integrate the product from $\tau = 0$ to $\tau = t$. As $\tau$ sweeps from $0$ to $t$, you are accumulating a *weighted history* of $x$ against a time-reversed copy of $y$. This weighted-memory structure arises naturally whenever a system's current state depends on its entire past — exactly the behavior modeled by differential equations with forcing.
+:::
+
+---
+
+### The Convolution Property
+
+::: {.callout-important}
+## Theorem: Convolution Property of Laplace Transforms
+If $\mathcal{L}[x] = X(s)$ and $\mathcal{L}[y] = Y(s)$, then
+$$
+\mathcal{L}[x * y] = X(s)\,Y(s).
+$$
+Equivalently, in terms of the inverse transform,
+$$
+\mathcal{L}^{-1}[X(s)\,Y(s)] = (x * y)(t) = \int_0^t x(\tau)\,y(t-\tau)\,d\tau.
+$$
+:::
+
+This property is very useful because when solving a DE we often end up with a product of transforms; we may use this last expression to invert the product.
+
+**Verification.** The proof uses the multivariable calculus technique of interchanging the order of integration. Starting from the definition of $\mathcal{L}[x * y]$:
+
+$$
+\mathcal{L}\!\left[\int_0^t x(\tau)\,y(t-\tau)\,d\tau\right]
+= \int_0^\infty \!\left(\int_0^t x(\tau)\,y(t-\tau)\,d\tau\right)e^{-st}\,dt
+$$
+
+$$
+= \int_0^\infty \!\left(\int_0^t x(\tau)\,y(t-\tau)\,e^{-st}\,d\tau\right)dt
+$$
+
+**Change the order of integration.** The region of integration is $0 \le \tau \le t < \infty$, equivalently $0 \le \tau < \infty$ and $\tau \le t < \infty$:
+
+$$
+= \int_0^\infty \!\left(\int_\tau^\infty y(t-\tau)\,e^{-st}\,dt\right)x(\tau)\,d\tau
+$$
+
+**Substitute** $r = t - \tau$ ($dt = dr$; when $t = \tau$, $r = 0$; when $t \to \infty$, $r \to \infty$):
+
+$$
+= \int_0^\infty \!\left(\int_0^\infty y(r)\,e^{-s(r+\tau)}\,dr\right)x(\tau)\,d\tau
+= \int_0^\infty \!\left(\int_0^\infty y(r)\,e^{-sr}\,dr\right)e^{-s\tau}\,x(\tau)\,d\tau
+$$
+
+$$
+= \left(\int_0^\infty e^{-s\tau}\,x(\tau)\,d\tau\right)\!\left(\int_0^\infty y(r)\,e^{-sr}\,dr\right) = X(s)\,Y(s). \qquad \square
+$$
+
+---
+
+### Commutativity of Convolution
+
+::: {.callout-important}
+## Remark 3.23
+In general, $(x * y)(t) = (y * x)(t)$, so the operation of convolution is **commutative**.
+:::
+
+This is proved in the exercises (Exercise 5, §3.3) via a change of variables in the convolution integral.
+
+::: {.callout-tip}
+## Practical Consequence
+Because convolution is commutative, you can choose *which* function to shift when evaluating the integral. Pick whichever arrangement makes the integration simpler. In Example 3.22 below, shifting the constant function $1$ leads to a much shorter calculation than shifting $t^2$.
+:::
+
+---
+
+### Example 3.22 — Direct Computation of a Convolution
+
+**Find the convolution $1 * t^2$.**
+
+Apply the definition with $x(\tau) = 1$ and $y(t - \tau) = (t-\tau)^2$:
+
+$$
+1 * t^2 = \int_0^t 1 \cdot (t - \tau)^2\,d\tau
+= \int_0^t \bigl(t^2 - 2t\tau + \tau^2\bigr)\,d\tau
+= t^2 \cdot t - 2t\!\left(\frac{t^2}{2}\right) + \frac{t^3}{3} = \frac{t^3}{3}.
+$$
+
+Notice also that the convolution of $t^2$ and $1$ (shifting the simpler function) gives the same answer with less work:
+
+$$
+t^2 * 1 = \int_0^t \tau^2 \cdot 1\,d\tau = \frac{t^3}{3}. \qquad \square
+$$
+
+---
+
+### Example 3.24 — Inverse Transform via Convolution
+
+**Find** $\mathcal{L}^{-1}\!\left[\dfrac{3}{s(s^2+9)}\right]$.
+
+We can do this by partial fractions, but here we use convolution. Write the expression as a product of recognizable transforms:
+
+$$
+\frac{3}{s(s^2+9)} = \frac{1}{s} \cdot \frac{3}{s^2+9}.
+$$
+
+From the table: $\mathcal{L}^{-1}[1/s] = 1$ and $\mathcal{L}^{-1}[3/(s^2+9)] = \sin 3t$. Applying the convolution property:
+
+$$
+\mathcal{L}^{-1}\!\left[\frac{3}{s(s^2+9)}\right]
+= 1 * \sin 3t = \int_0^t \sin 3\tau\,d\tau
+= \frac{1}{3}(1 - \cos 3t). \qquad \square
+$$
+
+```{python}
+#| code-fold: true
+#| label: fig-convolution-check
+#| fig-cap: "Verification of Example 3.24. The inverse Laplace transform of $3/[s(s^2+9)]$ computed symbolically by SymPy matches $\\frac{1}{3}(1 - \\cos 3t)$ from the convolution calculation."
+
+s_v = sym.Symbol('s', positive=True)
+t_v = sym.Symbol('t', positive=True)
+
+X_ex24 = sym.Integer(3) / (s_v * (s_v**2 + 9))
+x_sym  = sym.inverse_laplace_transform(X_ex24, s_v, t_v)
+x_sym_simplified = sym.simplify(x_sym)
+
+print("SymPy inverse transform of 3/[s(s²+9)]:")
+display(Math(r"\mathcal{L}^{-1}\!\left[\frac{3}{s(s^2+9)}\right] = " + sym.latex(x_sym_simplified)))
+
+t_plot = np.linspace(0, 4, 400)
+x_conv = (1/3) * (1 - np.cos(3*t_plot))
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(t_plot, x_conv, color='steelblue', lw=2.5,
+        label=r'$\frac{1}{3}(1-\cos 3t)$ from convolution')
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r'$\mathcal{L}^{-1}[3/(s(s^2+9))] = \frac{1}{3}(1-\cos 3t)$')
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 3.25 — General Solution with Arbitrary Forcing
+
+**Solve** $x'' + k^2 x = f(t)$, $x(0) = x_0$, $x'(0) = x_1$, where $f$ is any given input function.
+
+**Step 1 — Transform:** Using $\mathcal{L}[x''] = s^2 X(s) - s\,x(0) - x'(0)$:
+
+$$
+s^2 X(s) - s\,x_0 - x_1 + k^2 X(s) = F(s).
+$$
+
+**Step 2 — Solve for $X(s)$:**
+
+$$
+X(s) = x_0\,\frac{s}{s^2 + k^2} + x_1\,\frac{1}{s^2 + k^2} + \frac{F(s)}{s^2 + k^2}.
+$$
+
+**Step 3 — Invert.** Use the table for the first two terms, and the convolution property on the last term (since $\mathcal{L}^{-1}[1/(s^2+k^2)] = (1/k)\sin kt$):
+
+$$
+\boxed{x(t) = x_0 \cos kt + \frac{x_1}{k}\sin kt + \frac{1}{k}\int_0^t f(\tau)\sin k(t-\tau)\,d\tau.}
+$$
+
+Use of the convolution is a convenient way to find the solution to a differential equation with arbitrary source term. $\square$
+
+::: {.callout-note}
+## Key Insight
+The boxed formula holds for **any** forcing function $f(t)$ — we never need to know the explicit form of $f$ to write the solution. The convolution integral absorbs all the complexity of the forcing into a single expression.
+:::
+
+---
+
+### Integral Equations
+
+The convolution property also applies to **integral equations** — equations in which the unknown function $x(t)$ appears under an integral sign. An important class takes the form
+
+$$
+x(t) = f(t) + \int_0^t k(t - \tau)\,x(\tau)\,d\tau,
+$$
+
+where $f$ and $k$ (called the *kernel*) are given. These are called **equations with a convolution kernel**. Taking the Laplace transform and recognizing the integral as a convolution:
+
+$$
+X(s) = F(s) + K(s)\,X(s) \implies X(s)\bigl(1 - K(s)\bigr) = F(s) \implies X(s) = \frac{F(s)}{1 - K(s)}.
+$$
+
+Inverting $X(s)$ then gives the solution $x(t)$. See Exercises 14–17 in §3.3.
+
+---
+
+## Section 3.4 — Impulsive Sources
+
+### Motivation
+
+Many physical and biological processes have source terms that act at a **single instant of time**. For example:
+
+- An injection of medicine (a "shot") into the bloodstream, idealized as occurring at a single instant.
+- A damped spring–mass system (shock absorber) given an impulsive force by hitting a bump in the road.
+- An electrical circuit whose switch is closed only for an instant, producing an impulsive applied voltage.
+
+To model such phenomena we need a mathematical object that is *concentrated* at one point yet has a nonzero integral — the **delta function**.
+
+---
+
+### Building the Intuition: Momentum
+
+Consider a particle of mass $m$ moving along a line for $t > 0$, subject to a damping force equal to the velocity $v$ and an applied force $f(t)$, with $v(0) = 0$. By Newton's second law:
+
+$$
+m v' + v = f(t), \qquad v(0) = 0.
+$$
+
+Taking the Laplace transform gives $V(s) = \dfrac{1/m}{s + 1/m}\,F(s)$, and by the convolution theorem:
+
+$$
+v(t) = \frac{1}{m}\int_0^t e^{-(t-\tau)/m}\,f(\tau)\,d\tau. \tag{3.9}
+$$
+
+Now suppose $f(t)$ is a **unit impulse** at $t = a$, denoted $\delta_a(t)$. One's first instinct is to define $\delta_a(t) = 1$ if $t = a$ and $\delta_a(t) = 0$ otherwise. But substituting this into (3.9) gives $v(t) = 0$ for all $t$ — the integrand is zero at every point except $\tau = a$, which does not affect the integral. A particle struck by a hammer that never moves is physically wrong. We need a better definition.
+
+---
+
+### The Rectangular Impulse Model
+
+In elementary physics, an impulse is defined as the change of momentum $\Delta p = f(t)\,\Delta t$. For a unit impulse centered at $t = a$ acting over a small interval $(a - \varepsilon/2,\, a + \varepsilon/2)$, the momentum changes from $0$ to $1$, so
+
+$$
+\Delta p = \int_{a-\varepsilon/2}^{a+\varepsilon/2} f(t)\,dt = 1.
+$$
+
+Crucially, **this relation holds for every $\varepsilon > 0$**. We idealize the impulse as the limiting behavior of the rectangular functions
+
+$$
+f_\varepsilon(t) = \begin{cases}
+\dfrac{1}{\varepsilon}, & a - \dfrac{\varepsilon}{2} < t < a + \dfrac{\varepsilon}{2}, \\[6pt]
+0, & \text{otherwise},
+\end{cases}
+= \frac{1}{\varepsilon}\!\left[H\!\left(t - \!\left(a - \tfrac{\varepsilon}{2}\right)\right)
+- H\!\left(t - \!\left(a + \tfrac{\varepsilon}{2}\right)\right)\right],
+$$
+
+where $H$ is the Heaviside function. Each $f_\varepsilon$ has height $1/\varepsilon$, width $\varepsilon$, and area exactly $1$. As $\varepsilon \to 0$, the rectangle becomes infinitely tall and narrow, but **always has unit area**.
+
+```{python}
+#| code-fold: true
+#| label: fig-impulse-approx
+#| fig-cap: "The rectangular impulse $f_\\varepsilon(t)$ centered at $a=2$ for three values of $\\varepsilon$. Each rectangle has area 1. As $\\varepsilon \\to 0$, the function becomes taller and narrower, converging to the idealized delta function $\\delta_2(t)$."
+
+t_plot = np.linspace(0, 4, 2000)
+a = 2.0
+
+fig, ax = plt.subplots(figsize=(9, 4.5))
+colors = ['steelblue', 'darkorange', 'seagreen']
+eps_vals = [1.0, 0.5, 0.2]
+
+for eps, color in zip(eps_vals, colors):
+    f_eps = np.where((t_plot > a - eps/2) & (t_plot < a + eps/2), 1/eps, 0.0)
+    ax.plot(t_plot, f_eps, color=color, lw=2.5,
+            label=rf'$\varepsilon = {eps}$, height $= {1/eps:.1f}$')
+    ax.fill_between(t_plot, 0, f_eps, alpha=0.15, color=color)
+
+ax.axvline(a, color='gray', ls='--', lw=1.2, label='$t=a=2$')
+ax.set_xlabel('$t$'); ax.set_ylabel(r'$f_\varepsilon(t)$')
+ax.set_title(r'Rectangular impulse $f_\varepsilon(t)$ approaching $\delta_2(t)$ as $\varepsilon \to 0$')
+ax.legend(fontsize=9); ax.set_ylim(-0.2, 6)
+ax.set_xlim(0, 4)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### The Delta Function — The Sifting Property
+
+The unit impulsive force is not a function in the classical sense. In the mid-twentieth century it was shown rigorously that it belongs to a class of **generalized functions** whose actions are not defined pointwise, but rather by how they behave when integrated against other functions.
+
+::: {.callout-important}
+## Definition: The Unit Impulse (Delta Function)
+The **unit impulse** $\delta_a(t)$ at $t = a$ is defined by the **sifting property**:
+$$
+\int_0^\infty \delta_a(t)\,\phi(t)\,dt = \phi(a),
+$$
+for any continuous function $\phi(t)$. That is, integrating $\delta_a$ against $\phi$ *sifts out* the value of $\phi$ at $t = a$.
+:::
+
+The notation $\delta(t - a)$ is also common. If an impulse has magnitude $f_0$ instead of 1, we write $f_0\,\delta_a(t)$.
+
+Over a variable upper limit, the sifting property gives:
+
+$$
+\int_0^t \delta_a(\tau)\,\phi(t - \tau)\,d\tau = H(t-a)\,\phi(a),
+$$
+
+which equals $\phi(a)$ for $t > a$ and $0$ for $t < a$.
+
+**Verification for the velocity problem.** Using this sifting property back in equation (3.9), for $t > a$:
+
+$$
+v(t) = \frac{1}{m}\int_0^t e^{-(t-\tau)/m}\,\delta_a(\tau)\,d\tau = \frac{1}{m}\,H(t-a)\,e^{-(t-a)/m}.
+$$
+
+This is correct: $v(t) = 0$ up until $t = a$ (no force), the velocity jumps to $1/m$ at $t = a$, and then decays exponentially.
+
+---
+
+### Laplace Transform of the Delta Function
+
+Using the sifting property with $\phi(t) = e^{-st}$:
+
+$$
+\mathcal{L}[\delta_a(t)] = \int_0^\infty \delta_a(t)\,e^{-st}\,dt = e^{-as}.
+$$
+
+::: {.callout-important}
+## Laplace Transform Formulas for the Delta Function
+$$
+\mathcal{L}[\delta_a(t)] = e^{-as}, \quad a \ge 0.
+$$
+For an impulse at the origin ($a = 0$):
+$$
+\mathcal{L}[\delta_0(t)] = 1, \qquad \mathcal{L}^{-1}[1] = \delta_0(t).
+$$
+:::
+
+We can also derive this via the rectangular approximation. Computing $\mathcal{L}[f_\varepsilon(t)]$ and taking $\varepsilon \to 0$:
+
+$$
+\mathcal{L}[f_\varepsilon(t)]
+= \frac{1}{\varepsilon s}\,e^{-as}\!\left(e^{\varepsilon s/2} - e^{-\varepsilon s/2}\right)
+= e^{-as}\,\frac{\sinh(\varepsilon s/2)}{\varepsilon s/2}.
+$$
+
+By l'Hôpital's rule, $\lim_{\varepsilon \to 0} \sinh(\varepsilon s/2)/(\varepsilon s/2) = \lim_{\varepsilon \to 0}\cosh(\varepsilon s/2) = 1$, so
+$\lim_{\varepsilon \to 0}\mathcal{L}[f_\varepsilon(t)] = e^{-as}$, confirming $\mathcal{L}[\delta_a(t)] = e^{-as}$.
+
+---
+
+### Example 3.26 — Solving an IVP with a Delta Function
+
+**Solve** $x'' + x' = \delta_2(t)$, $x(0) = x'(0) = 0$, with a unit impulse applied at $t = 2$.
+
+**Step 1 — Transform.** Using $\mathcal{L}[\delta_2(t)] = e^{-2s}$:
+$$
+s^2 X(s) + s\,X(s) = e^{-2s} \implies X(s) = \frac{e^{-2s}}{s(s+1)}.
+$$
+
+**Step 2 — Identify the base transform.** From the table (or partial fractions):
+$$
+\mathcal{L}^{-1}\!\left[\frac{1}{s(s+1)}\right] = 1 - e^{-t}.
+$$
+
+**Step 3 — Apply the switching property.** Because of the factor $e^{-2s}$:
+$$
+x(t) = \mathcal{L}^{-1}\!\left[\frac{e^{-2s}}{s(s+1)}\right]
+= \bigl(1 - e^{-(t-2)}\bigr)\,H(t-2).
+$$
+
+The initial conditions are zero, so the solution is zero up until $t = 2$, when the impulse occurs. At that time the solution increases toward $1$ as $t \to \infty$. $\square$
+
+This can also be obtained using the convolution property and the sifting property of delta functions:
+$$
+x(t) = \mathcal{L}^{-1}\!\left[\frac{1}{s(s+1)}\right] * \mathcal{L}^{-1}[e^{-2s}]
+= (1 - e^{-t}) * \delta_2(t)
+= \int_0^t (1 - e^{-(t-\tau)})\,\delta_2(\tau)\,d\tau
+= H(t-2)\bigl(1 - e^{-(t-2)}\bigr).
+$$
+
+```{python}
+#| code-fold: true
+#| label: fig-ex326
+#| fig-cap: "Solution of Example 3.26: $x(t) = H(t-2)(1 - e^{-(t-2)})$. The system is at rest until the impulse fires at $t=2$, after which the solution rises and approaches $1$ as $t \\to \\infty$. Red dots confirm the Laplace result against a numerical integration."
+
+t_plot = np.linspace(0, 10, 600)
+x_anal = H(t_plot, 2) * (1 - np.exp(-(t_plot - 2)))
+
+def ode_326(tv, y):
+    # x'' + x' = delta_2(t) approximated by a narrow pulse
+    eps = 0.05
+    f = (1/eps) if abs(tv - 2.0) < eps/2 else 0.0
+    return [y[1], f - y[1]]
+
+sol_326 = solve_ivp(ode_326, (0, 10), [0.0, 0.0],
+                   dense_output=True, max_step=0.01)
+t_dots = np.linspace(0.1, 10, 30)
+
+fig, ax = plt.subplots(figsize=(9, 4.5))
+ax.plot(t_plot, x_anal, color='steelblue', lw=2.5,
+        label=r'$x(t) = H(t-2)(1-e^{-(t-2)})$')
+ax.plot(t_dots, sol_326.sol(t_dots)[0], 'ro', markersize=5,
+        label='Numerical (narrow-pulse approximation)')
+ax.axvline(2, color='gray', ls='--', lw=1.2, label='$t=2$ (impulse)')
+ax.axhline(1, color='gray', ls=':', lw=1.2, label='Limiting value $x=1$')
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"Example 3.26: $x''+x'=\delta_2(t)$, $x(0)=x'(0)=0$")
+ax.legend(fontsize=9)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### An Input–Output Approach
+
+Many problems in electrical and chemical engineering can be characterized as **input–output systems**: a forcing function (the *input*) drives a differential equation, and the solution (the *output*) is what we observe.
+
+The simplest example is the linear second-order DE with zero initial conditions,
+
+$$
+ax'' + bx' + cx = f(t), \qquad x(0) = x'(0) = 0. \tag{3.11–3.12}
+$$
+
+Here $f(t)$ is the **input** and the solution $x(t)$, called the **forced response**, is the output. Taking the Laplace transform and solving for $X(s)$:
+
+$$
+X(s) = K(s)\,F(s),
+$$
+
+where $F(s) = \mathcal{L}[f(t)]$ and
+
+::: {.callout-important}
+## Transfer Function
+$$
+K(s) = \frac{1}{as^2 + bs + c}.
+$$
+The function $K(s)$ is called the **transfer function** of the system. Knowing $K(s)$ gives complete knowledge of the response of the system to any input.
+:::
+
+It follows by the convolution property that the forced response in the time domain is:
+
+$$
+x(t) = k(t) * f(t) = \int_0^t k(t-\tau)\,f(\tau)\,d\tau,
+$$
+
+where $k(t) = \mathcal{L}^{-1}[K(s)]$. Note the contrasting but parallel representations of the forced response:
+
+$$
+x(t) = k(t) * f(t) \quad \text{(time domain)}, \qquad X(s) = K(s)\,F(s) \quad \text{(transform domain)}.
+$$
+
+Convolution in the time domain corresponds to simple *multiplication* in the transform domain.
+
+---
+
+### Example 3.27 — Impulse Response
+
+**(Impulse response.)** If $f(t) = \delta_{t_0}(t)$, then in the transform domain the impulse response is $X(s) = K(s)\,e^{-t_0 s}$. In the time domain, using the sifting property:
+
+$$
+x(t) = k(t) * \delta_{t_0}(t) = \int_0^t k(t-\tau)\,\delta_{t_0}(\tau)\,d\tau = H(t-t_0)\,k(t-t_0). \qquad \square
+$$
+
+The **impulse response** is a time-shifted copy of $k(t)$, activated at $t = t_0$.
+
+---
+
+### Example 3.28 — Impulse Response for a Damped Oscillator
+
+**Find the impulse response** for:
+$$
+x'' + 2x' + 5x = \delta_{t_0}(t), \qquad x(0) = x'(0) = 0.
+$$
+
+The transfer function is:
+
+$$
+K(s) = \frac{1}{s^2 + 2s + 5} = \frac{1}{2}\cdot\frac{2}{(s+1)^2 + 4},
+$$
+
+so $k(t) = \mathcal{L}^{-1}[K(s)] = \tfrac{1}{2}\,e^{-t}\sin 2t$. By Example 3.27:
+
+$$
+x(t) = H(t - t_0)\,\frac{1}{2}\,e^{-(t-t_0)}\sin 2(t - t_0).
+$$
+
+This impulse response is zero up to time $t = t_0$ and then is a **damped oscillation** for $t > t_0$. $\square$
+
+```{python}
+#| code-fold: true
+#| label: fig-ex328
+#| fig-cap: "Impulse response from Example 3.28 with $t_0 = 2$: $x(t) = \\frac{1}{2}H(t-2)e^{-(t-2)}\\sin 2(t-2)$. The system is at rest until the impulse at $t=2$, then responds with a decaying oscillation. Red dots confirm against numerical integration."
+
+t0 = 2.0
+t_plot = np.linspace(0, 10, 600)
+x_anal = H(t_plot, t0) * 0.5 * np.exp(-(t_plot - t0)) * np.sin(2*(t_plot - t0))
+
+def ode_328(tv, y):
+    eps = 0.05
+    f = (1/eps) if abs(tv - t0) < eps/2 else 0.0
+    return [y[1], f - 2*y[1] - 5*y[0]]
+
+sol_328 = solve_ivp(ode_328, (0, 10), [0.0, 0.0],
+                   dense_output=True, max_step=0.01)
+t_dots = np.linspace(0.1, 10, 35)
+
+fig, ax = plt.subplots(figsize=(9, 4.5))
+ax.plot(t_plot, x_anal, color='steelblue', lw=2.5,
+        label=r'$\frac{1}{2}H(t-2)e^{-(t-2)}\sin 2(t-2)$')
+ax.plot(t_dots, sol_328.sol(t_dots)[0], 'ro', markersize=5,
+        label='Numerical check')
+ax.axvline(t0, color='gray', ls='--', lw=1.2, label=f'$t_0={t0}$ (impulse)')
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"Example 3.28: $x''+2x'+5x=\delta_2(t)$, $x(0)=x'(0)=0$")
+ax.legend(fontsize=9)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Summary
+
+**Convolution:**
+
+| Concept | Formula |
+|---|---|
+| Definition | $(x*y)(t) = \displaystyle\int_0^t x(\tau)\,y(t-\tau)\,d\tau$ |
+| Convolution property | $\mathcal{L}[x*y] = X(s)\,Y(s)$ |
+| Inverse form | $\mathcal{L}^{-1}[X(s)\,Y(s)] = (x*y)(t)$ |
+| Commutativity | $(x*y)(t) = (y*x)(t)$ |
+
+**Delta function and transfer function:**
+
+| Concept | Formula |
+|---|---|
+| Sifting property | $\displaystyle\int_0^\infty \delta_a(t)\,\phi(t)\,dt = \phi(a)$ |
+| Laplace transform | $\mathcal{L}[\delta_a(t)] = e^{-as}$ |
+| Inverse | $\mathcal{L}^{-1}[e^{-as}] = \delta_a(t)$ |
+| Transfer function | $K(s) = 1/(as^2+bs+c)$ |
+| Forced response (transform) | $X(s) = K(s)\,F(s)$ |
+| Forced response (time) | $x(t) = k(t)*f(t) = \displaystyle\int_0^t k(t-\tau)\,f(\tau)\,d\tau$ |
+
+These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_08_slides)
+
+::: {.callout-note}
+**Next:** Linear Systems of Differential Equations — Logan Chapter 4.
+:::
+
+---
+
+## Relevant Videos
+
+### The Convolution Integral: 
+
+```{=html}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IW4Reburjpc?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+### Convolution Again:
+
+
+```{=html}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AgKQQtEc9dk?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+### The Dirac Delta Function: 
+
+```{=html}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iSKkJcXIy7I?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+### Laplace Transform with Impulse Forcing: 
+
+```{=html}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0gst5RkLtOg?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+```
+
+---
+
+## References
+
+::: {#refs}
+:::
+
+::: {.callout-tip}
+## Session Info
+
+```{python}
+#| code-fold: true
+import sys
+print("Python:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m,'__version__',None)))
+```
+:::
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
