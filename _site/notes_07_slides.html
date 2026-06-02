@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="University of Scranton">
+<meta name="dcterms.date" content="2026-06-02">
+
+<title>Solving ODEs via Laplace Transforms – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a>
+  <ul class="collapse">
+  <li><a href="#what-we-will-cover-today" id="toc-what-we-will-cover-today" class="nav-link" data-scroll-target="#what-we-will-cover-today">What We Will Cover Today</a></li>
+  </ul></li>
+  <li><a href="#the-three-step-method" id="toc-the-three-step-method" class="nav-link" data-scroll-target="#the-three-step-method">The Three-Step Method</a>
+  <ul class="collapse">
+  <li><a href="#logans-figure-3.2" id="toc-logans-figure-3.2" class="nav-link" data-scroll-target="#logans-figure-3.2">Logan’s Figure 3.2</a></li>
+  </ul></li>
+  <li><a href="#derivative-formulas" id="toc-derivative-formulas" class="nav-link" data-scroll-target="#derivative-formulas">Derivative Formulas</a>
+  <ul class="collapse">
+  <li><a href="#theorem-3.11-logan" id="toc-theorem-3.11-logan" class="nav-link" data-scroll-target="#theorem-3.11-logan">Theorem 3.11 (Logan)</a></li>
+  <li><a href="#using-theorem-3.11-to-find-new-transforms" id="toc-using-theorem-3.11-to-find-new-transforms" class="nav-link" data-scroll-target="#using-theorem-3.11-to-find-new-transforms">Using Theorem 3.11 to Find New Transforms</a></li>
+  </ul></li>
+  <li><a href="#solving-ivps" id="toc-solving-ivps" class="nav-link" data-scroll-target="#solving-ivps">Solving IVPs</a>
+  <ul class="collapse">
+  <li><a href="#example-3.14-pure-oscillator" id="toc-example-3.14-pure-oscillator" class="nav-link" data-scroll-target="#example-3.14-pure-oscillator">Example 3.14 — Pure Oscillator</a></li>
+  <li><a href="#example-3.15-first-order-nonhomogeneous" id="toc-example-3.15-first-order-nonhomogeneous" class="nav-link" data-scroll-target="#example-3.15-first-order-nonhomogeneous">Example 3.15 — First-Order Nonhomogeneous</a></li>
+  </ul></li>
+  <li><a href="#partial-fractions" id="toc-partial-fractions" class="nav-link" data-scroll-target="#partial-fractions">Partial Fractions</a>
+  <ul class="collapse">
+  <li><a href="#three-cases" id="toc-three-cases" class="nav-link" data-scroll-target="#three-cases">Three Cases</a></li>
+  <li><a href="#case-3-completing-the-square" id="toc-case-3-completing-the-square" class="nav-link" data-scroll-target="#case-3-completing-the-square">Case 3: Completing the Square</a></li>
+  <li><a href="#completing-the-square-with-non-trivial-numerator" id="toc-completing-the-square-with-non-trivial-numerator" class="nav-link" data-scroll-target="#completing-the-square-with-non-trivial-numerator">Completing the Square with Non-Trivial Numerator</a></li>
+  <li><a href="#ode-with-complex-poles" id="toc-ode-with-complex-poles" class="nav-link" data-scroll-target="#ode-with-complex-poles">ODE with Complex Poles</a></li>
+  </ul></li>
+  <li><a href="#piecewise-continuous-forcing" id="toc-piecewise-continuous-forcing" class="nav-link" data-scroll-target="#piecewise-continuous-forcing">Piecewise Continuous Forcing</a>
+  <ul class="collapse">
+  <li><a href="#the-heaviside-approach" id="toc-the-heaviside-approach" class="nav-link" data-scroll-target="#the-heaviside-approach">The Heaviside Approach</a></li>
+  <li><a href="#example-3.19-oscillator-half-sine-forcing" id="toc-example-3.19-oscillator-half-sine-forcing" class="nav-link" data-scroll-target="#example-3.19-oscillator-half-sine-forcing">Example 3.19 — Oscillator, Half-Sine Forcing</a></li>
+  <li><a href="#example-3.19-solution-plot" id="toc-example-3.19-solution-plot" class="nav-link" data-scroll-target="#example-3.19-solution-plot">Example 3.19 — Solution Plot</a></li>
+  <li><a href="#example-3.21-rc-circuit-square-pulse" id="toc-example-3.21-rc-circuit-square-pulse" class="nav-link" data-scroll-target="#example-3.21-rc-circuit-square-pulse">Example 3.21 — RC Circuit, Square Pulse</a></li>
+  </ul></li>
+  <li><a href="#smoothing" id="toc-smoothing" class="nav-link" data-scroll-target="#smoothing">Smoothing</a>
+  <ul class="collapse">
+  <li><a href="#remark-3.20-pwc-input-continuous-output" id="toc-remark-3.20-pwc-input-continuous-output" class="nav-link" data-scroll-target="#remark-3.20-pwc-input-continuous-output">Remark 3.20 — PWC Input, Continuous Output</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="notes_07_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Solving ODEs via Laplace Transforms</h1>
+<p class="subtitle lead">MATH 341 — Notes 7</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>University of Scranton </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 2, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goals" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Goals</h1>
+<section id="what-we-will-cover-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-will-cover-today">What We Will Cover Today</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<ol type="1">
+<li><p><strong>Derivative formulas</strong> (Theorem 3.11) and how to use them</p></li>
+<li><p><strong>The three-step method</strong> for IVPs</p></li>
+<li><p><strong>Partial fractions</strong> for all three pole types</p></li>
+<li><p><strong>Completing the square</strong> for complex poles</p></li>
+<li><p><strong>Piecewise forcing</strong> — Heaviside step approach</p></li>
+<li><p><strong>Smoothing remark</strong> — why PWC input gives continuous output</p></li>
+</ol>
+</div><div class="column" style="width:42%;">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Section 3.2</strong> of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Key principle: differentiation <span class="math inline">\(\to\)</span> multiplication by <span class="math inline">\(s\)</span>. ICs appear <strong>automatically</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="the-three-step-method" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">The Three-Step Method</h1>
+<section id="logans-figure-3.2" class="level2">
+<h2 class="anchored" data-anchor-id="logans-figure-3.2">Logan’s Figure 3.2</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The Three Steps
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[\boxed{\text{ODE in }x(t)}
+\xrightarrow{\;\mathscr{L}\;}
+\boxed{\text{Algebraic equation in }X(s)}
+\xrightarrow{\;\text{solve}\;}
+\boxed{X(s)}
+\xrightarrow{\;\mathscr{L}^{-1}\;}
+\boxed{x(t)}\]</span></p>
+</div>
+</div>
+<p>. . .</p>
+<p><strong>Step 1 — Transform:</strong> apply <span class="math inline">\(\mathscr{L}\)</span> to both sides, use the derivative formulas, plug in ICs.</p>
+<p><strong>Step 2 — Solve:</strong> pure algebra — solve for <span class="math inline">\(X(s)\)</span>.</p>
+<p><strong>Step 3 — Invert:</strong> use the table + partial fractions + completing the square.</p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The initial conditions enter automatically in Step 1 through the derivative formulas. You never need to apply them separately.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="derivative-formulas" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Derivative Formulas</h1>
+<section id="theorem-3.11-logan" class="level2">
+<h2 class="anchored" data-anchor-id="theorem-3.11-logan">Theorem 3.11 (Logan)</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The Key Operational Formulas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[\mathscr{L}[x'] = sX(s) - x(0) \tag{3.6}\]</span> <span class="math display">\[\mathscr{L}[x''] = s^2X(s) - sx(0) - x'(0) \tag{3.7}\]</span></p>
+</div>
+</div>
+<p><strong>Proof of (3.6):</strong> IBP with <span class="math inline">\(u=e^{-st}\)</span>, <span class="math inline">\(dv=x'dt\)</span>: <span class="math display">\[\mathscr{L}[x'] = [x(t)e^{-st}]_0^\infty + s\int_0^\infty xe^{-st}dt = -x(0) + sX(s). \;\checkmark\]</span></p>
+<p><strong>Proof of (3.7):</strong> apply (3.6) to <span class="math inline">\(x'' = (x')'\)</span>: <span class="math display">\[\mathscr{L}[x''] = s\mathscr{L}[x'] - x'(0) = s(sX-x(0)) - x'(0). \;\checkmark\]</span></p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pattern: <span class="math inline">\(\mathscr{L}[x^{(n)}] = s^n X(s) - s^{n-1}x(0) - \cdots - x^{(n-1)}(0)\)</span>.<br>
+Each derivative adds one power of <span class="math inline">\(s\)</span> and one initial condition.</p>
+</div>
+</div>
+</section>
+<section id="using-theorem-3.11-to-find-new-transforms" class="level2">
+<h2 class="anchored" data-anchor-id="using-theorem-3.11-to-find-new-transforms">Using Theorem 3.11 to Find New Transforms</h2>
+<p><strong>Example 3.12 — <span class="math inline">\(\mathscr{L}[t^2]\)</span>.</strong></p>
+<p><span class="math inline">\((t^2)' = 2t\)</span>, so <span class="math inline">\(\mathscr{L}[(t^2)'] = s\,\mathscr{L}[t^2] - 0 = \dfrac{2}{s^2}\)</span>, giving <span class="math inline">\(\mathscr{L}[t^2] = \dfrac{2}{s^3}\)</span>.</p>
+<p>By induction: <span class="math inline">\(\mathscr{L}[t^n] = \dfrac{n!}{s^{n+1}}\)</span>.</p>
+<p>. . .</p>
+<p><strong>Example 3.13 — <span class="math inline">\(\mathscr{L}[\cosh t]\)</span>.</strong></p>
+<p>Using <span class="math inline">\((\cosh t)'' = \cosh t\)</span>, <span class="math inline">\(\cosh 0 = 1\)</span>, <span class="math inline">\(\sinh 0 = 0\)</span>: <span class="math display">\[\mathscr{L}[\cosh t] = s^2\mathscr{L}[\cosh t] - s \;\Longrightarrow\; \mathscr{L}[\cosh t] = \frac{s}{s^2-1}.\]</span></p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These bootstrapping arguments — using the derivative formulas to <em>find</em> transforms rather than evaluate integrals — are elegant and reusable.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="solving-ivps" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Solving IVPs</h1>
+<section id="example-3.14-pure-oscillator" class="level2">
+<h2 class="anchored" data-anchor-id="example-3.14-pure-oscillator">Example 3.14 — Pure Oscillator</h2>
+<p><strong>Solve:</strong> <span class="math inline">\(x'' + k^2x = 0\)</span>, <span class="math inline">\(x(0)=0\)</span>, <span class="math inline">\(x'(0)=1\)</span>.</p>
+<p>. . .</p>
+<p><strong>Step 1 — Transform:</strong> <span class="math display">\[s^2X - s\cdot\underbrace{0}_{x(0)} - \underbrace{1}_{x'(0)} + k^2X = 0 \;\Longrightarrow\; (s^2+k^2)X = 1.\]</span></p>
+<p><strong>Step 2 — Solve:</strong> <span class="math display">\[X(s) = \frac{1}{s^2+k^2} = \frac{1}{k}\cdot\frac{k}{s^2+k^2}.\]</span></p>
+<p><strong>Step 3 — Invert</strong> (table: <span class="math inline">\(\mathscr{L}[\sin kt] = k/(s^2+k^2)\)</span>): <span class="math display">\[\boxed{x(t) = \frac{1}{k}\sin kt.}\]</span></p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The IC <span class="math inline">\(x'(0)=1\)</span> appeared as the <span class="math inline">\(-1\)</span> term in Step 1. No separate substitution needed.</p>
+</div>
+</div>
+</section>
+<section id="example-3.15-first-order-nonhomogeneous" class="level2">
+<h2 class="anchored" data-anchor-id="example-3.15-first-order-nonhomogeneous">Example 3.15 — First-Order Nonhomogeneous</h2>
+<p><strong>Solve:</strong> <span class="math inline">\(x' + 2x = e^{-t}\)</span>, <span class="math inline">\(x(0)=0\)</span>.</p>
+<p>. . .</p>
+<p><strong>Step 1 — Transform:</strong> <span class="math display">\[sX - 0 + 2X = \frac{1}{s+1} \;\Longrightarrow\; (s+2)X = \frac{1}{s+1}.\]</span></p>
+<p><strong>Step 2 — Solve:</strong> <span class="math display">\[X(s) = \frac{1}{(s+1)(s+2)}.\]</span></p>
+<p><strong>Step 3 — Invert</strong> (table entry <span class="math inline">\(1/[(s-a)(s-b)]\)</span>, or partial fractions): <span class="math display">\[\boxed{x(t) = e^{-t} - e^{-2t}.}\]</span></p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example 3.16 — PF Verification
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\dfrac{1}{(s+1)(s+2)} = \dfrac{1}{s+1} - \dfrac{1}{s+2}\)</span>, giving <span class="math inline">\(e^{-t}-e^{-2t}\)</span>. <span class="math inline">\(\checkmark\)</span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="partial-fractions" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Partial Fractions</h1>
+<section id="three-cases" class="level2">
+<h2 class="anchored" data-anchor-id="three-cases">Three Cases</h2>
+<p><strong>Case 1 — Distinct real poles</strong> <span class="math inline">\((s-a)(s-b)\)</span>: <span class="math display">\[\frac{A}{s-a}+\frac{B}{s-b} \;\longrightarrow\; Ae^{at}+Be^{bt}\]</span></p>
+<p>Cover-up: <span class="math inline">\(A = X(s)\cdot(s-a)\big|_{s=a}\)</span>, <span class="math inline">\(B = X(s)\cdot(s-b)\big|_{s=b}\)</span>.</p>
+<p>. . .</p>
+<p><strong>Case 2 — Repeated pole</strong> <span class="math inline">\((s-a)^2\)</span>: <span class="math display">\[\frac{A}{s-a}+\frac{B}{(s-a)^2} \;\longrightarrow\; Ae^{at}+Bte^{at}\]</span></p>
+<p>. . .</p>
+<p><strong>Case 3 — Complex poles</strong> <span class="math inline">\((s-\alpha)^2+\beta^2\)</span>:</p>
+<p>Complete the square, then: <span class="math display">\[\frac{A(s-\alpha)+B\beta}{(s-\alpha)^2+\beta^2} \;\longrightarrow\; e^{\alpha t}(A\cos\beta t+B\sin\beta t)\]</span></p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Decision rule:</strong> factor the denominator first. Real root <span class="math inline">\(\to\)</span> Case 1 or 2. Discriminant negative <span class="math inline">\(\to\)</span> complete the square (Case 3).</p>
+</div>
+</div>
+</section>
+<section id="case-3-completing-the-square" class="level2">
+<h2 class="anchored" data-anchor-id="case-3-completing-the-square">Case 3: Completing the Square</h2>
+<p><strong>Example 3.17 (Logan)</strong> — <span class="math inline">\(X(s) = \dfrac{1}{s^2+3s+6}\)</span>.</p>
+<p>. . .</p>
+<p><span class="math display">\[s^2+3s+6 = \left(s+\tfrac{3}{2}\right)^2 - \tfrac{9}{4}+6 = \left(s+\tfrac{3}{2}\right)^2 + \left(\tfrac{\sqrt{15}}{2}\right)^2\]</span></p>
+<p>. . .</p>
+<p>Match <span class="math inline">\(k/[(s-\alpha)^2+k^2]\)</span> with <span class="math inline">\(\alpha=-3/2\)</span>, <span class="math inline">\(k=\sqrt{15}/2\)</span>:</p>
+<p><span class="math display">\[X(s) = \frac{2}{\sqrt{15}}\cdot\frac{\sqrt{15}/2}{(s+3/2)^2+(\sqrt{15}/2)^2}\]</span></p>
+<p><span class="math display">\[\boxed{x(t) = \frac{2}{\sqrt{15}}\,e^{-3t/2}\sin\frac{\sqrt{15}}{2}t}\]</span></p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>General Recipe for <span class="math inline">\(s^2+bs+c\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[s^2+bs+c = \left(s+\frac{b}{2}\right)^2 + \underbrace{\left(c-\frac{b^2}{4}\right)}_{\beta^2}\]</span> <span class="math inline">\(\alpha = -b/2\)</span>, <span class="math inline">\(\beta = \sqrt{c-b^2/4}\)</span> (when <span class="math inline">\(4c&gt;b^2\)</span>).</p>
+</div>
+</div>
+</section>
+<section id="completing-the-square-with-non-trivial-numerator" class="level2">
+<h2 class="anchored" data-anchor-id="completing-the-square-with-non-trivial-numerator">Completing the Square with Non-Trivial Numerator</h2>
+<p><strong>Find</strong> <span class="math inline">\(\mathscr{L}^{-1}\!\left[\dfrac{3-2s}{s^2+2s+10}\right]\)</span>.</p>
+<p>. . .</p>
+<p><strong>Complete square:</strong> <span class="math inline">\(s^2+2s+10 = (s+1)^2+9\)</span>.</p>
+<p><strong>Rewrite numerator:</strong> <span class="math inline">\(3-2s = -2(s+1)+5\)</span>.</p>
+<p><span class="math display">\[\frac{3-2s}{(s+1)^2+9} = -2\cdot\frac{s+1}{(s+1)^2+9} + \frac{5}{3}\cdot\frac{3}{(s+1)^2+9}\]</span></p>
+<p>. . .</p>
+<p><span class="math display">\[\boxed{x(t) = e^{-t}\!\left(-2\cos 3t + \tfrac{5}{3}\sin 3t\right)}\]</span></p>
+<div id="63450bc6" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> (<span class="dv">3</span><span class="op">-</span><span class="dv">2</span><span class="op">*</span>s_v)<span class="op">/</span>(s_v<span class="op">**</span><span class="dv">2</span><span class="op">+</span><span class="dv">2</span><span class="op">*</span>s_v<span class="op">+</span><span class="dv">10</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"</span><span class="dv">\m</span><span class="vs">athscr{L}</span><span class="dv">^</span><span class="vs">{-1}</span><span class="pp">[</span><span class="er">\</span><span class="pp">cdots]</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(sym.simplify(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    sym.inverse_laplace_transform(expr, s_v, t_v)))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \mathscr{L}^{-1}[\cdots] = \frac{\left(5 \sin{\left(3 t \right)} - 6 \cos{\left(3 t \right)}\right) e^{- t}}{3}\)</span></p>
+</div>
+</div>
+</section>
+<section id="ode-with-complex-poles" class="level2">
+<h2 class="anchored" data-anchor-id="ode-with-complex-poles">ODE with Complex Poles</h2>
+<p><strong>Solve:</strong> <span class="math inline">\(x''-2x'+2x=0\)</span>, <span class="math inline">\(x(0)=0\)</span>, <span class="math inline">\(x'(0)=1\)</span>.</p>
+<p>. . .</p>
+<p><strong>Step 1:</strong> <span class="math inline">\((s^2-2s+2)X = 1\)</span></p>
+<p><strong>Step 2:</strong> <span class="math inline">\(X(s) = \dfrac{1}{s^2-2s+2}\)</span></p>
+<p><strong>Step 3:</strong> <span class="math inline">\((s-1)^2+1\)</span> — shift property:</p>
+<p><span class="math display">\[\boxed{x(t) = e^t\sin t}\]</span></p>
+<div id="cell-fig-cplx-slides" class="cell" data-fig-height="2.8" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-cplx-slides" class="quarto-float quarto-figure quarto-figure-center anchored" height="373" width="1334">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cplx-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_07_slides_files/figure-revealjs/fig-cplx-slides-output-1.png" id="fig-cplx-slides" width="1334" height="373" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-cplx-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="piecewise-continuous-forcing" class="level1" data-background-color="#1a5276">
+<h1 data-background-color="#1a5276">Piecewise Continuous Forcing</h1>
+<section id="the-heaviside-approach" class="level2">
+<h2 class="anchored" data-anchor-id="the-heaviside-approach">The Heaviside Approach</h2>
+<p>Why do we care? Methods from Chapter 2 fail for PWC forcing because we’d need to solve on each sub-interval and match solutions at every junction.</p>
+<p>The Laplace method handles everything in <strong>one calculation</strong>.</p>
+<p>. . .</p>
+<p><strong>Example 3.18 (Logan)</strong> — non-constant piecewise pieces: <span class="math display">\[f(t) = \begin{cases}t &amp; 0&lt;t&lt;1 \\ 2 &amp; 1\leq t\leq 3 \\ 0 &amp; t&gt;3\end{cases}
+= t + (2-t)H(t-1) - 2H(t-3)\]</span></p>
+<p>For <span class="math inline">\(\mathscr{L}[tH(t-1)]\)</span>: use <span class="math inline">\(\mathscr{L}[f(t)H(t-a)] = e^{-as}\mathscr{L}[f(t+a)]\)</span> with <span class="math inline">\(f(t)=t\)</span>: <span class="math display">\[\mathscr{L}[tH(t-1)] = e^{-s}\mathscr{L}[t+1] = e^{-s}\!\left(\frac{1}{s^2}+\frac{1}{s}\right)\]</span></p>
+<p><span class="math display">\[F(s) = \frac{1}{s^2}+\frac{e^{-s}}{s}-\frac{e^{-s}}{s^2}-\frac{2e^{-3s}}{s}\]</span></p>
+</section>
+<section id="example-3.19-oscillator-half-sine-forcing" class="level2">
+<h2 class="anchored" data-anchor-id="example-3.19-oscillator-half-sine-forcing">Example 3.19 — Oscillator, Half-Sine Forcing</h2>
+<p><strong>Solve:</strong> <span class="math inline">\(x''+4x = \sin t - H(t-\pi)\sin t\)</span>, <span class="math inline">\(x(0)=x'(0)=0\)</span>.</p>
+<p>. . .</p>
+<p><strong>Key step — transform <span class="math inline">\(H(t-\pi)\sin t\)</span>:</strong> <span class="math display">\[\mathscr{L}[H(t-\pi)\sin t] = e^{-\pi s}\mathscr{L}[\sin(t+\pi)] = e^{-\pi s}\mathscr{L}[-\sin t] = -\frac{e^{-\pi s}}{s^2+1}\]</span></p>
+<p>. . .</p>
+<p><strong>(s^2+4)X = <span class="math inline">\(\dfrac{1+e^{-\pi s}}{s^2+1}\)</span></strong>; PF: <span class="math inline">\(A=1/3\)</span>, <span class="math inline">\(B=-1/3\)</span>:</p>
+<p><span class="math display">\[\mathscr{L}^{-1}\!\left[\frac{1}{(s^2+1)(s^2+4)}\right] = \frac{1}{3}\sin t - \frac{1}{6}\sin 2t\]</span></p>
+<p>. . .</p>
+<p>Switching property for <span class="math inline">\(e^{-\pi s}\)</span> term; <span class="math inline">\(\sin(t-\pi)=-\sin t\)</span>:</p>
+<p><span class="math display">\[\boxed{x(t) = \tfrac{1}{3}\sin t - \tfrac{1}{6}\sin 2t + H(t-\pi)\!\left(-\tfrac{1}{3}\sin t - \tfrac{1}{6}\sin 2t\right)}\]</span></p>
+</section>
+<section id="example-3.19-solution-plot" class="level2">
+<h2 class="anchored" data-anchor-id="example-3.19-solution-plot">Example 3.19 — Solution Plot</h2>
+<div id="cell-fig-ex319-slides" class="cell" data-fig-height="3.8" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-ex319-slides" class="quarto-float quarto-figure quarto-figure-center anchored" height="524" width="1481">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex319-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_07_slides_files/figure-revealjs/fig-ex319-slides-output-1.png" id="fig-ex319-slides" width="1481" height="524" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-ex319-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After <span class="math inline">\(t=\pi\)</span> the oscillator runs <strong>freely</strong> at a modified amplitude — the forcing deposited energy that persists.</p>
+</div>
+</div>
+</section>
+<section id="example-3.21-rc-circuit-square-pulse" class="level2">
+<h2 class="anchored" data-anchor-id="example-3.21-rc-circuit-square-pulse">Example 3.21 — RC Circuit, Square Pulse</h2>
+<p><strong>Solve:</strong> <span class="math inline">\(q'+3q = H(t-1)-H(t-2)\)</span>, <span class="math inline">\(q(0)=0\)</span>.</p>
+<p>. . .</p>
+<p><span class="math inline">\((s+3)Q = \dfrac{e^{-s}-e^{-2s}}{s}\)</span>; <span class="math inline">\(\quad Q = \dfrac{e^{-s}}{s(s+3)} - \dfrac{e^{-2s}}{s(s+3)}\)</span></p>
+<p>PF: <span class="math inline">\(\dfrac{1}{s(s+3)} = \dfrac{1/3}{s}-\dfrac{1/3}{s+3}\)</span>, so <span class="math inline">\(\mathscr{L}^{-1}\!\left[\dfrac{1}{s(s+3)}\right] = \dfrac{1}{3}(1-e^{-3t})\)</span>.</p>
+<p>Switching property for each term:</p>
+<p><span class="math display">\[\boxed{q(t) = \tfrac{1}{3}(1-e^{-3(t-1)})H(t-1) - \tfrac{1}{3}(1-e^{-3(t-2)})H(t-2)}\]</span></p>
+<div id="cell-fig-ex321-slides" class="cell" data-fig-height="2.5" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="fig-ex321-slides" class="quarto-float quarto-figure quarto-figure-center anchored" height="330" width="1332">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex321-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_07_slides_files/figure-revealjs/fig-ex321-slides-output-1.png" id="fig-ex321-slides" width="1332" height="330" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-ex321-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="smoothing" class="level1" data-background-color="#1a5276">
+<h1 data-background-color="#1a5276">Smoothing</h1>
+<section id="remark-3.20-pwc-input-continuous-output" class="level2">
+<h2 class="anchored" data-anchor-id="remark-3.20-pwc-input-continuous-output">Remark 3.20 — PWC Input, Continuous Output</h2>
+<p><strong>Question:</strong> if <span class="math inline">\(f(t)\)</span> is discontinuous, how smooth is <span class="math inline">\(x(t)\)</span>?</p>
+<p><strong>Answer (Remark 3.20):</strong> <span class="math inline">\(x(t)\)</span> is always <em>more</em> regular than <span class="math inline">\(f(t)\)</span>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">ODE order</th>
+<th>Input regularity</th>
+<th>Output regularity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1st</td>
+<td>PWC (jump)</td>
+<td>Continuous</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2nd</td>
+<td>PWC (jump)</td>
+<td>Continuously differentiable</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(n\)</span>th</td>
+<td>PWC</td>
+<td><span class="math inline">\(C^{n-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> <span class="math inline">\(x'' = H(t-3)\)</span>, <span class="math inline">\(x(0)=x'(0)=0\)</span>.</p>
+<p><span class="math inline">\(x'(t) = (t-3)H(t-3)\)</span> — continuous, kink at <span class="math inline">\(t=3\)</span>.</p>
+<p><span class="math inline">\(x(t) = \frac{1}{2}(t-3)^2H(t-3)\)</span> — smooth.</p>
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Integration smooths.</strong> Each integration adds one degree of regularity. The Laplace transform handles this automatically — you never need to patch solutions together at jump points.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="summary" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Summary</h1>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Theorem 3.11</strong> — <span class="math inline">\(\mathscr{L}[x''] = s^2X-sx(0)-x'(0)\)</span> — converts the ODE to algebra with ICs built in.</p></li>
+<li><p><strong>Three steps</strong>: transform → solve for <span class="math inline">\(X(s)\)</span> → invert using table + PF.</p></li>
+<li><p><strong>Partial fractions</strong>: distinct real poles → exponentials; repeated → <span class="math inline">\(te^{at}\)</span>; complex → complete the square → damped sinusoids.</p></li>
+<li><p><strong>PWC forcing</strong>: write <span class="math inline">\(f(t)\)</span> as Heaviside steps; transform using <span class="math inline">\(\mathscr{L}[f(t)H(t-a)]=e^{-as}\mathscr{L}[f(t+a)]\)</span>; each <span class="math inline">\(e^{-as}\)</span> factor in <span class="math inline">\(X(s)\)</span> produces a time-delayed copy in <span class="math inline">\(x(t)\)</span>.</p></li>
+<li><p><strong>Smoothing (Remark 3.20)</strong>: a discontinuous input produces a continuous output — integration gains regularity, no case-by-case patching needed.</p></li>
+</ul>
+</div>
+<p>. . .</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 45%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pole type</th>
+<th style="text-align: center;"><span class="math inline">\(X(s)\)</span> form</th>
+<th><span class="math inline">\(x(t)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Distinct real</td>
+<td style="text-align: center;"><span class="math inline">\(\frac{A}{s-a}+\frac{B}{s-b}\)</span></td>
+<td><span class="math inline">\(Ae^{at}+Be^{bt}\)</span></td>
+</tr>
+<tr class="even">
+<td>Repeated</td>
+<td style="text-align: center;"><span class="math inline">\(\frac{A}{s-a}+\frac{B}{(s-a)^2}\)</span></td>
+<td><span class="math inline">\(Ae^{at}+Bte^{at}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Complex</td>
+<td style="text-align: center;"><span class="math inline">\(\frac{A(s-\alpha)+B\beta}{(s-\alpha)^2+\beta^2}\)</span></td>
+<td><span class="math inline">\(e^{\alpha t}(A\cos\beta t+B\sin\beta t)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-logan2015first" class="csl-entry" role="listitem">
+Logan, J David. 2015. <em>A First Course in Differential Equations Third Edition</em>.
+</div>
+</div>
+<hr>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid" style="width:12.0%"></a></p>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

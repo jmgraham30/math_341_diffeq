@@ -1,0 +1,463 @@
+---
+title: "Solving ODEs via Laplace Transforms"
+subtitle: "MATH 341 — Notes 7"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    chalkboard: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 7"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+H = lambda tv, a: np.where(np.asarray(tv, dtype=float) >= a, 1.0, 0.0)
+s_v = sym.Symbol('s'); t_v = sym.Symbol('t', positive=True)
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover Today
+
+:::: {.columns}
+::: {.column width="58%"}
+1. **Derivative formulas** (Theorem 3.11) and how to use them
+
+2. **The three-step method** for IVPs
+
+3. **Partial fractions** for all three pole types
+
+4. **Completing the square** for complex poles
+
+5. **Piecewise forcing** — Heaviside step approach
+
+6. **Smoothing remark** — why PWC input gives continuous output
+:::
+::: {.column width="42%"}
+::: {.callout-note}
+**Section 3.2** of @logan2015first.
+:::
+::: {.callout-tip}
+Key principle: differentiation $\to$ multiplication by $s$.
+ICs appear **automatically**.
+:::
+:::
+::::
+
+
+# The Three-Step Method {background-color="#2c3e50"}
+
+## Logan's Figure 3.2
+
+::: {.callout-important}
+## The Three Steps
+$$\boxed{\text{ODE in }x(t)}
+\xrightarrow{\;\mathscr{L}\;}
+\boxed{\text{Algebraic equation in }X(s)}
+\xrightarrow{\;\text{solve}\;}
+\boxed{X(s)}
+\xrightarrow{\;\mathscr{L}^{-1}\;}
+\boxed{x(t)}$$
+:::
+
+. . .
+
+**Step 1 — Transform:** apply $\mathscr{L}$ to both sides, use the derivative formulas, plug in ICs.
+
+**Step 2 — Solve:** pure algebra — solve for $X(s)$.
+
+**Step 3 — Invert:** use the table + partial fractions + completing the square.
+
+. . .
+
+::: {.callout-tip}
+The initial conditions enter automatically in Step 1 through the derivative formulas. You never need to apply them separately.
+:::
+
+
+# Derivative Formulas {background-color="#2c3e50"}
+
+## Theorem 3.11 (Logan)
+
+::: {.callout-important}
+## The Key Operational Formulas
+$$\mathscr{L}[x'] = sX(s) - x(0) \tag{3.6}$$
+$$\mathscr{L}[x''] = s^2X(s) - sx(0) - x'(0) \tag{3.7}$$
+:::
+
+**Proof of (3.6):** IBP with $u=e^{-st}$, $dv=x'dt$:
+$$\mathscr{L}[x'] = [x(t)e^{-st}]_0^\infty + s\int_0^\infty xe^{-st}dt = -x(0) + sX(s). \;\checkmark$$
+
+**Proof of (3.7):** apply (3.6) to $x'' = (x')'$:
+$$\mathscr{L}[x''] = s\mathscr{L}[x'] - x'(0) = s(sX-x(0)) - x'(0). \;\checkmark$$
+
+. . .
+
+::: {.callout-tip}
+Pattern: $\mathscr{L}[x^{(n)}] = s^n X(s) - s^{n-1}x(0) - \cdots - x^{(n-1)}(0)$.  
+Each derivative adds one power of $s$ and one initial condition.
+:::
+
+
+## Using Theorem 3.11 to Find New Transforms
+
+**Example 3.12 — $\mathscr{L}[t^2]$.**
+
+$(t^2)' = 2t$, so $\mathscr{L}[(t^2)'] = s\,\mathscr{L}[t^2] - 0 = \dfrac{2}{s^2}$, giving $\mathscr{L}[t^2] = \dfrac{2}{s^3}$.
+
+By induction: $\mathscr{L}[t^n] = \dfrac{n!}{s^{n+1}}$.
+
+. . .
+
+**Example 3.13 — $\mathscr{L}[\cosh t]$.**
+
+Using $(\cosh t)'' = \cosh t$, $\cosh 0 = 1$, $\sinh 0 = 0$:
+$$\mathscr{L}[\cosh t] = s^2\mathscr{L}[\cosh t] - s \;\Longrightarrow\; \mathscr{L}[\cosh t] = \frac{s}{s^2-1}.$$
+
+. . .
+
+::: {.callout-tip}
+These bootstrapping arguments — using the derivative formulas to *find* transforms rather than evaluate integrals — are elegant and reusable.
+:::
+
+
+# Solving IVPs {background-color="#2c3e50"}
+
+## Example 3.14 — Pure Oscillator
+
+**Solve:** $x'' + k^2x = 0$, $x(0)=0$, $x'(0)=1$.
+
+. . .
+
+**Step 1 — Transform:**
+$$s^2X - s\cdot\underbrace{0}_{x(0)} - \underbrace{1}_{x'(0)} + k^2X = 0 \;\Longrightarrow\; (s^2+k^2)X = 1.$$
+
+**Step 2 — Solve:**
+$$X(s) = \frac{1}{s^2+k^2} = \frac{1}{k}\cdot\frac{k}{s^2+k^2}.$$
+
+**Step 3 — Invert** (table: $\mathscr{L}[\sin kt] = k/(s^2+k^2)$):
+$$\boxed{x(t) = \frac{1}{k}\sin kt.}$$
+
+. . .
+
+::: {.callout-note}
+The IC $x'(0)=1$ appeared as the $-1$ term in Step 1. No separate substitution needed.
+:::
+
+
+## Example 3.15 — First-Order Nonhomogeneous
+
+**Solve:** $x' + 2x = e^{-t}$, $x(0)=0$.
+
+. . .
+
+**Step 1 — Transform:**
+$$sX - 0 + 2X = \frac{1}{s+1} \;\Longrightarrow\; (s+2)X = \frac{1}{s+1}.$$
+
+**Step 2 — Solve:**
+$$X(s) = \frac{1}{(s+1)(s+2)}.$$
+
+**Step 3 — Invert** (table entry $1/[(s-a)(s-b)]$, or partial fractions):
+$$\boxed{x(t) = e^{-t} - e^{-2t}.}$$
+
+. . .
+
+::: {.callout-note}
+## Example 3.16 — PF Verification
+$\dfrac{1}{(s+1)(s+2)} = \dfrac{1}{s+1} - \dfrac{1}{s+2}$, giving $e^{-t}-e^{-2t}$. $\checkmark$
+:::
+
+
+# Partial Fractions {background-color="#2c3e50"}
+
+## Three Cases
+
+**Case 1 — Distinct real poles** $(s-a)(s-b)$:
+$$\frac{A}{s-a}+\frac{B}{s-b} \;\longrightarrow\; Ae^{at}+Be^{bt}$$
+
+Cover-up: $A = X(s)\cdot(s-a)\big|_{s=a}$, $B = X(s)\cdot(s-b)\big|_{s=b}$.
+
+. . .
+
+**Case 2 — Repeated pole** $(s-a)^2$:
+$$\frac{A}{s-a}+\frac{B}{(s-a)^2} \;\longrightarrow\; Ae^{at}+Bte^{at}$$
+
+. . .
+
+**Case 3 — Complex poles** $(s-\alpha)^2+\beta^2$:
+
+Complete the square, then:
+$$\frac{A(s-\alpha)+B\beta}{(s-\alpha)^2+\beta^2} \;\longrightarrow\; e^{\alpha t}(A\cos\beta t+B\sin\beta t)$$
+
+. . .
+
+::: {.callout-tip}
+**Decision rule:** factor the denominator first. Real root $\to$ Case 1 or 2. Discriminant negative $\to$ complete the square (Case 3).
+:::
+
+
+## Case 3: Completing the Square
+
+**Example 3.17 (Logan)** — $X(s) = \dfrac{1}{s^2+3s+6}$.
+
+. . .
+
+$$s^2+3s+6 = \left(s+\tfrac{3}{2}\right)^2 - \tfrac{9}{4}+6 = \left(s+\tfrac{3}{2}\right)^2 + \left(\tfrac{\sqrt{15}}{2}\right)^2$$
+
+. . .
+
+Match $k/[(s-\alpha)^2+k^2]$ with $\alpha=-3/2$, $k=\sqrt{15}/2$:
+
+$$X(s) = \frac{2}{\sqrt{15}}\cdot\frac{\sqrt{15}/2}{(s+3/2)^2+(\sqrt{15}/2)^2}$$
+
+$$\boxed{x(t) = \frac{2}{\sqrt{15}}\,e^{-3t/2}\sin\frac{\sqrt{15}}{2}t}$$
+
+. . .
+
+::: {.callout-tip}
+## General Recipe for $s^2+bs+c$
+$$s^2+bs+c = \left(s+\frac{b}{2}\right)^2 + \underbrace{\left(c-\frac{b^2}{4}\right)}_{\beta^2}$$
+$\alpha = -b/2$, $\beta = \sqrt{c-b^2/4}$ (when $4c>b^2$).
+:::
+
+
+## Completing the Square with Non-Trivial Numerator
+
+**Find** $\mathscr{L}^{-1}\!\left[\dfrac{3-2s}{s^2+2s+10}\right]$.
+
+. . .
+
+**Complete square:** $s^2+2s+10 = (s+1)^2+9$.
+
+**Rewrite numerator:** $3-2s = -2(s+1)+5$.
+
+$$\frac{3-2s}{(s+1)^2+9} = -2\cdot\frac{s+1}{(s+1)^2+9} + \frac{5}{3}\cdot\frac{3}{(s+1)^2+9}$$
+
+. . .
+
+$$\boxed{x(t) = e^{-t}\!\left(-2\cos 3t + \tfrac{5}{3}\sin 3t\right)}$$
+
+```{python}
+#| echo: true
+#| code-fold: false
+expr = (3-2*s_v)/(s_v**2+2*s_v+10)
+display(Math(r"\mathscr{L}^{-1}[\cdots] = " + sym.latex(sym.simplify(
+    sym.inverse_laplace_transform(expr, s_v, t_v)))))
+```
+
+
+## ODE with Complex Poles
+
+**Solve:** $x''-2x'+2x=0$, $x(0)=0$, $x'(0)=1$.
+
+. . .
+
+**Step 1:** $(s^2-2s+2)X = 1$
+
+**Step 2:** $X(s) = \dfrac{1}{s^2-2s+2}$
+
+**Step 3:** $(s-1)^2+1$ — shift property:
+
+$$\boxed{x(t) = e^t\sin t}$$
+
+```{python}
+#| label: fig-cplx-slides
+#| fig-height: 2.8
+
+t_pl = np.linspace(0,5,300)
+fig, ax = plt.subplots(figsize=(9,2.6))
+ax.plot(t_pl, np.exp(t_pl)*np.sin(t_pl), color='steelblue', lw=2.5, label=r'$e^t\sin t$')
+def oc(t,y): return [y[1],2*y[1]-2*y[0]]
+sol = solve_ivp(oc,(0,5),[0,1],dense_output=True,max_step=0.01)
+ax.plot(np.linspace(0,5,18), sol.sol(np.linspace(0,5,18))[0], 'ro', markersize=5, label='Numerical')
+ax.axhline(0,color='k',lw=0.5); ax.set_xlabel('$t$'); ax.legend(fontsize=8)
+ax.set_title(r"$x''-2x'+2x=0$, $x(0)=0$, $x'(0)=1$"); plt.tight_layout(); plt.show()
+```
+
+
+# Piecewise Continuous Forcing {background-color="#1a5276"}
+
+## The Heaviside Approach
+
+Why do we care? Methods from Chapter 2 fail for PWC forcing because we'd need to solve on each sub-interval and match solutions at every junction.
+
+The Laplace method handles everything in **one calculation**.
+
+. . .
+
+**Example 3.18 (Logan)** — non-constant piecewise pieces:
+$$f(t) = \begin{cases}t & 0<t<1 \\ 2 & 1\leq t\leq 3 \\ 0 & t>3\end{cases}
+= t + (2-t)H(t-1) - 2H(t-3)$$
+
+For $\mathscr{L}[tH(t-1)]$: use $\mathscr{L}[f(t)H(t-a)] = e^{-as}\mathscr{L}[f(t+a)]$ with $f(t)=t$:
+$$\mathscr{L}[tH(t-1)] = e^{-s}\mathscr{L}[t+1] = e^{-s}\!\left(\frac{1}{s^2}+\frac{1}{s}\right)$$
+
+$$F(s) = \frac{1}{s^2}+\frac{e^{-s}}{s}-\frac{e^{-s}}{s^2}-\frac{2e^{-3s}}{s}$$
+
+
+## Example 3.19 — Oscillator, Half-Sine Forcing
+
+**Solve:** $x''+4x = \sin t - H(t-\pi)\sin t$, $x(0)=x'(0)=0$.
+
+. . .
+
+**Key step — transform $H(t-\pi)\sin t$:**
+$$\mathscr{L}[H(t-\pi)\sin t] = e^{-\pi s}\mathscr{L}[\sin(t+\pi)] = e^{-\pi s}\mathscr{L}[-\sin t] = -\frac{e^{-\pi s}}{s^2+1}$$
+
+. . .
+
+**(s^2+4)X = $\dfrac{1+e^{-\pi s}}{s^2+1}$**; PF: $A=1/3$, $B=-1/3$:
+
+$$\mathscr{L}^{-1}\!\left[\frac{1}{(s^2+1)(s^2+4)}\right] = \frac{1}{3}\sin t - \frac{1}{6}\sin 2t$$
+
+. . .
+
+Switching property for $e^{-\pi s}$ term; $\sin(t-\pi)=-\sin t$:
+
+$$\boxed{x(t) = \tfrac{1}{3}\sin t - \tfrac{1}{6}\sin 2t + H(t-\pi)\!\left(-\tfrac{1}{3}\sin t - \tfrac{1}{6}\sin 2t\right)}$$
+
+
+## Example 3.19 — Solution Plot
+
+```{python}
+#| label: fig-ex319-slides
+#| fig-height: 3.8
+
+t_ev = np.linspace(0, 20, 2000)
+def ode319(tv,y):
+    return [y[1], (np.sin(tv) if tv<=np.pi else 0.0) - 4*y[0]]
+sol = solve_ivp(ode319,(0,20),[0,0],t_eval=t_ev,max_step=0.01)
+x_a = (1/3*np.sin(t_ev)-1/6*np.sin(2*t_ev)
+       +H(t_ev,np.pi)*(-1/3*np.sin(t_ev)-1/6*np.sin(2*t_ev)))
+f_p = np.where(t_ev<=np.pi, np.sin(t_ev), 0)
+
+fig, axes = plt.subplots(2,1,figsize=(10,3.6),sharex=True)
+axes[0].plot(t_ev,f_p,color='crimson',lw=2); axes[0].fill_between(t_ev,0,f_p,alpha=0.2,color='crimson')
+axes[0].axvline(np.pi,color='gray',ls='--',lw=1.2); axes[0].set_ylabel('$f(t)$'); axes[0].set_ylim(-0.2,1.4)
+axes[1].plot(t_ev,x_a,color='steelblue',lw=2,label='Analytical')
+axes[1].plot(t_ev[::50],sol.y[0][::50],'ro',markersize=4,label='Numerical')
+axes[1].axvline(np.pi,color='gray',ls='--',lw=1.2); axes[1].axhline(0,color='k',lw=0.5)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$'); axes[1].legend(fontsize=8)
+plt.tight_layout(); plt.show()
+```
+
+::: {.callout-note}
+After $t=\pi$ the oscillator runs **freely** at a modified amplitude — the forcing deposited energy that persists.
+:::
+
+
+## Example 3.21 — RC Circuit, Square Pulse
+
+**Solve:** $q'+3q = H(t-1)-H(t-2)$, $q(0)=0$.
+
+. . .
+
+$(s+3)Q = \dfrac{e^{-s}-e^{-2s}}{s}$; $\quad Q = \dfrac{e^{-s}}{s(s+3)} - \dfrac{e^{-2s}}{s(s+3)}$
+
+PF: $\dfrac{1}{s(s+3)} = \dfrac{1/3}{s}-\dfrac{1/3}{s+3}$, so $\mathscr{L}^{-1}\!\left[\dfrac{1}{s(s+3)}\right] = \dfrac{1}{3}(1-e^{-3t})$.
+
+Switching property for each term:
+
+$$\boxed{q(t) = \tfrac{1}{3}(1-e^{-3(t-1)})H(t-1) - \tfrac{1}{3}(1-e^{-3(t-2)})H(t-2)}$$
+
+```{python}
+#| label: fig-ex321-slides
+#| fig-height: 2.5
+
+t_pl = np.linspace(0,5,500)
+q = (1/3*(1-np.exp(-3*(t_pl-1)))*H(t_pl,1) - 1/3*(1-np.exp(-3*(t_pl-2)))*H(t_pl,2))
+def od321(tv,y): return [(1 if 1<=tv<=2 else 0)-3*y[0]]
+sn = solve_ivp(od321,(0,5),[0],t_eval=t_pl,max_step=0.005)
+fig, ax = plt.subplots(figsize=(9,2.3))
+ax.plot(t_pl,q,color='steelblue',lw=2.5,label='Analytical')
+ax.plot(t_pl[::25],sn.y[0][::25],'ro',markersize=4,label='Numerical')
+ax.axhline(0,color='k',lw=0.5); ax.set_xlabel('$t$'); ax.set_ylabel('$q(t)$')
+ax.legend(fontsize=8); ax.set_title("Logan Figure 3.4: RC circuit charge")
+plt.tight_layout(); plt.show()
+```
+
+
+# Smoothing {background-color="#1a5276"}
+
+## Remark 3.20 — PWC Input, Continuous Output
+
+**Question:** if $f(t)$ is discontinuous, how smooth is $x(t)$?
+
+**Answer (Remark 3.20):** $x(t)$ is always *more* regular than $f(t)$.
+
+| ODE order | Input regularity | Output regularity |
+|:---:|---|---|
+| 1st | PWC (jump) | Continuous |
+| 2nd | PWC (jump) | Continuously differentiable |
+| $n$th | PWC | $C^{n-1}$ |
+
+**Example:** $x'' = H(t-3)$, $x(0)=x'(0)=0$.
+
+$x'(t) = (t-3)H(t-3)$ — continuous, kink at $t=3$.
+
+$x(t) = \frac{1}{2}(t-3)^2H(t-3)$ — smooth.
+
+. . .
+
+::: {.callout-tip}
+**Integration smooths.** Each integration adds one degree of regularity. The Laplace transform handles this automatically — you never need to patch solutions together at jump points.
+:::
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- **Theorem 3.11** — $\mathscr{L}[x''] = s^2X-sx(0)-x'(0)$ — converts the ODE to algebra with ICs built in.
+
+- **Three steps**: transform → solve for $X(s)$ → invert using table + PF.
+
+- **Partial fractions**: distinct real poles → exponentials; repeated → $te^{at}$; complex → complete the square → damped sinusoids.
+
+- **PWC forcing**: write $f(t)$ as Heaviside steps; transform using $\mathscr{L}[f(t)H(t-a)]=e^{-as}\mathscr{L}[f(t+a)]$; each $e^{-as}$ factor in $X(s)$ produces a time-delayed copy in $x(t)$.
+
+- **Smoothing (Remark 3.20)**: a discontinuous input produces a continuous output — integration gains regularity, no case-by-case patching needed.
+:::
+
+. . .
+
+| Pole type | $X(s)$ form | $x(t)$ |
+|---|:---:|---|
+| Distinct real | $\frac{A}{s-a}+\frac{B}{s-b}$ | $Ae^{at}+Be^{bt}$ |
+| Repeated | $\frac{A}{s-a}+\frac{B}{(s-a)^2}$ | $Ae^{at}+Bte^{at}$ |
+| Complex | $\frac{A(s-\alpha)+B\beta}{(s-\alpha)^2+\beta^2}$ | $e^{\alpha t}(A\cos\beta t+B\sin\beta t)$ |
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)

@@ -1,0 +1,625 @@
+---
+title: "Notes 7"
+subtitle: "Solving Differential Equations via Laplace Transforms"
+jupyter: diffeq_py
+license: "CC BY-NC-SA 4.0"
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+
+H = lambda tv, a: np.where(np.asarray(tv, dtype=float) >= a, 1.0, 0.0)
+```
+
+## Goals
+
+1. Use the **operational derivative formulas** $\mathcal{L}[x'] = sX(s)-x(0)$ and $\mathcal{L}[x''] = s^2X(s)-sx(0)-x'(0)$ to solve IVPs directly.
+
+2. Carry out the complete **three-step method**: transform → solve algebraically → invert.
+
+3. Apply **partial fractions** to invert transforms with distinct real poles, repeated poles, and complex conjugate poles (completing the square).
+
+4. Handle **piecewise continuous forcing** using Heaviside functions and the switching property.
+
+5. Understand the **smoothing effect** of integration and why a PWC input produces a continuous solution.
+
+::: {.callout-note}
+This material corresponds to **Section 3.2** of @logan2015first.
+:::
+
+---
+
+## The Three-Step Method
+
+In Notes 6 we established the key properties of the Laplace transform. Now we put them to work. The fundamental insight from Section 3.1 is:
+
+> *The Laplace transform turns derivative operations in the time domain into multiplication operations in the transform domain.*
+
+This single observation is the engine that drives everything in this section. For a second-order IVP the workflow is always the same three steps:
+
+::: {.callout-important}
+## The Three-Step Method (Logan, Figure 3.2)
+
+$$\boxed{\text{ODE in } x(t)}
+\;\xrightarrow{\;\mathcal{L}\;}\;
+\boxed{\text{Algebraic equation in } X(s)}
+\;\xrightarrow{\;\text{solve}\;}\;
+\boxed{X(s)}
+\;\xrightarrow{\;\mathcal{L}^{-1}\;}\;
+\boxed{x(t)}$$
+
+1. **Transform**: apply $\mathcal{L}$ to both sides, using the derivative formulas and linearity.
+2. **Solve**: the result is an algebraic equation for $X(s)$. Solve it.
+3. **Invert**: find $x(t) = \mathcal{L}^{-1}[X(s)]$ using the table and partial fractions.
+:::
+
+The initial conditions $x(0)$ and $x'(0)$ enter automatically in Step 1 — they are part of the derivative formula, not a separate enforcement step. This is one of the major advantages of the method.
+
+---
+
+## The Derivative Formulas (Theorem 3.11)
+
+The operational formulas that make the method work are:
+
+::: {.callout-important}
+## Theorem 3.11 (Logan)
+$$\mathcal{L}[x'] = sX(s) - x(0) \tag{3.6}$$
+$$\mathcal{L}[x''] = s^2X(s) - sx(0) - x'(0) \tag{3.7}$$
+:::
+
+**Proof of (3.6):** Integration by parts with $u = e^{-st}$, $dv = x'(t)\,dt$:
+$$\mathcal{L}[x'] = \int_0^\infty x'(t)e^{-st}\,dt = \left[x(t)e^{-st}\right]_{t=0}^{t=\infty} - \int_0^\infty (-s)x(t)e^{-st}\,dt = -x(0) + sX(s).$$
+
+**Proof of (3.7):** Apply (3.6) twice, treating $x'' = (x')'$:
+$$\mathcal{L}[x''] = s\mathcal{L}[x'] - x'(0) = s\bigl(sX(s)-x(0)\bigr) - x'(0) = s^2X(s) - sx(0) - x'(0). \;\square$$
+
+::: {.callout-tip}
+## How to Read the Derivative Formulas
+Each formula has a clean structure:
+- The **highest power of $s$** times $X(s)$.
+- Minus terms involving **initial conditions** with decreasing powers of $s$.
+
+For $x'$: one factor of $s$, one IC. For $x''$: two factors of $s$, two ICs. For $x^{(n)}$: $n$ factors, $n$ ICs. The pattern generalizes directly.
+:::
+
+### Using the Derivative Formulas to Find Transforms
+
+The formulas can also be used to find transforms of new functions without computing the defining integral.
+
+**Example 3.12 (Logan) — $\mathcal{L}[t^2]$.**
+
+Notice that $(t^2)' = 2t$, so $\mathcal{L}[(t^2)'] = \mathcal{L}[2t] = 2/s^2$. By (3.6) with $x(0) = 0$:
+$$s\,\mathcal{L}[t^2] = \frac{2}{s^2} \;\Longrightarrow\; \mathcal{L}[t^2] = \frac{2}{s^3}.$$
+
+Continuing by induction: $\mathcal{L}[t^n] = n!/s^{n+1}$ for $n = 0, 1, 2, 3, \ldots$
+
+**Example 3.13 (Logan) — $\mathcal{L}[\cosh t]$.**
+
+Using the identity $(\cosh t)'' = \cosh t$ and (3.7) with $\cosh(0) = 1$, $\sinh(0) = 0$:
+$$\mathcal{L}[\cosh t] = s^2\mathcal{L}[\cosh t] - s \;\Longrightarrow\; (1-s^2)\mathcal{L}[\cosh t] = -s \;\Longrightarrow\; \mathcal{L}[\cosh t] = \frac{s}{s^2-1}. \;\square$$
+
+---
+
+## Section 3.2.1 — Solving Initial Value Problems
+
+### Example 3.14 — Pure Harmonic Oscillator
+
+**Solve:** $x'' + k^2 x = 0$, $x(0) = 0$, $x'(0) = 1$.
+
+**Step 1 — Transform.** Apply $\mathcal{L}$ and use (3.7):
+$$s^2X(s) - s\cdot 0 - 1 + k^2 X(s) = 0.$$
+
+**Step 2 — Solve** for $X(s)$:
+$$\bigl(s^2 + k^2\bigr)X(s) = 1 \;\Longrightarrow\; X(s) = \frac{1}{s^2 + k^2} = \frac{1}{k}\cdot\frac{k}{s^2+k^2}.$$
+
+**Step 3 — Invert** using the table:
+$$\boxed{x(t) = \frac{1}{k}\sin kt.}$$
+
+Note how the initial condition $x'(0) = 1$ appeared naturally as the $-1$ on the left side in Step 1 — no separate substitution was needed.
+
+---
+
+### Example 3.15 — First-Order Nonhomogeneous
+
+**Solve:** $x' + 2x = e^{-t}$, $x(0) = 0$.
+
+**Step 1 — Transform.** Apply $\mathcal{L}$ term by term:
+$$\mathcal{L}[x'] + 2\mathcal{L}[x] = \mathcal{L}[e^{-t}] \;\Longrightarrow\; sX(s) - 0 + 2X(s) = \frac{1}{s+1}.$$
+
+**Step 2 — Solve:**
+$$X(s) = \frac{1}{(s+1)(s+2)}.$$
+
+**Step 3 — Invert.** Checking the table: this matches the entry $\dfrac{1}{(s-a)(s-b)} = \mathcal{L}\!\left[\dfrac{e^{at}-e^{bt}}{a-b}\right]$ with $a=-1$, $b=-2$:
+$$x(t) = \frac{e^{-t}-e^{-2t}}{-1-(-2)} = e^{-t} - e^{-2t}. \;\square$$
+
+::: {.callout-note}
+## Example 3.16 — Partial Fractions Verification
+The table entry for $1/[(s+1)(s+2)]$ may not always be immediately recognizable. Expanding in partial fractions confirms the result:
+$$\frac{1}{(s+1)(s+2)} = \frac{a}{s+1}+\frac{b}{s+2}.$$
+Clearing denominators: $a(s+2) + b(s+1) = 1$. Equating coefficients: $a+b=0$ and $2a+b=1$, so $a=1$, $b=-1$.
+$$X(s) = \frac{1}{s+1} - \frac{1}{s+2} \;\Longrightarrow\; x(t) = e^{-t} - e^{-2t}. \;\checkmark$$
+:::
+
+---
+
+### Inverting Transforms with Complex Poles — Completing the Square
+
+When $X(s)$ has an irreducible quadratic denominator (complex poles), the key technique is **completing the square** to match the table entries for $e^{\alpha t}\sin\beta t$ and $e^{\alpha t}\cos\beta t$.
+
+**Example 3.17 (Logan) — $X(s) = 1/(s^2+3s+6)$.**
+
+Complete the square in the denominator:
+$$s^2+3s+6 = \left(s+\frac{3}{2}\right)^2 - \frac{9}{4} + 6 = \left(s+\frac{3}{2}\right)^2 + \left(\frac{\sqrt{15}}{2}\right)^2.$$
+
+Now recognize the table form $k/[(s-\alpha)^2+k^2]$ with $\alpha = -3/2$ and $k = \sqrt{15}/2$. Multiply and divide by $\sqrt{15}/2$:
+
+$$X(s) = \frac{2}{\sqrt{15}}\cdot\frac{\sqrt{15}/2}{\left(s+\frac{3}{2}\right)^2+\left(\frac{\sqrt{15}}{2}\right)^2} \;\Longrightarrow\; x(t) = \frac{2}{\sqrt{15}}\,e^{-3t/2}\sin\frac{\sqrt{15}}{2}t. \;\square$$
+
+::: {.callout-tip}
+## Completing the Square — The General Recipe
+
+For $s^2 + bs + c$ with $4c > b^2$ (complex roots):
+$$s^2+bs+c = \left(s+\frac{b}{2}\right)^2 + \underbrace{\left(c - \frac{b^2}{4}\right)}_{\beta^2 > 0}.$$
+Then $\alpha = -b/2$ and $\beta = \sqrt{c - b^2/4}$.
+
+**Numerator adjustments:** if the numerator is $As + B$, rewrite it as
+$$A\left(s+\frac{b}{2}\right) + \left(B - \frac{Ab}{2}\right)$$
+and split into $A\cdot\dfrac{s-\alpha}{(s-\alpha)^2+\beta^2}$ plus a multiple of $\dfrac{\beta}{(s-\alpha)^2+\beta^2}$.
+:::
+
+**Extended Example.** Find $\mathcal{L}^{-1}\!\left[\dfrac{3-2s}{s^2+2s+10}\right]$.
+
+Complete the square: $s^2+2s+10 = (s+1)^2+9$.
+
+Rewrite the numerator: $3-2s = 3 - 2(s+1) + 2 - 2 = -2(s+1) + 5$.
+
+$$\frac{3-2s}{(s+1)^2+9} = -2\cdot\frac{s+1}{(s+1)^2+9} + \frac{5}{3}\cdot\frac{3}{(s+1)^2+9}.$$
+
+$$x(t) = -2e^{-t}\cos 3t + \frac{5}{3}e^{-t}\sin 3t.$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+s_v = sym.Symbol('s')
+t_v = sym.Symbol('t', positive=True)
+
+examples = [
+    (r"\frac{1}{(s+1)(s+2)}",       sym.Integer(1)/((s_v+1)*(s_v+2))),
+    (r"\frac{1}{s^2+3s+6}",         sym.Integer(1)/(s_v**2+3*s_v+6)),
+    (r"\frac{3-2s}{s^2+2s+10}",     (3-2*s_v)/(s_v**2+2*s_v+10)),
+    (r"\frac{1}{(s-1)^2+1}",        sym.Integer(1)/((s_v-1)**2+1)),
+    (r"\frac{2s+9}{(s+1)(s+3)}",    (2*s_v+9)/((s_v+1)*(s_v+3))),
+]
+print("Inverse Laplace transforms via SymPy:\n")
+for label, expr in examples:
+    x_t = sym.inverse_laplace_transform(expr, s_v, t_v)
+    display(Math(r"\mathcal{L}^{-1}\!\left[" + label + r"\right] = " + sym.latex(sym.simplify(x_t))))
+    print()
+```
+
+---
+
+### A Systematic ODE Example with Complex Poles
+
+**Solve:** $x'' - 2x' + 2x = 0$, $x(0)=0$, $x'(0)=1$.
+
+**Step 1 — Transform:**
+$$s^2X - 0 - 1 - 2(sX - 0) + 2X = 0 \;\Longrightarrow\; (s^2-2s+2)X = 1.$$
+
+**Step 2 — Solve:**
+$$X(s) = \frac{1}{s^2-2s+2}.$$
+
+**Step 3 — Complete the square:** $s^2-2s+2 = (s-1)^2+1$.
+
+$$X(s) = \frac{1}{(s-1)^2+1} \;\Longrightarrow\; \boxed{x(t) = e^t\sin t.}$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-complex-poles
+#| fig-cap: "Solution of $x''-2x'+2x=0$, $x(0)=0$, $x'(0)=1$. The factor $e^t$ causes the amplitude to grow while $\\sin t$ provides the oscillation. Red dots confirm the Laplace transform result against a direct numerical solve."
+
+t_plot = np.linspace(0, 5, 400)
+x_anal = np.exp(t_plot)*np.sin(t_plot)
+
+def ode_c(tv, y): return [y[1], 2*y[1]-2*y[0]]
+sol_c = solve_ivp(ode_c, (0,5), [0,1], dense_output=True, max_step=0.01)
+t_dots = np.linspace(0, 5, 20)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(t_plot, x_anal, color='steelblue', lw=2.5, label=r'$x(t)=e^t\sin t$')
+ax.plot(t_dots, sol_c.sol(t_dots)[0], 'ro', markersize=6, label='Numerical check')
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
+ax.set_title(r"$x''-2x'+2x=0$, $x(0)=0$, $x'(0)=1$")
+ax.legend(fontsize=9)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Nonhomogeneous Equation with Three-Term Partial Fractions
+
+**Solve:** $x'' + 3x' + 2x = e^t$, $x(0)=0$, $x'(0)=0$.
+
+**Step 1 — Transform:**
+$$s^2X - 2sX + 2X = 0 \;\text{(wrong — let's redo)}$$
+$$(s^2+3s+2)X = \frac{1}{s-1}.$$
+
+**Step 2 — Solve:**
+$$X(s) = \frac{1}{(s-1)(s+1)(s+2)}.$$
+
+**Step 3 — Partial fractions:**
+$$\frac{1}{(s-1)(s+1)(s+2)} = \frac{A}{s-1}+\frac{B}{s+1}+\frac{C}{s+2}.$$
+
+Cover-up rule: $A = \dfrac{1}{(2)(3)} = \dfrac{1}{6}$; $\;B = \dfrac{1}{(-2)(1)} = -\dfrac{1}{2}$; $\;C = \dfrac{1}{(-3)(-1)} = \dfrac{1}{3}$.
+
+$$\boxed{x(t) = \frac{1}{6}e^t - \frac{1}{2}e^{-t} + \frac{1}{3}e^{-2t}.}$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+s_v = sym.Symbol('s')
+t_v = sym.Symbol('t', positive=True)
+
+X_nh = sym.Integer(1)/((s_v-1)*(s_v+1)*(s_v+2))
+pf = sym.apart(X_nh, s_v)
+print("Partial fraction decomposition:")
+display(Math(sym.latex(pf)))
+x_nh = sym.inverse_laplace_transform(X_nh, s_v, t_v)
+print("\nInverse transform:")
+display(Math(r"x(t) = " + sym.latex(sym.simplify(x_nh))))
+```
+
+---
+
+## Piecewise Continuous Forcing
+
+One of the major reasons to use the Laplace transform is its ability to handle **piecewise continuous (PWC) forcing** without case-by-case analysis. Without Laplace transforms we would need to solve the ODE on each sub-interval separately, then match solutions at each junction — a tedious task. The Laplace transform handles everything in a single calculation.
+
+### Writing Piecewise Functions with Heaviside Steps
+
+Recall from Notes 6 that any piecewise function can be written as a sum of Heaviside steps. The formula for a function that switches between expressions is:
+$$f(t) = f_1(t) + [f_2(t)-f_1(t)]\,H(t-a) + [f_3(t)-f_2(t)]\,H(t-b) + \cdots$$
+
+**Example 3.18 (Logan).** Express and transform
+$$f(t) = \begin{cases} t, & 0 < t < 1 \\ 2, & 1 \leq t \leq 3 \\ 0, & t > 3 \end{cases}$$
+
+**Heaviside form:** $f(t) = t + (2-t)H(t-1) - 2H(t-3)$.
+
+To transform $\mathcal{L}[tH(t-1)]$, use the table entry $\mathcal{L}[f(t)H(t-a)] = e^{-as}\mathcal{L}[f(t+a)]$ with $f(t)=t$:
+$$\mathcal{L}[tH(t-1)] = e^{-s}\mathcal{L}[t+1] = e^{-s}\!\left(\frac{1}{s^2}+\frac{1}{s}\right).$$
+
+Assembling all terms:
+$$F(s) = \frac{1}{s^2} + \frac{2e^{-s}}{s} - e^{-s}\!\left(\frac{1}{s^2}+\frac{1}{s}\right) - \frac{2e^{-3s}}{s} = \frac{1}{s^2} + \frac{e^{-s}}{s} - \frac{e^{-s}}{s^2} - \frac{2e^{-3s}}{s}. \;\square$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-piecewise-f
+#| fig-cap: "The piecewise function from Example 3.18: $f(t)=t$ for $0<t<1$, then $f(t)=2$ for $1\\leq t\\leq 3$, then $f(t)=0$ for $t>3$, expressed as $t+(2-t)H(t-1)-2H(t-3)$."
+
+t_pl = np.linspace(-0.2, 5, 500)
+def f318(tv):
+    return np.where(tv<0, 0, np.where(tv<1, tv, np.where(tv<=3, 2, 0)))
+
+fig, ax = plt.subplots(figsize=(8, 3.5))
+ax.plot(t_pl, f318(t_pl), color='steelblue', lw=2.5, label='$f(t)$')
+ax.fill_between(t_pl, 0, f318(t_pl), alpha=0.15, color='steelblue')
+ax.axvline(1, color='gray', ls=':', lw=1.2); ax.axvline(3, color='gray', ls=':', lw=1.2)
+ax.text(0.5, 1.3, '$f=t$', fontsize=10, ha='center', color='steelblue')
+ax.text(2.0, 2.2, '$f=2$', fontsize=10, ha='center', color='steelblue')
+ax.text(4.0, 0.15, '$f=0$', fontsize=10, ha='center', color='steelblue')
+ax.text(1, -0.15, '$t=1$', ha='center', fontsize=9, color='gray')
+ax.text(3, -0.15, '$t=3$', ha='center', fontsize=9, color='gray')
+ax.set_xlabel('$t$'); ax.set_ylabel('$f(t)$')
+ax.set_title('Example 3.18: $f(t) = t + (2-t)H(t-1) - 2H(t-3)$')
+ax.set_ylim(-0.3, 2.7); ax.axhline(0, color='k', lw=0.5)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 3.19 — Oscillator with One-Hump Sine Forcing
+
+**Solve:** $x'' + 4x = \sin t - H(t-\pi)\sin t$, $x(0) = x'(0) = 0$.
+
+The forcing is one hump of $\sin t$ on $[0,\pi]$, then switches off.
+
+**Step 1 — Transform the forcing.** For the first term: $\mathcal{L}[\sin t] = \dfrac{1}{s^2+1}$.
+
+For $\mathcal{L}[H(t-\pi)\sin t]$, use $\mathcal{L}[H(t-a)f(t)] = e^{-as}\mathcal{L}[f(t+a)]$ with $f(t)=\sin t$, $a=\pi$:
+$$\mathcal{L}[H(t-\pi)\sin t] = e^{-\pi s}\mathcal{L}[\sin(t+\pi)] = e^{-\pi s}\mathcal{L}[-\sin t] = -\frac{e^{-\pi s}}{s^2+1}.$$
+
+So the right-hand side transforms to $\dfrac{1}{s^2+1}+\dfrac{e^{-\pi s}}{s^2+1}$.
+
+**Step 2 — Solve:**
+$$(s^2+4)X = \frac{1+e^{-\pi s}}{s^2+1} \;\Longrightarrow\; X(s) = \frac{1}{(s^2+1)(s^2+4)} + \frac{e^{-\pi s}}{(s^2+1)(s^2+4)}.$$
+
+**Step 3 — Partial fractions.** Writing $\dfrac{1}{(s^2+1)(s^2+4)} = \dfrac{A}{s^2+1}+\dfrac{B}{s^2+4}$:
+
+$(A+B)s^2 + 4A+B = 1$, so $A+B=0$ and $4A+B=1$, giving $A=1/3$, $B=-1/3$.
+
+$$\mathcal{L}^{-1}\!\left[\frac{1}{(s^2+1)(s^2+4)}\right] = \frac{1}{3}\sin t - \frac{1}{6}\sin 2t.$$
+
+**Apply switching property** to the $e^{-\pi s}$ term:
+$$\mathcal{L}^{-1}\!\left[\frac{e^{-\pi s}}{(s^2+1)(s^2+4)}\right] = H(t-\pi)\!\left[\frac{1}{3}\sin(t-\pi) - \frac{1}{6}\sin 2(t-\pi)\right].$$
+
+Since $\sin(t-\pi) = -\sin t$ and $\sin 2(t-\pi) = \sin 2t$:
+
+$$\boxed{x(t) = \frac{1}{3}\sin t - \frac{1}{6}\sin 2t + H(t-\pi)\!\left[-\frac{1}{3}\sin t - \frac{1}{6}\sin 2t\right].} \tag{3.8}$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex319
+#| fig-cap: "Example 3.19: $x''+4x = \\sin t - H(t-\\pi)\\sin t$, $x(0)=x'(0)=0$. The forcing (top) is one arch of $\\sin t$ on $[0,\\pi]$, then zero. After the forcing turns off at $t=\\pi$ the oscillator continues with a modified amplitude and phase — the **free oscillation** driven by the residual energy stored during $[0,\\pi]$."
+
+t_eval = np.linspace(0, 20, 2000)
+
+def ode_319(tv, y):
+    f = np.sin(tv) if tv <= np.pi else 0.0
+    return [y[1], f - 4*y[0]]
+sol_319 = solve_ivp(ode_319, (0,20), [0,0], t_eval=t_eval, max_step=0.01)
+
+x_anal = (1/3*np.sin(t_eval) - 1/6*np.sin(2*t_eval)
+          + H(t_eval, np.pi)*(-1/3*np.sin(t_eval) - 1/6*np.sin(2*t_eval)))
+f_plot = np.where(t_eval <= np.pi, np.sin(t_eval), 0)
+
+fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+axes[0].plot(t_eval, f_plot, color='crimson', lw=2)
+axes[0].fill_between(t_eval, 0, f_plot, alpha=0.2, color='crimson')
+axes[0].axvline(np.pi, color='gray', ls='--', lw=1.2)
+axes[0].set_ylabel('$f(t)$'); axes[0].set_ylim(-0.2, 1.4)
+axes[0].set_title(r'Forcing: $\sin t$ on $[0,\pi]$, then off')
+
+axes[1].plot(t_eval, x_anal, color='steelblue', lw=2, label='Analytical (3.8)')
+axes[1].plot(t_eval[::40], sol_319.y[0][::40], 'ro', markersize=4, label='Numerical')
+axes[1].axhline(0, color='k', lw=0.5); axes[1].axvline(np.pi, color='gray', ls='--', lw=1.2)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
+axes[1].set_title(r'Solution via Laplace transform')
+axes[1].legend(fontsize=9)
+
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 3.21 — RC Circuit with Square-Pulse Forcing
+
+**Solve:** $q' + 3q = H(t-1) - H(t-2)$, $q(0) = 0$.
+
+(RC circuit: $R=1$, $C=1/3$, 1-volt battery switched on at $t=1$, off at $t=2$.)
+
+**Step 1 — Transform:**
+$$sQ(s) + 3Q(s) = \frac{e^{-s} - e^{-2s}}{s}.$$
+
+**Step 2 — Solve:**
+$$Q(s) = \frac{1}{s(s+3)}\,e^{-s} - \frac{1}{s(s+3)}\,e^{-2s}.$$
+
+**Step 3 — Invert.** By partial fractions: $\dfrac{1}{s(s+3)} = \dfrac{1/3}{s} - \dfrac{1/3}{s+3}$, so
+$$\mathcal{L}^{-1}\!\left[\frac{1}{s(s+3)}\right] = \frac{1}{3}(1-e^{-3t}).$$
+
+Apply the switching property to each term:
+$$\mathcal{L}^{-1}\!\left[\frac{e^{-s}}{s(s+3)}\right] = \frac{1}{3}(1-e^{-3(t-1)})H(t-1), \qquad
+\mathcal{L}^{-1}\!\left[\frac{e^{-2s}}{s(s+3)}\right] = \frac{1}{3}(1-e^{-3(t-2)})H(t-2).$$
+
+**Solution:**
+$$\boxed{q(t) = \frac{1}{3}(1-e^{-3(t-1)})H(t-1) - \frac{1}{3}(1-e^{-3(t-2)})H(t-2).} \;\square$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex321
+#| fig-cap: "Example 3.21 (Logan, Figure 3.4): RC circuit charge $q(t)$ under a square-pulse voltage. The switch opens at $t=0$ (zero current), closes at $t=1$ (charge builds), opens again at $t=2$ (charge decays). The solution consists of two Heaviside-shifted exponential charging/discharging curves."
+
+t_plot = np.linspace(0, 5, 600)
+q_anal = (1/3*(1-np.exp(-3*(t_plot-1)))*H(t_plot,1)
+         - 1/3*(1-np.exp(-3*(t_plot-2)))*H(t_plot,2))
+f_plot = H(t_plot,1) - H(t_plot,2)
+
+def ode_321(tv, y):
+    f = 1.0 if 1 <= tv <= 2 else 0.0
+    return [f - 3*y[0]]
+sol_321 = solve_ivp(ode_321, (0,5), [0.0], t_eval=t_plot, max_step=0.005)
+
+fig, axes = plt.subplots(2, 1, figsize=(9, 5.5), sharex=True)
+axes[0].step(t_plot, f_plot, where='post', color='crimson', lw=2.5)
+axes[0].fill_between(t_plot, 0, f_plot, alpha=0.2, color='crimson')
+axes[0].set_ylabel('$f(t)=H(t-1)-H(t-2)$'); axes[0].set_ylim(-0.1, 1.4)
+axes[0].set_title('Forcing: square pulse from $t=1$ to $t=2$')
+
+axes[1].plot(t_plot, q_anal, color='steelblue', lw=2.5, label='Analytical')
+axes[1].plot(t_plot[::25], sol_321.y[0][::25], 'ro', markersize=5, label='Numerical')
+axes[1].axhline(0, color='k', lw=0.5)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$q(t)$')
+axes[1].set_title("Charge on capacitor (Logan Figure 3.4)")
+axes[1].legend(fontsize=9)
+
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Remark 3.20 — Smoothing by Integration
+
+When the input $f(t)$ of an ODE is only piecewise continuous, it is natural to ask: what regularity does the solution $x(t)$ possess?
+
+::: {.callout-important}
+## Remark 3.20 (Logan): PWC Input Produces Continuous Output
+If $f(t)$ is PWC and $ax'' + bx' + cx = f(t)$, then the solution $x(t)$ is **continuous** — and in fact continuously differentiable — even at points where $f$ jumps. Integration is a **smoothing operation**: each time we integrate a function, we gain one degree of regularity.
+:::
+
+**Illustration.** Consider $x'' = H(t-3)$, $x(0)=x'(0)=0$, where $f(t)=H(t-3)$ has a jump at $t=3$.
+
+Integrating once: $x'(t) = \displaystyle\int H(t-3)\,dt = (t-3)H(t-3)$. This is **continuous** (no jump), but its derivative has a jump at $t=3$.
+
+Integrating again: $x(t) = \dfrac{1}{2}(t-3)^2 H(t-3)$. This is **continuously differentiable**.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-smoothing
+#| fig-cap: "Smoothing by integration (Remark 3.20). The Heaviside input $f(t)=H(t-3)$ (red, discontinuous at $t=3$) produces a continuous but only piecewise-smooth $x'(t)=(t-3)H(t-3)$ (orange, kink at $t=3$), and a smoothly differentiable solution $x(t)=\\frac{1}{2}(t-3)^2H(t-3)$ (blue, parabola starting at $t=3$)."
+
+t_plot = np.linspace(-0.5, 7, 400)
+f_sm   = H(t_plot, 3)
+xp_sm  = (t_plot-3)*H(t_plot, 3)
+x_sm   = 0.5*(t_plot-3)**2*H(t_plot, 3)
+
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.plot(t_plot, f_sm,  color='crimson',    lw=2.5, label=r"$f(t)=H(t-3)$ (discontinuous)", zorder=3)
+ax.plot(t_plot, xp_sm, color='darkorange', lw=2.5, label=r"$x'(t)=(t-3)H(t-3)$ (continuous, kink)")
+ax.plot(t_plot, x_sm,  color='steelblue',  lw=2.5, label=r"$x(t)=\frac{1}{2}(t-3)^2H(t-3)$ (smooth)")
+ax.axvline(3, color='gray', ls='--', lw=1.2, label='$t=3$ (jump point)')
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('Function value')
+ax.set_title(r'Smoothing: $x\prime\prime=H(t-3)$, $x(0)=x\prime(0)=0$')
+ax.legend(fontsize=8.5); ax.set_ylim(-0.3, 4.5)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## SymPy as a Tool for the Full Workflow
+
+SymPy can execute all three steps of the Laplace method. This is invaluable for checking homework and for building intuition.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+s_v = sym.Symbol('s')
+t_v = sym.Symbol('t', positive=True)
+
+print("=" * 60)
+print("Full Laplace workflow with SymPy")
+print("Example: x'' + 4x = sin(t) - H(t-pi)*sin(t), x(0)=x'(0)=0")
+print("=" * 60)
+
+# Build X(s) manually
+# F(s) = 1/(s^2+1) + e^{-pi*s}/(s^2+1)
+# X(s) = F(s)/(s^2+4)
+F_319a = sym.Integer(1)/(s_v**2+1)
+F_319b = sym.exp(-sym.pi*s_v)/(s_v**2+1)
+X_319  = (F_319a + F_319b)/(s_v**2+4)
+
+print("\nX(s) =", X_319)
+print("\nPartial fractions of 1/((s^2+1)(s^2+4)):")
+pf = sym.apart(sym.Integer(1)/((s_v**2+1)*(s_v**2+4)), s_v)
+display(Math(sym.latex(pf)))
+
+# Invert
+print("\nFull solution x(t):")
+x_sol = sym.inverse_laplace_transform(X_319, s_v, t_v)
+display(Math(r"x(t) = " + sym.latex(sym.simplify(x_sol))))
+```
+
+---
+
+## Summary
+
+| Step | What you do | Key tools |
+|---|---|---|
+| **1. Transform** | Apply $\mathcal{L}$ to ODE; use (3.6)–(3.7) | Linearity, derivative formulas, ICs automatic |
+| **2. Solve** | Solve algebraic equation for $X(s)$ | Algebra only |
+| **3. Invert** | Find $x(t) = \mathcal{L}^{-1}[X]$ | Table, partial fractions, completing the square, switching property |
+
+**Partial fractions decision tree:**
+
+| Denominator form | Technique | Inverse |
+|---|---|---|
+| $(s-a)(s-b)$, $a\neq b$ real | Cover-up rule | $Ae^{at}+Be^{bt}$ |
+| $(s-a)^2$ repeated | Extra numerator term | $Ae^{at}+Bte^{at}$ |
+| $(s-\alpha)^2+\beta^2$ complex | Complete the square | $e^{\alpha t}(A\cos\beta t+B\sin\beta t)$ |
+| Product of any of the above | Combine all | Sum of the above forms |
+
+**For PWC forcing:**
+1. Write $f(t)$ using Heaviside steps.
+2. Transform each Heaviside piece — use $\mathcal{L}[H(t-a)f(t-a)] = e^{-as}F(s)$ or $\mathcal{L}[f(t)H(t-a)] = e^{-as}\mathcal{L}[f(t+a)]$.
+3. After inverting the base transform, apply the switching property: each $e^{-as}$ factor produces a delayed copy.
+
+
+
+These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_07_slides.html){target="_blank"}
+
+::: {.callout-note}
+**Next:** Convolution and impulse sources — Logan §3.3 & 3.4.
+:::
+
+
+---
+
+## Relevant Videos
+
+### Using Laplace Transform to Solve ODEs: 
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/fuxFrpaMLtw?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+
+### More Examples: 
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/FBl6XSTaS7k?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys
+print("Python:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m,'__version__',None)))
+```
+:::
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
