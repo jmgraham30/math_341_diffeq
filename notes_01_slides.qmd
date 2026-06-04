@@ -203,7 +203,7 @@ $$\frac{d^2x}{dt^2} + 2\gamma\frac{dx}{dt} + \omega^2 x = F_0\cos(\Omega t)$$
 :::
 
 
-## Classification Examples (cont.)
+## Example 4 — Variable Coefficients
 
 ::: {.callout-note}
 ## Example 4 — Euler's Equation
@@ -229,7 +229,7 @@ Consider $y' - 2y = 0$.  Check $y(t) = Ce^{2t}$:
 $$(Ce^{2t})' - 2(Ce^{2t}) = 2Ce^{2t} - 2Ce^{2t} = 0 \checkmark$$
 
 - $y(t) = Ce^{2t}$ for any constant $C$ — **general solution** (one-parameter family)
-- With $y(0) = 3$: $C = 3$, so $y(t) = 3e^{2t}$ — **particular solution**
+- With $y(0) = 1$: $C = 1$, so $y(t) = e^{2t}$ — **particular solution**
 :::
 
 . . .
@@ -243,7 +243,7 @@ $$(Ce^{2t})' - 2(Ce^{2t}) = 2Ce^{2t} - 2Ce^{2t} = 0 \checkmark$$
 
 ```{python}
 #| label: fig-family-slides
-#| fig-cap: "Family of solutions $y(t) = Ce^{2t}$ of $y' - 2y = 0$. Each curve is one member of the family; an initial condition picks exactly one."
+#| fig-cap: "Family of solutions $y(t) = Ce^{2t}$ of $y' - 2y = 0$. Each curve is one member of the family; the highlighted trajectory (dashed black) is the particular solution $C=1$, corresponding to the initial condition $y(0)=1$."
 #| fig-height: 4
 
 t = np.linspace(-1, 1.2, 300)
@@ -253,7 +253,7 @@ C_vals = [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2]
 for C, color in zip(C_vals, colors):
     label = f"$C = {C}$" if C in [-2, -1, 0, 1, 2] else None
     ax.plot(t, C * np.exp(2 * t), color=color, lw=1.5, label=label)
-ax.plot(t, 1 * np.exp(2 * t), color='black', lw=2.5, linestyle='--', label='$C=1$ (highlighted)')
+ax.plot(t, 1 * np.exp(2 * t), color='black', lw=2.5, linestyle='--', label='$C=1$ (particular solution, $y(0)=1$)')
 ax.axhline(0, color='k', lw=0.5)
 ax.axvline(0, color='k', lw=0.5)
 ax.set_xlabel("$t$"); ax.set_ylabel("$y$"); ax.set_ylim(-6, 6)
@@ -479,6 +479,7 @@ $$\boxed{L\ddot{Q} + R\dot{Q} + \frac{Q}{C} = E(t)}$$
 
 ```{python}
 #| label: fig-rc-slides
+#| fig-cap: "Discharge of an RC circuit: $Q(t) = Q_0 e^{-t/\\tau}$ where $\\tau = RC$ is the time constant. The charge decays to $1/e \\approx 36.8\\%$ of its initial value after one time constant."
 #| fig-height: 2.8
 
 tau_vals = [0.5, 1.0, 2.0]
@@ -570,7 +571,7 @@ $$\frac{dx}{dt} = \alpha x - \beta xy, \qquad \frac{dy}{dt} = \delta xy - \gamma
 . . .
 
 ::: {.callout-note}
-**Next:** Separable equations and exact solutions — Logan §1.2–1.3.
+**Next:** Solving separable equations analytically — Logan §1.2–1.3.
 :::
 
 

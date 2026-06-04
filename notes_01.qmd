@@ -27,13 +27,13 @@ mpl.rcParams['axes.spines.right'] = False
 
 In this section, we will cover the following topics:
 
-1. The notion of a differential equation and what it means to have a solution, with an emphasis on the case of ordinary differential equations (ODEs).
+1. Introduce the notion of a differential equation and what it means to have a solution, with an emphasis on the case of ordinary differential equations (ODEs).
 
 2. Introduce the classification of ODEs by order, linearity, homogeneity, autonomy, and coefficient type.
 
 3. Introduce the concept of an initial value problem (IVP).
 
-4. Learn about some common situations where ODEs arise in applications.
+4. Introduce some common situations where ODEs arise in applications.
 
 ::: {.callout-note}
 This material corresponds to **Section 1.1** of @logan2015first.
@@ -60,19 +60,20 @@ It is rare that we study a general differential equation in complete isolation. 
 
 **Ordinary vs. Partial Differential Equations.** The nature of the unknown function's domain leads to the first major distinction:
 
-- An **[ordinary differential equation (ODE)](https://en.wikipedia.org/wiki/Ordinary_differential_equation)** involves a function of a *single* independent variable and its ordinary derivatives.  For example, if $x = x(t)$ describes the position of a mass at time $t$, then $\frac{d^2 x}{dt^2} = -\omega^2 x$ (or as physicists write, $\ddot{x} = -\omega^2 x$) is an ODE. Note that we  sometimes use the notation $\dot{x}$ for time derivatives.[^deriv-notation]
+- An **[ordinary differential equation (ODE)](https://en.wikipedia.org/wiki/Ordinary_differential_equation)** involves a function of a *single* independent variable and its ordinary derivatives.  For example, if $x = x(t)$ describes the position of a mass at time $t$, then $\frac{d^2 x}{dt^2} = -\omega^2 x$ (or as physicists write, $\ddot{x} = -\omega^2 x$) is an ODE. Note that we  sometimes use the notation $\dot{x}$ for time derivatives.
+
+::: {.callout-note}
+## A Note on Derivative Notation
+There are several common notations for derivatives that you will encounter in this course and in the textbook.
+**Leibniz notation** writes $\frac{dy}{dx}$ or $\frac{d^2y}{dx^2}$ for ordinary derivatives.
+**Prime (Lagrange) notation** writes $y'$, $y''$, $y'''$ for successive derivatives with respect to the independent variable.
+**Dot (Newton) notation** writes $\dot{x}$, $\ddot{x}$ for first and second derivatives with respect to *time*, and is common in mechanics.
+**Subscript notation** writes $u_x$, $u_{xx}$ for partial derivatives, common in PDEs.
+**Operator (Euler) notation** writes $Dy$, $D^2y$ where $D = d/dx$.
+All of these notations refer to the same mathematical objects and will be used interchangeably throughout the course.
+:::
 
 - A **[partial differential equation (PDE)](https://en.wikipedia.org/wiki/Partial_differential_equation)** involves a function of *several* independent variables and its partial derivatives.  For example, the [heat equation](https://en.wikipedia.org/wiki/Heat_equation) $u_t = k\,u_{xx}$, where $u = u(x,t)$ is a temperature field, is a PDE.
-
-[^deriv-notation]: There are several common notations for derivatives.
-    **Leibniz notation** writes $\frac{dy}{dx}$ or $\frac{d^2y}{dx^2}$ for
-    ordinary derivatives. **Prime (Lagrange) notation** writes $y'$, $y''$,
-    $y'''$ for successive derivatives with respect to the independent variable.
-    **Dot (Newton) notation** writes $\dot{x}$, $\ddot{x}$ for first and second
-    derivatives with respect to *time*, and is common in mechanics.
-    **Subscript notation** writes $u_x$, $u_{xx}$ for partial derivatives,
-    common in PDEs. **Operator (Euler) notation** writes $Dy$, $D^2y$
-    where $D = d/dx$.
 
 In this course we focus exclusively on **ODEs**.
 
@@ -114,7 +115,7 @@ where the coefficient functions $a_k(t)$ and the forcing term $g(t)$ depend only
 $$
 a_n(t)\,y^{(n)} + \cdots + a_0(t)\,y = 0.
 $$
-If $g(t) \not\equiv 0$ the equation is called **inhomogeneous** (or *nonhomogeneous*).  
+If $g(t) \not\equiv 0$ the equation is called **inhomogeneous** (or *nonhomogeneous*; Logan's text uses the latter term, and both are in wide use).
 
 ::: {.callout-tip}
 The homogeneous/inhomogeneous distinction matters enormously for solution methods: the general solution of an inhomogeneous linear ODE is a *particular* solution plus the general solution of the corresponding homogeneous equation.
@@ -135,14 +136,14 @@ Autonomous equations arise naturally in population models and physical systems w
 
 ---
 
-**Examples.** Let's practice classifying a handful of equations.
+**Examples.** The following examples illustrate how these classifications apply simultaneously to equations drawn from applications we will study throughout the course.
 
 ::: {.callout-note}
 ## Example 1 — The Logistic Equation
 $$
 \frac{dP}{dt} = rP\!\left(1 - \frac{P}{K}\right)
 $$
-This is a **1st-order, nonlinear, autonomous** ODE.  (It is nonlinear because of the $P^2$ term hidden in the product.) Here, $P(t)$ is the unknown function while $r$ and $K$ are *parameters*. This ODE, called the logistic growth equation models population growth with a carrying capacity $K$.
+This is a **1st-order, nonlinear, autonomous** ODE.  It is nonlinear because expanding $rP(1-P/K) = rP - (r/K)P^2$ reveals a $P^2$ term, which is nonlinear in $P$. Here, $P(t)$ is the unknown function while $r$ and $K$ are *parameters*. This ODE, called the logistic growth equation models population growth with a carrying capacity $K$.
 :::
 
 ::: {.callout-note}
@@ -185,7 +186,7 @@ Consider $y' - 2y = 0$.  We can check that $y(t) = Ce^{2t}$ satisfies this for a
 $$
 (Ce^{2t})' - 2(Ce^{2t}) = 2Ce^{2t} - 2Ce^{2t} = 0. \checkmark
 $$
-This is the **general solution**.  If we additionally require $y(0) = 3$, then $C = 3$ and $y(t) = 3e^{2t}$ is the **particular solution** satisfying that condition.
+This is the **general solution** — that is, *every* solution has this form, as can be verified by separation of variables (a technique we will develop in §1.2).  If we additionally require $y(0) = 1$, then $C = 1$ and $y(t) = e^{2t}$ is the **particular solution** satisfying that condition.
 :::
 
 The following plot shows the family of solutions $y(t)=Ce^{2t}$ for several values of $C$.
@@ -194,7 +195,7 @@ The following plot shows the family of solutions $y(t)=Ce^{2t}$ for several valu
 #| code-fold: true
 #| code-summary: "Show the code"
 #| label: fig-family
-#| fig-cap: "Family of solutions $y(t) = Ce^{2t}$ to the ODE $y' - 2y = 0$. Each curve corresponds to a different value of $C$. Specifying an initial condition singles out exactly one curve from the family."
+#| fig-cap: "Family of solutions $y(t) = Ce^{2t}$ to the ODE $y' - 2y = 0$. Each curve corresponds to a different value of $C$. The highlighted trajectory (dashed black) is the particular solution $C=1$ corresponding to the initial condition $y(0)=1$. Specifying an initial condition singles out exactly one curve from the family."
 
 t = np.linspace(-1, 1.2, 300)
 fig, ax = plt.subplots()
@@ -203,8 +204,8 @@ C_vals = [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2]
 for C, color in zip(C_vals, colors):
     label = f"$C = {C}$" if C in [-2, -1, 0, 1, 2] else None
     ax.plot(t, C * np.exp(2 * t), color=color, lw=1.5, label=label)
-# Highlight the particular solution C=3 ... let's use C=1 for visual clarity
-ax.plot(t, 1 * np.exp(2 * t), color='black', lw=2.5, linestyle='--', label='$C = 1$ (highlighted)')
+# Highlight the particular solution for C=1, corresponding to the initial condition y(0)=1
+ax.plot(t, 1 * np.exp(2 * t), color='black', lw=2.5, linestyle='--', label='$C = 1$ (particular solution, $y(0)=1$)')
 ax.axhline(0, color='k', linewidth=0.5)
 ax.axvline(0, color='k', linewidth=0.5)
 ax.set_xlabel("$t$")
@@ -244,7 +245,7 @@ $$
 
 The initial conditions geometrically select a **single solution curve** from the entire family of curves.
 
-**Existence and Uniqueness.** A natural question is: *does* an IVP have a solution, and if so, is it *unique*?  A fundamental theorem (the [Picard–Lindelöf theorem](https://en.wikipedia.org/wiki/Picard%E2%80%93Lindel%C3%B6f_theorem)) guarantees that if $f$ and $\partial f/\partial y$ are continuous near $(t_0, y_0)$, then the IVP has a unique solution on some interval containing $t_0$.  This is discussed more detail in one of our [additional topics sections](https://math341diffeq.netlify.app/topics) on [existence and uniqueness](https://math341diffeq.netlify.app/topics_04); for now, the key takeaway is that well-posed physical problems almost always satisfy these conditions **and** the solution is independent of the method used to find the solution.
+**Existence and Uniqueness.** A natural question is: *does* an IVP have a solution, and if so, is it *unique*?  A fundamental theorem (the [Picard–Lindelöf theorem](https://en.wikipedia.org/wiki/Picard%E2%80%93Lindel%C3%B6f_theorem)) guarantees that if $f$ and $\partial f/\partial y$ are continuous near $(t_0, y_0)$, then the IVP has a unique solution on some interval containing $t_0$.  This is discussed more detail in one of our [additional topics sections](https://math341diffeq.netlify.app/topics) on [existence and uniqueness](https://math341diffeq.netlify.app/topics_04); for now, the key takeaway is that well-posed physical problems almost always satisfy these conditions **and** the solution is independent of the method used to find it — that is, any method that produces a solution yields *the same* function.
 
 ::: {.callout-note}
 ## Example 6 — Solving an IVP by Hand
@@ -351,7 +352,11 @@ $$
 $$
 
 ::: {.callout-tip}
-Notice that one 2nd-order ODE has been replaced by two 1st-order ODEs.  This is a standard and important technique: any $n$th-order ODE can be converted to a system of $n$ first-order ODEs.
+Notice that one 2nd-order ODE has been replaced by two 1st-order ODEs.  For the SHO specifically, the system is:
+$$
+\dot{x} = \frac{p}{m}, \qquad \dot{p} = -kx.
+$$
+This is a standard and important technique: any $n$th-order ODE can be converted to a system of $n$ first-order ODEs.  We will return to this systematically in Chapter 4.
 :::
 
 **For the SHO.**  With $q = x$ and $p = m\dot{x}$:
@@ -449,7 +454,7 @@ This is a **2nd-order, linear ODE** with constant coefficients — *mathematical
 | Mechanical | Electrical |
 |---|---|
 | Mass $m$ | Inductance $L$ |
-| Damping $b$ | Resistance $R$ |
+| Damping $b$ (introduced later) | Resistance $R$ |
 | Spring constant $k$ | $1/C$ |
 | Applied force $F(t)$ | EMF $E(t)$ |
 | Displacement $x$ | Charge $Q$ |
@@ -540,7 +545,7 @@ This system is nonlinear and has no closed-form solution in general, but exhibit
 
 - A differential equation relates an unknown **function** to its derivatives. Solutions are **functions**, not numbers.
 
-- ODEs are classified by **order**, **linearity**, **homogeneity**, **coefficient type**, and **autonomy**.
+- ODEs are classified by **order**, **linearity**, **homogeneity**, **coefficient type** (constant vs. variable), and **autonomy**.
 
 - An **IVP** pins down a unique solution by specifying initial data. The Picard–Lindelöf theorem guarantees existence and uniqueness under relatively mild conditions.
 
@@ -551,7 +556,7 @@ This system is nonlinear and has no closed-form solution in general, but exhibit
 These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_01_slides.html){target="_blank"}
 
 ::: {.callout-note}
-**Next:** Separable equations and exact solutions — Logan §1.2–1.3.
+**Next:** Solving separable equations analytically — Logan §1.2–1.3.
 :::
 
 ---
