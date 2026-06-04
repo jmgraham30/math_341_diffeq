@@ -59,6 +59,11 @@ A slope field is a visualization of the ODE itself — before any solution has b
 
 In calculus, we are given a function and asked to find its derivative (slopes). Differential equations reverse this: we are *given* the slopes and asked to recover the function.
 
+| | Given | Find |
+|---|---|---|
+| Calculus | function $x(t)$ | slopes $x'(t)$ |
+| Diff. Eq. | slopes $f(t,x)$ | function $x(t)$ |
+
 ---
 
 ### Nullclines and Isoclines
@@ -126,7 +131,7 @@ This is Example 1.5 in @logan2015first.  The right-hand side is $f(t, x) = -x + 
 #| code-fold: true
 #| code-summary: "Show the code"
 #| label: fig-sf-linear
-#| fig-cap: "Slope field for $x' = -x + 2t$ with several solution curves (blue) and the nullcline $x = 2t$ (red dashed). Solutions appear to converge toward the line $x = 2t - 2$ — the particular solution that satisfies the ODE for all $t$."
+#| fig-cap: "Slope field for $x' = -x + 2t$ with several solution curves (blue) and the nullcline $x = 2t$ (red dashed). Solutions appear to converge toward the line $x = 2t - 2$ — the particular solution satisfying the ODE for all $t$ (verification: if $x = 2t-2$ then $x' = 2$ and $-x+2t = -(2t-2)+2t = 2$ ✓)."
 
 f1 = lambda t, x: -x + 2*t
 
@@ -201,7 +206,7 @@ This is Example 1.6 in @logan2015first.  The right-hand side is $f(t, x) = x(x -
 #| code-fold: true
 #| code-summary: "Show the code"
 #| label: fig-sf-nonlinear
-#| fig-cap: "Slope field for $x' = x(x-t)$ with nullclines $x=0$ (red) and $x=t$ (orange). Signs of $x'$ in the four regions are annotated. Two approximate solution curves are shown in blue."
+#| fig-cap: "Slope field for $x' = x(x-t)$ with nullclines $x=0$ (red) and $x=t$ (orange). Signs of $x'$ in the four regions are annotated. Four solution curves are attempted (initial conditions at $t=-1$: $x_0 \\in \\{-1.5, 0.5, 2.0, 3.5\\}$); some may exit the plot window due to finite-time blowup."
 
 f3 = lambda t, x: x * (x - t)
 
@@ -331,6 +336,21 @@ print("Logistic IVP solution:")
 display(Math(sym.latex(sol_logistic)))
 ```
 
+::: {.callout-note}
+SymPy returns an algebraically equivalent but unsimplified form that may look quite different from the boxed expression above.  The reader can verify they are identical by algebraic manipulation, or via the following simplification:
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Simplify the SymPy result and compare with the standard form
+sol_simplified = sym.simplify(sol_logistic.rhs)
+standard_form = K_s / (1 + (K_s/x0_s - 1)*sym.exp(-r_s*t_s))
+print("SymPy simplified rhs equals standard form:",
+      sym.simplify(sol_simplified - standard_form) == 0)
+display(Math(r"x(t) = " + sym.latex(sym.simplify(sol_simplified))))
+```
+:::
+
 ---
 
 ### Example 6 — A Separable Equation with a Non-Closed-Form Integral
@@ -339,6 +359,10 @@ Consider the IVP (Example 1.18 in @logan2015first):
 $$
 \frac{dx}{dt} = \frac{2\sqrt{x}\,e^{-t}}{t}, \qquad x(1) = 4.
 $$
+
+::: {.callout-note}
+**Domain restrictions.** The right-hand side requires $x \geq 0$ (for $\sqrt{x}$ to be real) and $t \neq 0$ (to avoid division by zero).  Since the initial condition is given at $t = 1 > 0$, the solution is valid on an interval of the form $(0, b)$ for some $b > 1$; we take $t > 0$ throughout.
+:::
 Separating: $\dfrac{dx}{2\sqrt{x}} = \dfrac{e^{-t}}{t}\,dt$.  Integrating from the initial condition:
 $$
 \int_4^x \frac{dy}{2\sqrt{y}} = \int_1^t \frac{e^{-s}}{s}\,ds \quad\Longrightarrow\quad \sqrt{x} - 2 = \int_1^t \frac{e^{-s}}{s}\,ds.
@@ -387,7 +411,7 @@ Separating variables requires dividing by $f(x)$, which is only valid when $f(x)
 
 ::: {.callout-note}
 ## Example 7 — Singular Solution
-The ODE $x' = 6t(x-1)^{2/3}$ has the general solution $x(t) = 1 + (t^2 + C)^3$.  But $x(t) \equiv 1$ also satisfies the ODE (check: $x' = 0$ and $6t(1-1)^{2/3} = 0$ ✓), and *no* choice of $C$ in the general family gives $x(t) = 1$.  So $x = 1$ is a singular solution.
+The ODE $x' = 6t(x-1)^{2/3}$ has the general solution $x(t) = 1 + (t^2 + C)^3$.  But $x(t) \equiv 1$ also satisfies the ODE (check: $x' = 0$ and $6t(1-1)^{2/3} = 0$ ✓), and *no* choice of $C$ in the general family gives $x(t) = 1$: setting $1 + (t^2 + C)^3 = 1$ requires $(t^2 + C)^3 = 0$ for all $t$, which is impossible since $t^2$ varies.  So $x = 1$ is a singular solution.
 :::
 
 
@@ -405,7 +429,11 @@ The key algebraic trick is to multiply both sides of (1) by the **[integrating f
 $$
 \mu(t) = e^{\int p(t)\,dt} = e^{P(t)}, \qquad P(t) = \int p(t)\,dt.
 $$
-By the product rule and the chain rule,
+To see why this works, note that $\mu' = p(t)\mu$ (by the chain rule), so the product rule gives:
+$$
+(\mu x)' = \mu' x + \mu x' = p(t)\mu x + \mu x' = \mu(x' + p(t)x).
+$$
+Therefore
 $$
 \mu(t)\bigl(x' + p(t)x\bigr) = \bigl(\mu(t)\,x\bigr)',
 $$
@@ -438,7 +466,7 @@ where:
 - $x_h(t) = Ce^{-P(t)}$ is the general solution of the **homogeneous** equation $x' + p(t)x = 0$, and
 - $x_p(t) = e^{-P(t)}\int q(t)\,e^{P(t)}\,dt$ is a **particular solution** of the inhomogeneous equation.
 
-The homogeneous part $x_h$ carries the initial condition (through $C$) and is often called the **transient**, because if $P(t) \to \infty$ as $t \to \infty$ it decays away.  The particular part $x_p$ is driven by $q(t)$ and represents the **steady-state** response.
+The homogeneous part $x_h$ carries the initial condition (through $C$) and is often called the **transient**, because when $p(t) > 0$ (so that $P(t) \to \infty$ as $t \to \infty$) it decays away.  The particular part $x_p$ is driven by $q(t)$ and represents the **steady-state** response.
 
 ---
 
@@ -531,6 +559,16 @@ plt.show()
 
 
 ## Applications
+
+Each application in this section leads to a first-order linear ODE with constant coefficients of the form
+$$
+x' + p\,x = q, \qquad p, q \text{ constants},
+$$
+whose general solution with initial condition $x(0) = x_0$ is the unified formula
+$$
+\boxed{x(t) = x_{\infty} + (x_0 - x_{\infty})\,e^{-pt}}, \qquad x_{\infty} = \frac{q}{p}.
+$$
+Here $x_\infty$ is the stable equilibrium (the value approached as $t \to \infty$), and $1/p$ is the time constant governing how quickly the transient decays.  The three applications below are simply different physical interpretations of this same mathematical structure.
 
 ### Newton's Law of Cooling
 
@@ -633,8 +671,11 @@ Q1 = 0.5 * (1 - np.exp(-2 * t1))
 Q_switch = 0.5 * (1 - np.exp(-4))           # Q at t=2, matching condition
 Q2 = Q_switch * np.exp(-2 * (t2 - 2))
 
-I1 = np.gradient(Q1, t1)
-I2 = np.gradient(Q2, t2)
+# Compute I = Q' analytically to avoid numerical-derivative artifacts at the switch point.
+# For 0 <= t < 2:  Q1 = (1/2)(1 - e^{-2t})  =>  I1 = e^{-2t}
+# For t >= 2:      Q2 = Q_switch * e^{-2(t-2)}  =>  I2 = -2*Q_switch*e^{-2(t-2)}
+I1 = np.exp(-2 * t1)
+I2 = -2 * Q_switch * np.exp(-2 * (t2 - 2))
 
 fig, axes = plt.subplots(2, 1, figsize=(7, 5), sharex=True)
 
@@ -656,20 +697,29 @@ plt.show()
 ```
 
 ::: {.callout-tip}
-The mechanical–electrical analogy noted in Notes 1 now becomes concrete: the RC circuit equation $Q' + Q/(RC) = E(t)/R$ is *identical in form* to Newton's law of cooling $T' + hT = hT_e(t)$ with the correspondence $RC \leftrightarrow 1/h$ and $E(t)/R \leftrightarrow hT_e(t)$.  Solutions to both have the same transient + steady-state structure.
+The mechanical–electrical analogy noted in Notes 1 now becomes concrete.  The RC circuit equation and Newton's law of cooling are **mathematically identical** in form:
+
+| Newton's Cooling | RC Circuit |
+|:---|:---|
+| $T' + hT = hT_e(t)$ | $Q' + \tfrac{1}{RC}Q = \tfrac{E(t)}{R}$ |
+| Temperature $T$ | Charge $Q$ |
+| Heat loss coefficient $h$ | $1/(RC)$ |
+| Ambient temperature $T_e(t)$ | $E(t)/R$ |
+
+Solutions to both share the same transient + steady-state structure.  Understanding one system gives immediate insight into the other — a hallmark of mathematical unification.
 :::
 
 ---
 
-### Chemical Mixture (Chemostat)
+### Chemical Reactor (Chemostat)
 
-A well-mixed tank (reactor) of constant volume $V$ has a chemical of concentration $C(t)$.  Contaminated inflow at concentration $C_{\text{in}}$ enters at volumetric rate $q$, and the well-mixed solution exits at the same rate.  **Mass balance** (rate of change = rate in $-$ rate out) gives:
+A well-mixed tank (reactor) of constant volume $V$ has a chemical of concentration $C(t)$.  Contaminated inflow at concentration $C_{\text{in}}$ enters at volumetric flow rate $q_v$, and the well-mixed solution exits at the same rate.  **Mass balance** (rate of change = rate in $-$ rate out) gives:
 $$
-V\,C' = q\,C_{\text{in}} - q\,C \quad\Longrightarrow\quad C' + \frac{q}{V}\,C = \frac{q}{V}\,C_{\text{in}}.
+V\,C' = q_v\,C_{\text{in}} - q_v\,C \quad\Longrightarrow\quad C' + \frac{q_v}{V}\,C = \frac{q_v}{V}\,C_{\text{in}}.
 $$
-This is a **first-order linear ODE** with $p = q/V$ and $q_{\text{forcing}} = (q/V)C_{\text{in}}$.  The integrating factor is $e^{qt/V}$, and with $C(0) = C_0$ the solution is
+This is a **first-order linear ODE** with $p = q_v/V$ and forcing term $(q_v/V)C_{\text{in}}$.  The integrating factor is $e^{q_v t/V}$, and with $C(0) = C_0$ the solution is
 $$
-C(t) = C_{\text{in}} + (C_0 - C_{\text{in}})\,e^{-qt/V}.
+C(t) = C_{\text{in}} + (C_0 - C_{\text{in}})\,e^{-q_v t/V}.
 $$
 As $t \to \infty$, $C(t) \to C_{\text{in}}$, the inflow concentration — the equilibrium is stable regardless of the initial concentration.
 
@@ -680,13 +730,13 @@ As $t \to \infty$, $C(t) \to C_{\text{in}}$, the inflow concentration — the eq
 #| fig-cap: "Chemical concentration in a well-mixed tank ($V=100$ m$^3$, $q=0.5$ m$^3$/min, $C_{\\text{in}} = 0.2$ kg/m$^3$) for several initial concentrations $C_0$. All solutions converge to the equilibrium $C_{\\text{in}} = 0.2$ (dashed)."
 
 V_val = 100.0     # m^3
-q_vol = 0.5       # m^3/min
+q_v   = 0.5       # m^3/min  (volumetric flow rate; written q_v to distinguish from the forcing term q(t) in the linear ODE)
 C_in  = 0.2       # kg/m^3
 t_plot = np.linspace(0, 600, 500)
 
 fig, ax = plt.subplots(figsize=(7, 4))
 for C0 in [0, 0.05, 0.1, 0.3, 0.5, 0.8, 1.0]:
-    C_sol = C_in + (C0 - C_in) * np.exp(-q_vol / V_val * t_plot)
+    C_sol = C_in + (C0 - C_in) * np.exp(-q_v / V_val * t_plot)
     ax.plot(t_plot, C_sol, lw=2,
             label=f'$C_0={C0}$' if C0 in [0, 0.5, 1.0] else None)
 ax.axhline(C_in, color='black', linestyle='--', lw=1.5,
