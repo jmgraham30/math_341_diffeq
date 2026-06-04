@@ -32,9 +32,9 @@ In this section, we will cover the following topics:
 
 2. Define **equilibrium solutions** and analyze their **stability** using the phase line.
 
-3. Use **linearization** — evaluating $f'(x^*)$ at an equilibrium — to determine stability analytically.
+3. Apply **linearization** — evaluating $f'(x^*)$ at an equilibrium — to determine stability analytically.
 
-4. Study **bifurcations**: qualitative changes in the equilibrium structure as a parameter varies, and how to construct **bifurcation diagrams**.
+4. Introduce **bifurcations** — qualitative changes in equilibrium structure as a parameter varies — and construct **bifurcation diagrams** for the three classical cases: saddle-node, transcritical, and pitchfork.
 
 ::: {.callout-note}
 This material corresponds to **Section 1.5** of @logan2015first.
@@ -198,6 +198,10 @@ $$
 
 **Sign analysis:** $f'(x) = 3x^2 - 1$.
 
+::: {.callout-note}
+The table below uses the sign of $f'(x^*)$ to determine stability — a criterion we justify formally in the Linearization section that follows.  For now, note that the sign of $f'(x^*)$ simply confirms what the phase line already tells us.
+:::
+
 | Equilibrium | $f'(x^*)$ | Stability |
 |:---:|:---:|:---:|
 | $x^* = -1$ | $+2$ | Unstable |
@@ -302,7 +306,7 @@ The quantity $\lambda = f'(x^*)$ is sometimes called the **eigenvalue** of the e
 
 ::: {.callout-note}
 ## Connection to Stability and Phase Line
-The linearization criterion is just an algebraic restatement of the phase line criterion:
+The linearization criterion is just an algebraic restatement of the phase line criterion.  Since $f'(x^*) \neq 0$ (the hyperbolic condition), $f$ changes sign at $x^*$.  Therefore:
 - If $f'(x^*) < 0$, then $f$ is decreasing through zero at $x^*$, so $f > 0$ just below $x^*$ and $f < 0$ just above — arrows point inward.
 - If $f'(x^*) > 0$, then $f$ is increasing through zero — arrows point outward.
 :::
@@ -351,17 +355,17 @@ for label, f_expr in [
 
 ---
 
-### Example 4 — Non-Hyperbolic Equilibrium: $x' = x^3$
+### Example 4 — Non-Hyperbolic Equilibrium: $x' = x^2$
 
-At $x^* = 0$: $f'(0) = 0$ — the linearization test is inconclusive.  To determine stability we must look at higher-order terms.  Since $f(x) = x^3 > 0$ for $x > 0$ and $f(x) < 0$ for $x < 0$, the phase line shows arrows pointing *away* on the left and *toward* on the right — the origin is **semi-stable**.
+At $x^* = 0$: $f'(0) = 0$ — the linearization test is inconclusive.  To determine stability we must inspect $f$ directly.  Since $f(x) = x^2 > 0$ for all $x \neq 0$, the phase line shows arrows pointing *toward* zero from the left ($f > 0$ means increasing, so solutions with $x_0 < 0$ increase toward zero) and *away* from zero on the right ($f > 0$ means solutions with $x_0 > 0$ increase away from zero) — the origin is **semi-stable**.
 
 ```{python}
 #| code-fold: true
 #| code-summary: "Show the code"
 #| label: fig-nonhyp
-#| fig-cap: "Non-hyperbolic equilibrium $x'=x^3$ at $x^*=0$. The linearization $f'(0)=0$ is inconclusive. The full phase line reveals semi-stability: solutions above $x^*=0$ move away, solutions below approach."
+#| fig-cap: "Non-hyperbolic equilibrium $x'=x^2$ at $x^*=0$. The linearization $f'(0)=0$ is inconclusive. The full phase line reveals semi-stability: solutions starting below $x^*=0$ increase toward zero; solutions starting above increase away from zero and blow up in finite time."
 
-f_nh  = lambda x: x**3
+f_nh  = lambda x: x**2
 x_arr = np.linspace(-1.5, 1.5, 400)
 
 fig, axes = plt.subplots(1, 2, figsize=(9, 4))
@@ -369,16 +373,13 @@ fig, axes = plt.subplots(1, 2, figsize=(9, 4))
 axes[0].plot(x_arr, f_nh(x_arr), color='steelblue', lw=2.5)
 axes[0].axhline(0, color='k', lw=0.8)
 axes[0].fill_between(x_arr, 0, f_nh(x_arr),
-                     where=(f_nh(x_arr) > 0), alpha=0.15, color='crimson', label='$f>0$')
-axes[0].fill_between(x_arr, 0, f_nh(x_arr),
-                     where=(f_nh(x_arr) < 0), alpha=0.15, color='steelblue', label='$f<0$')
+                     where=(f_nh(x_arr) > 0), alpha=0.15, color='crimson', label='$f>0$ (everywhere)')
 axes[0].plot(0, 0, 'ks', markersize=10, zorder=5, label='$x^*=0$ (semi-stable)')
 axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)$')
-axes[0].set_title(r"$f(x)=x^3$: non-hyperbolic equilibrium")
+axes[0].set_title(r"$f(x)=x^2$: non-hyperbolic equilibrium")
 axes[0].legend(fontsize=8)
 
-f_ode_nh = lambda t, x: [x[0]**3]
-t_eval = np.linspace(0, 2, 400)
+f_ode_nh = lambda t, x: [x[0]**2]
 for x0, color in zip([-1.2, -0.7, -0.3, 0.3, 0.7, 1.2],
                      plt.cm.RdBu(np.linspace(0.05, 0.95, 6))):
     sol = solve_ivp(f_ode_nh, (0, 1.8), [x0], t_eval=np.linspace(0,1.8,400),
@@ -386,7 +387,7 @@ for x0, color in zip([-1.2, -0.7, -0.3, 0.3, 0.7, 1.2],
     axes[1].plot(sol.t, np.clip(sol.y[0], -5, 5), color=color, lw=2, label=f'$x_0={x0}$')
 axes[1].axhline(0, color='k', ls='--', lw=1.5, label='$x^*=0$')
 axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
-axes[1].set_title('Semi-stable: solutions above blow up, below approach 0')
+axes[1].set_title('Semi-stable: solutions below approach 0, solutions above blow up')
 axes[1].legend(fontsize=7, ncol=2); axes[1].set_ylim(-4, 4)
 
 plt.tight_layout()
@@ -426,10 +427,14 @@ $$
 | Parameter | Equilibria | Character |
 |:---:|:---:|---|
 | $r < 0$ | None | No equilibria |
-| $r = 0$ | $x^* = 0$ | One semi-stable equilibrium (bifurcation point) |
+| $r = 0$ | $x^* = 0$ | One semi-stable equilibrium (bifurcation point; non-hyperbolic: $f'(0)=0$) |
 | $r > 0$ | $x^* = \pm\sqrt{r}$ | Two equilibria: stable ($+$) and unstable ($-$) |
 
 A stable and an unstable equilibrium collide and annihilate as $r$ decreases through zero.
+
+::: {.callout-tip}
+A stable and unstable equilibrium **collide and annihilate** as $r$ decreases through zero.  This is the most generic way that equilibria are created or destroyed in one-dimensional systems — any smooth one-parameter family of ODEs will generically exhibit saddle-node bifurcations.
+:::
 
 ```{python}
 #| code-fold: true
@@ -651,6 +656,13 @@ Now for $r < 0$ there are three equilibria ($x^*=0$ stable, $x^*=\pm\sqrt{-r}$ u
 
 ### Summary: The Three Classic Bifurcations
 
+| Bifurcation | Normal form | What happens at $r_c = 0$ |
+|---|---|---|
+| **Saddle-node** | $x'=r-x^2$ | Stable + unstable equilibrium pair created/annihilated |
+| **Transcritical** | $x'=rx-x^2$ | Two equilibria exchange stability |
+| **Pitchfork (super)** | $x'=rx-x^3$ | Origin loses stability; symmetric pair of stable equilibria born |
+| **Pitchfork (sub)** | $x'=rx+x^3$ | Origin loses stability; unstable pair disappears — dangerous transition |
+
 ```{python}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -705,11 +717,13 @@ plt.show()
 
 ### Application: The Spruce Budworm Model
 
-A classical ecological bifurcation occurs in the **[spruce budworm model](https://en.wikipedia.org/wiki/Spruce_budworm)**, proposed by Ludwig, Jones, and Holling (1978).  The dimensionless form is:
+A classical ecological bifurcation occurs in the **[spruce budworm model](https://en.wikipedia.org/wiki/Spruce_budworm)**, proposed by Ludwig, Jones, and Holling (1978).[^budworm-ref]  The dimensionless form is:
 $$
 x' = rx\!\left(1 - \frac{x}{K}\right) - \frac{x^2}{1+x^2},
 $$
 where $x$ is the budworm population density, $r$ is the growth rate, $K$ is the carrying capacity, and the last term is a predation function (Type III functional response).
+
+[^budworm-ref]: D. Ludwig, D. D. Jones, and C. S. Holling, "Qualitative Analysis of Insect Outbreak Systems: The Spruce Budworm and Forest," *Journal of Animal Ecology*, 47(1):315–332, 1978.
 
 The system can exhibit **bistability**: for certain parameter values there are two stable equilibria — a low "refuge" state and a high "outbreak" state — separated by an unstable one.  This leads to **hysteresis**: the system can jump suddenly from refuge to outbreak state when $r$ crosses a critical threshold, and will not return to refuge unless $r$ is reduced well below the forward bifurcation point.
 
@@ -717,7 +731,7 @@ The system can exhibit **bistability**: for certain parameter values there are t
 #| code-fold: true
 #| code-summary: "Show the code"
 #| label: fig-budworm
-#| fig-cap: "Spruce budworm model with $K=10$. Left: $f(x)$ for three values of $r$, showing how the number of positive equilibria changes. Right: solutions from multiple initial conditions for the bistable case ($r=0.55$) — the population converges to either the low refuge state or the high outbreak state depending on the initial condition."
+#| fig-cap: "Spruce budworm model with $K=10$. Left: $f(x)$ for three values of $r$, showing how the number of positive equilibria changes. Right: solutions from multiple initial conditions for the bistable case ($r=0.55$) — the population converges to either the low refuge state or the high outbreak state depending on whether the initial condition lies below or above the unstable equilibrium that acts as a **separator** between the two basins of attraction."
 
 K_bw = 10.0
 

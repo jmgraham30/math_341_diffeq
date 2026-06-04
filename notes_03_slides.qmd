@@ -158,13 +158,13 @@ for xm, dx in [(3.7, -0.4), (6.3, 0.4)]:
     ax.annotate('', xy=(xm+dx, 0), xytext=(xm, 0),
                 arrowprops=dict(arrowstyle='->', color='crimson', lw=2))
 
-# Semi-stable
+# Semi-stable: toward from left, away on right
 ax.plot(8, 0, 's', color='darkorange', markersize=14, zorder=5)
 ax.text(8, 0.35, 'Semi-stable', ha='center', fontsize=11, color='darkorange', fontweight='bold')
 ax.annotate('', xy=(8-0.4, 0), xytext=(6.8, 0),
-            arrowprops=dict(arrowstyle='->', color='darkorange', lw=2))
+            arrowprops=dict(arrowstyle='->', color='darkorange', lw=2))   # toward from left
 ax.annotate('', xy=(9.5, 0), xytext=(8.2, 0),
-            arrowprops=dict(arrowstyle='->', color='darkorange', lw=2))
+            arrowprops=dict(arrowstyle='->', color='darkorange', lw=2))   # away on right
 plt.tight_layout(); plt.show()
 ```
 
@@ -323,31 +323,30 @@ print("f'(K) =", sym.simplify(fp.subs(x_sym, K_sym)))
 ```
 
 
-## Non-Hyperbolic Equilibrium: $x'=x^3$
+## Non-Hyperbolic Equilibrium: $x'=x^2$
 
 At $x^*=0$: $f'(0)=0$ — **test inconclusive**. Must inspect $f$ directly.
 
-$f(x)=x^3>0$ for $x>0$, $f(x)<0$ for $x<0$ → arrows point **away above**, **toward below** → **semi-stable**.
+$f(x)=x^2>0$ for all $x\neq 0$ → arrows point **toward zero from the left** (solutions with $x_0<0$ increase toward 0) and **away from zero on the right** (solutions with $x_0>0$ increase away from 0) → **semi-stable**.
 
 ```{python}
 #| label: fig-nonhyp-slides
 #| fig-height: 3.0
 
-f_nh = lambda x: x**3; x_arr = np.linspace(-1.5,1.5,400)
+f_nh = lambda x: x**2; x_arr = np.linspace(-1.5,1.5,400)
 fig, axes = plt.subplots(1, 2, figsize=(9, 2.8))
 axes[0].plot(x_arr, f_nh(x_arr), color='steelblue', lw=2)
 axes[0].axhline(0, color='k', lw=0.8)
-axes[0].fill_between(x_arr, 0, f_nh(x_arr), where=(f_nh(x_arr)>0), alpha=0.15, color='crimson', label='$f>0$')
-axes[0].fill_between(x_arr, 0, f_nh(x_arr), where=(f_nh(x_arr)<0), alpha=0.15, color='steelblue', label='$f<0$')
+axes[0].fill_between(x_arr, 0, f_nh(x_arr), where=(f_nh(x_arr)>0), alpha=0.15, color='crimson', label='$f>0$ (everywhere)')
 axes[0].plot(0, 0, 'ks', markersize=10, zorder=5, label='$x^*=0$ (semi-stable)')
-axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)$'); axes[0].set_title(r"$f(x)=x^3$"); axes[0].legend(fontsize=7)
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)$'); axes[0].set_title(r"$f(x)=x^2$"); axes[0].legend(fontsize=7)
 
-f_ode_nh = lambda t, x: [x[0]**3]
+f_ode_nh = lambda t, x: [x[0]**2]
 for x0, color in zip([-1.2,-0.7,-0.3,0.3,0.7,1.2], plt.cm.RdBu(np.linspace(0.05,0.95,6))):
     sol = solve_ivp(f_ode_nh,(0,1.8),[x0],t_eval=np.linspace(0,1.8,300),max_step=0.005,events=lambda t,y:abs(y[0])-8)
     axes[1].plot(sol.t, np.clip(sol.y[0],-5,5), color=color, lw=1.8, label=f'$x_0={x0}$')
 axes[1].axhline(0, color='k', ls='--', lw=1.5); axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
-axes[1].set_title('Semi-stable: above blows up, below decays'); axes[1].legend(fontsize=6, ncol=2); axes[1].set_ylim(-4,4)
+axes[1].set_title('Semi-stable: below approaches 0, above blows up'); axes[1].legend(fontsize=6, ncol=2); axes[1].set_ylim(-4,4)
 plt.tight_layout(); plt.show()
 ```
 
@@ -664,6 +663,10 @@ The two stable states are clearly visible: initial populations below the unstabl
 
 ::: {.callout-tip}
 **Next:** These ideas extend to **systems** of ODEs in 2D. The phase line becomes the phase plane, $f'(x^*)$ becomes the Jacobian matrix, and the pitchfork becomes the Hopf bifurcation — Chapter 3 of @logan2015first.
+:::
+
+::: {.callout-note}
+**Next:** Second-order linear equations — Logan §2.2.
 :::
 
 
