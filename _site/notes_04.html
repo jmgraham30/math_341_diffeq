@@ -507,7 +507,7 @@ window.Quarto = {
 </header>
 
 
-<div id="fc05a3a6" class="cell" data-execution_count="1">
+<div id="9f338fc5" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -527,7 +527,7 @@ window.Quarto = {
 <ol type="1">
 <li><p>Introduce second-order linear ODEs with constant coefficients and their characteristic equation.</p></li>
 <li><p>Classify solutions according to the three cases for the characteristic roots (eigenvalues): distinct real, repeated real, and complex conjugate.</p></li>
-<li><p>Apply the <strong>method of undetermined coefficients</strong> to find particular solutions of inhomogeneous equations.</p></li>
+<li><p>Apply the <strong>method of undetermined coefficients</strong> to find particular solutions of nonhomogeneous equations.</p></li>
 <li><p>Apply the <strong>method of variation of parameters</strong> as a general technique for finding particular solutions.</p></li>
 <li><p>Understand <strong>resonance</strong> — what happens when the forcing frequency matches the natural frequency.</p></li>
 </ol>
@@ -552,7 +552,7 @@ Note
 <p><span class="math display">\[
 x'' + px' + qx = f(t), \tag{2}
 \]</span></p>
-<p>where <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are real constants and <span class="math inline">\(f(t)\)</span> is a given function called the <strong>forcing term</strong> (or source term). When <span class="math inline">\(f(t) \equiv 0\)</span> the equation is <strong>homogeneous</strong>; otherwise it is <strong>inhomogeneous</strong>.</p>
+<p>where <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are real constants and <span class="math inline">\(f(t)\)</span> is a given function called the <strong>forcing term</strong> (or source term). When <span class="math inline">\(f(t) \equiv 0\)</span> the equation is <strong>homogeneous</strong>; otherwise it is <strong>nonhomogeneous</strong>.</p>
 <p>This single equation encompasses an enormous range of physical models:</p>
 <table class="caption-top table">
 <thead>
@@ -584,7 +584,7 @@ x'' + px' + qx = f(t), \tag{2}
 </tr>
 </tbody>
 </table>
-<p><strong>Structure of the general solution.</strong> By the <a href="https://en.wikipedia.org/wiki/Superposition_principle">Superposition Principle</a> (discussed in detail in <a href="https://math341diffeq.netlify.app/topics_03">Topics 3</a>), the general solution of the inhomogeneous equation (2) is: <span class="math display">\[
+<p><strong>Structure of the general solution.</strong> By the <a href="https://en.wikipedia.org/wiki/Superposition_principle">Superposition Principle</a> (discussed in detail in <a href="https://math341diffeq.netlify.app/topics_03">Topics 3</a>), the general solution of the nonhomogeneous equation (2) is: <span class="math display">\[
 x(t) = x_h(t) + x_p(t),
 \]</span> where <span class="math inline">\(x_h\)</span> is the general solution of the <strong>homogeneous</strong> equation <span class="math inline">\(x'' + px' + qx = 0\)</span>, and <span class="math inline">\(x_p\)</span> is <strong>any</strong> particular solution of (2). We therefore study the homogeneous case first.</p>
 <hr>
@@ -595,7 +595,7 @@ x(t) = x_h(t) + x_p(t),
 <h3 class="anchored" data-anchor-id="the-ansatz-x-elambda-t">The Ansatz <span class="math inline">\(x = e^{\lambda t}\)</span></h3>
 <p>For the homogeneous equation <span class="math display">\[
 x'' + px' + qx = 0, \tag{H}
-\]</span> we try the <strong>ansatz</strong> (educated guess) <span class="math inline">\(x(t) = e^{\lambda t}\)</span>, where <span class="math inline">\(\lambda\)</span> is a constant to be determined. Substituting: <span class="math display">\[
+\]</span> we try the <strong>ansatz</strong> (educated guess) <span class="math inline">\(x(t) = e^{\lambda t}\)</span>, where <span class="math inline">\(\lambda\)</span> is a constant to be determined. The key insight is that differentiation merely scales <span class="math inline">\(e^{\lambda t}\)</span> by <span class="math inline">\(\lambda\)</span>, so every derivative of <span class="math inline">\(e^{\lambda t}\)</span> shares the same exponential factor — substituting into a linear ODE with constant coefficients therefore reduces it to an algebraic equation for <span class="math inline">\(\lambda\)</span>. Substituting: <span class="math display">\[
 \lambda^2 e^{\lambda t} + p\lambda e^{\lambda t} + q e^{\lambda t} = 0.
 \]</span> Since <span class="math inline">\(e^{\lambda t} \neq 0\)</span> we can divide through by it, leaving the <strong>characteristic equation</strong> (also called the <strong>auxiliary equation</strong>):</p>
 <p><span class="math display">\[
@@ -625,13 +625,13 @@ x'' + px' + qx = 0, \tag{H}
 <p>When <span class="math inline">\(\Delta = p^2 - 4q &gt; 0\)</span>, there are two distinct real roots <span class="math inline">\(\lambda_1 \neq \lambda_2\)</span>. The functions <span class="math inline">\(e^{\lambda_1 t}\)</span> and <span class="math inline">\(e^{\lambda_2 t}\)</span> are both solutions of (H) and are linearly independent (since <span class="math inline">\(\lambda_1 \neq \lambda_2\)</span>). By superposition, the <strong>general solution</strong> is: <span class="math display">\[
 \boxed{x(t) = C_1 e^{\lambda_1 t} + C_2 e^{\lambda_2 t}.}
 \]</span></p>
-<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example 1 — Distinct Real Eigenvalues
+<span class="screen-reader-only">Important</span>Example 1 — Distinct Real Eigenvalues
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -646,16 +646,18 @@ x'' + px' + qx = 0, \tag{H}
 </section>
 <section id="case-ii-repeated-real-eigenvalue-delta-0" class="level3">
 <h3 class="anchored" data-anchor-id="case-ii-repeated-real-eigenvalue-delta-0">Case II — Repeated Real Eigenvalue (<span class="math inline">\(\Delta = 0\)</span>)</h3>
-<p>When <span class="math inline">\(\Delta = 0\)</span>, there is one repeated root <span class="math inline">\(\lambda_1 = \lambda_2 = -p/2\)</span>. The function <span class="math inline">\(e^{\lambda_1 t}\)</span> is one solution, but we need a second, linearly independent solution. One can verify by direct substitution (the method of <strong>reduction of order</strong>) that <span class="math inline">\(t\,e^{\lambda_1 t}\)</span> is also a solution. The <strong>general solution</strong> is: <span class="math display">\[
+<p>When <span class="math inline">\(\Delta = 0\)</span>, there is one repeated root <span class="math inline">\(\lambda_1 = \lambda_2 = -p/2\)</span>. The function <span class="math inline">\(e^{\lambda_1 t}\)</span> is one solution, but we need a second, linearly independent solution. One can verify directly by substitution that <span class="math inline">\(t\,e^{\lambda_1 t}\)</span> is also a solution: if <span class="math inline">\(x = te^{\lambda_1 t}\)</span> then <span class="math inline">\(x' = e^{\lambda_1 t}(1 + \lambda_1 t)\)</span> and <span class="math inline">\(x'' = e^{\lambda_1 t}(2\lambda_1 + \lambda_1^2 t)\)</span>, so <span class="math display">\[
+x'' + px' + qx = e^{\lambda_1 t}\bigl[\lambda_1^2 t + 2\lambda_1 + p(1+\lambda_1 t) + qt\bigr] = e^{\lambda_1 t}\bigl[(\lambda_1^2+p\lambda_1+q)t + (2\lambda_1+p)\bigr] = 0,
+\]</span> since <span class="math inline">\(\lambda_1^2+p\lambda_1+q=0\)</span> (characteristic equation) and <span class="math inline">\(2\lambda_1 = -p\)</span> (repeated root). This technique of finding a second solution is called <strong>reduction of order</strong> and is developed in Logan §2.5. The <strong>general solution</strong> is: <span class="math display">\[
 \boxed{x(t) = \bigl(C_1 + C_2\,t\bigr)\,e^{\lambda_1 t}.}
 \]</span></p>
-<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example 2 — Repeated Eigenvalue
+<span class="screen-reader-only">Important</span>Example 2 — Repeated Eigenvalue
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -683,13 +685,13 @@ e^{\alpha t}\cos(\beta t) \quad\text{and}\quad e^{\alpha t}\sin(\beta t).
 <li><span class="math inline">\(\alpha = 0\)</span> (<span class="math inline">\(p = 0\)</span>): <strong>undamped</strong> — pure oscillation, amplitude constant.</li>
 <li><span class="math inline">\(\alpha &gt; 0\)</span> (<span class="math inline">\(p &lt; 0\)</span>): oscillations grow (unusual in passive physical systems).</li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Example 3 — Complex Eigenvalues
+<span class="screen-reader-only">Important</span>Example 3 — Complex Eigenvalues
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -824,6 +826,9 @@ x'' + 2\gamma x' + \omega_0^2\,x = 0
 </tbody>
 </table>
 <p>where <span class="math inline">\(\omega_d\)</span> is the <strong>damped natural frequency</strong>.</p>
+<p>For the underdamped case, the solution <span class="math inline">\(x(t) = e^{-\gamma t}(C_1\cos\omega_d t + C_2\sin\omega_d t)\)</span> can be written compactly in <strong>amplitude-phase form</strong>: <span class="math display">\[
+x(t) = A\,e^{-\gamma t}\cos(\omega_d t - \phi),
+\]</span> where the <strong>amplitude</strong> <span class="math inline">\(A = \sqrt{C_1^2 + C_2^2}\)</span> and the <strong>phase</strong> <span class="math inline">\(\phi = \arctan(C_2/C_1)\)</span>. This form makes the decaying envelope <span class="math inline">\(Ae^{-\gamma t}\)</span> and the oscillation frequency <span class="math inline">\(\omega_d\)</span> immediately explicit.</p>
 <div id="cell-fig-damped-osc" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
@@ -887,7 +892,7 @@ Figure&nbsp;2: Damped harmonic oscillator <span class="math inline">\(x''+2\gamm
 <p><strong>Step 2 — General solution:</strong> <span class="math inline">\(x(t) = e^{-t}(C_1\cos 2t + C_2\sin 2t)\)</span>.</p>
 <p><strong>Step 3 — Apply ICs.</strong> At <span class="math inline">\(t=0\)</span>: <span class="math display">\[x(0) = C_1 = 1.\]</span> Differentiating: <span class="math inline">\(x'(t) = -e^{-t}(C_1\cos 2t + C_2\sin 2t) + e^{-t}(-2C_1\sin 2t + 2C_2\cos 2t)\)</span>. <span class="math display">\[x'(0) = -C_1 + 2C_2 = 2 \;\Rightarrow\; C_2 = \tfrac{3}{2}.\]</span></p>
 <p><strong>Solution:</strong> <span class="math inline">\(\displaystyle x(t) = e^{-t}\!\left(\cos 2t + \tfrac{3}{2}\sin 2t\right)\)</span>.</p>
-<div id="53e6596a" class="cell" data-execution_count="4">
+<div id="e0b2e34f" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify with SymPy</span></span>
@@ -946,7 +951,7 @@ Figure&nbsp;3: Solution to the IVP <span class="math inline">\(x''+2x'+5x=0\)</s
 </section>
 <section id="using-sympy-for-second-order-constant-coefficient-odes" class="level3">
 <h3 class="anchored" data-anchor-id="using-sympy-for-second-order-constant-coefficient-odes">Using SymPy for Second-Order Constant-Coefficient ODEs</h3>
-<div id="2b9671a7" class="cell" data-execution_count="6">
+<div id="7900361e" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
@@ -964,29 +969,30 @@ Figure&nbsp;3: Solution to the IVP <span class="math inline">\(x''+2x'+5x=0\)</s
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, expr <span class="kw">in</span> cases.items():</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    ode <span class="op">=</span> sym.Eq(expr, <span class="dv">0</span>)</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> sym.dsolve(ode, x_sym(t_sym))</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"ODE: $</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">$"</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    display(Math(<span class="vs">r"x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(sol.rhs)))</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    expanded <span class="op">=</span> sym.expand(sol.rhs)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"ODE: $</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">$"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    display(Math(<span class="vs">r"x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(expanded)))</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>ODE: $x'' - 3x' + 2x = 0 \;\;(\Delta&gt;0)$</code></pre>
 </div>
 <div class="cell-output cell-output-display cell-output-markdown">
-<p><span class="math inline">\(\displaystyle x(t) = \left(C_{1} + C_{2} e^{t}\right) e^{t}\)</span></p>
+<p><span class="math inline">\(\displaystyle x(t) = C_{1} e^{t} + C_{2} e^{2 t}\)</span></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ODE: $x'' - 4x' + 4x = 0 \;\;(\Delta=0)$</code></pre>
 </div>
 <div class="cell-output cell-output-display cell-output-markdown">
-<p><span class="math inline">\(\displaystyle x(t) = \left(C_{1} + C_{2} t\right) e^{2 t}\)</span></p>
+<p><span class="math inline">\(\displaystyle x(t) = C_{1} e^{2 t} + C_{2} t e^{2 t}\)</span></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ODE: $x'' + 2x' + 5x = 0 \;\;(\Delta&lt;0)$</code></pre>
 </div>
 <div class="cell-output cell-output-display cell-output-markdown">
-<p><span class="math inline">\(\displaystyle x(t) = \left(C_{1} \sin{\left(2 t \right)} + C_{2} \cos{\left(2 t \right)}\right) e^{- t}\)</span></p>
+<p><span class="math inline">\(\displaystyle x(t) = C_{1} e^{- t} \sin{\left(2 t \right)} + C_{2} e^{- t} \cos{\left(2 t \right)}\)</span></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
@@ -997,7 +1003,7 @@ ODE: $x'' + 2x' + 5x = 0 \;\;(\Delta&lt;0)$</code></pre>
 </section>
 <section id="nonhomogeneous-equations" class="level2">
 <h2 class="anchored" data-anchor-id="nonhomogeneous-equations">Nonhomogeneous Equations</h2>
-<p>We now turn to the inhomogeneous equation <span class="math display">\[
+<p>We now turn to the nonhomogeneous equation <span class="math display">\[
 x'' + px' + qx = f(t). \tag{NH}
 \]</span> The <strong>general solution</strong> is <span class="math inline">\(x(t) = x_h(t) + x_p(t)\)</span>, where <span class="math inline">\(x_h\)</span> is the general solution of the homogeneous equation and <span class="math inline">\(x_p\)</span> is any particular solution. We study two methods for finding <span class="math inline">\(x_p\)</span>.</p>
 <hr>
@@ -1071,7 +1077,7 @@ x'' + px' + qx = f(t). \tag{NH}
 <p><strong>Step 3 — Substitute:</strong> <span class="math display">\[2A + (2At + B) - 2(At^2 + Bt + C) = -2At^2 + (2A-2B)t + (2A+B-2C) = t^2.\]</span></p>
 <p>Equating coefficients: <span class="math display">\[-2A = 1 \;\Rightarrow\; A = -\tfrac{1}{2}; \quad 2A - 2B = 0 \;\Rightarrow\; B = -\tfrac{1}{2}; \quad 2A + B - 2C = 0 \;\Rightarrow\; C = -\tfrac{3}{4}.\]</span></p>
 <p><strong>General solution:</strong> <span class="math display">\[x(t) = C_1 e^t + C_2 e^{-2t} - \tfrac{1}{2}t^2 - \tfrac{1}{2}t - \tfrac{3}{4}.\]</span></p>
-<div id="1bff7f74" class="cell" data-execution_count="7">
+<div id="8b001e29" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
@@ -1233,7 +1239,7 @@ u_1' = -\frac{x_2\,f}{W}, \qquad u_2' = \frac{x_1\,f}{W}.
 <div class="callout-body-container callout-body">
 <p><span class="math display">\[
 x_p(t) = -x_1(t)\int\frac{x_2(t)\,f(t)}{W(t)}\,dt + x_2(t)\int\frac{x_1(t)\,f(t)}{W(t)}\,dt.
-\]</span></p>
+\]</span> <em>Note:</em> This sign convention — with <span class="math inline">\(W = x_1x_2' - x_2x_1'\)</span> — matches the form used in Logan §2.4. Some textbooks define <span class="math inline">\(W\)</span> with the opposite sign, which would swap the signs in the formula above; always verify against your reference.</p>
 </div>
 </div>
 <hr>
@@ -1248,7 +1254,7 @@ x_p(t) = -x_1(t)\int\frac{x_2(t)\,f(t)}{W(t)}\,dt + x_2(t)\int\frac{x_1(t)\,f(t)
 <p><strong>Integrate:</strong> <span class="math display">\[u_1 = \frac{\ln|\cos(2t)|}{4}, \qquad u_2 = \frac{t}{2}.\]</span></p>
 <p><strong>Particular solution:</strong> <span class="math display">\[x_p = \frac{\cos(2t)\ln|\cos(2t)|}{4} + \frac{t\sin(2t)}{2}.\]</span></p>
 <p><strong>General solution:</strong> <span class="math display">\[x(t) = C_1\cos(2t) + C_2\sin(2t) + \frac{\cos(2t)\ln|\cos(2t)|}{4} + \frac{t\sin(2t)}{2}.\]</span></p>
-<div id="117be571" class="cell" data-execution_count="9">
+<div id="65570d49" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify with SymPy</span></span>
@@ -1345,6 +1351,19 @@ Figure&nbsp;5: Solution to <span class="math inline">\(x''+4x=\sec(2t)\)</span> 
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Strategy
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always try undetermined coefficients first — it is faster when it applies. Switch to variation of parameters when <span class="math inline">\(f(t)\)</span> contains <span class="math inline">\(\ln t\)</span>, <span class="math inline">\(\sec t\)</span>, <span class="math inline">\(\tan t\)</span>, <span class="math inline">\(1/t\)</span>, or any other function that does not appear in the guessing table above.</p>
+</div>
+</div>
 <hr>
 </section>
 </section>
@@ -1421,7 +1440,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Next:</strong> Variation of parameters for second-order linear equations — Logan §2.4.</p>
+<p><strong>Next:</strong> Systems of first-order equations and the phase plane — Logan §3.1.</p>
 </div>
 </div>
 <hr>
@@ -1466,7 +1485,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1475,9 +1494,9 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="fc3183dd" class="cell" data-execution_count="11">
+<div id="c3a0a347" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>

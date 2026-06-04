@@ -32,7 +32,7 @@ In this section we will cover the following topics:
 
 2. Classify solutions according to the three cases for the characteristic roots (eigenvalues): distinct real, repeated real, and complex conjugate.
 
-3. Apply the **method of undetermined coefficients** to find particular solutions of inhomogeneous equations.
+3. Apply the **method of undetermined coefficients** to find particular solutions of nonhomogeneous equations.
 
 4. Apply the **method of variation of parameters** as a general technique for finding particular solutions.
 
@@ -52,7 +52,7 @@ $$
 x'' + px' + qx = f(t), \tag{2}
 $$
 
-where $p$ and $q$ are real constants and $f(t)$ is a given function called the **forcing term** (or source term).  When $f(t) \equiv 0$ the equation is **homogeneous**; otherwise it is **inhomogeneous**.
+where $p$ and $q$ are real constants and $f(t)$ is a given function called the **forcing term** (or source term).  When $f(t) \equiv 0$ the equation is **homogeneous**; otherwise it is **nonhomogeneous**.
 
 This single equation encompasses an enormous range of physical models:
 
@@ -64,7 +64,7 @@ This single equation encompasses an enormous range of physical models:
 | [RLC circuit](https://en.wikipedia.org/wiki/RLC_circuit) | $LQ'' + RQ' + Q/C = E(t)$ |
 | [Euler–Bernoulli beam](https://en.wikipedia.org/wiki/Euler%E2%80%93Bernoulli_beam_theory) deflection (ODE form) | $EI\,y'' = M(x)$ |
 
-**Structure of the general solution.** By the [Superposition Principle](https://en.wikipedia.org/wiki/Superposition_principle) (discussed in detail in [Topics 3](https://math341diffeq.netlify.app/topics_03)), the general solution of the inhomogeneous equation (2) is:
+**Structure of the general solution.** By the [Superposition Principle](https://en.wikipedia.org/wiki/Superposition_principle) (discussed in detail in [Topics 3](https://math341diffeq.netlify.app/topics_03)), the general solution of the nonhomogeneous equation (2) is:
 $$
 x(t) = x_h(t) + x_p(t),
 $$
@@ -80,7 +80,7 @@ For the homogeneous equation
 $$
 x'' + px' + qx = 0, \tag{H}
 $$
-we try the **ansatz** (educated guess) $x(t) = e^{\lambda t}$, where $\lambda$ is a constant to be determined.  Substituting:
+we try the **ansatz** (educated guess) $x(t) = e^{\lambda t}$, where $\lambda$ is a constant to be determined.  The key insight is that differentiation merely scales $e^{\lambda t}$ by $\lambda$, so every derivative of $e^{\lambda t}$ shares the same exponential factor — substituting into a linear ODE with constant coefficients therefore reduces it to an algebraic equation for $\lambda$.  Substituting:
 $$
 \lambda^2 e^{\lambda t} + p\lambda e^{\lambda t} + q e^{\lambda t} = 0.
 $$
@@ -111,7 +111,7 @@ $$
 \boxed{x(t) = C_1 e^{\lambda_1 t} + C_2 e^{\lambda_2 t}.}
 $$
 
-::: {.callout-note}
+::: {.callout-important}
 ## Example 1 — Distinct Real Eigenvalues
 Solve $x'' - 3x' + 2x = 0$.
 
@@ -128,12 +128,16 @@ Solve $x'' - 3x' + 2x = 0$.
 
 ### Case II — Repeated Real Eigenvalue ($\Delta = 0$)
 
-When $\Delta = 0$, there is one repeated root $\lambda_1 = \lambda_2 = -p/2$.  The function $e^{\lambda_1 t}$ is one solution, but we need a second, linearly independent solution.  One can verify by direct substitution (the method of **reduction of order**) that $t\,e^{\lambda_1 t}$ is also a solution.  The **general solution** is:
+When $\Delta = 0$, there is one repeated root $\lambda_1 = \lambda_2 = -p/2$.  The function $e^{\lambda_1 t}$ is one solution, but we need a second, linearly independent solution.  One can verify directly by substitution that $t\,e^{\lambda_1 t}$ is also a solution: if $x = te^{\lambda_1 t}$ then $x' = e^{\lambda_1 t}(1 + \lambda_1 t)$ and $x'' = e^{\lambda_1 t}(2\lambda_1 + \lambda_1^2 t)$, so
+$$
+x'' + px' + qx = e^{\lambda_1 t}\bigl[\lambda_1^2 t + 2\lambda_1 + p(1+\lambda_1 t) + qt\bigr] = e^{\lambda_1 t}\bigl[(\lambda_1^2+p\lambda_1+q)t + (2\lambda_1+p)\bigr] = 0,
+$$
+since $\lambda_1^2+p\lambda_1+q=0$ (characteristic equation) and $2\lambda_1 = -p$ (repeated root).  This technique of finding a second solution is called **reduction of order** and is developed in Logan §2.5.  The **general solution** is:
 $$
 \boxed{x(t) = \bigl(C_1 + C_2\,t\bigr)\,e^{\lambda_1 t}.}
 $$
 
-::: {.callout-note}
+::: {.callout-important}
 ## Example 2 — Repeated Eigenvalue
 Solve $x'' - 4x' + 4x = 0$.
 
@@ -169,7 +173,7 @@ The solution oscillates at **damped frequency** $\beta$ while its amplitude grow
 - $\alpha = 0$ ($p = 0$): **undamped** — pure oscillation, amplitude constant.
 - $\alpha > 0$ ($p < 0$): oscillations grow (unusual in passive physical systems).
 
-::: {.callout-note}
+::: {.callout-important}
 ## Example 3 — Complex Eigenvalues
 Solve $x'' + 2x' + 5x = 0$.
 
@@ -271,6 +275,12 @@ The three cases are:
 | **Underdamped** | $\gamma < \omega_0$ | $-\gamma \pm i\omega_d$ | Oscillatory decay at $\omega_d = \sqrt{\omega_0^2-\gamma^2}$ |
 
 where $\omega_d$ is the **damped natural frequency**.
+
+For the underdamped case, the solution $x(t) = e^{-\gamma t}(C_1\cos\omega_d t + C_2\sin\omega_d t)$ can be written compactly in **amplitude-phase form**:
+$$
+x(t) = A\,e^{-\gamma t}\cos(\omega_d t - \phi),
+$$
+where the **amplitude** $A = \sqrt{C_1^2 + C_2^2}$ and the **phase** $\phi = \arctan(C_2/C_1)$.  This form makes the decaying envelope $Ae^{-\gamma t}$ and the oscillation frequency $\omega_d$ immediately explicit.
 
 ```{python}
 #| code-fold: true
@@ -398,8 +408,9 @@ cases = {
 for label, expr in cases.items():
     ode = sym.Eq(expr, 0)
     sol = sym.dsolve(ode, x_sym(t_sym))
+    expanded = sym.expand(sol.rhs)
     print(f"ODE: ${label}$")
-    display(Math(r"x(t) = " + sym.latex(sol.rhs)))
+    display(Math(r"x(t) = " + sym.latex(expanded)))
     print()
 ```
 
@@ -407,7 +418,7 @@ for label, expr in cases.items():
 
 ## Nonhomogeneous Equations
 
-We now turn to the inhomogeneous equation
+We now turn to the nonhomogeneous equation
 $$
 x'' + px' + qx = f(t). \tag{NH}
 $$
@@ -603,6 +614,7 @@ $$
 $$
 x_p(t) = -x_1(t)\int\frac{x_2(t)\,f(t)}{W(t)}\,dt + x_2(t)\int\frac{x_1(t)\,f(t)}{W(t)}\,dt.
 $$
+*Note:* This sign convention — with $W = x_1x_2' - x_2x_1'$ — matches the form used in Logan §2.4.  Some textbooks define $W$ with the opposite sign, which would swap the signs in the formula above; always verify against your reference.
 :::
 
 ---
@@ -684,6 +696,11 @@ plt.show()
 | **Resonance** | Handled by modification rule | Handles automatically |
 | **When to use** | First choice for standard forcing | When undetermined coefficients fails |
 
+::: {.callout-tip}
+## Strategy
+Always try undetermined coefficients first — it is faster when it applies.  Switch to variation of parameters when $f(t)$ contains $\ln t$, $\sec t$, $\tan t$, $1/t$, or any other function that does not appear in the guessing table above.
+:::
+
 ---
 
 ## Summary
@@ -709,7 +726,7 @@ The machinery developed here — characteristic equations, eigenvalues, and the 
 These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_04_slides.html){target="_blank"}
 
 ::: {.callout-note}
-**Next:** Variation of parameters for second-order linear equations — Logan §2.4.
+**Next:** Systems of first-order equations and the phase plane — Logan §3.1.
 :::
 
 ---
