@@ -508,7 +508,7 @@ window.Quarto = {
 </header>
 
 
-<div id="34da382f" class="cell" data-execution_count="1">
+<div id="01619ac7" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -561,6 +561,49 @@ x'' + P(t)\,x' + Q(t)\,x = g(t), \tag{SF}
 <h3 class="anchored" data-anchor-id="when-undetermined-coefficients-fails">When Undetermined Coefficients Fails</h3>
 <p>The method of undetermined coefficients requires the right-hand side <span class="math inline">\(g(t)\)</span> to be a polynomial, exponential, sine, cosine, or product thereof. For variable-coefficient equations the homogeneous solution <span class="math inline">\(x_h\)</span> no longer consists of these simple forms, so there is no longer a predictable guess for <span class="math inline">\(x_p\)</span>. Moreover, even for constant-coefficient equations, forcing functions such as <span class="math inline">\(\sec t\)</span>, <span class="math inline">\(\tan t\)</span>, <span class="math inline">\(\ln t\)</span>, <span class="math inline">\(1/t\)</span>, or <span class="math inline">\(e^t/t\)</span> lie <strong>outside</strong> the undetermined-coefficients table and cannot be handled by guessing.</p>
 <p><strong>Variation of parameters</strong> resolves both issues.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>When Undetermined Coefficients Fails
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Forcing <span class="math inline">\(g(t)\)</span></th>
+<th>Why UC fails</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\sec t\)</span>, <span class="math inline">\(\tan t\)</span>, <span class="math inline">\(\csc t\)</span></td>
+<td>Not in the guess table; derivatives generate new function families</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\ln t\)</span>, <span class="math inline">\(\sqrt{t}\)</span>, <span class="math inline">\(1/t\)</span></td>
+<td>Not closed under differentiation — infinitely many new terms appear</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(e^t/t\)</span></td>
+<td>Product of an exponential and <span class="math inline">\(1/t\)</span>; <span class="math inline">\(1/t\)</span> grows under differentiation</td>
+</tr>
+<tr class="even">
+<td>Variable coefficients</td>
+<td>No exponential <span class="math inline">\(x_h\)</span> to compare against; guessing is not predictable</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Variation of parameters</strong> handles all of these by working directly with the homogeneous solutions, whatever form they take.</p>
 <hr>
 </section>
 </section>
@@ -613,7 +656,7 @@ u_1 = -\int\frac{x_2\,g}{W}\,dt, \qquad u_2 = \int\frac{x_1\,g}{W}\,dt.
 <h3 class="anchored" data-anchor-id="abels-identity">Abel’s Identity</h3>
 <p>The Wronskian of any two solutions of (H) satisfies <strong><a href="https://en.wikipedia.org/wiki/Abel%27s_identity">Abel’s identity</a></strong>: <span class="math display">\[
 W(t) = W(t_0)\,\exp\!\left(-\int_{t_0}^t P(s)\,ds\right).
-\]</span> For constant-coefficient equations (<span class="math inline">\(P\)</span> constant) this gives <span class="math inline">\(W(t) = W(t_0)\,e^{-P(t-t_0)}\)</span>, and in particular <span class="math inline">\(W \neq 0\)</span> everywhere if it is non-zero at one point.</p>
+\]</span> For constant-coefficient equations (<span class="math inline">\(P\)</span> constant) this gives <span class="math inline">\(W(t) = W(t_0)\,e^{-P(t-t_0)}\)</span>, and in particular <span class="math inline">\(W \neq 0\)</span> everywhere if it is non-zero at one point. More generally, since the exponential factor is always nonzero, Abel’s identity shows that <strong><span class="math inline">\(W\)</span> either vanishes identically on <span class="math inline">\(I\)</span> or is nonzero everywhere on <span class="math inline">\(I\)</span></strong> — in particular, if <span class="math inline">\(W(t_0)\neq 0\)</span> for any single <span class="math inline">\(t_0\in I\)</span>, then <span class="math inline">\(W(t)\neq 0\)</span> for all <span class="math inline">\(t\in I\)</span>. This justifies checking the Wronskian at just one convenient point.</p>
 <hr>
 </section>
 </section>
@@ -664,7 +707,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The solution exists only on intervals where <span class="math inline">\(\sec t\)</span> is defined: <span class="math inline">\(t\neq \pi/2 + n\pi\)</span>. The particular solution <span class="math inline">\(x_p = \cos t\ln|\cos t| + t\sin t\)</span> grows <strong>linearly</strong> in amplitude because of the <span class="math inline">\(t\sin t\)</span> term — behavior that undetermined coefficients never produces.</p>
+<p>The solution exists on the interval <span class="math inline">\((-\pi/2,\,\pi/2)\)</span> containing <span class="math inline">\(t=0\)</span>, and more generally on any open interval between consecutive singularities of <span class="math inline">\(\sec t\)</span> (i.e., between adjacent odd multiples of <span class="math inline">\(\pi/2\)</span>). The <span class="math inline">\(t\sin t\)</span> term in <span class="math inline">\(x_p\)</span> causes the amplitude to grow <strong>linearly</strong> — behavior analogous to resonance, even though <span class="math inline">\(\omega = 1\)</span> and the forcing <span class="math inline">\(\sec t\)</span> is not a pure sinusoid. Undetermined coefficients never produces this kind of growth.</p>
 </div>
 </div>
 <div id="cell-fig-ex1" class="cell" data-execution_count="2">
@@ -733,10 +776,10 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note that <span class="math inline">\(te^t(\ln t - 1) = te^t\ln t - te^t\)</span>, and the <span class="math inline">\(-te^t\)</span> part could be absorbed into the <span class="math inline">\(C_2 te^t\)</span> term by redefining <span class="math inline">\(C_2\)</span>. In practice we keep the particular solution as found and let the constants adjust when ICs are applied.</p>
+<p>Note that <span class="math inline">\(te^t(\ln t - 1) = te^t\ln t - te^t\)</span>, and the <span class="math inline">\(-te^t\)</span> part could be absorbed into the <span class="math inline">\(C_2 te^t\)</span> term by redefining <span class="math inline">\(C_2\)</span>. This is valid because <strong>particular solutions are not unique</strong> — any particular solution differs from any other by a solution of the homogeneous equation, so absorbing constant-multiple terms from <span class="math inline">\(x_p\)</span> into <span class="math inline">\(x_h\)</span> yields the same general solution. In practice we keep the particular solution as found and let the constants adjust when ICs are applied.</p>
 </div>
 </div>
-<div id="18df801d" class="cell" data-execution_count="3">
+<div id="5efde885" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SymPy verification</span></span>
@@ -761,26 +804,27 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t_plot2 <span class="op">=</span> np.linspace(<span class="fl">1.0</span>, <span class="fl">2.8</span>, <span class="dv">400</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># IVP: x(1)=0, x'(1)=0</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># x = e^t + t*e^t*(ln(t)-1)  [verified: C1=1, C2=0]</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>xp2  <span class="op">=</span> t_plot2 <span class="op">*</span> np.exp(t_plot2) <span class="op">*</span> (np.log(t_plot2) <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>xh2  <span class="op">=</span> np.exp(t_plot2)   <span class="co"># C1=1, C2=0</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>x2_full <span class="op">=</span> xh2 <span class="op">+</span> xp2</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, x2_full, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Full solution $x(t)$'</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xh2,     color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'$x_h = e^t$ (with $C_1=1$, $C_2=0$)'</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xp2,     color<span class="op">=</span><span class="st">'seagreen'</span>,   lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'-.'</span>, label<span class="op">=</span><span class="st">'$x_p = te^t(</span><span class="ch">\\</span><span class="st">ln t-1)$'</span>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode2(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="dv">2</span><span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> y[<span class="dv">0</span>] <span class="op">+</span> np.exp(t)<span class="op">/</span>t]</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>sol2n <span class="op">=</span> solve_ivp(ode2, (<span class="fl">1.0</span>, <span class="fl">2.8</span>), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>t_dots2 <span class="op">=</span> np.linspace(<span class="fl">1.0</span>, <span class="fl">2.8</span>, <span class="dv">18</span>)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots2, sol2n.sol(t_dots2)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical check'</span>)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x''-2x'</span><span class="op">+</span><span class="vs">x=e</span><span class="dv">^</span><span class="vs">t/t</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x'</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Solving: C1 + C2 - 1 = 0 and C1 + 2*C2 + 1 = 0  =&gt;  C1=2, C2=-1</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>C1_2, C2_2 <span class="op">=</span> <span class="fl">2.0</span>, <span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>xp2  <span class="op">=</span> t_plot2 <span class="op">*</span> np.exp(t_plot2) <span class="op">*</span> (np.log(t_plot2) <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>xh2  <span class="op">=</span> C1_2<span class="op">*</span>np.exp(t_plot2) <span class="op">+</span> C2_2<span class="op">*</span>t_plot2<span class="op">*</span>np.exp(t_plot2)   <span class="co"># 2e^t - te^t</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>x2_full <span class="op">=</span> xh2 <span class="op">+</span> xp2</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, x2_full, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Full solution $x(t)$'</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xh2,     color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'$x_h = 2e^t - te^t$ (with $C_1=2$, $C_2=-1$)'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xp2,     color<span class="op">=</span><span class="st">'seagreen'</span>,   lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'-.'</span>, label<span class="op">=</span><span class="st">'$x_p = te^t(</span><span class="ch">\\</span><span class="st">ln t-1)$'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode2(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="dv">2</span><span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> y[<span class="dv">0</span>] <span class="op">+</span> np.exp(t)<span class="op">/</span>t]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>sol2n <span class="op">=</span> solve_ivp(ode2, (<span class="fl">1.0</span>, <span class="fl">2.8</span>), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>t_dots2 <span class="op">=</span> np.linspace(<span class="fl">1.0</span>, <span class="fl">2.8</span>, <span class="dv">18</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots2, sol2n.sol(t_dots2)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical check'</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x''-2x'</span><span class="op">+</span><span class="vs">x=e</span><span class="dv">^</span><span class="vs">t/t</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x'</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-ex2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -789,7 +833,7 @@ Note
 <img src="notes_05_files/figure-html/fig-ex2-output-1.png" width="1181" height="658" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Example 2: <span class="math inline">\(x''-2x'+x=e^t/t\)</span> with <span class="math inline">\(x(1)=0\)</span>, <span class="math inline">\(x'(1)=0\)</span>. The particular solution <span class="math inline">\(te^t(\ln t-1)\)</span> (green) grows rapidly for large <span class="math inline">\(t\)</span> since it inherits the <span class="math inline">\(e^t\)</span> factor of the homogeneous solutions. Red dots confirm the analytical formula.
+Figure&nbsp;2: Example 2: <span class="math inline">\(x''-2x'+x=e^t/t\)</span> with <span class="math inline">\(x(1)=0\)</span>, <span class="math inline">\(x'(1)=0\)</span>. The constants <span class="math inline">\(C_1=2\)</span>, <span class="math inline">\(C_2=-1\)</span> are determined by the IVP. The particular solution <span class="math inline">\(te^t(\ln t-1)\)</span> (green) grows rapidly for large <span class="math inline">\(t\)</span> since it inherits the <span class="math inline">\(e^t\)</span> factor of the homogeneous solutions. Red dots confirm the analytical formula via numerical solve.
 </figcaption>
 </figure>
 </div>
@@ -801,13 +845,13 @@ Figure&nbsp;2: Example 2: <span class="math inline">\(x''-2x'+x=e^t/t\)</span> w
 <h3 class="anchored" data-anchor-id="example-3-euler-equation-t2-x---2tx-2x-t3sin-t">Example 3 — Euler Equation: <span class="math inline">\(t^2 x'' - 2tx' + 2x = t^3\sin t\)</span></h3>
 <p>This is a second-order linear ODE with <strong>variable coefficients</strong> — the coefficients <span class="math inline">\(-2t\)</span> and <span class="math inline">\(2\)</span> are functions of <span class="math inline">\(t\)</span>, not constants. The homogeneous part is an <strong><a href="https://en.wikipedia.org/wiki/Cauchy%E2%80%93Euler_equation">Euler–Cauchy equation</a></strong>, whose solutions are powers of <span class="math inline">\(t\)</span>.</p>
 <p><strong>Step 1.</strong> Divide by <span class="math inline">\(t^2\)</span> (standard form, <span class="math inline">\(t \neq 0\)</span>): <span class="math display">\[x'' - \frac{2}{t}\,x' + \frac{2}{t^2}\,x = t\sin t. \qquad g(t) = t\sin t.\]</span></p>
-<p><strong>Step 2.</strong> For the homogeneous Euler equation <span class="math inline">\(t^2 x'' - 2tx' + 2x = 0\)</span>, try <span class="math inline">\(x = t^r\)</span>: <span class="math display">\[r(r-1)t^r - 2rt^r + 2t^r = t^r[r^2 - 3r + 2] = t^r(r-1)(r-2) = 0.\]</span> So <span class="math inline">\(r = 1\)</span> and <span class="math inline">\(r = 2\)</span>, giving: <span class="math display">\[x_1 = t, \qquad x_2 = t^2.\]</span></p>
+<p><strong>Step 2.</strong> For the homogeneous Euler equation <span class="math inline">\(t^2 x'' - 2tx' + 2x = 0\)</span>, try <span class="math inline">\(x = t^r\)</span>. The motivation is that the Euler equation has a <strong>scaling symmetry</strong>: replacing <span class="math inline">\(t\)</span> by <span class="math inline">\(ct\)</span> leaves the equation’s structure unchanged, and <span class="math inline">\(t^r\)</span> is the family of functions preserved under this scaling — just as <span class="math inline">\(e^{\lambda t}\)</span> is preserved under differentiation for constant-coefficient equations. Substituting: <span class="math display">\[r(r-1)t^r - 2rt^r + 2t^r = t^r[r^2 - 3r + 2] = t^r(r-1)(r-2) = 0.\]</span> So <span class="math inline">\(r = 1\)</span> and <span class="math inline">\(r = 2\)</span>, giving: <span class="math display">\[x_1 = t, \qquad x_2 = t^2.\]</span></p>
 <p><strong>Step 3.</strong> Wronskian: <span class="math display">\[W = t\cdot 2t - t^2\cdot 1 = 2t^2 - t^2 = t^2.\]</span></p>
 <p><strong>Step 4.</strong> <span class="math display">\[u_1' = -\frac{t^2\cdot t\sin t}{t^2} = -t\sin t, \qquad u_2' = \frac{t\cdot t\sin t}{t^2} = \sin t.\]</span></p>
 <p><strong>Step 5.</strong> Using integration by parts for <span class="math inline">\(u_1\)</span>: <span class="math display">\[u_1 = -\int t\sin t\,dt = t\cos t - \sin t, \qquad u_2 = \int\sin t\,dt = -\cos t.\]</span></p>
 <p><strong>Step 6.</strong> <span class="math display">\[x_p = t(t\cos t - \sin t) + t^2(-\cos t) = t^2\cos t - t\sin t - t^2\cos t = -t\sin t.\]</span></p>
 <p><strong>General solution:</strong> <span class="math display">\[\boxed{x(t) = C_1 t + C_2 t^2 - t\sin t.}\]</span></p>
-<div id="30875637" class="cell" data-execution_count="5">
+<div id="b1eade8e" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SymPy verification</span></span>
@@ -887,6 +931,19 @@ Figure&nbsp;3: Example 3: Euler equation <span class="math inline">\(t^2 x''-2tx
 <p><strong>Step 4.</strong> <span class="math display">\[u_1 = -t, \qquad u_2 = \int\cot t\,dt = \ln|\sin t|.\]</span></p>
 <p><strong>Step 5.</strong> <span class="math display">\[x_p = \cos t\cdot(-t) + \sin t\cdot\ln|\sin t| = -t\cos t + \sin t\ln|\sin t|.\]</span></p>
 <p><strong>General solution:</strong> <span class="math display">\[\boxed{x(t) = C_1\cos t + C_2\sin t - t\cos t + \sin t\ln|\sin t|.}\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Compare Examples 1 and 4: both use <span class="math inline">\(x_1 = \cos t\)</span>, <span class="math inline">\(x_2 = \sin t\)</span>, and <span class="math inline">\(W = 1\)</span>. The only difference is the forcing — <span class="math inline">\(\sec t\)</span> versus <span class="math inline">\(\csc t\)</span> — yet the particular solutions are qualitatively different (<span class="math inline">\(\cos t\ln|\cos t| + t\sin t\)</span> vs.&nbsp;<span class="math inline">\(-t\cos t + \sin t\ln|\sin t|\)</span>). The method of variation of parameters is identical in both cases; only the integrals change. This illustrates how the method adapts automatically to the forcing, without any guessing or modification rule.</p>
+</div>
+</div>
 <div id="cell-fig-ex4" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
@@ -944,7 +1001,7 @@ Figure&nbsp;4: Example 4: <span class="math inline">\(x''+x=\csc t\)</span>, <sp
 </section>
 <section id="sympy-solving-all-four-examples-symbolically" class="level3">
 <h3 class="anchored" data-anchor-id="sympy-solving-all-four-examples-symbolically">SymPy: Solving All Four Examples Symbolically</h3>
-<div id="85a54829" class="cell" data-execution_count="8">
+<div id="b4c99c85" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -1106,6 +1163,19 @@ Tip
 <li><p>For <strong>Euler equations</strong>, the homogeneous solutions are powers <span class="math inline">\(t^r\)</span> rather than exponentials; variation of parameters proceeds identically once <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> are found.</p></li>
 </ul>
 <p>These notes are also viewable as a slide deck presentation: <a href="https://math341diffeq.netlify.app/notes_05_slides.html" target="_blank">Open slides in full screen</a></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Looking Ahead
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>With the method of variation of parameters, we now have a complete toolkit for second-order linear ODEs — constant or variable coefficients, any continuous forcing. The next major step is to reframe everything in <strong>matrix language</strong>: a second-order ODE <span class="math inline">\(x'' + px' + qx = 0\)</span> is equivalent to the first-order system <span class="math inline">\(\mathbf{y}' = A\mathbf{y}\)</span>, and the homogeneous solutions <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> become columns of the <strong>fundamental matrix</strong>. The Wronskian becomes the determinant of that matrix, Abel’s identity becomes Liouville’s theorem, and variation of parameters extends naturally to systems of any size. This unification is the subject of Chapter 3 of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1116,7 +1186,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Next:</strong> Introduction to Laplace Transform — Logan §3.1.</p>
+<p><strong>Next:</strong> Introduction to Laplace transforms — Logan §3.1.</p>
 </div>
 </div>
 <hr>
@@ -1149,7 +1219,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1158,9 +1228,9 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="7fa02187" class="cell" data-execution_count="9">
+<div id="7dc3e46e" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
