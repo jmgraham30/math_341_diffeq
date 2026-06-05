@@ -247,12 +247,13 @@ $$\boxed{x(t) = C_1 e^t + C_2 te^t + te^t(\ln t-1), \quad t>0}$$
 
 t_plot2 = np.linspace(1.0, 2.8, 400)
 xp2  = t_plot2*np.exp(t_plot2)*(np.log(t_plot2)-1)
-xh2  = np.exp(t_plot2)
+# IVP x(1)=0, x'(1)=0 => C1=2, C2=-1
+xh2  = 2*np.exp(t_plot2) - t_plot2*np.exp(t_plot2)
 x2_full = xh2 + xp2
 
 fig, ax = plt.subplots(figsize=(9, 3.4))
 ax.plot(t_plot2, x2_full, color='steelblue',  lw=2.5, label='Full $x(t)$')
-ax.plot(t_plot2, xh2,     color='darkorange', lw=1.8, ls='--', label='$x_h=e^t$')
+ax.plot(t_plot2, xh2,     color='darkorange', lw=1.8, ls='--', label='$x_h=2e^t-te^t$')
 ax.plot(t_plot2, xp2,     color='seagreen',   lw=1.8, ls='-.', label='$x_p=te^t(\\ln t-1)$')
 def ode2(t, y): return [y[1], 2*y[1]-y[0]+np.exp(t)/t]
 sol2n = solve_ivp(ode2,(1,2.8),[0.0,0.0],dense_output=True,max_step=0.005)
@@ -275,7 +276,7 @@ ax.legend(fontsize=7.5); plt.tight_layout(); plt.show()
 
 **Standard form** (divide by $t^2$): $x''-\frac{2}{t}x'+\frac{2}{t^2}x = t\sin t$
 
-**Homogeneous solutions**: try $x=t^r$:
+**Homogeneous solutions**: try $x=t^r$ — the natural ansatz because the Euler equation has a scaling symmetry ($t\mapsto ct$ preserves its structure), and $t^r$ is the family preserved under this scaling:
 $$r(r-1)-2r+2 = r^2-3r+2=(r-1)(r-2)=0 \;\Rightarrow\; r=1,2$$
 $$x_1=t, \quad x_2=t^2, \quad W = t\cdot 2t - t^2\cdot 1 = t^2$$
 

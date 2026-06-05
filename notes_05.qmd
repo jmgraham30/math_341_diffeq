@@ -75,6 +75,18 @@ undetermined-coefficients table and cannot be handled by guessing.
 
 **Variation of parameters** resolves both issues.
 
+::: {.callout-important}
+## When Undetermined Coefficients Fails
+| Forcing $g(t)$ | Why UC fails |
+|---|---|
+| $\sec t$, $\tan t$, $\csc t$ | Not in the guess table; derivatives generate new function families |
+| $\ln t$, $\sqrt{t}$, $1/t$ | Not closed under differentiation — infinitely many new terms appear |
+| $e^t/t$ | Product of an exponential and $1/t$; $1/t$ grows under differentiation |
+| Variable coefficients | No exponential $x_h$ to compare against; guessing is not predictable |
+:::
+
+**Variation of parameters** handles all of these by working directly with the homogeneous solutions, whatever form they take.
+
 ---
 
 ## The Method of Variation of Parameters
@@ -152,7 +164,7 @@ $$
 W(t) = W(t_0)\,\exp\!\left(-\int_{t_0}^t P(s)\,ds\right).
 $$
 For constant-coefficient equations ($P$ constant) this gives $W(t) = W(t_0)\,e^{-P(t-t_0)}$,
-and in particular $W \neq 0$ everywhere if it is non-zero at one point.
+and in particular $W \neq 0$ everywhere if it is non-zero at one point.  More generally, since the exponential factor is always nonzero, Abel's identity shows that **$W$ either vanishes identically on $I$ or is nonzero everywhere on $I$** — in particular, if $W(t_0)\neq 0$ for any single $t_0\in I$, then $W(t)\neq 0$ for all $t\in I$.  This justifies checking the Wronskian at just one convenient point.
 
 ---
 
@@ -201,7 +213,7 @@ $$x_p = \cos t\cdot\ln|\cos t| + t\sin t.$$
 $$\boxed{x(t) = C_1\cos t + C_2\sin t + \cos t\ln|\cos t| + t\sin t.}$$
 
 ::: {.callout-note}
-The solution exists only on intervals where $\sec t$ is defined: $t\neq \pi/2 + n\pi$.  The particular solution $x_p = \cos t\ln|\cos t| + t\sin t$ grows **linearly** in amplitude because of the $t\sin t$ term — behavior that undetermined coefficients never produces.
+The solution exists on the interval $(-\pi/2,\,\pi/2)$ containing $t=0$, and more generally on any open interval between consecutive singularities of $\sec t$ (i.e., between adjacent odd multiples of $\pi/2$).  The $t\sin t$ term in $x_p$ causes the amplitude to grow **linearly** — behavior analogous to resonance, even though $\omega = 1$ and the forcing $\sec t$ is not a pure sinusoid.  Undetermined coefficients never produces this kind of growth.
 :::
 
 ```{python}
@@ -270,9 +282,7 @@ $$\boxed{x(t) = C_1 e^t + C_2 te^t + te^t(\ln t - 1), \quad t > 0.}$$
 
 ::: {.callout-note}
 Note that $te^t(\ln t - 1) = te^t\ln t - te^t$, and the $-te^t$ part could
-be absorbed into the $C_2 te^t$ term by redefining $C_2$.  In practice we
-keep the particular solution as found and let the constants adjust when ICs
-are applied.
+be absorbed into the $C_2 te^t$ term by redefining $C_2$.  This is valid because **particular solutions are not unique** — any particular solution differs from any other by a solution of the homogeneous equation, so absorbing constant-multiple terms from $x_p$ into $x_h$ yields the same general solution.  In practice we keep the particular solution as found and let the constants adjust when ICs are applied.
 :::
 
 ```{python}
@@ -293,19 +303,20 @@ display(Math(sym.latex(sol2_sym)))
 #| code-fold: true
 #| code-summary: "Show the code"
 #| label: fig-ex2
-#| fig-cap: "Example 2: $x''-2x'+x=e^t/t$ with $x(1)=0$, $x'(1)=0$. The particular solution $te^t(\\ln t-1)$ (green) grows rapidly for large $t$ since it inherits the $e^t$ factor of the homogeneous solutions. Red dots confirm the analytical formula."
+#| fig-cap: "Example 2: $x''-2x'+x=e^t/t$ with $x(1)=0$, $x'(1)=0$. The constants $C_1=2$, $C_2=-1$ are determined by the IVP. The particular solution $te^t(\\ln t-1)$ (green) grows rapidly for large $t$ since it inherits the $e^t$ factor of the homogeneous solutions. Red dots confirm the analytical formula via numerical solve."
 
 t_plot2 = np.linspace(1.0, 2.8, 400)
 
 # IVP: x(1)=0, x'(1)=0
-# x = e^t + t*e^t*(ln(t)-1)  [verified: C1=1, C2=0]
+# Solving: C1 + C2 - 1 = 0 and C1 + 2*C2 + 1 = 0  =>  C1=2, C2=-1
+C1_2, C2_2 = 2.0, -1.0
 xp2  = t_plot2 * np.exp(t_plot2) * (np.log(t_plot2) - 1)
-xh2  = np.exp(t_plot2)   # C1=1, C2=0
+xh2  = C1_2*np.exp(t_plot2) + C2_2*t_plot2*np.exp(t_plot2)   # 2e^t - te^t
 x2_full = xh2 + xp2
 
 fig, ax = plt.subplots(figsize=(8, 4.5))
 ax.plot(t_plot2, x2_full, color='steelblue', lw=2.5, label='Full solution $x(t)$')
-ax.plot(t_plot2, xh2,     color='darkorange', lw=1.8, ls='--', label='$x_h = e^t$ (with $C_1=1$, $C_2=0$)')
+ax.plot(t_plot2, xh2,     color='darkorange', lw=1.8, ls='--', label='$x_h = 2e^t - te^t$ (with $C_1=2$, $C_2=-1$)')
 ax.plot(t_plot2, xp2,     color='seagreen',   lw=1.8, ls='-.', label='$x_p = te^t(\\ln t-1)$')
 
 def ode2(t, y): return [y[1], 2*y[1] - y[0] + np.exp(t)/t]
@@ -333,7 +344,7 @@ whose solutions are powers of $t$.
 $$x'' - \frac{2}{t}\,x' + \frac{2}{t^2}\,x = t\sin t. \qquad g(t) = t\sin t.$$
 
 **Step 2.** For the homogeneous Euler equation $t^2 x'' - 2tx' + 2x = 0$,
-try $x = t^r$:
+try $x = t^r$.  The motivation is that the Euler equation has a **scaling symmetry**: replacing $t$ by $ct$ leaves the equation's structure unchanged, and $t^r$ is the family of functions preserved under this scaling — just as $e^{\lambda t}$ is preserved under differentiation for constant-coefficient equations.  Substituting:
 $$r(r-1)t^r - 2rt^r + 2t^r = t^r[r^2 - 3r + 2] = t^r(r-1)(r-2) = 0.$$
 So $r = 1$ and $r = 2$, giving:
 $$x_1 = t, \qquad x_2 = t^2.$$
@@ -431,6 +442,10 @@ $$x_p = \cos t\cdot(-t) + \sin t\cdot\ln|\sin t| = -t\cos t + \sin t\ln|\sin t|.
 
 **General solution:**
 $$\boxed{x(t) = C_1\cos t + C_2\sin t - t\cos t + \sin t\ln|\sin t|.}$$
+
+::: {.callout-tip}
+Compare Examples 1 and 4: both use $x_1 = \cos t$, $x_2 = \sin t$, and $W = 1$.  The only difference is the forcing — $\sec t$ versus $\csc t$ — yet the particular solutions are qualitatively different ($\cos t\ln|\cos t| + t\sin t$ vs.\ $-t\cos t + \sin t\ln|\sin t|$).  The method of variation of parameters is identical in both cases; only the integrals change.  This illustrates how the method adapts automatically to the forcing, without any guessing or modification rule.
+:::
 
 ```{python}
 #| code-fold: true
@@ -550,8 +565,13 @@ Always try undetermined coefficients first when applicable — it is faster and 
 
 These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_05_slides.html){target="_blank"}
 
+::: {.callout-tip}
+## Looking Ahead
+With the method of variation of parameters, we now have a complete toolkit for second-order linear ODEs — constant or variable coefficients, any continuous forcing.  The next major step is to reframe everything in **matrix language**: a second-order ODE $x'' + px' + qx = 0$ is equivalent to the first-order system $\mathbf{y}' = A\mathbf{y}$, and the homogeneous solutions $x_1$, $x_2$ become columns of the **fundamental matrix**.  The Wronskian becomes the determinant of that matrix, Abel's identity becomes Liouville's theorem, and variation of parameters extends naturally to systems of any size.  This unification is the subject of Chapter 3 of @logan2015first.
+:::
+
 ::: {.callout-note}
-**Next:** Introduction to Laplace Transform — Logan §3.1.
+**Next:** Introduction to first-order systems — Logan §3.1.
 :::
 
 ---
