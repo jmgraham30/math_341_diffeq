@@ -514,7 +514,7 @@ window.Quarto = {
 </header>
 
 
-<div id="10e53827" class="cell" data-execution_count="1">
+<div id="68e8332e" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -531,13 +531,13 @@ window.Quarto = {
 <section id="goals" class="level2">
 <h2 class="anchored" data-anchor-id="goals">Goals</h2>
 <ol type="1">
-<li>Understand the <strong>big picture</strong>: what the Laplace transform does and why it is useful.</li>
-<li>Learn the <strong>definition</strong> <span class="math inline">\(\mathcal{L}[x(t)](s) = \int_0^\infty x(t)e^{-st}\,dt\)</span> and compute transforms directly from it.</li>
-<li>Know the <strong>linearity</strong> of <span class="math inline">\(\mathcal{L}\)</span> and use it to build up transforms from a table.</li>
-<li>Understand the <strong>inverse transform</strong> <span class="math inline">\(\mathcal{L}^{-1}\)</span> and use partial fractions.</li>
-<li>Work with the <strong>Heaviside function</strong> to represent piecewise-defined forcing.</li>
-<li>Apply the <strong>shift property</strong> and <strong>switching property</strong> as time-saving tools.</li>
-<li>Use all of the above to solve constant-coefficient IVPs with discontinuous forcing.</li>
+<li><p>Understand the <strong>big picture</strong>: what the Laplace transform does and why it is useful.</p></li>
+<li><p>Learn the <strong>definition</strong> <span class="math inline">\(\mathcal{L}[x(t)](s) = \int_0^\infty x(t)e^{-st}\,dt\)</span> and compute transforms directly from it.</p></li>
+<li><p>Know the <strong>linearity</strong> of <span class="math inline">\(\mathcal{L}\)</span> and use it to build up transforms from a table.</p></li>
+<li><p>Understand the <strong>inverse transform</strong> <span class="math inline">\(\mathcal{L}^{-1}\)</span> and use partial fractions.</p></li>
+<li><p>Work with the <strong>Heaviside function</strong> to represent piecewise-defined forcing.</p></li>
+<li><p>Apply the <strong>shift property</strong> and <strong>switching property</strong> as time-saving tools.</p></li>
+<li><p>Use all of the above to solve constant-coefficient IVPs with discontinuous forcing.</p></li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -774,7 +774,7 @@ Figure&nbsp;1: Geometric picture of the Laplace transform. The integrand <span c
 <p><span class="math display">\[\frac{2s+9}{(s+1)(s+3)} = \frac{A}{s+1}+\frac{B}{s+3}.\]</span></p>
 <p>Cover-up rule: <span class="math inline">\(A = (2(-1)+9)/(-1+3) = 7/2\)</span>; <span class="math inline">\(B = (2(-3)+9)/(-3+1) = -3/2\)</span>.</p>
 <p><span class="math display">\[x(t) = \frac{7}{2}e^{-t} - \frac{3}{2}e^{-3t}.\]</span></p>
-<div id="f5800f13" class="cell" data-execution_count="3">
+<div id="4178fbac" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s_v <span class="op">=</span> sym.Symbol(<span class="st">'s'</span>)</span>
@@ -1126,7 +1126,7 @@ Tip
 </div>
 <p><strong>Example.</strong> Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\frac{e^{-3s}}{s-2}\right]\)</span>.</p>
 <p>We know <span class="math inline">\(\mathcal{L}^{-1}[1/(s-2)] = e^{2t}\)</span>, so <span class="math inline">\(F(s) = 1/(s-2)\)</span>, <span class="math inline">\(f(t) = e^{2t}\)</span>. By the switching property: <span class="math display">\[\mathcal{L}^{-1}\!\left[\frac{e^{-3s}}{s-2}\right] = H(t-3)\,e^{2(t-3)}.\]</span> The exponential grows from <span class="math inline">\(t=3\)</span> onward (not from <span class="math inline">\(t=0\)</span>).</p>
-<div id="43ebb4d1" class="cell" data-execution_count="6">
+<div id="d845e4e8" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>s_v <span class="op">=</span> sym.Symbol(<span class="st">'s'</span>)</span>
@@ -1364,7 +1364,7 @@ Note
 <p><strong>Two Heaviside entries: which to use?</strong> The switching property <span class="math inline">\(H(t-a)f(t-a)\leftrightarrow e^{-as}F(s)\)</span> is the standard form — use it whenever the function is already written in the shifted form <span class="math inline">\(f(t-a)\)</span>. The second entry <span class="math inline">\(f(t)H(t-a)\leftrightarrow e^{-as}\mathcal{L}[f(t+a)]\)</span> arises when <span class="math inline">\(f(t)\)</span> is <em>not</em> shifted (e.g., <span class="math inline">\(t^2 H(t-3)\)</span> rather than <span class="math inline">\((t-3)^2 H(t-3)\)</span>) — you must first evaluate <span class="math inline">\(\mathcal{L}[f(t+a)]\)</span> and attach <span class="math inline">\(e^{-as}\)</span>. In most problems, rewriting <span class="math inline">\(f(t)\)</span> in shifted form and using the standard entry is cleaner.</p>
 </div>
 </div>
-<div id="57b2437c" class="cell" data-execution_count="8">
+<div id="b1bddf1c" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify a selection of table entries with SymPy</span></span>
@@ -1550,7 +1550,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div id="callout-18" class="callout-18-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="bdd693e8" class="cell" data-execution_count="9">
+<div id="b9271a18" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
