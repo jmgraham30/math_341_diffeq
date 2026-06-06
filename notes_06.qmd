@@ -75,6 +75,16 @@ provided the improper integral converges. We also write $\mathcal{L}[x] = X(s)$.
 
 The variable $s$ lives in the **transform domain** (sometimes called the frequency domain or the $s$-domain), while $t$ lives in the **time domain**. We use uppercase letters for transform-domain functions: $x(t) \leftrightarrow X(s)$.
 
+::: {.callout-note}
+## Time Domain vs. Transform Domain
+
+| | Time domain | Transform domain |
+|---|:---:|:---:|
+| Variable | $t$ | $s$ |
+| Function | $x(t)$ (lowercase) | $X(s)$ (uppercase) |
+| Language | "what happens" | "how fast it oscillates/decays" |
+:::
+
 ---
 
 ## Computing Transforms from the Definition
@@ -83,7 +93,8 @@ The variable $s$ lives in the **transform domain** (sometimes called the frequen
 
 $$X(s) = \int_0^\infty e^{at}e^{-st}\,dt = \int_0^\infty e^{(a-s)t}\,dt = \frac{1}{a-s}e^{(a-s)t}\Bigg|_{t=0}^{t=\infty}.$$
 
-For the upper limit to vanish we need $a - s < 0$, i.e., $s > a$. Then:
+For the upper limit to vanish we need $a - s < 0$, i.e., $s > a$. Evaluating explicitly:
+$$\frac{1}{a-s}e^{(a-s)t}\Bigg|_{t=0}^{t=\infty} = \frac{1}{a-s}\bigl[0 - 1\bigr] = \frac{-1}{a-s} = \frac{1}{s-a}.$$
 
 $$\boxed{\mathcal{L}[e^{at}] = \frac{1}{s-a}, \quad s > a.}$$
 
@@ -94,6 +105,8 @@ $$\boxed{\mathcal{L}[e^{at}] = \frac{1}{s-a}, \quad s > a.}$$
 Integration by parts with $u = t$, $dv = e^{-st}dt$:
 
 $$X(s) = \int_0^\infty t\,e^{-st}\,dt = \left[t\cdot\frac{e^{-st}}{-s}\right]_0^\infty + \frac{1}{s}\int_0^\infty e^{-st}\,dt = 0 + \frac{1}{s}\cdot\frac{1}{s} = \frac{1}{s^2}.$$
+
+The boundary term $\bigl[te^{-st}/(-s)\bigr]_0^\infty = 0$: at $t=0$ the term vanishes; as $t\to\infty$, $te^{-st}\to 0$ for $s>0$ (by L'Hôpital's rule, $\lim_{t\to\infty} t/e^{st} = \lim_{t\to\infty} 1/(se^{st}) = 0$).
 
 $$\boxed{\mathcal{L}[t] = \frac{1}{s^2}, \quad s > 0.}$$
 
@@ -183,7 +196,7 @@ If both conditions hold, then $X(s)$ exists for all $s > r$.
 **Functions that fail:**
 - $x(t) = e^{t^2}$: grows faster than any exponential, so not of exponential order.
 - $x(t) = 1/t$: not PWC on $[0,b]$ (blows up at $t=0$).
-- $X(s) = (1/s)e^s$: fails the $X(s)\to 0$ test as $s\to\infty$, so cannot be a Laplace transform.
+- $X(s) = (1/s)e^s$: grows without bound as $s\to\infty$ (whereas every valid Laplace transform of a piecewise-continuous, exponentially-ordered function satisfies $X(s)\to 0$ as $s\to\infty$), so $(1/s)e^s$ cannot correspond to any such function.
 
 ---
 
@@ -211,6 +224,16 @@ $$X(s) = \frac{A}{s-a} + \frac{B}{(s-a)^2} \;\Longrightarrow\; x(t) = Ae^{at} + 
 **Type 3 — Complex conjugate poles.** If $X(s) = P(s)/[(s-\alpha)^2+\beta^2]$:
 
 Complete the square in the denominator, then match to $\mathcal{L}[e^{\alpha t}\sin\beta t]$ and $\mathcal{L}[e^{\alpha t}\cos\beta t]$.
+
+**Worked example.** Find $\mathcal{L}^{-1}\!\left[\dfrac{2s+3}{s^2+2s+5}\right]$.
+
+Complete the square: $s^2+2s+5 = (s+1)^2+4$.  Write the numerator to match the shifted cosine and sine forms:
+$$\frac{2s+3}{(s+1)^2+4} = \frac{2(s+1)-2+3}{(s+1)^2+4} = \frac{2(s+1)}{(s+1)^2+4} + \frac{1}{(s+1)^2+4}.$$
+
+The second fraction needs a factor of $\beta = 2$ in the numerator: $\dfrac{1}{(s+1)^2+4} = \dfrac{1}{2}\cdot\dfrac{2}{(s+1)^2+4}$.
+
+Reading off from the table with $\alpha=-1$, $\beta=2$:
+$$x(t) = 2e^{-t}\cos(2t) + \tfrac{1}{2}e^{-t}\sin(2t).$$
 
 **Example.** Find $\mathcal{L}^{-1}\!\left[\frac{2s+9}{(s+1)(s+3)}\right]$.
 
@@ -277,7 +300,8 @@ The initial conditions are **automatically incorporated** — no separate step n
 
 **Step 1.** Apply $\mathcal{L}$:
 $$[s^2X - 2s - 1] + 4[sX - 2] + 3X = 0$$
-$$(s^2+4s+3)X = 2s+9.$$
+Collecting the $X$ terms on the left and moving IC terms to the right:
+$$(s^2+4s+3)X = 2s + 1 + 8 = 2s+9.$$
 
 **Step 2.** Solve for $X(s)$:
 $$X(s) = \frac{2s+9}{(s+1)(s+3)}.$$
@@ -340,6 +364,10 @@ Each term "adjusts" the running value at the moment of the jump:
 | $+1\cdot H(t-2)$ | Adds $1$ (making value $4$) | $2$ |
 | $-2\cdot H(t-3)$ | Subtracts $2$ (making value $2$) | $3$ |
 | $-2\cdot H(t-6)$ | Subtracts $2$ (making value $0$) | $6$ |
+
+::: {.callout-tip}
+Think of this as a **running adjustment**: start at $3$, add $1$ at $t=2$, subtract $2$ at $t=3$, subtract $2$ at $t=6$.  Each Heaviside term corrects the running value by exactly the size of the jump at that moment.  The coefficients are always the *differences* between adjacent constant values, not the values themselves.
+:::
 
 By linearity:
 $$F(s) = \frac{3}{s} + \frac{e^{-2s}}{s} - \frac{2e^{-3s}}{s} - \frac{2e^{-6s}}{s} = \frac{1}{s}\!\left(3 + e^{-2s} - 2e^{-3s} - 2e^{-6s}\right).$$
@@ -436,6 +464,16 @@ A factor of $e^{-as}$ in the transform domain corresponds to a **time delay of $
 
 **Intuition:** $H(t-a)f(t-a)$ is the function $f(t)$ "switched on" at $t=a$ (it is zero before $a$ and equals $f(t-a)$ after $a$). The factor $e^{-as}$ encodes this delay.
 
+::: {.callout-tip}
+**How to apply the switching property in reverse.** When inverting $X(s)$, if you see an $e^{-as}$ factor multiplying some $F(s)$:
+1. **Strip** the $e^{-as}$ factor and identify $F(s)$.
+2. **Invert** $F(s)$ alone to get $f(t) = \mathcal{L}^{-1}[F(s)]$.
+3. **Replace** $t$ with $t-a$ in $f(t)$.
+4. **Multiply** by $H(t-a)$.
+
+The result is $H(t-a)f(t-a)$.
+:::
+
 **Example.** Find $\mathcal{L}^{-1}\!\left[\frac{e^{-3s}}{s-2}\right]$.
 
 We know $\mathcal{L}^{-1}[1/(s-2)] = e^{2t}$, so $F(s) = 1/(s-2)$, $f(t) = e^{2t}$. By the switching property:
@@ -487,7 +525,7 @@ $$\boxed{x(t) = \frac{1}{2}(1-e^{-2t}) - \frac{1}{2}H(t-3)(1-e^{-2(t-3)}).}$$
 #| code-fold: true
 #| code-summary: "Show the code"
 #| label: fig-discontinuous
-#| fig-cap: "RC circuit $x'+2x=f(t)$, $x(0)=0$ with a voltage pulse $f(t)=H(t)-H(t-3)$. The solution charges toward the steady state $x=1/2$ while the forcing is on, then decays back to zero after the switch-off at $t=3$. The discontinuity in $f(t)$ at $t=3$ causes a kink in $x(t)$ but not a jump — $x(t)$ remains continuous (it is an integral of a bounded forcing)."
+#| fig-cap: "RC circuit $x'+2x=f(t)$, $x(0)=0$ with a voltage pulse $f(t)=H(t)-H(t-3)$. The solution charges toward the steady state $x=1/2$ while the forcing is on, then decays back to zero after the switch-off at $t=3$. The solution $x(t)$ is **continuous** even though the forcing is discontinuous — $x(t)$ is an integral of a bounded forcing, so no jump can appear. However, $x'(t)$ has a jump discontinuity at $t=3$ (visible as a kink in the slope), since $x' = f(t) - 2x(t)$ inherits the jump from $f$."
 
 t_plot = np.linspace(0, 8, 600)
 H = lambda tv, a: np.where(tv >= a, 1.0, 0.0)
@@ -531,7 +569,7 @@ The following table (from @logan2015first, Table 3.1) collects the transforms ne
 | $f(t)e^{at}$ | $F(s-a)$ | Shift property |
 | $H(t-a)$ | $\dfrac{1}{s}e^{-as}$, $\;s>0$ | |
 | $H(t-a)f(t-a)$ | $e^{-as}F(s)$ | Switching property |
-| $f(t)H(t-a)$ | $e^{-as}\mathcal{L}[f(t+a)]$ | |
+| $f(t)H(t-a)$ | $e^{-as}\mathcal{L}[f(t+a)]$ | Use when $f$ is *not* shifted (see note below) |
 | $\sin kt$ | $\dfrac{k}{s^2+k^2}$ | |
 | $\cos kt$ | $\dfrac{s}{s^2+k^2}$ | |
 | $\sinh kt$ | $\dfrac{k}{s^2-k^2}$ | |
@@ -550,6 +588,10 @@ The following table (from @logan2015first, Table 3.1) collects the transforms ne
 | $\displaystyle\int_0^t f(\tau)\,d\tau$ | $\dfrac{1}{s}F(s)$ | |
 | $t\,f(t)$ | $-F'(s)$ | |
 | $t^n f(t)$ | $(-1)^n F^{(n)}(s)$ | |
+
+::: {.callout-note}
+**Two Heaviside entries: which to use?**  The switching property $H(t-a)f(t-a)\leftrightarrow e^{-as}F(s)$ is the standard form — use it whenever the function is already written in the shifted form $f(t-a)$.  The second entry $f(t)H(t-a)\leftrightarrow e^{-as}\mathcal{L}[f(t+a)]$ arises when $f(t)$ is *not* shifted (e.g., $t^2 H(t-3)$ rather than $(t-3)^2 H(t-3)$) — you must first evaluate $\mathcal{L}[f(t+a)]$ and attach $e^{-as}$.  In most problems, rewriting $f(t)$ in shifted form and using the standard entry is cleaner.
+:::
 
 ```{python}
 #| code-fold: true
@@ -605,8 +647,20 @@ The complete workflow for solving $ax''+bx'+cx = f(t)$, $x(0)=x_0$, $x'(0)=x_1$ 
 | 4 | Partial fractions | Algebra (factoring, cover-up rule) |
 | 5 | $\mathcal{L}^{-1}$, switching | Table lookup |
 
+::: {.callout-tip}
+## Common Traps
+- **Time delays:** every $e^{-as}$ factor in $X(s)$ signals a time delay.  Strip it, invert the remaining $F(s)$ to get $f(t)$, then replace $t\to t-a$ and multiply by $H(t-a)$.
+- **Complex poles:** when the denominator has the form $(s-\alpha)^2+\beta^2$, complete the square first.  Then split the numerator to match the $e^{\alpha t}\cos\beta t$ and $e^{\alpha t}\sin\beta t$ table entries (see the Type 3 example in the Partial Fractions section above).
+- **Repeated poles:** a factor $(s-a)^2$ in the denominator corresponds to $Ae^{at}+Bte^{at}$ in the time domain, not just $Ae^{at}$.  Use both the $1/(s-a)$ and $1/(s-a)^2$ terms in the partial fractions decomposition.
+:::
+
 
 These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_06_slides.html){target="_blank"}
+
+::: {.callout-tip}
+## Looking Ahead
+The transforms and properties developed here are the foundation, but the real payoff comes in §3.2 and beyond.  The **convolution theorem** ($\mathcal{L}[f*g] = F(s)G(s)$, already in the table) will allow us to express solutions as integrals — a powerful tool for systems with arbitrary forcing.  The **Dirac delta** $\delta_a(t)$ (also in the table, with $\mathcal{L}[\delta_a] = e^{-as}$) models instantaneous impulses — hammer blows, lightning strikes, and analogous events in circuits — that no classical function can describe.  These two tools complete the Laplace transform toolkit.
+:::
 
 ::: {.callout-note}
 **Next:** Applying Laplace Transforms to Differential Equations — Logan §3.2.
