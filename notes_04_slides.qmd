@@ -477,6 +477,37 @@ The [Tacoma Narrows Bridge](https://en.wikipedia.org/wiki/Tacoma_Narrows_Bridge_
 :::
 
 
+## Example 8b — Repeated Eigenvalue Overlap
+
+Solve $x'' + 4x' + 4x = e^{-2t}$.
+
+. . .
+
+**Eigenvalues:** $(\lambda+2)^2=0 \;\Rightarrow\; \lambda=-2$ (repeated). $\quad x_h = (C_1+C_2 t)e^{-2t}$.
+
+. . .
+
+**Guess $Ae^{-2t}$?** — overlaps with $C_1 e^{-2t}$ in $x_h$. ✗
+
+**Guess $Ate^{-2t}$?** — overlaps with $C_2 te^{-2t}$ in $x_h$. ✗
+
+**Correct guess** (multiply by $t^2$): $\quad x_p = At^2 e^{-2t}$. ✓
+
+. . .
+
+**Substitute** (compute $x_p''$ and collect):
+
+$$x_p'' + 4x_p' + 4x_p = 2Ae^{-2t} = e^{-2t} \;\Rightarrow\; A = \tfrac{1}{2}$$
+
+. . .
+
+$$\boxed{x(t) = (C_1 + C_2 t)\,e^{-2t} + \tfrac{1}{2}t^2 e^{-2t}}$$
+
+::: {.callout-tip}
+**Rule:** when the eigenvalue is *repeated*, the standard guess overlaps twice — multiply by $t^2$, not just $t$.
+:::
+
+
 # Variation of Parameters {background-color="#1a5276"}
 
 ## The General Method
@@ -556,6 +587,37 @@ $\sec(2t)$ has a singularity at $t=\pi/4$ — the solution only exists on $[0,\p
 :::
 
 
+## Example 10 — Repeated Eigenvalue, Non-Trivial Wronskian
+
+Solve $x'' - 2x' + x = \dfrac{e^t}{t^2+1}$.
+
+. . .
+
+**Eigenvalues:** $(\lambda-1)^2=0 \;\Rightarrow\; \lambda=1$ (repeated). $\quad x_1=e^t,\; x_2=te^t$.
+
+. . .
+
+**Wronskian** ($W$ is a *function* of $t$ here, not a constant):
+$$W = e^t(1+t)e^t - te^t\cdot e^t = e^{2t}(1+t-t) = e^{2t}$$
+
+. . .
+
+**Compute $u_1'$ and $u_2'$** (note the $e^t$ factors cancel):
+$$u_1' = -\frac{te^t\cdot e^t/(t^2{+}1)}{e^{2t}} = -\frac{t}{t^2+1}, \qquad u_2' = \frac{e^t\cdot e^t/(t^2{+}1)}{e^{2t}} = \frac{1}{t^2+1}$$
+
+. . .
+
+**Integrate:**
+$$u_1 = -\tfrac{1}{2}\ln(t^2+1), \qquad u_2 = \arctan(t)$$
+
+**Particular solution:**
+$$x_p = -\tfrac{1}{2}e^t\ln(t^2+1) + te^t\arctan(t)$$
+
+::: {.callout-tip}
+Even though $W=e^{2t}$ is not constant, the exponential factors in $x_1$, $x_2$, $f$, and $W$ all cancel — leaving standard integrals. This pattern recurs throughout Notes 5.
+:::
+
+
 ## Comparing the Two Methods
 
 | Feature | Undetermined Coefficients | Variation of Parameters |
@@ -590,7 +652,7 @@ Always try undetermined coefficients first — it is faster. Switch to variation
 
 - **Resonance**: forcing at the natural frequency $\omega_0$ produces a particular solution growing like $t$ — linear amplitude growth.
 
-- **Variation of parameters**: works for any $f(t)$; uses the Wronskian to compute $u_1'$ and $u_2'$, then integrates.
+- **Variation of parameters**: works for any $f(t)$; uses the Wronskian $W$ (which may be a function of $t$) to compute $u_1'$ and $u_2'$, then integrates.
 :::
 
 . . .

@@ -470,6 +470,7 @@ window.Quarto = {
   <li><a href="#resonance" id="toc-resonance" class="nav-link" data-scroll-target="#resonance">Resonance</a></li>
   <li><a href="#variation-of-parameters" id="toc-variation-of-parameters" class="nav-link" data-scroll-target="#variation-of-parameters">Variation of Parameters</a></li>
   <li><a href="#example-9-variation-of-parameters" id="toc-example-9-variation-of-parameters" class="nav-link" data-scroll-target="#example-9-variation-of-parameters">Example 9 — Variation of Parameters</a></li>
+  <li><a href="#example-10-variation-of-parameters-with-a-repeated-eigenvalue" id="toc-example-10-variation-of-parameters-with-a-repeated-eigenvalue" class="nav-link" data-scroll-target="#example-10-variation-of-parameters-with-a-repeated-eigenvalue">Example 10 — Variation of Parameters with a Repeated Eigenvalue</a></li>
   <li><a href="#comparing-the-two-methods" id="toc-comparing-the-two-methods" class="nav-link" data-scroll-target="#comparing-the-two-methods">Comparing the Two Methods</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
@@ -507,7 +508,7 @@ window.Quarto = {
 </header>
 
 
-<div id="04dd6205" class="cell" data-execution_count="1">
+<div id="874fc957" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -892,7 +893,7 @@ Figure&nbsp;2: Damped harmonic oscillator <span class="math inline">\(x''+2\gamm
 <p><strong>Step 2 — General solution:</strong> <span class="math inline">\(x(t) = e^{-t}(C_1\cos 2t + C_2\sin 2t)\)</span>.</p>
 <p><strong>Step 3 — Apply ICs.</strong> At <span class="math inline">\(t=0\)</span>: <span class="math display">\[x(0) = C_1 = 1.\]</span> Differentiating: <span class="math inline">\(x'(t) = -e^{-t}(C_1\cos 2t + C_2\sin 2t) + e^{-t}(-2C_1\sin 2t + 2C_2\cos 2t)\)</span>. <span class="math display">\[x'(0) = -C_1 + 2C_2 = 2 \;\Rightarrow\; C_2 = \tfrac{3}{2}.\]</span></p>
 <p><strong>Solution:</strong> <span class="math inline">\(\displaystyle x(t) = e^{-t}\!\left(\cos 2t + \tfrac{3}{2}\sin 2t\right)\)</span>.</p>
-<div id="caafe1a8" class="cell" data-execution_count="4">
+<div id="d760d9b5" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify with SymPy</span></span>
@@ -951,7 +952,7 @@ Figure&nbsp;3: Solution to the IVP <span class="math inline">\(x''+2x'+5x=0\)</s
 </section>
 <section id="using-sympy-for-second-order-constant-coefficient-odes" class="level3">
 <h3 class="anchored" data-anchor-id="using-sympy-for-second-order-constant-coefficient-odes">Using SymPy for Second-Order Constant-Coefficient ODEs</h3>
-<div id="b759f62c" class="cell" data-execution_count="6">
+<div id="c23fb35a" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
@@ -1077,7 +1078,7 @@ x'' + px' + qx = f(t). \tag{NH}
 <p><strong>Step 3 — Substitute:</strong> <span class="math display">\[2A + (2At + B) - 2(At^2 + Bt + C) = -2At^2 + (2A-2B)t + (2A+B-2C) = t^2.\]</span></p>
 <p>Equating coefficients: <span class="math display">\[-2A = 1 \;\Rightarrow\; A = -\tfrac{1}{2}; \quad 2A - 2B = 0 \;\Rightarrow\; B = -\tfrac{1}{2}; \quad 2A + B - 2C = 0 \;\Rightarrow\; C = -\tfrac{3}{4}.\]</span></p>
 <p><strong>General solution:</strong> <span class="math display">\[x(t) = C_1 e^t + C_2 e^{-2t} - \tfrac{1}{2}t^2 - \tfrac{1}{2}t - \tfrac{3}{4}.\]</span></p>
-<div id="2fd251a9" class="cell" data-execution_count="7">
+<div id="8671ff86" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
@@ -1154,37 +1155,125 @@ Example 6 (polynomial forcing):</code></pre>
 </div>
 </div>
 <p>The particular solution <span class="math inline">\(x_p = t\sin(2t)/4\)</span> grows <strong>linearly in amplitude</strong> — this is the signature of resonance. With zero initial conditions, the full solution oscillates with an amplitude that grows without bound.</p>
-<div id="cell-fig-resonance" class="cell" data-execution_count="8">
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Example 8b — Modification Rule with a Repeated Eigenvalue
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Solve <span class="math inline">\(x'' + 4x' + 4x = e^{-2t}\)</span>.</p>
+<p>This example illustrates a different kind of overlap: the forcing is an exponential whose exponent <strong>matches the repeated eigenvalue</strong> of the homogeneous equation — not a frequency-matching resonance, but the same modification rule applies.</p>
+<p><strong>Step 1 — Homogeneous solution.</strong></p>
+<p>Characteristic equation: <span class="math inline">\(\lambda^2 + 4\lambda + 4 = (\lambda+2)^2 = 0\)</span>, so <span class="math inline">\(\lambda = -2\)</span> (repeated).</p>
+<p><span class="math display">\[x_h = (C_1 + C_2 t)\,e^{-2t}.\]</span></p>
+<p><strong>Step 2 — First guess and why it fails.</strong></p>
+<p>The natural guess for <span class="math inline">\(f(t) = e^{-2t}\)</span> is <span class="math inline">\(x_p = Ae^{-2t}\)</span>. But <span class="math inline">\(e^{-2t}\)</span> is already present in <span class="math inline">\(x_h\)</span> (with coefficient <span class="math inline">\(C_1\)</span>). A single multiplication by <span class="math inline">\(t\)</span> gives <span class="math inline">\(Ate^{-2t}\)</span>, which is also present in <span class="math inline">\(x_h\)</span> (with coefficient <span class="math inline">\(C_2\)</span>). Since the eigenvalue is <em>repeated</em>, we must multiply by <span class="math inline">\(t^2\)</span>:</p>
+<p><span class="math display">\[x_p = At^2 e^{-2t}.\]</span></p>
+<p><strong>Step 3 — Substitute.</strong></p>
+<p>Compute the derivatives: <span class="math display">\[x_p' = A(2t - 2t^2)\,e^{-2t}, \qquad x_p'' = A(2 - 8t + 4t^2)\,e^{-2t}.\]</span></p>
+<p>Substituting into the ODE and factoring out <span class="math inline">\(e^{-2t}\)</span>: <span class="math display">\[A(2 - 8t + 4t^2) + 4A(2t - 2t^2) + 4At^2 = 2A = 1 \;\Rightarrow\; A = \tfrac{1}{2}.\]</span></p>
+<p>Note how all the <span class="math inline">\(t\)</span> and <span class="math inline">\(t^2\)</span> terms cancel automatically — this always happens when the modification rule is applied correctly.</p>
+<p><strong>General solution:</strong> <span class="math display">\[\boxed{x(t) = (C_1 + C_2 t)\,e^{-2t} + \tfrac{1}{2}t^2 e^{-2t}.}\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The Modification Rule: A Summary
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Situation</th>
+<th>Standard guess</th>
+<th>Modified guess</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(f(t) = \cos(\omega t)\)</span>, <span class="math inline">\(\omega = \omega_0\)</span> (simple eigenvalue)</td>
+<td><span class="math inline">\(A\cos\omega t + B\sin\omega t\)</span></td>
+<td><span class="math inline">\(t(A\cos\omega t + B\sin\omega t)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f(t) = e^{at}\)</span>, <span class="math inline">\(a = \lambda_1\)</span> (simple eigenvalue)</td>
+<td><span class="math inline">\(Ae^{at}\)</span></td>
+<td><span class="math inline">\(Ate^{at}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f(t) = e^{at}\)</span>, <span class="math inline">\(a = \lambda_1\)</span> (repeated eigenvalue)</td>
+<td><span class="math inline">\(Ate^{at}\)</span> (still overlaps)</td>
+<td><span class="math inline">\(At^2e^{at}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>In general: multiply the standard guess by the smallest power of <span class="math inline">\(t\)</span> needed to eliminate all overlap with <span class="math inline">\(x_h\)</span>.</p>
+</div>
+</div>
+<div id="31e8da31" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">1000</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forced_osc(t, y, Omega):</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">4</span><span class="op">*</span>y[<span class="dv">0</span>] <span class="op">+</span> np.cos(Omega<span class="op">*</span>t)]</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-resonant</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>sol_nr <span class="op">=</span> solve_ivp(forced_osc, (<span class="dv">0</span>,<span class="dv">20</span>), [<span class="dv">0</span>,<span class="dv">0</span>], args<span class="op">=</span>(<span class="fl">1.0</span>,), t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol_nr.t, sol_nr.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"Non-resonant: </span><span class="dv">$</span><span class="er">\</span><span class="vs">Omega=1</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="er">\</span><span class="vs">omega_0=2</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Resonant</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>sol_r <span class="op">=</span> solve_ivp(forced_osc, (<span class="dv">0</span>,<span class="dv">20</span>), [<span class="dv">0</span>,<span class="dv">0</span>], args<span class="op">=</span>(<span class="fl">2.0</span>,), t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(sol_r.t, sol_r.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Solution $x(t)$'</span>)</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot,  t_plot<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Envelope $</span><span class="ch">\\</span><span class="st">pm t/4$'</span>)</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot, <span class="op">-</span>t_plot<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="vs">r"Resonance: </span><span class="dv">$</span><span class="er">\</span><span class="vs">Omega=</span><span class="er">\</span><span class="vs">omega_0=2</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'' </span><span class="op">+</span><span class="vs"> 4x = </span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="er">\</span><span class="vs">Omega t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=x'</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SymPy verification for Example 8b</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>x_sym <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>ode8b <span class="op">=</span> sym.Eq(x_sym(t_sym).diff(t_sym,<span class="dv">2</span>) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x_sym(t_sym).diff(t_sym) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x_sym(t_sym),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>               sym.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t_sym))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>sol8b <span class="op">=</span> sym.dsolve(ode8b, x_sym(t_sym))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Example 8b (repeated eigenvalue, exponential forcing):"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(sol8b.rhs)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Example 8b (repeated eigenvalue, exponential forcing):</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x(t) = \left(C_{1} + t \left(C_{2} + \frac{t}{2}\right)\right) e^{- 2 t}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-resonance" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">1000</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forced_osc(t, y, Omega):</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">4</span><span class="op">*</span>y[<span class="dv">0</span>] <span class="op">+</span> np.cos(Omega<span class="op">*</span>t)]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Non-resonant</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>sol_nr <span class="op">=</span> solve_ivp(forced_osc, (<span class="dv">0</span>,<span class="dv">20</span>), [<span class="dv">0</span>,<span class="dv">0</span>], args<span class="op">=</span>(<span class="fl">1.0</span>,), t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol_nr.t, sol_nr.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"Non-resonant: </span><span class="dv">$</span><span class="er">\</span><span class="vs">Omega=1</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="er">\</span><span class="vs">omega_0=2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Resonant</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>sol_r <span class="op">=</span> solve_ivp(forced_osc, (<span class="dv">0</span>,<span class="dv">20</span>), [<span class="dv">0</span>,<span class="dv">0</span>], args<span class="op">=</span>(<span class="fl">2.0</span>,), t_eval<span class="op">=</span>t_plot, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(sol_r.t, sol_r.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Solution $x(t)$'</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot,  t_plot<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Envelope $</span><span class="ch">\\</span><span class="st">pm t/4$'</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot, <span class="op">-</span>t_plot<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="vs">r"Resonance: </span><span class="dv">$</span><span class="er">\</span><span class="vs">Omega=</span><span class="er">\</span><span class="vs">omega_0=2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'' </span><span class="op">+</span><span class="vs"> 4x = </span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="er">\</span><span class="vs">Omega t</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=x'</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-resonance" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1254,16 +1343,16 @@ x_p(t) = -x_1(t)\int\frac{x_2(t)\,f(t)}{W(t)}\,dt + x_2(t)\int\frac{x_1(t)\,f(t)
 <p><strong>Integrate:</strong> <span class="math display">\[u_1 = \frac{\ln|\cos(2t)|}{4}, \qquad u_2 = \frac{t}{2}.\]</span></p>
 <p><strong>Particular solution:</strong> <span class="math display">\[x_p = \frac{\cos(2t)\ln|\cos(2t)|}{4} + \frac{t\sin(2t)}{2}.\]</span></p>
 <p><strong>General solution:</strong> <span class="math display">\[x(t) = C_1\cos(2t) + C_2\sin(2t) + \frac{\cos(2t)\ln|\cos(2t)|}{4} + \frac{t\sin(2t)}{2}.\]</span></p>
-<div id="57bf7744" class="cell" data-execution_count="9">
+<div id="e43a2939" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify with SymPy</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>x_sym <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>ode9 <span class="op">=</span> sym.Eq(x_sym(t_sym).diff(t_sym,<span class="dv">2</span>) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x_sym(t_sym), sym.sec(<span class="dv">2</span><span class="op">*</span>t_sym))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>sol9 <span class="op">=</span> sym.dsolve(ode9, x_sym(t_sym))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Example 9 (variation of parameters):"</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(sol9.rhs)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify with SymPy</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>x_sym <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>ode9 <span class="op">=</span> sym.Eq(x_sym(t_sym).diff(t_sym,<span class="dv">2</span>) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x_sym(t_sym), sym.sec(<span class="dv">2</span><span class="op">*</span>t_sym))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>sol9 <span class="op">=</span> sym.dsolve(ode9, x_sym(t_sym))</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Example 9 (variation of parameters):"</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(sol9.rhs)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Example 9 (variation of parameters):</code></pre>
@@ -1272,31 +1361,31 @@ x_p(t) = -x_1(t)\int\frac{x_2(t)\,f(t)}{W(t)}\,dt + x_2(t)\int\frac{x_1(t)\,f(t)
 <p><span class="math inline">\(\displaystyle x(t) = \left(C_{1} + \frac{t}{2}\right) \sin{\left(2 t \right)} + \left(C_{2} + \frac{\log{\left(\cos{\left(2 t \right)} \right)}}{4}\right) \cos{\left(2 t \right)}\)</span></p>
 </div>
 </div>
-<div id="cell-fig-vop" class="cell" data-execution_count="10">
+<div id="cell-fig-vop" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Solution with ICs x(0)=1, x'(0)=0 on a restricted domain</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># xp(0) = (1/4)*ln(1) + 0 = 0; xp'(0) = -sin(0)*ln(cos(0))/4*2 + ...</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Just plot numerically to avoid the singularity</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode9_num(t, y):</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">abs</span>(np.cos(<span class="dv">2</span><span class="op">*</span>t)) <span class="op">&lt;</span> <span class="fl">1e-6</span>:</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="fl">0.0</span>]</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">4</span><span class="op">*</span>y[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span><span class="op">/</span>np.cos(<span class="dv">2</span><span class="op">*</span>t)]</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, np.pi<span class="op">/</span><span class="dv">4</span> <span class="op">-</span> <span class="fl">0.05</span>)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, np.pi<span class="op">/</span><span class="dv">4</span> <span class="op">-</span> <span class="fl">0.05</span>, <span class="dv">400</span>)</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>sol9_num <span class="op">=</span> solve_ivp(ode9_num, t_span, [<span class="fl">1.0</span>, <span class="fl">0.0</span>], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>ax.plot(sol9_num.t, sol9_num.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>,</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> on </span><span class="dv">$</span><span class="pp">[0, </span><span class="er">\</span><span class="pp">pi/4)$</span><span class="vs">'</span>)</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>ax.axvline(np.pi<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>,</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="vs">r'Singularity at </span><span class="dv">$</span><span class="vs">t=</span><span class="er">\</span><span class="vs">pi/4</span><span class="dv">$</span><span class="vs">'</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x''</span><span class="op">+</span><span class="vs">4x=</span><span class="dv">\s</span><span class="vs">ec</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> via variation of parameters"</span>)</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Solution with ICs x(0)=1, x'(0)=0 on a restricted domain</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># xp(0) = (1/4)*ln(1) + 0 = 0; xp'(0) = -sin(0)*ln(cos(0))/4*2 + ...</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Just plot numerically to avoid the singularity</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode9_num(t, y):</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">abs</span>(np.cos(<span class="dv">2</span><span class="op">*</span>t)) <span class="op">&lt;</span> <span class="fl">1e-6</span>:</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="fl">0.0</span>]</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="op">-</span><span class="dv">4</span><span class="op">*</span>y[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span><span class="op">/</span>np.cos(<span class="dv">2</span><span class="op">*</span>t)]</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, np.pi<span class="op">/</span><span class="dv">4</span> <span class="op">-</span> <span class="fl">0.05</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, np.pi<span class="op">/</span><span class="dv">4</span> <span class="op">-</span> <span class="fl">0.05</span>, <span class="dv">400</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>sol9_num <span class="op">=</span> solve_ivp(ode9_num, t_span, [<span class="fl">1.0</span>, <span class="fl">0.0</span>], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>ax.plot(sol9_num.t, sol9_num.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> on </span><span class="dv">$</span><span class="pp">[0, </span><span class="er">\</span><span class="pp">pi/4)$</span><span class="vs">'</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>ax.axvline(np.pi<span class="op">/</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="vs">r'Singularity at </span><span class="dv">$</span><span class="vs">t=</span><span class="er">\</span><span class="vs">pi/4</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x''</span><span class="op">+</span><span class="vs">4x=</span><span class="dv">\s</span><span class="vs">ec</span><span class="kw">(</span><span class="vs">2t</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> via variation of parameters"</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-vop" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1309,6 +1398,118 @@ Figure&nbsp;5: Solution to <span class="math inline">\(x''+4x=\sec(2t)\)</span> 
 </figcaption>
 </figure>
 </div>
+</div>
+</div>
+<hr>
+</section>
+<section id="example-10-variation-of-parameters-with-a-repeated-eigenvalue" class="level3">
+<h3 class="anchored" data-anchor-id="example-10-variation-of-parameters-with-a-repeated-eigenvalue">Example 10 — Variation of Parameters with a Repeated Eigenvalue</h3>
+<p>Solve <span class="math inline">\(x'' - 2x' + x = \dfrac{e^t}{t^2+1}\)</span>.</p>
+<p>The forcing function <span class="math inline">\(f(t) = e^t/(t^2+1)\)</span> is not in the undetermined-coefficients table (the denominator <span class="math inline">\(t^2+1\)</span> is not a polynomial, exponential, or trig function), so we use variation of parameters. This example is also important because the homogeneous equation has a <strong>repeated eigenvalue</strong>, giving a Wronskian of the form <span class="math inline">\(e^{2t}\)</span> rather than a constant — representative of what students will routinely encounter in Notes 5.</p>
+<p><strong>Step 1 — Homogeneous solution.</strong></p>
+<p>Characteristic equation: <span class="math inline">\(\lambda^2 - 2\lambda + 1 = (\lambda-1)^2 = 0\)</span>, so <span class="math inline">\(\lambda = 1\)</span> (repeated).</p>
+<p><span class="math display">\[x_1 = e^t, \qquad x_2 = te^t.\]</span></p>
+<p><strong>Step 2 — Wronskian.</strong></p>
+<p><span class="math display">\[W = x_1 x_2' - x_2 x_1'.\]</span></p>
+<p>We compute <span class="math inline">\(x_1' = e^t\)</span> and <span class="math inline">\(x_2' = e^t + te^t = (1+t)e^t\)</span>, so:</p>
+<p><span class="math display">\[W = e^t\cdot(1+t)e^t - te^t\cdot e^t = e^{2t}(1+t) - te^{2t} = e^{2t}.\]</span></p>
+<p>This is a function of <span class="math inline">\(t\)</span>, not a constant — it must be carried through the formulas correctly.</p>
+<p><strong>Step 3 — Compute <span class="math inline">\(u_1'\)</span> and <span class="math inline">\(u_2'\)</span>.</strong></p>
+<p><span class="math display">\[u_1' = -\frac{x_2\,f}{W} = -\frac{te^t \cdot \dfrac{e^t}{t^2+1}}{e^{2t}} = -\frac{t}{t^2+1}.\]</span></p>
+<p><span class="math display">\[u_2' = \frac{x_1\,f}{W} = \frac{e^t \cdot \dfrac{e^t}{t^2+1}}{e^{2t}} = \frac{1}{t^2+1}.\]</span></p>
+<p>Note how the <span class="math inline">\(e^{2t}\)</span> factors from <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, <span class="math inline">\(f\)</span>, and <span class="math inline">\(W\)</span> cancel cleanly — this is why the method works even when <span class="math inline">\(W\)</span> is not a constant.</p>
+<p><strong>Step 4 — Integrate.</strong></p>
+<p><span class="math display">\[u_1 = -\int \frac{t}{t^2+1}\,dt = -\tfrac{1}{2}\ln(t^2+1).\]</span></p>
+<p><span class="math display">\[u_2 = \int \frac{1}{t^2+1}\,dt = \arctan(t).\]</span></p>
+<p><strong>Step 5 — Particular solution.</strong></p>
+<p><span class="math display">\[x_p = u_1 x_1 + u_2 x_2 = -\tfrac{1}{2}e^t\ln(t^2+1) + te^t\arctan(t).\]</span></p>
+<p><strong>General solution:</strong></p>
+<p><span class="math display">\[\boxed{x(t) = (C_1 + C_2 t)\,e^t - \tfrac{1}{2}e^t\ln(t^2+1) + te^t\arctan(t).}\]</span></p>
+<div id="8719049b" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SymPy verification for Example 10 by direct substitution.</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (SymPy's dsolve does not handle this forcing function symbolically,</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  so we verify by plugging x_p back into the ODE and confirming it equals f(t).)</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>xp <span class="op">=</span> (<span class="op">-</span>sym.Rational(<span class="dv">1</span>,<span class="dv">2</span>) <span class="op">*</span> sym.exp(t_sym) <span class="op">*</span> sym.log(t_sym<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span> t_sym <span class="op">*</span> sym.exp(t_sym) <span class="op">*</span> sym.atan(t_sym))</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>xp_prime  <span class="op">=</span> sym.diff(xp, t_sym)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>xp_prime2 <span class="op">=</span> sym.diff(xp, t_sym, <span class="dv">2</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> sym.simplify(xp_prime2 <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>xp_prime <span class="op">+</span> xp <span class="op">-</span> sym.exp(t_sym)<span class="op">/</span>(t_sym<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Residual x_p'' - 2x_p' + x_p - f(t) ="</span>, residual)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Particular solution:"</span>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"x_p</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(xp)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual x_p'' - 2x_p' + x_p - f(t) = 0
+
+Particular solution:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x_p(t) = t e^{t} \operatorname{atan}{\left(t \right)} - \frac{e^{t} \log{\left(t^{2} + 1 \right)}}{2}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex10" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Particular solution (u1*x1 + u2*x2)</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>xp_10  <span class="op">=</span> (<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>np.log(t_plot<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>)<span class="op">*</span>np.exp(t_plot)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>          <span class="op">+</span> t_plot<span class="op">*</span>np.arctan(t_plot)<span class="op">*</span>np.exp(t_plot))</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># With x(0)=0, x'(0)=0:</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># x(0) = C1 + xp(0) = C1 + 0 = 0  =&gt;  C1 = 0</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># x'(t) = (C1 + C2*t)*e^t + C2*e^t + xp'(t)</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># x'(0) = C1 + C2 + xp'(0); xp'(0) = 0  =&gt;  C2 = 0</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>xh_10  <span class="op">=</span> np.zeros_like(t_plot)   <span class="co"># C1=C2=0 for these ICs</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>x10_full <span class="op">=</span> xh_10 <span class="op">+</span> xp_10</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode10_num(t, y):</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="dv">2</span><span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> y[<span class="dv">0</span>] <span class="op">+</span> np.exp(t)<span class="op">/</span>(t<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>)]</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>sol10n <span class="op">=</span> solve_ivp(ode10_num, (<span class="dv">0</span>, <span class="dv">3</span>), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>t_dots <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">20</span>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, x10_full, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">x_p = -</span><span class="ch">\f</span><span class="vs">rac</span><span class="op">{1}{2}</span><span class="vs">e</span><span class="dv">^</span><span class="vs">t</span><span class="er">\</span><span class="vs">ln</span><span class="kw">(</span><span class="vs">t</span><span class="dv">^</span><span class="vs">2</span><span class="op">+</span><span class="vs">1</span><span class="kw">)</span><span class="vs"> </span><span class="op">+</span><span class="vs"> te</span><span class="dv">^</span><span class="vs">t</span><span class="ch">\a</span><span class="vs">rctan t</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots, sol10n.sol(t_dots)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical check'</span>)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x''-2x'</span><span class="op">+</span><span class="vs">x=e</span><span class="dv">^</span><span class="vs">t/</span><span class="kw">(</span><span class="vs">t</span><span class="dv">^</span><span class="vs">2</span><span class="op">+</span><span class="vs">1</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x'</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex10" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="notes_04_files/figure-html/fig-ex10-output-1.png" width="1182" height="583" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Example 10: <span class="math inline">\(x''-2x'+x=e^t/(t^2+1)\)</span>, <span class="math inline">\(x(0)=0\)</span>, <span class="math inline">\(x'(0)=0\)</span>. The analytical particular solution (blue) is confirmed by a direct numerical solve (red dots). The particular solution grows roughly like <span class="math inline">\(te^t\arctan(t)\)</span>, inheriting the exponential growth of the homogeneous solutions.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>What to Notice in this Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Wronskian <span class="math inline">\(W = e^{2t}\)</span> is a function of <span class="math inline">\(t\)</span>, not a constant like the <span class="math inline">\(W=2\)</span> in Example 9. However, because <span class="math inline">\(x_1 = e^t\)</span>, <span class="math inline">\(x_2 = te^t\)</span>, and <span class="math inline">\(f = e^t/(t^2+1)\)</span> all contain factors of <span class="math inline">\(e^t\)</span>, those factors cancel in the numerators and denominator of the <span class="math inline">\(u_1'\)</span> and <span class="math inline">\(u_2'\)</span> formulas. The remaining integrals, <span class="math inline">\(\int t/(t^2+1)\,dt\)</span> and <span class="math inline">\(\int 1/(t^2+1)\,dt\)</span>, are standard calculus results. This cancellation is characteristic of repeated-eigenvalue problems and is worth recognizing so you can simplify before integrating.</p>
 </div>
 </div>
 <hr>
@@ -1407,7 +1608,7 @@ Figure&nbsp;5: Solution to <span class="math inline">\(x''+4x=\sec(2t)\)</span> 
 </tr>
 <tr class="odd">
 <td><strong>Variation of parameters</strong></td>
-<td><span class="math inline">\(u_1'x_1+u_2'x_2=0\)</span>, <span class="math inline">\(u_1'x_1'+u_2'x_2'=f\)</span>; integrate</td>
+<td><span class="math inline">\(u_1'x_1+u_2'x_2=0\)</span>, <span class="math inline">\(u_1'x_1'+u_2'x_2'=f\)</span>; integrate; <span class="math inline">\(W\)</span> may be a function of <span class="math inline">\(t\)</span> (Examples 9–10)</td>
 </tr>
 <tr class="even">
 <td><strong>Resonance</strong></td>
@@ -1485,7 +1686,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1494,14 +1695,14 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="ff935208" class="cell" data-execution_count="11">
+<div id="7fda21b1" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
