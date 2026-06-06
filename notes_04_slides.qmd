@@ -501,134 +501,6 @@ $$x_p'' + 4x_p' + 4x_p = 2Ae^{-2t} = e^{-2t} \;\Rightarrow\; A = \tfrac{1}{2}$$
 
 . . .
 
-$$\boxed{x(t) = (C_1 + C_2 t)\,e^{-2t} + \tfrac{1}{2}t^2 e^{-2t}}$$
-
-::: {.callout-tip}
-**Rule:** when the eigenvalue is *repeated*, the standard guess overlaps twice — multiply by $t^2$, not just $t$.
-:::
-
-
-# Variation of Parameters {background-color="#1a5276"}
-
-## The General Method
-
-Works for **any** continuous $f(t)$ — not just polynomials, exponentials, or trig functions.
-
-**Setup.** Let $x_1$, $x_2$ be linearly independent solutions of $x''+px'+qx=0$. Seek:
-$$x_p(t) = u_1(t)\,x_1(t) + u_2(t)\,x_2(t)$$
-
-. . .
-
-**Impose the constraint** $u_1'x_1 + u_2'x_2 = 0$, then substitute to get the system:
-$$u_1'x_1 + u_2'x_2 = 0, \qquad u_1'x_1' + u_2'x_2' = f(t)$$
-
-**Solve** using the [Wronskian](https://en.wikipedia.org/wiki/Wronskian) $W = x_1x_2'-x_2x_1' \neq 0$:
-$$u_1' = -\frac{x_2 f}{W}, \qquad u_2' = \frac{x_1 f}{W}$$
-
-::: {.callout-important}
-## Variation of Parameters Formula
-$$x_p(t) = -x_1(t)\int\frac{x_2\,f}{W}\,dt \;+\; x_2(t)\int\frac{x_1\,f}{W}\,dt$$
-:::
-
-
-## Example 9 — $x''+4x = \sec(2t)$
-
-$\sec(2t)$ is **not** in the undetermined-coefficients table — must use variation of parameters.
-
-. . .
-
-**Homogeneous solutions:** $x_1 = \cos(2t)$, $x_2 = \sin(2t)$
-
-**Wronskian:** $W = \cos(2t)\cdot 2\cos(2t) - \sin(2t)\cdot(-2\sin(2t)) = 2$
-
-**Compute:**
-$$u_1' = -\frac{\sin(2t)\sec(2t)}{2} = -\frac{\tan(2t)}{2} \;\Rightarrow\; u_1 = \frac{\ln|\cos(2t)|}{4}$$
-$$u_2' = \frac{\cos(2t)\sec(2t)}{2} = \frac{1}{2} \;\Rightarrow\; u_2 = \frac{t}{2}$$
-
-**Particular solution:**
-$$x_p = \frac{\cos(2t)\ln|\cos(2t)|}{4} + \frac{t\sin(2t)}{2}$$
-
-**General solution:**
-$$x(t) = C_1\cos(2t) + C_2\sin(2t) + \frac{\cos(2t)\ln|\cos(2t)|}{4} + \frac{t\sin(2t)}{2}$$
-
-
-## Example 9 — SymPy Verification and Plot
-
-```{python}
-#| echo: true
-#| code-fold: false
-t_sym = sym.Symbol('t'); x_sym = sym.Function('x')
-ode9  = sym.Eq(x_sym(t_sym).diff(t_sym,2)+4*x_sym(t_sym), sym.sec(2*t_sym))
-sol9  = sym.dsolve(ode9, x_sym(t_sym))
-display(Math(r"x(t)=" + sym.latex(sol9.rhs)))
-```
-
-```{python}
-#| label: fig-vop-slides
-#| fig-height: 2.5
-
-def ode9_num(t, y):
-    if abs(np.cos(2*t)) < 1e-6: return [y[1], 0.0]
-    return [y[1], -4*y[0] + 1/np.cos(2*t)]
-
-t_ev = np.linspace(0, np.pi/4-0.05, 400)
-sol9n = solve_ivp(ode9_num,(0,np.pi/4-0.05),[1.0,0.0],t_eval=t_ev,max_step=0.005)
-
-fig, ax = plt.subplots(figsize=(8, 2.3))
-ax.plot(sol9n.t, sol9n.y[0], color='steelblue', lw=2.5, label=r'$x(t)$ on $[0,\pi/4)$')
-ax.axvline(np.pi/4, color='crimson', ls='--', lw=1.5, label=r'Singularity $t=\pi/4$')
-ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
-ax.set_title(r"$x''+4x=\sec(2t)$"); ax.legend(fontsize=8)
-plt.tight_layout(); plt.show()
-```
-
-::: {.callout-note}
-$\sec(2t)$ has a singularity at $t=\pi/4$ — the solution only exists on $[0,\pi/4)$.
-:::
-
-
-## Example 10 — Repeated Eigenvalue, Non-Trivial Wronskian
-
-Solve $x'' - 2x' + x = \dfrac{e^t}{t^2+1}$.
-
-. . .
-
-**Eigenvalues:** $(\lambda-1)^2=0 \;\Rightarrow\; \lambda=1$ (repeated). $\quad x_1=e^t,\; x_2=te^t$.
-
-. . .
-
-**Wronskian** ($W$ is a *function* of $t$ here, not a constant):
-$$W = e^t(1+t)e^t - te^t\cdot e^t = e^{2t}(1+t-t) = e^{2t}$$
-
-. . .
-
-**Compute $u_1'$ and $u_2'$** (note the $e^t$ factors cancel):
-$$u_1' = -\frac{te^t\cdot e^t/(t^2{+}1)}{e^{2t}} = -\frac{t}{t^2+1}, \qquad u_2' = \frac{e^t\cdot e^t/(t^2{+}1)}{e^{2t}} = \frac{1}{t^2+1}$$
-
-. . .
-
-**Integrate:**
-$$u_1 = -\tfrac{1}{2}\ln(t^2+1), \qquad u_2 = \arctan(t)$$
-
-**Particular solution:**
-$$x_p = -\tfrac{1}{2}e^t\ln(t^2+1) + te^t\arctan(t)$$
-
-::: {.callout-tip}
-Even though $W=e^{2t}$ is not constant, the exponential factors in $x_1$, $x_2$, $f$, and $W$ all cancel — leaving standard integrals. This pattern recurs throughout Notes 5.
-:::
-
-
-## Comparing the Two Methods
-
-| Feature | Undetermined Coefficients | Variation of Parameters |
-|---|:---:|:---:|
-| **Applicability** | $f$ = polynomial, exponential, or trig | Any continuous $f(t)$ |
-| **Difficulty** | Simple algebra | Requires integration |
-| **Resonance** | Modification rule | Handles automatically |
-| **When to use** | First choice | When UC fails |
-
-. . .
-
 ::: {.callout-tip}
 ## Strategy
 Always try undetermined coefficients first — it is faster. Switch to variation of parameters when $f(t)$ contains $\ln t$, $\sec t$, $\tan t$, $1/t$, or any other function outside the UC table.
@@ -651,14 +523,12 @@ Always try undetermined coefficients first — it is faster. Switch to variation
 - **Undetermined coefficients**: guess the form of $x_p$ from $f(t)$; use the modification rule when the guess overlaps with $x_h$.
 
 - **Resonance**: forcing at the natural frequency $\omega_0$ produces a particular solution growing like $t$ — linear amplitude growth.
-
-- **Variation of parameters**: works for any $f(t)$; uses the Wronskian $W$ (which may be a function of $t$) to compute $u_1'$ and $u_2'$, then integrates.
 :::
 
 . . .
 
 ::: {.callout-tip}
-**Next:** The second-order ODE $x''+px'+qx=0$ is equivalent to the first-order system $\mathbf{y}'=A\mathbf{y}$ with $A=\bigl[\begin{smallmatrix}0&1\\-q&-p\end{smallmatrix}\bigr]$. The eigenvalues of $A$ (matrix sense) are exactly the roots of $\lambda^2+p\lambda+q=0$ — the two notions coincide. This connection drives Chapter 3 of @logan2015first.
+**Next:** The second-order ODE $x''+px'+qx=0$ is equivalent to the first-order system $\mathbf{y}'=A\mathbf{y}$ with $A=\bigl[\begin{smallmatrix}0&1\\-q&-p\end{smallmatrix}\bigr]$. The eigenvalues of $A$ (matrix sense) are exactly the roots of $\lambda^2+p\lambda+q=0$ — the two notions coincide. This connection drives Chapter 4 of @logan2015first.
 :::
 
 
