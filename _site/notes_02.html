@@ -518,7 +518,7 @@ window.Quarto = {
 </header>
 
 
-<div id="fde0f37b" class="cell" data-execution_count="1">
+<div id="bd1e18a6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -613,7 +613,7 @@ Important
 <h3 class="anchored" data-anchor-id="python-drawing-slope-fields">Python: Drawing Slope Fields</h3>
 <p>Python’s <code>matplotlib.pyplot.quiver</code> function makes it straightforward to compute and plot slope fields. The idea is to create a grid of <span class="math inline">\((t, x)\)</span> points, evaluate <span class="math inline">\(f(t, x)\)</span> at each point, and draw a unit-length arrow in the direction <span class="math inline">\((1, f(t,x))\)</span> (normalized so all arrows have equal length).</p>
 <p>A reusable helper function:</p>
-<div id="09488a85" class="cell" data-execution_count="2">
+<div id="ead4ea21" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slope_field(f, t_range, x_range, n<span class="op">=</span><span class="dv">20</span>, ax<span class="op">=</span><span class="va">None</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>):</span>
@@ -854,7 +854,7 @@ Tip
 \frac{1}{x}\,dx = r\,dt \quad\Longrightarrow\quad \ln|x| = rt + C \quad\Longrightarrow\quad x(t) = Ce^{rt}.
 \]</span> This is the fundamental <strong><a href="https://en.wikipedia.org/wiki/Exponential_growth">exponential growth/decay</a></strong> model. Applied to a population with <span class="math inline">\(x(0) = x_0\)</span> it gives <span class="math inline">\(x(t) = x_0 e^{rt}\)</span>.</p>
 <p>Let us verify this with SymPy.</p>
-<div id="344079c3" class="cell" data-execution_count="6">
+<div id="2ca6fc9f" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>t, r, C, x0 <span class="op">=</span> sym.symbols(<span class="st">'t r C x_0'</span>, real<span class="op">=</span><span class="va">True</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -886,7 +886,7 @@ IVP solution (x(0)=x0): Eq(x(t), x_0*exp(r*t))</code></pre>
 \]</span> Solving for <span class="math inline">\(x\)</span> and applying <span class="math inline">\(x(0) = x_0\)</span>: <span class="math display">\[
 \boxed{x(t) = \frac{K}{1 + \left(\dfrac{K}{x_0} - 1\right)e^{-rt}}.}
 \]</span></p>
-<div id="cc29995b" class="cell" data-execution_count="7">
+<div id="b6095c9b" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>t_s, r_s, K_s, x0_s <span class="op">=</span> sym.symbols(<span class="st">'t r K x_0'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -915,7 +915,7 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p>SymPy returns an algebraically equivalent but unsimplified form that may look quite different from the boxed expression above. The reader can verify they are identical by algebraic manipulation, or via the following simplification:</p>
-<div id="9675fbae" class="cell" data-execution_count="8">
+<div id="b557c8c5" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simplify the SymPy result and compare with the standard form</span></span>
@@ -1110,9 +1110,39 @@ Figure&nbsp;5: General solution <span class="math inline">\(x(t) = t/2 + C/t\)</
 <p>Here <span class="math inline">\(p(t) = 2\)</span> and <span class="math inline">\(q(t) = \sin t\)</span>.</p>
 <p><strong>Integrating factor:</strong> <span class="math inline">\(\mu(t) = e^{2t}\)</span>.</p>
 <p>Multiply through: <span class="math inline">\((xe^{2t})' = e^{2t}\sin t\)</span>.</p>
-<p>Integrate using integration by parts (or a table): <span class="math display">\[
-\int e^{2t}\sin t\,dt = e^{2t}\!\left(\tfrac{2}{5}\sin t - \tfrac{1}{5}\cos t\right) + \text{const}.
-\]</span> Therefore the general solution is <span class="math display">\[
+<p>Integrating the right-hand side requires a standard trick: apply integration by parts <strong>twice</strong> to evaluate <span class="math inline">\(\int e^{2t}\sin t\,dt\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Integration by parts: computing <span class="math inline">\(\int e^{2t}\sin t\,dt\)</span>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(I = \displaystyle\int e^{2t}\sin t\,dt\)</span>.</p>
+<p><strong>First pass</strong> — integrate by parts with <span class="math inline">\(u = \sin t\)</span>, <span class="math inline">\(dv = e^{2t}\,dt\)</span>, so <span class="math inline">\(du = \cos t\,dt\)</span>, <span class="math inline">\(v = \tfrac{1}{2}e^{2t}\)</span>: <span class="math display">\[
+I = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{2}\int e^{2t}\cos t\,dt.
+\]</span></p>
+<p><strong>Second pass</strong> — apply integration by parts again to the remaining integral, with <span class="math inline">\(u = \cos t\)</span>, <span class="math inline">\(dv = e^{2t}\,dt\)</span>, so <span class="math inline">\(du = -\sin t\,dt\)</span>, <span class="math inline">\(v = \tfrac{1}{2}e^{2t}\)</span>: <span class="math display">\[
+\int e^{2t}\cos t\,dt = \tfrac{1}{2}e^{2t}\cos t + \tfrac{1}{2}\int e^{2t}\sin t\,dt = \tfrac{1}{2}e^{2t}\cos t + \tfrac{1}{2}I.
+\]</span></p>
+<p><strong>Substitute back</strong> and collect the <span class="math inline">\(I\)</span> terms on the left: <span class="math display">\[
+I = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{2}\!\left(\tfrac{1}{2}e^{2t}\cos t + \tfrac{1}{2}I\right)
+  = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{4}e^{2t}\cos t - \tfrac{1}{4}I.
+\]</span> <span class="math display">\[
+\tfrac{5}{4}I = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{4}e^{2t}\cos t
+\quad\Longrightarrow\quad
+\boxed{I = e^{2t}\!\left(\tfrac{2}{5}\sin t - \tfrac{1}{5}\cos t\right) + C.}
+\]</span></p>
+<p>The key move in this technique is recognizing that after two rounds of integration by parts the original integral <span class="math inline">\(I\)</span> reappears on the right-hand side, allowing you to solve algebraically for <span class="math inline">\(I\)</span>. This same trick works for any integral of the form <span class="math inline">\(\int e^{at}\sin(bt)\,dt\)</span> or <span class="math inline">\(\int e^{at}\cos(bt)\,dt\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Therefore the general solution is <span class="math display">\[
 x(t) = \frac{2}{5}\sin t - \frac{1}{5}\cos t + Ce^{-2t}.
 \]</span></p>
 <p>Let us verify and plot this with SymPy.</p>
@@ -1463,7 +1493,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1472,9 +1502,9 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="adb7ed44" class="cell" data-execution_count="15">
+<div id="220f76cb" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>

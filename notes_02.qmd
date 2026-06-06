@@ -517,10 +517,37 @@ Here $p(t) = 2$ and $q(t) = \sin t$.
 
 Multiply through: $(xe^{2t})' = e^{2t}\sin t$.
 
-Integrate using integration by parts (or a table):
+Integrating the right-hand side requires a standard trick: apply integration by parts **twice** to evaluate $\int e^{2t}\sin t\,dt$.
+
+:::{.callout-tip collapse="true"}
+## Integration by parts: computing $\int e^{2t}\sin t\,dt$
+
+Let $I = \displaystyle\int e^{2t}\sin t\,dt$.
+
+**First pass** — integrate by parts with $u = \sin t$, $dv = e^{2t}\,dt$, so $du = \cos t\,dt$, $v = \tfrac{1}{2}e^{2t}$:
 $$
-\int e^{2t}\sin t\,dt = e^{2t}\!\left(\tfrac{2}{5}\sin t - \tfrac{1}{5}\cos t\right) + \text{const}.
+I = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{2}\int e^{2t}\cos t\,dt.
 $$
+
+**Second pass** — apply integration by parts again to the remaining integral, with $u = \cos t$, $dv = e^{2t}\,dt$, so $du = -\sin t\,dt$, $v = \tfrac{1}{2}e^{2t}$:
+$$
+\int e^{2t}\cos t\,dt = \tfrac{1}{2}e^{2t}\cos t + \tfrac{1}{2}\int e^{2t}\sin t\,dt = \tfrac{1}{2}e^{2t}\cos t + \tfrac{1}{2}I.
+$$
+
+**Substitute back** and collect the $I$ terms on the left:
+$$
+I = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{2}\!\left(\tfrac{1}{2}e^{2t}\cos t + \tfrac{1}{2}I\right)
+  = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{4}e^{2t}\cos t - \tfrac{1}{4}I.
+$$
+$$
+\tfrac{5}{4}I = \tfrac{1}{2}e^{2t}\sin t - \tfrac{1}{4}e^{2t}\cos t
+\quad\Longrightarrow\quad
+\boxed{I = e^{2t}\!\left(\tfrac{2}{5}\sin t - \tfrac{1}{5}\cos t\right) + C.}
+$$
+
+The key move in this technique is recognizing that after two rounds of integration by parts the original integral $I$ reappears on the right-hand side, allowing you to solve algebraically for $I$.  This same trick works for any integral of the form $\int e^{at}\sin(bt)\,dt$ or $\int e^{at}\cos(bt)\,dt$.
+:::
+
 Therefore the general solution is
 $$
 x(t) = \frac{2}{5}\sin t - \frac{1}{5}\cos t + Ce^{-2t}.
