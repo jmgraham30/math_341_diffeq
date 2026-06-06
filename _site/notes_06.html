@@ -514,7 +514,7 @@ window.Quarto = {
 </header>
 
 
-<div id="86c18e26" class="cell" data-execution_count="1">
+<div id="10e53827" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -596,6 +596,44 @@ Note
 </div>
 <p><strong>Unpacking the definition.</strong> The integrand <span class="math inline">\(x(t)e^{-st}\)</span> is a function of both <span class="math inline">\(t\)</span> and <span class="math inline">\(s\)</span>. We integrate over <span class="math inline">\(t\)</span> from <span class="math inline">\(0\)</span> to <span class="math inline">\(\infty\)</span>, which eliminates the <span class="math inline">\(t\)</span> dependence and leaves a function of <span class="math inline">\(s\)</span> alone. The factor <span class="math inline">\(e^{-st}\)</span> is a <strong>damping kernel</strong> that forces the integrand to zero as <span class="math inline">\(t\to\infty\)</span> (provided <span class="math inline">\(s\)</span> is large enough), making the improper integral converge.</p>
 <p>The variable <span class="math inline">\(s\)</span> lives in the <strong>transform domain</strong> (sometimes called the frequency domain or the <span class="math inline">\(s\)</span>-domain), while <span class="math inline">\(t\)</span> lives in the <strong>time domain</strong>. We use uppercase letters for transform-domain functions: <span class="math inline">\(x(t) \leftrightarrow X(s)\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Time Domain vs.&nbsp;Transform Domain
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Time domain</th>
+<th style="text-align: center;">Transform domain</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Variable</td>
+<td style="text-align: center;"><span class="math inline">\(t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(s\)</span></td>
+</tr>
+<tr class="even">
+<td>Function</td>
+<td style="text-align: center;"><span class="math inline">\(x(t)\)</span> (lowercase)</td>
+<td style="text-align: center;"><span class="math inline">\(X(s)\)</span> (uppercase)</td>
+</tr>
+<tr class="odd">
+<td>Language</td>
+<td style="text-align: center;">“what happens”</td>
+<td style="text-align: center;">“how fast it oscillates/decays”</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <hr>
 </section>
 <section id="computing-transforms-from-the-definition" class="level2">
@@ -603,7 +641,7 @@ Note
 <section id="example-1-mathcalleat" class="level3">
 <h3 class="anchored" data-anchor-id="example-1-mathcalleat">Example 1 — <span class="math inline">\(\mathcal{L}[e^{at}]\)</span></h3>
 <p><span class="math display">\[X(s) = \int_0^\infty e^{at}e^{-st}\,dt = \int_0^\infty e^{(a-s)t}\,dt = \frac{1}{a-s}e^{(a-s)t}\Bigg|_{t=0}^{t=\infty}.\]</span></p>
-<p>For the upper limit to vanish we need <span class="math inline">\(a - s &lt; 0\)</span>, i.e., <span class="math inline">\(s &gt; a\)</span>. Then:</p>
+<p>For the upper limit to vanish we need <span class="math inline">\(a - s &lt; 0\)</span>, i.e., <span class="math inline">\(s &gt; a\)</span>. Evaluating explicitly: <span class="math display">\[\frac{1}{a-s}e^{(a-s)t}\Bigg|_{t=0}^{t=\infty} = \frac{1}{a-s}\bigl[0 - 1\bigr] = \frac{-1}{a-s} = \frac{1}{s-a}.\]</span></p>
 <p><span class="math display">\[\boxed{\mathcal{L}[e^{at}] = \frac{1}{s-a}, \quad s &gt; a.}\]</span></p>
 <p><strong>Special case</strong> <span class="math inline">\(a=0\)</span>: <span class="math inline">\(\mathcal{L}[1] = \frac{1}{s}\)</span>, <span class="math inline">\(s &gt; 0\)</span>.</p>
 </section>
@@ -611,6 +649,7 @@ Note
 <h3 class="anchored" data-anchor-id="example-2-mathcallt">Example 2 — <span class="math inline">\(\mathcal{L}[t]\)</span></h3>
 <p>Integration by parts with <span class="math inline">\(u = t\)</span>, <span class="math inline">\(dv = e^{-st}dt\)</span>:</p>
 <p><span class="math display">\[X(s) = \int_0^\infty t\,e^{-st}\,dt = \left[t\cdot\frac{e^{-st}}{-s}\right]_0^\infty + \frac{1}{s}\int_0^\infty e^{-st}\,dt = 0 + \frac{1}{s}\cdot\frac{1}{s} = \frac{1}{s^2}.\]</span></p>
+<p>The boundary term <span class="math inline">\(\bigl[te^{-st}/(-s)\bigr]_0^\infty = 0\)</span>: at <span class="math inline">\(t=0\)</span> the term vanishes; as <span class="math inline">\(t\to\infty\)</span>, <span class="math inline">\(te^{-st}\to 0\)</span> for <span class="math inline">\(s&gt;0\)</span> (by L’Hôpital’s rule, <span class="math inline">\(\lim_{t\to\infty} t/e^{st} = \lim_{t\to\infty} 1/(se^{st}) = 0\)</span>).</p>
 <p><span class="math display">\[\boxed{\mathcal{L}[t] = \frac{1}{s^2}, \quad s &gt; 0.}\]</span></p>
 <p>The pattern continues: <span class="math inline">\(\mathcal{L}[t^n] = n!/s^{n+1}\)</span>.</p>
 </section>
@@ -712,7 +751,7 @@ Figure&nbsp;1: Geometric picture of the Laplace transform. The integrand <span c
 <li><p><strong>Exponential order</strong>: there exist constants <span class="math inline">\(M &gt; 0\)</span> and <span class="math inline">\(r\)</span> such that <span class="math inline">\(|x(t)| \leq Me^{rt}\)</span> for all <span class="math inline">\(t &gt; t_0\)</span>.</p></li>
 </ol>
 <p>If both conditions hold, then <span class="math inline">\(X(s)\)</span> exists for all <span class="math inline">\(s &gt; r\)</span>.</p>
-<p><strong>Functions that fail:</strong> - <span class="math inline">\(x(t) = e^{t^2}\)</span>: grows faster than any exponential, so not of exponential order. - <span class="math inline">\(x(t) = 1/t\)</span>: not PWC on <span class="math inline">\([0,b]\)</span> (blows up at <span class="math inline">\(t=0\)</span>). - <span class="math inline">\(X(s) = (1/s)e^s\)</span>: fails the <span class="math inline">\(X(s)\to 0\)</span> test as <span class="math inline">\(s\to\infty\)</span>, so cannot be a Laplace transform.</p>
+<p><strong>Functions that fail:</strong> - <span class="math inline">\(x(t) = e^{t^2}\)</span>: grows faster than any exponential, so not of exponential order. - <span class="math inline">\(x(t) = 1/t\)</span>: not PWC on <span class="math inline">\([0,b]\)</span> (blows up at <span class="math inline">\(t=0\)</span>). - <span class="math inline">\(X(s) = (1/s)e^s\)</span>: grows without bound as <span class="math inline">\(s\to\infty\)</span> (whereas every valid Laplace transform of a piecewise-continuous, exponentially-ordered function satisfies <span class="math inline">\(X(s)\to 0\)</span> as <span class="math inline">\(s\to\infty\)</span>), so <span class="math inline">\((1/s)e^s\)</span> cannot correspond to any such function.</p>
 <hr>
 </section>
 <section id="the-inverse-transform" class="level2">
@@ -727,11 +766,15 @@ Figure&nbsp;1: Geometric picture of the Laplace transform. The integrand <span c
 <p><strong>Type 2 — Repeated real pole.</strong> If <span class="math inline">\(X(s) = P(s)/(s-a)^2\)</span>: <span class="math display">\[X(s) = \frac{A}{s-a} + \frac{B}{(s-a)^2} \;\Longrightarrow\; x(t) = Ae^{at} + Bte^{at}.\]</span></p>
 <p><strong>Type 3 — Complex conjugate poles.</strong> If <span class="math inline">\(X(s) = P(s)/[(s-\alpha)^2+\beta^2]\)</span>:</p>
 <p>Complete the square in the denominator, then match to <span class="math inline">\(\mathcal{L}[e^{\alpha t}\sin\beta t]\)</span> and <span class="math inline">\(\mathcal{L}[e^{\alpha t}\cos\beta t]\)</span>.</p>
+<p><strong>Worked example.</strong> Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\dfrac{2s+3}{s^2+2s+5}\right]\)</span>.</p>
+<p>Complete the square: <span class="math inline">\(s^2+2s+5 = (s+1)^2+4\)</span>. Write the numerator to match the shifted cosine and sine forms: <span class="math display">\[\frac{2s+3}{(s+1)^2+4} = \frac{2(s+1)-2+3}{(s+1)^2+4} = \frac{2(s+1)}{(s+1)^2+4} + \frac{1}{(s+1)^2+4}.\]</span></p>
+<p>The second fraction needs a factor of <span class="math inline">\(\beta = 2\)</span> in the numerator: <span class="math inline">\(\dfrac{1}{(s+1)^2+4} = \dfrac{1}{2}\cdot\dfrac{2}{(s+1)^2+4}\)</span>.</p>
+<p>Reading off from the table with <span class="math inline">\(\alpha=-1\)</span>, <span class="math inline">\(\beta=2\)</span>: <span class="math display">\[x(t) = 2e^{-t}\cos(2t) + \tfrac{1}{2}e^{-t}\sin(2t).\]</span></p>
 <p><strong>Example.</strong> Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\frac{2s+9}{(s+1)(s+3)}\right]\)</span>.</p>
 <p><span class="math display">\[\frac{2s+9}{(s+1)(s+3)} = \frac{A}{s+1}+\frac{B}{s+3}.\]</span></p>
 <p>Cover-up rule: <span class="math inline">\(A = (2(-1)+9)/(-1+3) = 7/2\)</span>; <span class="math inline">\(B = (2(-3)+9)/(-3+1) = -3/2\)</span>.</p>
 <p><span class="math display">\[x(t) = \frac{7}{2}e^{-t} - \frac{3}{2}e^{-3t}.\]</span></p>
-<div id="d0f4aa16" class="cell" data-execution_count="3">
+<div id="f5800f13" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s_v <span class="op">=</span> sym.Symbol(<span class="st">'s'</span>)</span>
@@ -833,7 +876,7 @@ $X(s) = \frac{1}{s(s+2)}$</code></pre>
 <section id="full-ode-example" class="level3">
 <h3 class="anchored" data-anchor-id="full-ode-example">Full ODE Example</h3>
 <p><strong>Solve</strong> <span class="math inline">\(x'' + 4x' + 3x = 0\)</span>, <span class="math inline">\(x(0) = 2\)</span>, <span class="math inline">\(x'(0) = 1\)</span>.</p>
-<p><strong>Step 1.</strong> Apply <span class="math inline">\(\mathcal{L}\)</span>: <span class="math display">\[[s^2X - 2s - 1] + 4[sX - 2] + 3X = 0\]</span> <span class="math display">\[(s^2+4s+3)X = 2s+9.\]</span></p>
+<p><strong>Step 1.</strong> Apply <span class="math inline">\(\mathcal{L}\)</span>: <span class="math display">\[[s^2X - 2s - 1] + 4[sX - 2] + 3X = 0\]</span> Collecting the <span class="math inline">\(X\)</span> terms on the left and moving IC terms to the right: <span class="math display">\[(s^2+4s+3)X = 2s + 1 + 8 = 2s+9.\]</span></p>
 <p><strong>Step 2.</strong> Solve for <span class="math inline">\(X(s)\)</span>: <span class="math display">\[X(s) = \frac{2s+9}{(s+1)(s+3)}.\]</span></p>
 <p><strong>Step 3.</strong> Partial fractions: <span class="math display">\[X(s) = \frac{7/2}{s+1} + \frac{-3/2}{s+3}.\]</span></p>
 <p><strong>Step 4.</strong> Invert term by term: <span class="math display">\[\boxed{x(t) = \frac{7}{2}e^{-t} - \frac{3}{2}e^{-3t}.}\]</span></p>
@@ -914,6 +957,19 @@ Figure&nbsp;2: Solution of <span class="math inline">\(x''+4x'+3x=0\)</span>, <s
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Think of this as a <strong>running adjustment</strong>: start at <span class="math inline">\(3\)</span>, add <span class="math inline">\(1\)</span> at <span class="math inline">\(t=2\)</span>, subtract <span class="math inline">\(2\)</span> at <span class="math inline">\(t=3\)</span>, subtract <span class="math inline">\(2\)</span> at <span class="math inline">\(t=6\)</span>. Each Heaviside term corrects the running value by exactly the size of the jump at that moment. The coefficients are always the <em>differences</em> between adjacent constant values, not the values themselves.</p>
+</div>
+</div>
 <p>By linearity: <span class="math display">\[F(s) = \frac{3}{s} + \frac{e^{-2s}}{s} - \frac{2e^{-3s}}{s} - \frac{2e^{-6s}}{s} = \frac{1}{s}\!\left(3 + e^{-2s} - 2e^{-3s} - 2e^{-6s}\right).\]</span></p>
 <div id="cell-fig-heaviside" class="cell" data-execution_count="5">
 <details class="code-fold">
@@ -1054,9 +1110,23 @@ Figure&nbsp;3: Top: the piecewise function <span class="math inline">\(f(t)\)</s
 </div>
 </div>
 <p><strong>Intuition:</strong> <span class="math inline">\(H(t-a)f(t-a)\)</span> is the function <span class="math inline">\(f(t)\)</span> “switched on” at <span class="math inline">\(t=a\)</span> (it is zero before <span class="math inline">\(a\)</span> and equals <span class="math inline">\(f(t-a)\)</span> after <span class="math inline">\(a\)</span>). The factor <span class="math inline">\(e^{-as}\)</span> encodes this delay.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>How to apply the switching property in reverse.</strong> When inverting <span class="math inline">\(X(s)\)</span>, if you see an <span class="math inline">\(e^{-as}\)</span> factor multiplying some <span class="math inline">\(F(s)\)</span>: 1. <strong>Strip</strong> the <span class="math inline">\(e^{-as}\)</span> factor and identify <span class="math inline">\(F(s)\)</span>. 2. <strong>Invert</strong> <span class="math inline">\(F(s)\)</span> alone to get <span class="math inline">\(f(t) = \mathcal{L}^{-1}[F(s)]\)</span>. 3. <strong>Replace</strong> <span class="math inline">\(t\)</span> with <span class="math inline">\(t-a\)</span> in <span class="math inline">\(f(t)\)</span>. 4. <strong>Multiply</strong> by <span class="math inline">\(H(t-a)\)</span>.</p>
+<p>The result is <span class="math inline">\(H(t-a)f(t-a)\)</span>.</p>
+</div>
+</div>
 <p><strong>Example.</strong> Find <span class="math inline">\(\mathcal{L}^{-1}\!\left[\frac{e^{-3s}}{s-2}\right]\)</span>.</p>
 <p>We know <span class="math inline">\(\mathcal{L}^{-1}[1/(s-2)] = e^{2t}\)</span>, so <span class="math inline">\(F(s) = 1/(s-2)\)</span>, <span class="math inline">\(f(t) = e^{2t}\)</span>. By the switching property: <span class="math display">\[\mathcal{L}^{-1}\!\left[\frac{e^{-3s}}{s-2}\right] = H(t-3)\,e^{2(t-3)}.\]</span> The exponential grows from <span class="math inline">\(t=3\)</span> onward (not from <span class="math inline">\(t=0\)</span>).</p>
-<div id="6fbafe24" class="cell" data-execution_count="6">
+<div id="43ebb4d1" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>s_v <span class="op">=</span> sym.Symbol(<span class="st">'s'</span>)</span>
@@ -1134,7 +1204,7 @@ Figure&nbsp;3: Top: the piecewise function <span class="math inline">\(f(t)\)</s
 <img src="notes_06_files/figure-html/fig-discontinuous-output-1.png" width="1336" height="883" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-discontinuous-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: RC circuit <span class="math inline">\(x'+2x=f(t)\)</span>, <span class="math inline">\(x(0)=0\)</span> with a voltage pulse <span class="math inline">\(f(t)=H(t)-H(t-3)\)</span>. The solution charges toward the steady state <span class="math inline">\(x=1/2\)</span> while the forcing is on, then decays back to zero after the switch-off at <span class="math inline">\(t=3\)</span>. The discontinuity in <span class="math inline">\(f(t)\)</span> at <span class="math inline">\(t=3\)</span> causes a kink in <span class="math inline">\(x(t)\)</span> but not a jump — <span class="math inline">\(x(t)\)</span> remains continuous (it is an integral of a bounded forcing).
+Figure&nbsp;4: RC circuit <span class="math inline">\(x'+2x=f(t)\)</span>, <span class="math inline">\(x(0)=0\)</span> with a voltage pulse <span class="math inline">\(f(t)=H(t)-H(t-3)\)</span>. The solution charges toward the steady state <span class="math inline">\(x=1/2\)</span> while the forcing is on, then decays back to zero after the switch-off at <span class="math inline">\(t=3\)</span>. The solution <span class="math inline">\(x(t)\)</span> is <strong>continuous</strong> even though the forcing is discontinuous — <span class="math inline">\(x(t)\)</span> is an integral of a bounded forcing, so no jump can appear. However, <span class="math inline">\(x'(t)\)</span> has a jump discontinuity at <span class="math inline">\(t=3\)</span> (visible as a kink in the slope), since <span class="math inline">\(x' = f(t) - 2x(t)\)</span> inherits the jump from <span class="math inline">\(f\)</span>.
 </figcaption>
 </figure>
 </div>
@@ -1187,7 +1257,7 @@ Figure&nbsp;4: RC circuit <span class="math inline">\(x'+2x=f(t)\)</span>, <span
 <tr class="even">
 <td><span class="math inline">\(f(t)H(t-a)\)</span></td>
 <td><span class="math inline">\(e^{-as}\mathcal{L}[f(t+a)]\)</span></td>
-<td></td>
+<td>Use when <span class="math inline">\(f\)</span> is <em>not</em> shifted (see note below)</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(\sin kt\)</span></td>
@@ -1281,7 +1351,20 @@ Figure&nbsp;4: RC circuit <span class="math inline">\(x'+2x=f(t)\)</span>, <span
 </tr>
 </tbody>
 </table>
-<div id="25309ba4" class="cell" data-execution_count="8">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Two Heaviside entries: which to use?</strong> The switching property <span class="math inline">\(H(t-a)f(t-a)\leftrightarrow e^{-as}F(s)\)</span> is the standard form — use it whenever the function is already written in the shifted form <span class="math inline">\(f(t-a)\)</span>. The second entry <span class="math inline">\(f(t)H(t-a)\leftrightarrow e^{-as}\mathcal{L}[f(t+a)]\)</span> arises when <span class="math inline">\(f(t)\)</span> is <em>not</em> shifted (e.g., <span class="math inline">\(t^2 H(t-3)\)</span> rather than <span class="math inline">\((t-3)^2 H(t-3)\)</span>) — you must first evaluate <span class="math inline">\(\mathcal{L}[f(t+a)]\)</span> and attach <span class="math inline">\(e^{-as}\)</span>. In most problems, rewriting <span class="math inline">\(f(t)\)</span> in shifted form and using the standard entry is cleaner.</p>
+</div>
+</div>
+<div id="57b2437c" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify a selection of table entries with SymPy</span></span>
@@ -1374,7 +1457,37 @@ Figure&nbsp;4: RC circuit <span class="math inline">\(x'+2x=f(t)\)</span>, <span
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Common Traps
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Time delays:</strong> every <span class="math inline">\(e^{-as}\)</span> factor in <span class="math inline">\(X(s)\)</span> signals a time delay. Strip it, invert the remaining <span class="math inline">\(F(s)\)</span> to get <span class="math inline">\(f(t)\)</span>, then replace <span class="math inline">\(t\to t-a\)</span> and multiply by <span class="math inline">\(H(t-a)\)</span>.</li>
+<li><strong>Complex poles:</strong> when the denominator has the form <span class="math inline">\((s-\alpha)^2+\beta^2\)</span>, complete the square first. Then split the numerator to match the <span class="math inline">\(e^{\alpha t}\cos\beta t\)</span> and <span class="math inline">\(e^{\alpha t}\sin\beta t\)</span> table entries (see the Type 3 example in the Partial Fractions section above).</li>
+<li><strong>Repeated poles:</strong> a factor <span class="math inline">\((s-a)^2\)</span> in the denominator corresponds to <span class="math inline">\(Ae^{at}+Bte^{at}\)</span> in the time domain, not just <span class="math inline">\(Ae^{at}\)</span>. Use both the <span class="math inline">\(1/(s-a)\)</span> and <span class="math inline">\(1/(s-a)^2\)</span> terms in the partial fractions decomposition.</li>
+</ul>
+</div>
+</div>
 <p>These notes are also viewable as a slide deck presentation: <a href="https://math341diffeq.netlify.app/notes_06_slides.html" target="_blank">Open slides in full screen</a></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Looking Ahead
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The transforms and properties developed here are the foundation, but the real payoff comes in §3.2 and beyond. The <strong>convolution theorem</strong> (<span class="math inline">\(\mathcal{L}[f*g] = F(s)G(s)\)</span>, already in the table) will allow us to express solutions as integrals — a powerful tool for systems with arbitrary forcing. The <strong>Dirac delta</strong> <span class="math inline">\(\delta_a(t)\)</span> (also in the table, with <span class="math inline">\(\mathcal{L}[\delta_a] = e^{-as}\)</span>) models instantaneous impulses — hammer blows, lightning strikes, and analogous events in circuits — that no classical function can describe. These two tools complete the Laplace transform toolkit.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1426,7 +1539,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1435,9 +1548,9 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="1b06f7c1" class="cell" data-execution_count="9">
+<div id="bdd693e8" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
