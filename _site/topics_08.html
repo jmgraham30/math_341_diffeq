@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Linear Algebra for Applications – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1-vectors-in-mathbbrn" id="toc-part-1-vectors-in-mathbbrn" class="nav-link active" data-scroll-target="#part-1-vectors-in-mathbbrn">Part 1 — Vectors in <span class="math inline">\(\mathbb{R}^n\)</span></a>
+  <ul class="collapse">
+  <li><a href="#basic-operations" id="toc-basic-operations" class="nav-link" data-scroll-target="#basic-operations">Basic Operations</a></li>
+  <li><a href="#the-dot-product-and-geometry" id="toc-the-dot-product-and-geometry" class="nav-link" data-scroll-target="#the-dot-product-and-geometry">The Dot Product and Geometry</a></li>
+  </ul></li>
+  <li><a href="#part-2-matrices-and-linear-transformations" id="toc-part-2-matrices-and-linear-transformations" class="nav-link" data-scroll-target="#part-2-matrices-and-linear-transformations">Part 2 — Matrices and Linear Transformations</a>
+  <ul class="collapse">
+  <li><a href="#matrix-arithmetic" id="toc-matrix-arithmetic" class="nav-link" data-scroll-target="#matrix-arithmetic">Matrix Arithmetic</a></li>
+  <li><a href="#the-determinant" id="toc-the-determinant" class="nav-link" data-scroll-target="#the-determinant">The Determinant</a></li>
+  </ul></li>
+  <li><a href="#part-3-systems-of-linear-equations" id="toc-part-3-systems-of-linear-equations" class="nav-link" data-scroll-target="#part-3-systems-of-linear-equations">Part 3 — Systems of Linear Equations</a>
+  <ul class="collapse">
+  <li><a href="#structure-of-solutions" id="toc-structure-of-solutions" class="nav-link" data-scroll-target="#structure-of-solutions">Structure of Solutions</a></li>
+  <li><a href="#gaussian-elimination-and-row-reduction" id="toc-gaussian-elimination-and-row-reduction" class="nav-link" data-scroll-target="#gaussian-elimination-and-row-reduction">Gaussian Elimination and Row Reduction</a></li>
+  <li><a href="#solving-with-numpy-and-scipy" id="toc-solving-with-numpy-and-scipy" class="nav-link" data-scroll-target="#solving-with-numpy-and-scipy">Solving with NumPy and SciPy</a></li>
+  </ul></li>
+  <li><a href="#part-4-eigenvalues-and-eigenvectors" id="toc-part-4-eigenvalues-and-eigenvectors" class="nav-link" data-scroll-target="#part-4-eigenvalues-and-eigenvectors">Part 4 — Eigenvalues and Eigenvectors</a>
+  <ul class="collapse">
+  <li><a href="#definition-and-geometric-meaning" id="toc-definition-and-geometric-meaning" class="nav-link" data-scroll-target="#definition-and-geometric-meaning">Definition and Geometric Meaning</a></li>
+  <li><a href="#computing-eigenvalues-and-eigenvectors" id="toc-computing-eigenvalues-and-eigenvectors" class="nav-link" data-scroll-target="#computing-eigenvalues-and-eigenvectors">Computing Eigenvalues and Eigenvectors</a></li>
+  <li><a href="#the-spectral-theorem-for-symmetric-matrices" id="toc-the-spectral-theorem-for-symmetric-matrices" class="nav-link" data-scroll-target="#the-spectral-theorem-for-symmetric-matrices">The Spectral Theorem for Symmetric Matrices</a></li>
+  </ul></li>
+  <li><a href="#part-5-matrix-decompositions" id="toc-part-5-matrix-decompositions" class="nav-link" data-scroll-target="#part-5-matrix-decompositions">Part 5 — Matrix Decompositions</a>
+  <ul class="collapse">
+  <li><a href="#lu-decomposition" id="toc-lu-decomposition" class="nav-link" data-scroll-target="#lu-decomposition">LU Decomposition</a></li>
+  <li><a href="#qr-decomposition" id="toc-qr-decomposition" class="nav-link" data-scroll-target="#qr-decomposition">QR Decomposition</a></li>
+  <li><a href="#singular-value-decomposition-svd" id="toc-singular-value-decomposition-svd" class="nav-link" data-scroll-target="#singular-value-decomposition-svd">Singular Value Decomposition (SVD)</a></li>
+  </ul></li>
+  <li><a href="#part-6-null-space-column-space-and-the-rank-nullity-theorem" id="toc-part-6-null-space-column-space-and-the-rank-nullity-theorem" class="nav-link" data-scroll-target="#part-6-null-space-column-space-and-the-rank-nullity-theorem">Part 6 — Null Space, Column Space, and the Rank-Nullity Theorem</a>
+  <ul class="collapse">
+  <li><a href="#four-fundamental-subspaces" id="toc-four-fundamental-subspaces" class="nav-link" data-scroll-target="#four-fundamental-subspaces">Four Fundamental Subspaces</a></li>
+  </ul></li>
+  <li><a href="#part-7-applications-in-engineering" id="toc-part-7-applications-in-engineering" class="nav-link" data-scroll-target="#part-7-applications-in-engineering">Part 7 — Applications in Engineering</a>
+  <ul class="collapse">
+  <li><a href="#application-1-resistor-networks-nodal-analysis" id="toc-application-1-resistor-networks-nodal-analysis" class="nav-link" data-scroll-target="#application-1-resistor-networks-nodal-analysis">Application 1 — Resistor Networks (Nodal Analysis)</a></li>
+  <li><a href="#application-2-structural-analysis-truss" id="toc-application-2-structural-analysis-truss" class="nav-link" data-scroll-target="#application-2-structural-analysis-truss">Application 2 — Structural Analysis: Truss</a></li>
+  <li><a href="#application-3-least-squares-curve-fitting" id="toc-application-3-least-squares-curve-fitting" class="nav-link" data-scroll-target="#application-3-least-squares-curve-fitting">Application 3 — Least-Squares Curve Fitting</a></li>
+  <li><a href="#application-4-markov-chains-and-steady-states" id="toc-application-4-markov-chains-and-steady-states" class="nav-link" data-scroll-target="#application-4-markov-chains-and-steady-states">Application 4 — Markov Chains and Steady States</a></li>
+  <li><a href="#application-5-principal-component-analysis-pca" id="toc-application-5-principal-component-analysis-pca" class="nav-link" data-scroll-target="#application-5-principal-component-analysis-pca">Application 5 — Principal Component Analysis (PCA)</a></li>
+  <li><a href="#application-6-low-rank-approximation-and-data-compression" id="toc-application-6-low-rank-approximation-and-data-compression" class="nav-link" data-scroll-target="#application-6-low-rank-approximation-and-data-compression">Application 6 — Low-Rank Approximation and Data Compression</a></li>
+  </ul></li>
+  <li><a href="#part-8-summary-linear-algebra-with-scipy-and-sympy" id="toc-part-8-summary-linear-algebra-with-scipy-and-sympy" class="nav-link" data-scroll-target="#part-8-summary-linear-algebra-with-scipy-and-sympy">Part 8 — Summary: Linear Algebra with SciPy and SymPy</a>
+  <ul class="collapse">
+  <li><a href="#quick-reference-numpy-and-scipy" id="toc-quick-reference-numpy-and-scipy" class="nav-link" data-scroll-target="#quick-reference-numpy-and-scipy">Quick Reference: NumPy and SciPy</a></li>
+  <li><a href="#quick-reference-sympy" id="toc-quick-reference-sympy" class="nav-link" data-scroll-target="#quick-reference-sympy">Quick Reference: SymPy</a></li>
+  </ul></li>
+  <li><a href="#summary-of-key-concepts" id="toc-summary-of-key-concepts" class="nav-link" data-scroll-target="#summary-of-key-concepts">Summary of Key Concepts</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Linear Algebra for Applications</h1>
+<p class="subtitle lead">Vectors, Matrices, Eigenvalues, and Applications</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="af6e7082" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> solve, lu, qr, svd, norm, lstsq</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Linear algebra is the mathematical language of data, networks, signals, structures, and systems. While this course focuses primarily on differential equations, the two subjects are deeply intertwined: the solution of linear ODEs depends on eigenvalues and eigenvectors, and the numerical solution of any system of equations — differential or otherwise — ultimately reduces to linear algebra.</p>
+<p>This section presents the core concepts of real linear algebra from first principles, develops facility with NumPy and SymPy as computational tools, and then explores a range of engineering applications that are entirely independent of differential equations.</p>
+<hr>
+<section id="part-1-vectors-in-mathbbrn" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-vectors-in-mathbbrn">Part 1 — Vectors in <span class="math inline">\(\mathbb{R}^n\)</span></h2>
+<section id="basic-operations" class="level3">
+<h3 class="anchored" data-anchor-id="basic-operations">Basic Operations</h3>
+<p>A <strong>vector</strong> in <span class="math inline">\(\mathbb{R}^n\)</span> is an ordered list of <span class="math inline">\(n\)</span> real numbers: <span class="math display">\[\mathbf{u} = \begin{pmatrix}u_1\\ u_2\\ \vdots\\ u_n\end{pmatrix}.\]</span></p>
+<p>Two fundamental operations:</p>
+<ul>
+<li><strong>Addition:</strong> <span class="math inline">\(\mathbf{u}+\mathbf{v} = (u_1+v_1,\ldots,u_n+v_n)^T\)</span></li>
+<li><strong>Scalar multiplication:</strong> <span class="math inline">\(c\mathbf{u} = (cu_1,\ldots,cu_n)^T\)</span></li>
+</ul>
+<p>These satisfy the eight axioms that define a <strong>vector space</strong>.</p>
+</section>
+<section id="the-dot-product-and-geometry" class="level3">
+<h3 class="anchored" data-anchor-id="the-dot-product-and-geometry">The Dot Product and Geometry</h3>
+<p>The <strong>dot product</strong> (inner product) of <span class="math inline">\(\mathbf{u}, \mathbf{v}\in\mathbb{R}^n\)</span> is: <span class="math display">\[\mathbf{u}\cdot\mathbf{v} = \sum_{i=1}^n u_i v_i.\]</span></p>
+<p>From this we derive:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th>Formula</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Norm (length)</td>
+<td><span class="math inline">\(\|\mathbf{u}\| = \sqrt{\mathbf{u}\cdot\mathbf{u}}\)</span></td>
+<td>Distance from origin</td>
+</tr>
+<tr class="even">
+<td>Angle</td>
+<td><span class="math inline">\(\cos\theta = \dfrac{\mathbf{u}\cdot\mathbf{v}}{\|\mathbf{u}\|\|\mathbf{v}\|}\)</span></td>
+<td>Angle between vectors</td>
+</tr>
+<tr class="odd">
+<td>Orthogonality</td>
+<td><span class="math inline">\(\mathbf{u}\cdot\mathbf{v} = 0\)</span></td>
+<td>Perpendicular</td>
+</tr>
+<tr class="even">
+<td>Projection</td>
+<td><span class="math inline">\(\text{proj}_\mathbf{v}\mathbf{u} = \dfrac{\mathbf{u}\cdot\mathbf{v}}{\|\mathbf{v}\|^2}\mathbf{v}\)</span></td>
+<td>Shadow of <span class="math inline">\(\mathbf{u}\)</span> onto <span class="math inline">\(\mathbf{v}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Cauchy–Schwarz inequality</strong> <span class="math inline">\(|\mathbf{u}\cdot\mathbf{v}| \leq \|\mathbf{u}\|\|\mathbf{v}\|\)</span> guarantees that <span class="math inline">\(\cos\theta\in[-1,1]\)</span>, so the angle is well-defined.</p>
+<div id="cell-fig-vectors" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> np.array([<span class="fl">3.0</span>, <span class="fl">1.0</span>])</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">3.0</span>])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>proj <span class="op">=</span> (np.dot(u,v)<span class="op">/</span>np.dot(v,v)) <span class="op">*</span> v</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span> ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>origin <span class="op">=</span> np.array([<span class="dv">0</span>,<span class="dv">0</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> vec, color, lbl <span class="kw">in</span> [(u,<span class="st">'steelblue'</span>,<span class="st">'$</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{u}</span><span class="st">=(3,1)$'</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                        (v,<span class="st">'crimson'</span>,<span class="st">'$</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{v}</span><span class="st">=(1,3)$'</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                        (u<span class="op">+</span>v,<span class="st">'seagreen'</span>,<span class="st">'$</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{u}</span><span class="st">+</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{v}</span><span class="st">=(4,4)$'</span>)]:</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    ax.annotate(<span class="st">''</span>, xy<span class="op">=</span>vec, xytext<span class="op">=</span>origin,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.5</span>))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    ax.text(<span class="op">*</span>(vec<span class="op">*</span><span class="fl">0.55</span>), lbl, color<span class="op">=</span>color, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Parallelogram</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>ax.plot([u[<span class="dv">0</span>],u[<span class="dv">0</span>]<span class="op">+</span>v[<span class="dv">0</span>]], [u[<span class="dv">1</span>],u[<span class="dv">1</span>]<span class="op">+</span>v[<span class="dv">1</span>]], <span class="st">'--'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>ax.plot([v[<span class="dv">0</span>],u[<span class="dv">0</span>]<span class="op">+</span>v[<span class="dv">0</span>]], [v[<span class="dv">1</span>],u[<span class="dv">1</span>]<span class="op">+</span>v[<span class="dv">1</span>]], <span class="st">'--'</span>, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Projection</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">''</span>, xy<span class="op">=</span>proj, xytext<span class="op">=</span>origin,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>            arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>ax.plot([u[<span class="dv">0</span>],proj[<span class="dv">0</span>]], [u[<span class="dv">1</span>],proj[<span class="dv">1</span>]], <span class="st">':'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="op">*</span>(proj<span class="op">*</span><span class="fl">0.5</span><span class="op">+</span>np.array([<span class="fl">0.1</span>,<span class="op">-</span><span class="fl">0.4</span>])), <span class="vs">r'</span><span class="dv">$\m</span><span class="vs">athrm{proj}_</span><span class="dv">\m</span><span class="vs">athbf{v}</span><span class="dv">\m</span><span class="vs">athbf{u}</span><span class="dv">$</span><span class="vs">'</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'darkorange'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">5</span>)<span class="op">;</span> ax.set_ylim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">5</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$x_1$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x_2$'</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Vector operations in $</span><span class="ch">\\</span><span class="st">mathbb</span><span class="sc">{R}</span><span class="st">^2$'</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-vectors" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vectors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_08_files/figure-html/fig-vectors-output-1.png" width="847" height="883" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vectors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Geometric view of vectors in <span class="math inline">\(\mathbb{R}^2\)</span>: the sum <span class="math inline">\(\mathbf{u}+\mathbf{v}\)</span> (parallelogram law), and the projection of <span class="math inline">\(\mathbf{u}\)</span> onto <span class="math inline">\(\mathbf{v}\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="7356ca50" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])<span class="op">;</span> v <span class="op">=</span> np.array([<span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span>, <span class="fl">2.0</span>])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Vector operations in R^3:"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  u = </span><span class="sc">{</span>u<span class="sc">}</span><span class="ss">,  v = </span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  u + v = </span><span class="sc">{</span>u<span class="op">+</span>v<span class="sc">}</span><span class="ss">,  3u = </span><span class="sc">{</span><span class="dv">3</span><span class="op">*</span>u<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  u·v = </span><span class="sc">{</span>np<span class="sc">.</span>dot(u,v)<span class="sc">:.4f}</span><span class="ss">,  ||u|| = </span><span class="sc">{</span>norm(u)<span class="sc">:.4f}</span><span class="ss">,  ||v|| = </span><span class="sc">{</span>norm(v)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>angle_deg <span class="op">=</span> np.degrees(np.arccos(np.dot(u,v)<span class="op">/</span>(norm(u)<span class="op">*</span>norm(v))))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  angle(u,v) = </span><span class="sc">{</span>angle_deg<span class="sc">:.2f}</span><span class="ss">°"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  u×v = </span><span class="sc">{</span>np<span class="sc">.</span>cross(u,v)<span class="sc">}</span><span class="ss">  (cross product in R^3)"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>proj_u_onto_v <span class="op">=</span> (np.dot(u,v)<span class="op">/</span>np.dot(v,v))<span class="op">*</span>v</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  proj_v(u) = </span><span class="sc">{</span>proj_u_onto_v<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Vector operations in R^3:
+  u = [1. 2. 3.],  v = [ 4. -1.  2.]
+  u + v = [5. 1. 5.],  3u = [3. 6. 9.]
+  u·v = 8.0000,  ||u|| = 3.7417,  ||v|| = 4.5826
+  angle(u,v) = 62.19°
+  u×v = [ 7. 10. -9.]  (cross product in R^3)
+  proj_v(u) = [ 1.52380952 -0.38095238  0.76190476]</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-2-matrices-and-linear-transformations" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-matrices-and-linear-transformations">Part 2 — Matrices and Linear Transformations</h2>
+<section id="matrix-arithmetic" class="level3">
+<h3 class="anchored" data-anchor-id="matrix-arithmetic">Matrix Arithmetic</h3>
+<p>An <span class="math inline">\(m\times n\)</span> <strong>matrix</strong> <span class="math inline">\(A\)</span> has <span class="math inline">\(m\)</span> rows and <span class="math inline">\(n\)</span> columns. Matrix-vector multiplication <span class="math inline">\(A\mathbf{x}\)</span> represents a <strong>linear transformation</strong> <span class="math inline">\(T:\mathbb{R}^n\to\mathbb{R}^m\)</span>.</p>
+<p>Key matrix operations:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Operation</th>
+<th>Notation</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Addition</td>
+<td><span class="math inline">\(A+B\)</span></td>
+<td>Same dimensions</td>
+</tr>
+<tr class="even">
+<td>Scalar multiple</td>
+<td><span class="math inline">\(cA\)</span></td>
+<td>Any <span class="math inline">\(c\in\mathbb{R}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Transpose</td>
+<td><span class="math inline">\(A^T\)</span></td>
+<td><span class="math inline">\(A^T_{ij} = A_{ji}\)</span></td>
+</tr>
+<tr class="even">
+<td>Product</td>
+<td><span class="math inline">\(AB\)</span></td>
+<td>Cols of <span class="math inline">\(A\)</span> = rows of <span class="math inline">\(B\)</span></td>
+</tr>
+<tr class="odd">
+<td>Inverse</td>
+<td><span class="math inline">\(A^{-1}\)</span></td>
+<td><span class="math inline">\(A\)</span> square, <span class="math inline">\(\det A\neq 0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Important identities: <span class="math inline">\((AB)^T = B^T A^T\)</span>, <span class="math inline">\((AB)^{-1} = B^{-1}A^{-1}\)</span>, <span class="math inline">\((A^{-1})^T = (A^T)^{-1}\)</span>.</p>
+</section>
+<section id="the-determinant" class="level3">
+<h3 class="anchored" data-anchor-id="the-determinant">The Determinant</h3>
+<p>For a square matrix <span class="math inline">\(A\)</span>: - <span class="math inline">\(\det(A)\neq 0 \;\Longleftrightarrow\; A\)</span> is invertible <span class="math inline">\(\;\Longleftrightarrow\; A\mathbf{x}=\mathbf{b}\)</span> has a unique solution. - <span class="math inline">\(\det(AB)=\det(A)\det(B)\)</span>, <span class="math inline">\(\;\det(A^T)=\det(A)\)</span>. - Geometrically: <span class="math inline">\(|\det(A)|\)</span> is the volume scaling factor of the transformation <span class="math inline">\(T(\mathbf{x})=A\mathbf{x}\)</span>.</p>
+<div id="53c38d99" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">2</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A =</span><span class="ch">\n</span><span class="sc">{</span>A<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"det(A)    = </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>det(A)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"rank(A)   = </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(A)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"trace(A)  = </span><span class="sc">{</span>np<span class="sc">.</span>trace(A)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A^(-1)    =</span><span class="ch">\n</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(np.linalg.inv(A), <span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A*A^(-1) ≈ I:</span><span class="ch">\n</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(A <span class="op">@</span> np.linalg.inv(A), <span class="dv">6</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify det as volume scaling</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>v1 <span class="op">=</span> A[:,<span class="dv">0</span>]<span class="op">;</span> v2 <span class="op">=</span> A[:,<span class="dv">1</span>]<span class="op">;</span> v3 <span class="op">=</span> A[:,<span class="dv">2</span>]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Columns are vectors v1=</span><span class="sc">{</span>v1<span class="sc">}</span><span class="ss">, v2=</span><span class="sc">{</span>v2<span class="sc">}</span><span class="ss">, v3=</span><span class="sc">{</span>v3<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Parallelepiped volume = |det(A)| = </span><span class="sc">{</span><span class="bu">abs</span>(np.linalg.det(A))<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>A =
+[[ 2.  1. -1.]
+ [ 1.  3.  2.]
+ [ 3. -1.  1.]]
+
+det(A)    = 25.0000
+rank(A)   = 3
+trace(A)  = 6.0000
+A^(-1)    =
+[[ 0.2  0.   0.2]
+ [ 0.2  0.2 -0.2]
+ [-0.4  0.2  0.2]]
+A*A^(-1) ≈ I:
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+
+Columns are vectors v1=[2. 1. 3.], v2=[ 1.  3. -1.], v3=[-1.  2.  1.]
+Parallelepiped volume = |det(A)| = 25.0000</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-3-systems-of-linear-equations" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-systems-of-linear-equations">Part 3 — Systems of Linear Equations</h2>
+<section id="structure-of-solutions" class="level3">
+<h3 class="anchored" data-anchor-id="structure-of-solutions">Structure of Solutions</h3>
+<p>The system <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> (with <span class="math inline">\(A\)</span> an <span class="math inline">\(m\times n\)</span> matrix) has:</p>
+<ul>
+<li><strong>Unique solution</strong> if <span class="math inline">\(\text{rank}(A) = n\)</span> and the augmented matrix <span class="math inline">\([A|\mathbf{b}]\)</span> has the same rank.</li>
+<li><strong>Infinitely many solutions</strong> if <span class="math inline">\(\text{rank}(A) &lt; n\)</span> and consistent.</li>
+<li><strong>No solution</strong> if <span class="math inline">\(\text{rank}(A) &lt; \text{rank}([A|\mathbf{b}])\)</span> (inconsistent).</li>
+</ul>
+<p>The general solution to <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> is <span class="math inline">\(\mathbf{x} = \mathbf{x}_p + \mathbf{x}_h\)</span>, where <span class="math inline">\(\mathbf{x}_p\)</span> is any particular solution and <span class="math inline">\(\mathbf{x}_h\)</span> is the general solution of the <strong>homogeneous system</strong> <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span> — the null space of <span class="math inline">\(A\)</span>.</p>
+</section>
+<section id="gaussian-elimination-and-row-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="gaussian-elimination-and-row-reduction">Gaussian Elimination and Row Reduction</h3>
+<p>The <strong>reduced row echelon form (RREF)</strong> of the augmented matrix <span class="math inline">\([A|\mathbf{b}]\)</span> completely encodes the solution structure. SymPy performs this exactly:</p>
+<div id="d72d0258" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Example: 3×3 system ==="</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2x1 + x2 - x3 = 8</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># x1 + 3x2 + 2x3 = 14</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 3x1 - x2 + x3 = 2</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>A_aug <span class="op">=</span> sym.Matrix([[<span class="dv">2</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">8</span>],[<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">14</span>],[<span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>]])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>rref, pivots <span class="op">=</span> A_aug.rref()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Augmented matrix [A|b]:"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(A_aug)))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RREF:"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(rref)))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pivot columns: </span><span class="sc">{</span>pivots<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Solution: x1=2, x2=4, x3=0"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">=== Example: underdetermined 2×4 system ==="</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">2</span>]])</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>rref_B, piv_B <span class="op">=</span> B.rref()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RREF of [A|b]:"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>display(Math(sym.latex(rref_B)))</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pivot columns: </span><span class="sc">{</span>piv_B<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Free variables: x2 and x4 (columns 1,3 are non-pivot)"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution: x1=3-2*x2-x4, x3=2+x4, with x2,x4 free"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== Example: 3×3 system ===
+Augmented matrix [A|b]:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \left[\begin{matrix}2 &amp; 1 &amp; -1 &amp; 8\\1 &amp; 3 &amp; 2 &amp; 14\\3 &amp; -1 &amp; 1 &amp; 2\end{matrix}\right]\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>RREF:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \left[\begin{matrix}1 &amp; 0 &amp; 0 &amp; 2\\0 &amp; 1 &amp; 0 &amp; 4\\0 &amp; 0 &amp; 1 &amp; 0\end{matrix}\right]\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pivot columns: (0, 1, 2)
+Solution: x1=2, x2=4, x3=0
+
+=== Example: underdetermined 2×4 system ===
+RREF of [A|b]:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 0 &amp; 1 &amp; 3\\0 &amp; 0 &amp; 1 &amp; -1 &amp; 2\end{matrix}\right]\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pivot columns: (0, 2)
+Free variables: x2 and x4 (columns 1,3 are non-pivot)
+Solution: x1=3-2*x2-x4, x3=2+x4, with x2,x4 free</code></pre>
+</div>
+</div>
+</section>
+<section id="solving-with-numpy-and-scipy" class="level3">
+<h3 class="anchored" data-anchor-id="solving-with-numpy-and-scipy">Solving with NumPy and SciPy</h3>
+<p>For numerical work, <code>scipy.linalg.solve</code> is fast and reliable:</p>
+<div id="5201478e" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>A_num <span class="op">=</span> np.array([[<span class="dv">2</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>b_num <span class="op">=</span> np.array([<span class="fl">8.0</span>, <span class="fl">14.0</span>, <span class="fl">2.0</span>])</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>x_sol <span class="op">=</span> solve(A_num, b_num)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"scipy.linalg.solve: x = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(x_sol, <span class="dv">6</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Residual ||Ax-b|| = </span><span class="sc">{</span>norm(A_num <span class="op">@</span> x_sol <span class="op">-</span> b_num)<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Condition number = </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>cond(A_num)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>scipy.linalg.solve: x = [ 2.  4. -0.]
+Residual ||Ax-b|| = 2.22e-16
+Condition number = 2.2030</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The Condition Number
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>condition number</strong> <span class="math inline">\(\kappa(A) = \|A\|\|A^{-1}\|\)</span> measures how sensitive the solution is to perturbations in <span class="math inline">\(\mathbf{b}\)</span>. A large condition number (say <span class="math inline">\(&gt;10^6\)</span>) indicates a nearly singular, <strong>ill-conditioned</strong> system where small rounding errors in the data can produce large errors in the solution. Always check the condition number before trusting a numerical solution.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-4-eigenvalues-and-eigenvectors" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-eigenvalues-and-eigenvectors">Part 4 — Eigenvalues and Eigenvectors</h2>
+<section id="definition-and-geometric-meaning" class="level3">
+<h3 class="anchored" data-anchor-id="definition-and-geometric-meaning">Definition and Geometric Meaning</h3>
+<p>A scalar <span class="math inline">\(\lambda\)</span> and nonzero vector <span class="math inline">\(\mathbf{v}\)</span> satisfying <span class="math display">\[A\mathbf{v} = \lambda\mathbf{v}\]</span> are an <strong>eigenvalue</strong> and <strong>eigenvector</strong> of <span class="math inline">\(A\)</span>. Geometrically, <span class="math inline">\(A\)</span> merely scales <span class="math inline">\(\mathbf{v}\)</span> by a factor of <span class="math inline">\(\lambda\)</span> — it does not rotate or shear it. Eigenvectors are the “special directions” that a matrix leaves invariant.</p>
+<p>Finding eigenvalues: the equation <span class="math inline">\(A\mathbf{v}=\lambda\mathbf{v}\)</span> has a nontrivial solution if and only if <span class="math display">\[\det(A - \lambda I) = 0.\]</span> This is the <strong>characteristic equation</strong>; its roots are the eigenvalues.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Connection to ODEs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a constant-coefficient ODE <span class="math inline">\(x''+px'+qx=0\)</span>, the substitution <span class="math inline">\(x=e^{\lambda t}\)</span> leads to the characteristic equation <span class="math inline">\(\lambda^2+p\lambda+q=0\)</span>. When we write the ODE as the first-order system <span class="math inline">\(\mathbf{y}'=A\mathbf{y}\)</span>, the <span class="math inline">\(\lambda\)</span> values from the ODE characteristic equation are exactly the matrix eigenvalues of <span class="math inline">\(A\)</span>. The “eigenvalues” in Notes 4 and the matrix eigenvalues in this section are the same concept.</p>
+</div>
+</div>
+</section>
+<section id="computing-eigenvalues-and-eigenvectors" class="level3">
+<h3 class="anchored" data-anchor-id="computing-eigenvalues-and-eigenvectors">Computing Eigenvalues and Eigenvectors</h3>
+<div id="8b0474cf" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Example 1: 2×2 matrix ==="</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>A1 <span class="op">=</span> np.array([[<span class="dv">4</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">3</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A = </span><span class="sc">{</span>A1<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>vals, vecs <span class="op">=</span> np.linalg.eig(A1)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (lam, v) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(vals, vecs.T)):</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  λ</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>lam<span class="sc">:.2f}</span><span class="ss">,  v</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">,  Av=</span><span class="sc">{</span>A1<span class="op">@</span>v<span class="sc">}</span><span class="ss">,  λ*v=</span><span class="sc">{</span>lam<span class="op">*</span>v<span class="sc">}</span><span class="ss">  error=</span><span class="sc">{</span>norm(A1<span class="op">@</span>v<span class="op">-</span>lam<span class="op">*</span>v)<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">=== Exact computation with SymPy ==="</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>A1_sym <span class="op">=</span> sym.Matrix([[<span class="dv">4</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">3</span>]])</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>lam <span class="op">=</span> sym.Symbol(<span class="st">'lambda'</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>char_eq <span class="op">=</span> (A1_sym <span class="op">-</span> lam<span class="op">*</span>sym.eye(<span class="dv">2</span>)).det()</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Characteristic equation: </span><span class="sc">{</span>sym<span class="sc">.</span>expand(char_eq)<span class="sc">}</span><span class="ss"> = 0"</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>roots <span class="op">=</span> sym.solve(char_eq, lam)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Eigenvalues: </span><span class="sc">{</span>roots<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> root <span class="kw">in</span> roots:</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> (A1_sym <span class="op">-</span> root<span class="op">*</span>sym.eye(<span class="dv">2</span>)).nullspace()</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  λ=</span><span class="sc">{</span>root<span class="sc">}</span><span class="ss">: eigenvector = </span><span class="sc">{</span>V[<span class="dv">0</span>]<span class="sc">.</span>T<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">=== Diagonalization: A = PDP^{-1} ==="</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>A1_sym2 <span class="op">=</span> sym.Matrix([[<span class="dv">4</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">3</span>]])</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>P, D <span class="op">=</span> A1_sym2.diagonalize()</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"P = "</span> <span class="op">+</span> sym.latex(P) <span class="op">+</span> <span class="vs">r",</span><span class="er">\</span><span class="vs">quad D = "</span> <span class="op">+</span> sym.latex(D)))</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Verify PDP^(-1) == A: </span><span class="sc">{</span>sym<span class="sc">.</span>simplify(P<span class="op">*</span>D<span class="op">*</span>P.inv()) <span class="op">==</span> A1_sym2<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== Example 1: 2×2 matrix ===
+A = [[4. 1.]
+ [2. 3.]]
+  λ1=5.00,  v1=[0.70710678 0.70710678],  Av=[3.53553391 3.53553391],  λ*v=[3.53553391 3.53553391]  error=0.00e+00
+  λ2=2.00,  v2=[-0.4472136   0.89442719],  Av=[-0.89442719  1.78885438],  λ*v=[-0.89442719  1.78885438]  error=0.00e+00
+
+=== Exact computation with SymPy ===
+Characteristic equation: lambda**2 - 7*lambda + 10 = 0
+Eigenvalues: [2, 5]
+  λ=2: eigenvector = Matrix([[-1/2, 1]])
+  λ=5: eigenvector = Matrix([[1, 1]])
+
+=== Diagonalization: A = PDP^{-1} ===</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle P = \left[\begin{matrix}-1 &amp; 1\\2 &amp; 1\end{matrix}\right],\quad D = \left[\begin{matrix}2 &amp; 0\\0 &amp; 5\end{matrix}\right]\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Verify PDP^(-1) == A: True</code></pre>
+</div>
+</div>
+</section>
+<section id="the-spectral-theorem-for-symmetric-matrices" class="level3">
+<h3 class="anchored" data-anchor-id="the-spectral-theorem-for-symmetric-matrices">The Spectral Theorem for Symmetric Matrices</h3>
+<p>For <strong>symmetric matrices</strong> (<span class="math inline">\(A = A^T\)</span>) — which arise constantly in engineering (stiffness matrices, covariance matrices, inertia tensors) — the spectral theorem guarantees:</p>
+<ol type="1">
+<li>All eigenvalues are <strong>real</strong>.</li>
+<li>Eigenvectors for distinct eigenvalues are <strong>orthogonal</strong>.</li>
+<li><span class="math inline">\(A\)</span> is <strong>diagonalizable</strong> by an orthogonal matrix: <span class="math inline">\(A = Q\Lambda Q^T\)</span>.</li>
+</ol>
+<div id="1238e821" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> np.array([[<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">0</span>],[<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">5</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>vals_S, vecs_S <span class="op">=</span> np.linalg.eigh(S)  <span class="co"># eigh guarantees real evals for symmetric</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Symmetric matrix S =</span><span class="ch">\n</span><span class="sc">{</span>S<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Eigenvalues (all real): </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(vals_S, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Orthogonality of eigenvectors (Q^T Q should be I):"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(vecs_S.T <span class="op">@</span> vecs_S, <span class="dv">8</span>))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>Lambda <span class="op">=</span> np.diag(vals_S)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Reconstruction S = Q*Lambda*Q^T error: </span><span class="sc">{</span>norm(vecs_S<span class="op">@</span>Lambda<span class="op">@</span>vecs_S.T <span class="op">-</span> S)<span class="sc">:.2e}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Symmetric matrix S =
+[[4. 2. 0.]
+ [2. 3. 1.]
+ [0. 1. 5.]]
+
+Eigenvalues (all real): [1.2679 4.7321 6.    ]
+Orthogonality of eigenvectors (Q^T Q should be I):
+[[ 1.  0. -0.]
+ [ 0.  1. -0.]
+ [-0. -0.  1.]]
+Reconstruction S = Q*Lambda*Q^T error: 2.93e-15</code></pre>
+</div>
+</div>
+<div id="cell-fig-eigengeom" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>A_vis <span class="op">=</span> np.array([[<span class="dv">4</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">3</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>vals_v, vecs_v <span class="op">=</span> np.linalg.eig(A_vis)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">300</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>circle <span class="op">=</span> np.array([np.cos(theta), np.sin(theta)])</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>ellipse <span class="op">=</span> A_vis <span class="op">@</span> circle</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span> ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">*</span>circle, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Unit circle'</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">*</span>ellipse, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$A$ applied to circle'</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (lam, v) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(vals_v, vecs_v.T)):</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    ax.annotate(<span class="st">''</span>, xy<span class="op">=</span>lam<span class="op">*</span>v, xytext<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>))</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    ax.annotate(<span class="st">''</span>, xy<span class="op">=-</span>lam<span class="op">*</span>v, xytext<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>))</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    ax.text(<span class="op">*</span>(lam<span class="op">*</span>v<span class="op">*</span><span class="fl">1.1</span>), <span class="ss">f'$</span><span class="ch">\\</span><span class="ss">lambda_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>lam<span class="sc">:.0f}</span><span class="ss">$'</span>, color<span class="op">=</span><span class="st">'crimson'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">7</span>,<span class="dv">7</span>)<span class="op">;</span> ax.set_ylim(<span class="op">-</span><span class="dv">7</span>,<span class="dv">7</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$x_1$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x_2$'</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Eigenvalues/vectors as scaling directions'</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-eigengeom" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eigengeom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_08_files/figure-html/fig-eigengeom-output-1.png" width="864" height="885" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eigengeom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Geometric effect of matrix <span class="math inline">\(A=\begin{pmatrix}4&amp;1\\2&amp;3\end{pmatrix}\)</span> on the unit circle (blue). The matrix stretches the circle into an ellipse (orange). The eigenvectors (red arrows) point in the directions that are merely scaled, not rotated. The scaling factors are the eigenvalues <span class="math inline">\(\lambda_1=5\)</span>, <span class="math inline">\(\lambda_2=2\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-5-matrix-decompositions" class="level2">
+<h2 class="anchored" data-anchor-id="part-5-matrix-decompositions">Part 5 — Matrix Decompositions</h2>
+<section id="lu-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="lu-decomposition">LU Decomposition</h3>
+<p>Every invertible matrix <span class="math inline">\(A\)</span> can be written as <span class="math inline">\(A = PLU\)</span>, where <span class="math inline">\(P\)</span> is a permutation matrix, <span class="math inline">\(L\)</span> is lower-triangular with ones on the diagonal, and <span class="math inline">\(U\)</span> is upper-triangular. This factorization is the computational engine behind <code>solve</code> — it reduces Gaussian elimination to two easy triangular solves.</p>
+<div id="55d8388c" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>A_lu <span class="op">=</span> np.array([[<span class="dv">2</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>],[<span class="dv">4</span>,<span class="dv">5</span>,<span class="op">-</span><span class="dv">3</span>],[<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>P_lu, L_lu, U_lu <span class="op">=</span> lu(A_lu)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A =</span><span class="ch">\n</span><span class="sc">{</span>A_lu<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"L =</span><span class="ch">\n</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(L_lu,<span class="dv">4</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"U =</span><span class="ch">\n</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(U_lu,<span class="dv">4</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"PLU = A: </span><span class="sc">{</span>np<span class="sc">.</span>allclose(P_lu<span class="op">@</span>L_lu<span class="op">@</span>U_lu, A_lu)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Solving multiple right-hand sides with LU: fast for large systems"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>A =
+[[ 2.  1. -1.]
+ [ 4.  5. -3.]
+ [ 2.  3.  1.]]
+
+L =
+[[ 1.      0.      0.    ]
+ [ 0.5     1.      0.    ]
+ [ 0.5    -0.3333  1.    ]]
+
+U =
+[[ 4.      5.     -3.    ]
+ [ 0.     -1.5     0.5   ]
+ [ 0.      0.      2.6667]]
+
+PLU = A: True
+Solving multiple right-hand sides with LU: fast for large systems</code></pre>
+</div>
+</div>
+</section>
+<section id="qr-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="qr-decomposition">QR Decomposition</h3>
+<p>Every <span class="math inline">\(m\times n\)</span> matrix (<span class="math inline">\(m\geq n\)</span>) factors as <span class="math inline">\(A = QR\)</span>, where <span class="math inline">\(Q\)</span> has orthonormal columns and <span class="math inline">\(R\)</span> is upper-triangular. QR is numerically more stable than LU and is the basis of least-squares solvers and the standard eigenvalue algorithm (the QR algorithm).</p>
+<div id="32da9026" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>A_qr <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>Q_qr, R_qr <span class="op">=</span> qr(A_qr, mode<span class="op">=</span><span class="st">'economic'</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A (4×3):</span><span class="ch">\n</span><span class="sc">{</span>A_qr<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Q (4×3, orthonormal columns):</span><span class="ch">\n</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(Q_qr,<span class="dv">4</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R (3×3, upper triangular):</span><span class="ch">\n</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(R_qr,<span class="dv">4</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Q^T Q = I: </span><span class="sc">{</span>np<span class="sc">.</span>allclose(Q_qr.T<span class="op">@</span>Q_qr, np.eye(<span class="dv">3</span>))<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"QR = A: </span><span class="sc">{</span>np<span class="sc">.</span>allclose(Q_qr<span class="op">@</span>R_qr, A_qr)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>A (4×3):
+[[1. 1. 0.]
+ [1. 0. 1.]
+ [0. 1. 1.]
+ [1. 1. 1.]]
+
+Q (4×3, orthonormal columns):
+[[-0.5774  0.2582  0.6761]
+ [-0.5774 -0.5164 -0.5071]
+ [-0.      0.7746 -0.5071]
+ [-0.5774  0.2582 -0.169 ]]
+
+R (3×3, upper triangular):
+[[-1.7321 -1.1547 -1.1547]
+ [ 0.      1.291   0.5164]
+ [ 0.      0.     -1.1832]]
+
+Q^T Q = I: True
+QR = A: True</code></pre>
+</div>
+</div>
+</section>
+<section id="singular-value-decomposition-svd" class="level3">
+<h3 class="anchored" data-anchor-id="singular-value-decomposition-svd">Singular Value Decomposition (SVD)</h3>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value decomposition</a></strong> is the most powerful and general matrix decomposition. Every <span class="math inline">\(m\times n\)</span> matrix factors as: <span class="math display">\[A = U\Sigma V^T,\]</span> where <span class="math inline">\(U\)</span> (<span class="math inline">\(m\times m\)</span>) and <span class="math inline">\(V\)</span> (<span class="math inline">\(n\times n\)</span>) are orthogonal matrices and <span class="math inline">\(\Sigma\)</span> is a diagonal matrix of <strong>singular values</strong> <span class="math inline">\(\sigma_1\geq\sigma_2\geq\cdots\geq 0\)</span>.</p>
+<p>The SVD gives the definitive answers to several fundamental questions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Answer via SVD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>What is <span class="math inline">\(\text{rank}(A)\)</span>?</td>
+<td>Number of nonzero <span class="math inline">\(\sigma_i\)</span></td>
+</tr>
+<tr class="even">
+<td>How ill-conditioned is <span class="math inline">\(A\)</span>?</td>
+<td><span class="math inline">\(\kappa(A) = \sigma_1/\sigma_r\)</span></td>
+</tr>
+<tr class="odd">
+<td>Best rank-<span class="math inline">\(k\)</span> approximation?</td>
+<td><span class="math inline">\(A_k = \sum_{i=1}^k \sigma_i\mathbf{u}_i\mathbf{v}_i^T\)</span></td>
+</tr>
+<tr class="even">
+<td>Null space of <span class="math inline">\(A\)</span>?</td>
+<td>Columns of <span class="math inline">\(V\)</span> for zero <span class="math inline">\(\sigma_i\)</span></td>
+</tr>
+<tr class="odd">
+<td>Pseudoinverse <span class="math inline">\(A^+\)</span>?</td>
+<td><span class="math inline">\(V\Sigma^+U^T\)</span></td>
+</tr>
+</tbody>
+</table>
+<div id="971380e9" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>A_svd <span class="op">=</span> np.array([[<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>],[<span class="dv">2</span>,<span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>]], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>U_s, sigma, VT_s <span class="op">=</span> svd(A_svd)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A =</span><span class="ch">\n</span><span class="sc">{</span>A_svd<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Singular values σ = </span><span class="sc">{</span>sigma<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"rank(A) = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">sum</span>(sigma <span class="op">&gt;</span> <span class="fl">1e-10</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Condition number κ(A) = </span><span class="sc">{</span>sigma[<span class="dv">0</span>]<span class="op">/</span>sigma[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>Sigma_full <span class="op">=</span> np.zeros_like(A_svd)          <span class="co"># shape (2,3), matches A</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>np.fill_diagonal(Sigma_full, sigma)        <span class="co"># place singular values on diagonal</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Reconstruction error ||U*Σ*V^T - A|| = </span><span class="sc">{</span>norm(U_s<span class="op">@</span>Sigma_full<span class="op">@</span>VT_s <span class="op">-</span> A_svd)<span class="sc">:.2e}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>A =
+[[ 3.  2.  2.]
+ [ 2.  3. -2.]]
+
+Singular values σ = [5. 3.]
+rank(A) = 2
+Condition number κ(A) = 1.6667
+Reconstruction error ||U*Σ*V^T - A|| = 1.29e-15</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-6-null-space-column-space-and-the-rank-nullity-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="part-6-null-space-column-space-and-the-rank-nullity-theorem">Part 6 — Null Space, Column Space, and the Rank-Nullity Theorem</h2>
+<section id="four-fundamental-subspaces" class="level3">
+<h3 class="anchored" data-anchor-id="four-fundamental-subspaces">Four Fundamental Subspaces</h3>
+<p>Associated with every <span class="math inline">\(m\times n\)</span> matrix <span class="math inline">\(A\)</span> are four fundamental subspaces:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Subspace</th>
+<th>Definition</th>
+<th>Dimension</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Column space</strong> <span class="math inline">\(\mathcal{C}(A)\)</span></td>
+<td>Span of columns of <span class="math inline">\(A\)</span></td>
+<td><span class="math inline">\(r = \text{rank}(A)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Null space</strong> <span class="math inline">\(\mathcal{N}(A)\)</span></td>
+<td><span class="math inline">\(\{\mathbf{x}: A\mathbf{x}=\mathbf{0}\}\)</span></td>
+<td><span class="math inline">\(n-r\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Row space</strong> <span class="math inline">\(\mathcal{C}(A^T)\)</span></td>
+<td>Span of rows of <span class="math inline">\(A\)</span></td>
+<td><span class="math inline">\(r\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Left null space</strong> <span class="math inline">\(\mathcal{N}(A^T)\)</span></td>
+<td><span class="math inline">\(\{\mathbf{y}: A^T\mathbf{y}=\mathbf{0}\}\)</span></td>
+<td><span class="math inline">\(m-r\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Rank-Nullity Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[\text{rank}(A) + \text{nullity}(A) = n.\]</span> The number of free variables equals <span class="math inline">\(n - \text{rank}(A)\)</span>.</p>
+</div>
+</div>
+<div id="c003953e" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>B_sym <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>],[<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>]])</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Matrix A (rank-deficient):</span><span class="ch">\n</span><span class="sc">{</span>B_sym<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"rank = </span><span class="sc">{</span>B_sym<span class="sc">.</span>rank()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Null space basis: </span><span class="sc">{</span>B_sym<span class="sc">.</span>nullspace()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Column space basis: </span><span class="sc">{</span>B_sym<span class="sc">.</span>columnspace()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Left null space: </span><span class="sc">{</span>B_sym<span class="sc">.</span>T<span class="sc">.</span>nullspace()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Rank-Nullity: rank(</span><span class="sc">{</span>B_sym<span class="sc">.</span>rank()<span class="sc">}</span><span class="ss">) + nullity(</span><span class="sc">{</span><span class="dv">3</span><span class="op">-</span>B_sym<span class="sc">.</span>rank()<span class="sc">}</span><span class="ss">) = </span><span class="sc">{</span><span class="dv">3</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matrix A (rank-deficient):
+Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+rank = 2
+Null space basis: [Matrix([
+[ 1],
+[-2],
+[ 1]])]
+Column space basis: [Matrix([
+[1],
+[4],
+[7]]), Matrix([
+[2],
+[5],
+[8]])]
+Left null space: [Matrix([
+[ 1],
+[-2],
+[ 1]])]
+
+Rank-Nullity: rank(2) + nullity(1) = 3</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-7-applications-in-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="part-7-applications-in-engineering">Part 7 — Applications in Engineering</h2>
+<section id="application-1-resistor-networks-nodal-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="application-1-resistor-networks-nodal-analysis">Application 1 — Resistor Networks (Nodal Analysis)</h3>
+<p>Every electrical network satisfies Kirchhoff’s laws, which reduce to the linear system <span class="math display">\[Y\mathbf{V} = \mathbf{I},\]</span> where <span class="math inline">\(Y\)</span> is the <strong>nodal admittance matrix</strong> (<span class="math inline">\(Y_{ii}\)</span> = sum of conductances at node <span class="math inline">\(i\)</span>; <span class="math inline">\(Y_{ij}=-G_{ij}\)</span> for <span class="math inline">\(i\neq j\)</span>), <span class="math inline">\(\mathbf{V}\)</span> is the vector of unknown node voltages, and <span class="math inline">\(\mathbf{I}\)</span> is the vector of injected currents. This formulation is used in SPICE circuit simulators.</p>
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Network: 4 nodes (node 4 = ground = 0 V)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Resistors: R12=2Ω, R13=4Ω, R23=3Ω, R24=1Ω, R34=5Ω</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Source: I1=5 A injected at node 1, I2=2 A injected at node 2, I3=0</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>G12, G13, G23, G24, G34 <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="fl">1.0</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">5</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> np.array([</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    [G12<span class="op">+</span>G13,   <span class="op">-</span>G12,    <span class="op">-</span>G13],</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span>G12,   G12<span class="op">+</span>G23<span class="op">+</span>G24, <span class="op">-</span>G23],</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span>G13,   <span class="op">-</span>G23,    G13<span class="op">+</span>G23<span class="op">+</span>G34]</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>I_inj <span class="op">=</span> np.array([<span class="fl">5.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>])  <span class="co"># injected currents</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>V_sol <span class="op">=</span> solve(Y, I_inj)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Nodal admittance matrix Y:"</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(Y,<span class="dv">4</span>))</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Injected currents I = </span><span class="sc">{</span>I_inj<span class="sc">}</span><span class="ss"> A"</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Node voltages: V1=</span><span class="sc">{</span>V_sol[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss"> V, V2=</span><span class="sc">{</span>V_sol[<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss"> V, V3=</span><span class="sc">{</span>V_sol[<span class="dv">2</span>]<span class="sc">:.4f}</span><span class="ss"> V"</span>)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Residual ||YV - I|| = </span><span class="sc">{</span>norm(Y<span class="op">@</span>V_sol <span class="op">-</span> I_inj)<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify by KCL at node 1: sum of outgoing currents = 5 A</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>I_12 <span class="op">=</span> G12<span class="op">*</span>(V_sol[<span class="dv">0</span>]<span class="op">-</span>V_sol[<span class="dv">1</span>])</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>I_13 <span class="op">=</span> G13<span class="op">*</span>(V_sol[<span class="dv">0</span>]<span class="op">-</span>V_sol[<span class="dv">2</span>])</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>I_14 <span class="op">=</span> G13<span class="op">*</span>V_sol[<span class="dv">0</span>]  <span class="co"># no direct to ground in this simplified model</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">KCL check at node 1: outgoing currents sum = </span><span class="sc">{</span>Y[<span class="dv">0</span>]<span class="op">@</span>V_sol<span class="sc">:.4f}</span><span class="ss"> A (should be 5.0)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-circuit" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="14">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-circuit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code>Nodal admittance matrix Y:
+[[ 0.75   -0.5    -0.25  ]
+ [-0.5     1.8333 -0.3333]
+ [-0.25   -0.3333  0.7833]]
+
+Injected currents I = [5. 2. 0.] A
+Node voltages: V1=12.6250 V, V2=5.7083 V, V3=6.4583 V
+Residual ||YV - I|| = 2.07e-15
+
+KCL check at node 1: outgoing currents sum = 5.0000 A (should be 5.0)</code></pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-circuit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="application-2-structural-analysis-truss" class="level3">
+<h3 class="anchored" data-anchor-id="application-2-structural-analysis-truss">Application 2 — Structural Analysis: Truss</h3>
+<p>Every bar in a pin-jointed truss contributes a <strong>local stiffness matrix</strong> <span class="math inline">\(k_e = \frac{AE}{L}\begin{pmatrix}c_x^2 &amp; c_xc_y \\ c_xc_y &amp; c_y^2\end{pmatrix}\)</span> where <span class="math inline">\(c_x, c_y\)</span> are the direction cosines and <span class="math inline">\(L\)</span> is the bar length. Summing over all bars gives the <strong>global stiffness matrix</strong> <span class="math inline">\(K\)</span>. The system <span class="math display">\[K\mathbf{u} = \mathbf{f}\]</span> (with boundary conditions applied) gives the displacements <span class="math inline">\(\mathbf{u}\)</span>.</p>
+<div id="cell-fig-truss" class="cell" data-execution_count="15">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three bars meeting at a free node; all other nodes pinned.</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar 1: horizontal (angle 0°), AE=1, L=1</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar 2: vertical (angle 90°), AE=1, L=1</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar 3: diagonal (angle 45°), AE=1, L=sqrt(2)</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>AE_val <span class="op">=</span> <span class="fl">100e3</span>  <span class="co"># N  (typical for thin steel bar)</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bar_stiffness(AE, L, angle_deg):</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Local stiffness contribution to 2-DOF free node"""</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    th <span class="op">=</span> np.radians(angle_deg)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    cx, cy <span class="op">=</span> np.cos(th), np.sin(th)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (AE<span class="op">/</span>L)<span class="op">*</span>np.array([[cx<span class="op">**</span><span class="dv">2</span>, cx<span class="op">*</span>cy],[cx<span class="op">*</span>cy, cy<span class="op">**</span><span class="dv">2</span>]])</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>K_global <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>bars_info <span class="op">=</span> [(AE_val, <span class="fl">1.0</span>, <span class="dv">0</span>),   <span class="co"># horizontal</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>             (AE_val, <span class="fl">1.0</span>, <span class="dv">90</span>),  <span class="co"># vertical</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>             (AE_val, np.sqrt(<span class="dv">2</span>), <span class="dv">45</span>)]  <span class="co"># diagonal</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> AE_b, L_b, ang <span class="kw">in</span> bars_info:</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    K_global <span class="op">+=</span> bar_stiffness(AE_b, L_b, ang)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>F_applied <span class="op">=</span> np.array([<span class="fl">10e3</span>, <span class="op">-</span><span class="fl">20e3</span>])  <span class="co"># 10 kN right, 20 kN down</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>u_disp <span class="op">=</span> solve(K_global, F_applied)</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Global stiffness matrix K [N/m]:</span><span class="ch">\n</span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(K_global,<span class="dv">1</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Applied force F = </span><span class="sc">{</span>F_applied<span class="op">/</span><span class="fl">1e3</span><span class="sc">}</span><span class="ss"> kN"</span>)</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Displacements u = [</span><span class="sc">{</span>u_disp[<span class="dv">0</span>]<span class="op">*</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>u_disp[<span class="dv">1</span>]<span class="op">*</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss">] µm"</span>)</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Residual ||Ku-F|| = </span><span class="sc">{</span>norm(K_global<span class="op">@</span>u_disp <span class="op">-</span> F_applied)<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot truss</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">5</span>))</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>node_free <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">1.0</span>])  <span class="co"># free node at center</span></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>nodes <span class="op">=</span> {<span class="st">'A'</span>:[<span class="dv">0</span>,<span class="dv">1</span>], <span class="st">'B'</span>:[<span class="dv">1</span>,<span class="dv">0</span>], <span class="st">'C'</span>:[<span class="dv">2</span>,<span class="dv">1</span>], <span class="st">'Free'</span>:[<span class="dv">1</span>,<span class="dv">1</span>]}</span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>bar_conns <span class="op">=</span> [(<span class="st">'A'</span>,<span class="st">'Free'</span>), (<span class="st">'B'</span>,<span class="st">'Free'</span>), (<span class="st">'C'</span>,<span class="st">'Free'</span>)]</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>colors_b <span class="op">=</span> [<span class="st">'steelblue'</span>,<span class="st">'crimson'</span>,<span class="st">'seagreen'</span>]</span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (n1,n2), col <span class="kw">in</span> <span class="bu">zip</span>(bar_conns, colors_b):</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>    p1, p2 <span class="op">=</span> np.array(nodes[n1]), np.array(nodes[n2])</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>    ax.plot([p1[<span class="dv">0</span>],p2[<span class="dv">0</span>]], [p1[<span class="dv">1</span>],p2[<span class="dv">1</span>]], <span class="st">'-'</span>, color<span class="op">=</span>col, lw<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, pos <span class="kw">in</span> nodes.items():</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    ax.plot(<span class="op">*</span>pos, <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="dv">10</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    ax.text(pos[<span class="dv">0</span>]<span class="op">+</span><span class="fl">0.05</span>, pos[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.08</span>, name, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">''</span>, xy<span class="op">=</span>node_free<span class="op">+</span>np.array([<span class="fl">0.3</span>,<span class="dv">0</span>]),  xytext<span class="op">=</span>node_free,</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>            arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">2.5</span>))</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">''</span>, xy<span class="op">=</span>node_free<span class="op">+</span>np.array([<span class="dv">0</span>,<span class="op">-</span><span class="fl">0.3</span>]), xytext<span class="op">=</span>node_free,</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>            arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">2.5</span>))</span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>ax.text(node_free[<span class="dv">0</span>]<span class="op">+</span><span class="fl">0.32</span>, node_free[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.02</span>, <span class="st">'$F_x$'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>)</span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>ax.text(node_free[<span class="dv">0</span>]<span class="op">+</span><span class="fl">0.05</span>, node_free[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.35</span>, <span class="st">'$F_y$'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>)</span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)<span class="op">;</span> ax.set_xlim(<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">2.5</span>)<span class="op">;</span> ax.set_ylim(<span class="fl">0.3</span>, <span class="fl">1.6</span>)</span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'3-bar pin-jointed truss: $K</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{u}</span><span class="st">=</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{f}</span><span class="st">$'</span>)</span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Global stiffness matrix K [N/m]:
+[[135355.3  35355.3]
+ [ 35355.3 135355.3]]
+
+Applied force F = [ 10. -20.] kN
+Displacements u = [120710.68, -179289.32] µm
+Residual ||Ku-F|| = 1.82e-12</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-truss" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-truss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_08_files/figure-html/fig-truss-output-2.png" width="885" height="531" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-truss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Simple 3-bar planar truss. Each bar contributes a stiffness component in the direction of its axis. The global stiffness matrix is assembled by summing contributions, and <span class="math inline">\(K\mathbf{u}=\mathbf{f}\)</span> gives the nodal displacements.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="application-3-least-squares-curve-fitting" class="level3">
+<h3 class="anchored" data-anchor-id="application-3-least-squares-curve-fitting">Application 3 — Least-Squares Curve Fitting</h3>
+<p>In practice, measurements give more equations than unknowns: an <strong>overdetermined</strong> system <span class="math inline">\(A\mathbf{c}\approx\mathbf{b}\)</span> with no exact solution. The <strong>least-squares</strong> solution minimizes the residual <span class="math inline">\(\|A\mathbf{c}-\mathbf{b}\|^2\)</span> and satisfies the <strong>normal equations</strong> <span class="math inline">\(A^TA\mathbf{c} = A^T\mathbf{b}\)</span>. This is the mathematical foundation of linear regression.</p>
+<p>The least-squares solution is <span class="math inline">\(\mathbf{c} = (A^TA)^{-1}A^T\mathbf{b}\)</span> (when <span class="math inline">\(A\)</span> has full column rank), or more robustly via the pseudoinverse <span class="math inline">\(\mathbf{c} = A^+\mathbf{b}\)</span> computed from the SVD.</p>
+<div id="cell-fig-lsq" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>t_data <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">25</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>T_true <span class="op">=</span> <span class="dv">20</span> <span class="op">+</span> <span class="dv">8</span><span class="op">*</span>t_data <span class="op">-</span> <span class="fl">1.2</span><span class="op">*</span>t_data<span class="op">**</span><span class="dv">2</span>  <span class="co"># true: parabolic heating then cooling</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>T_meas <span class="op">=</span> T_true <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">1.5</span>, <span class="bu">len</span>(t_data))</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Design matrix for quadratic model</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>A_ls <span class="op">=</span> np.column_stack([np.ones_like(t_data), t_data, t_data<span class="op">**</span><span class="dv">2</span>])</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve via normal equations</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>c_ls <span class="op">=</span> solve(A_ls.T <span class="op">@</span> A_ls, A_ls.T <span class="op">@</span> T_meas)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Or equivalently: c_ls, _, _, _ = lstsq(A_ls, T_meas)</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>t_fine <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">200</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>T_true_fine <span class="op">=</span> <span class="dv">20</span> <span class="op">+</span> <span class="dv">8</span><span class="op">*</span>t_fine <span class="op">-</span> <span class="fl">1.2</span><span class="op">*</span>t_fine<span class="op">**</span><span class="dv">2</span>   <span class="co"># true model on fine grid</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>A_fine <span class="op">=</span> np.column_stack([np.ones_like(t_fine), t_fine, t_fine<span class="op">**</span><span class="dv">2</span>])</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>T_fit <span class="op">=</span> A_fine <span class="op">@</span> c_ls</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>ax.scatter(t_data, T_meas, color<span class="op">=</span><span class="st">'steelblue'</span>, s<span class="op">=</span><span class="dv">50</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Measurements'</span>)</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>ax.plot(t_fine, T_true_fine, <span class="st">'k--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'True model'</span>)</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>ax.plot(t_fine, T_fit,  color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f'LS fit: $c_0=</span><span class="sc">{</span>c_ls[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">$, $c_1=</span><span class="sc">{</span>c_ls[<span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">$, $c_2=</span><span class="sc">{</span>c_ls[<span class="dv">2</span>]<span class="sc">:.2f}</span><span class="ss">$'</span>)</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Time (s)'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Temperature (°C)'</span>)</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Least-squares quadratic fit: overdetermined system $A</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{c}</span><span class="ch">\\</span><span class="st">approx</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{b}</span><span class="st">$'</span>)</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"True  coefficients: c0=20, c1=8, c2=-1.2"</span>)</span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Fitted coefficients: c0=</span><span class="sc">{</span>c_ls[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss">, c1=</span><span class="sc">{</span>c_ls[<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">, c2=</span><span class="sc">{</span>c_ls[<span class="dv">2</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"RMS residual: </span><span class="sc">{</span>norm(A_ls<span class="op">@</span>c_ls<span class="op">-</span>T_meas)<span class="op">/</span>np<span class="sc">.</span>sqrt(<span class="bu">len</span>(t_data))<span class="sc">:.4f}</span><span class="ss"> °C"</span>)</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>True  coefficients: c0=20, c1=8, c2=-1.2
+Fitted coefficients: c0=21.2488, c1=6.9490, c2=-1.0668
+RMS residual: 1.2531 °C</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-lsq" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lsq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_08_files/figure-html/fig-lsq-output-2.png" width="1185" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lsq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Least-squares quadratic fit to noisy temperature vs.&nbsp;time data. The design matrix <span class="math inline">\(A\)</span> has columns <span class="math inline">\([1, t, t^2]\)</span>. The normal equations <span class="math inline">\((A^TA)\mathbf{c}=A^T\mathbf{b}\)</span> are solved for the coefficients <span class="math inline">\(\mathbf{c}=(c_0,c_1,c_2)^T\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="application-4-markov-chains-and-steady-states" class="level3">
+<h3 class="anchored" data-anchor-id="application-4-markov-chains-and-steady-states">Application 4 — Markov Chains and Steady States</h3>
+<p>A <strong><a href="https://en.wikipedia.org/wiki/Markov_chain">Markov chain</a></strong> models a system that transitions between states with fixed probabilities. The <strong>transition matrix</strong> <span class="math inline">\(P\)</span> (column-stochastic: columns sum to 1) satisfies <span class="math inline">\(P\boldsymbol{\pi}=\boldsymbol{\pi}\)</span> at steady state — so <span class="math inline">\(\boldsymbol{\pi}\)</span> is an <strong>eigenvector of <span class="math inline">\(P\)</span> with eigenvalue 1</strong>. Finding it is a linear algebra problem.</p>
+<p><strong>Engineering uses:</strong> reliability analysis, queueing networks, manufacturing process control, web traffic modeling (PageRank).</p>
+<div id="cell-fig-markov" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Equipment degradation model (4 states: New, Good, Fair, Failed)</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>P_mc <span class="op">=</span> np.array([</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.85</span>, <span class="fl">0.10</span>, <span class="fl">0.05</span>, <span class="fl">0.00</span>],   <span class="co"># New stays new 85%, degrades</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.10</span>, <span class="fl">0.75</span>, <span class="fl">0.10</span>, <span class="fl">0.05</span>],   <span class="co"># Good</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.05</span>, <span class="fl">0.15</span>, <span class="fl">0.70</span>, <span class="fl">0.10</span>],   <span class="co"># Fair</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.00</span>, <span class="fl">0.00</span>, <span class="fl">0.15</span>, <span class="fl">0.85</span>],   <span class="co"># Failed (repair brings back)</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: this is row-stochastic; P[i,j] = prob of going FROM i TO j</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Stationary: solve pi^T P = pi^T &lt;=&gt; P^T pi = pi</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Using: (P^T - I)pi = 0, sum(pi)=1</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>A_st <span class="op">=</span> P_mc.T <span class="op">-</span> np.eye(<span class="dv">4</span>)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>A_st[<span class="op">-</span><span class="dv">1</span>,:] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>b_st <span class="op">=</span> np.zeros(<span class="dv">4</span>)<span class="op">;</span> b_st[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>pi_st <span class="op">=</span> solve(A_st, b_st)</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Heatmap</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> axes[<span class="dv">0</span>].imshow(P_mc, cmap<span class="op">=</span><span class="st">'Blues'</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>states <span class="op">=</span> [<span class="st">'New'</span>,<span class="st">'Good'</span>,<span class="st">'Fair'</span>,<span class="st">'Failed'</span>]</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticks(<span class="bu">range</span>(<span class="dv">4</span>))<span class="op">;</span> axes[<span class="dv">0</span>].set_yticks(<span class="bu">range</span>(<span class="dv">4</span>))</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticklabels(states, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_yticklabels(states, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'To state'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'From state'</span>)</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Transition matrix $P$'</span>)</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>        axes[<span class="dv">0</span>].text(j, i, <span class="ss">f'</span><span class="sc">{</span>P_mc[i,j]<span class="sc">:.2f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>                    fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'white'</span> <span class="cf">if</span> P_mc[i,j]<span class="op">&gt;</span><span class="fl">0.5</span> <span class="cf">else</span> <span class="st">'black'</span>)</span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>plt.colorbar(im, ax<span class="op">=</span>axes[<span class="dv">0</span>], fraction<span class="op">=</span><span class="fl">0.046</span>)</span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Convergence from different initial states</span></span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>n_steps <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>colors_mc <span class="op">=</span> [<span class="st">'steelblue'</span>,<span class="st">'crimson'</span>,<span class="st">'seagreen'</span>,<span class="st">'darkorange'</span>]</span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> init_state, color <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">4</span>), colors_mc):</span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> np.zeros(<span class="dv">4</span>)<span class="op">;</span> x0[init_state] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>    dist <span class="op">=</span> x0.copy()</span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>    history <span class="op">=</span> [dist.copy()]</span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_steps):</span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a>        dist <span class="op">=</span> P_mc.T <span class="op">@</span> dist</span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>        history.append(dist.copy())</span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>    history <span class="op">=</span> np.array(history)</span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(history[:,<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="ss">f'Start: </span><span class="sc">{</span>states[init_state]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(pi_st[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'k'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f'$</span><span class="ch">\\</span><span class="ss">pi_</span><span class="ch">{{\\</span><span class="ss">text</span><span class="ch">{{</span><span class="ss">New</span><span class="ch">}}}}</span><span class="ss">=</span><span class="sc">{</span>pi_st[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">$'</span>)</span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Step'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'P(New state)'</span>)</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Convergence to $</span><span class="ch">\\</span><span class="ss">pi_</span><span class="ch">{{\\</span><span class="ss">text</span><span class="ch">{{</span><span class="ss">New</span><span class="ch">}}}}</span><span class="ss">=</span><span class="sc">{</span>pi_st[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">$'</span>)</span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Stationary distribution π = </span><span class="sc">{</span><span class="bu">dict</span>(<span class="bu">zip</span>(states, np.<span class="bu">round</span>(pi_st,<span class="dv">4</span>)))<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Verify P^T π = π: </span><span class="sc">{</span>np<span class="sc">.</span>allclose(P_mc.T <span class="op">@</span> pi_st, pi_st)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stationary distribution π = {'New': np.float64(0.25), 'Good': np.float64(0.25), 'Fair': np.float64(0.25), 'Failed': np.float64(0.25)}
+Verify P^T π = π: True</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-markov" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-markov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_08_files/figure-html/fig-markov-output-2.png" width="1557" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-markov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Markov chain: four states (equipment conditions: New, Good, Fair, Failed) with maintenance-driven transitions. Left: the <span class="math inline">\(4\times 4\)</span> transition matrix visualized as a heatmap. Right: convergence of the state distribution to the stationary vector <span class="math inline">\(\boldsymbol{\pi}\)</span> regardless of starting state.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="application-5-principal-component-analysis-pca" class="level3">
+<h3 class="anchored" data-anchor-id="application-5-principal-component-analysis-pca">Application 5 — Principal Component Analysis (PCA)</h3>
+<p><strong><a href="https://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a></strong> finds the directions of greatest variance in a dataset. For a mean-centered data matrix <span class="math inline">\(X\)</span> (rows = observations, columns = variables): <span class="math display">\[X = U\Sigma V^T \quad\Longrightarrow\quad \text{principal components} = \text{columns of } V.\]</span> The proportion of variance explained by PC <span class="math inline">\(k\)</span> is <span class="math inline">\(\sigma_k^2/\sum_i\sigma_i^2\)</span>.</p>
+<p><strong>Engineering uses:</strong> dimensionality reduction, sensor fusion, structural health monitoring, signal processing, quality control.</p>
+<div id="cell-fig-pca" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">7</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>n_obs <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Two correlated sensors</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.random.randn(n_obs)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> <span class="fl">0.7</span><span class="op">*</span>x1 <span class="op">+</span> <span class="fl">0.5</span><span class="op">*</span>np.random.randn(n_obs)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>X_raw <span class="op">=</span> np.column_stack([x1, x2])</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>X_c   <span class="op">=</span> X_raw <span class="op">-</span> X_raw.mean(axis<span class="op">=</span><span class="dv">0</span>)  <span class="co"># center</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>U_p, s_p, VT_p <span class="op">=</span> svd(X_c, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>explained <span class="op">=</span> s_p<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> np.<span class="bu">sum</span>(s_p<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Raw data + PCs</span></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(<span class="op">*</span>X_c.T, alpha<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, s<span class="op">=</span><span class="dv">25</span>, label<span class="op">=</span><span class="st">'Data'</span>)</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> s_p <span class="op">/</span> np.sqrt(n_obs<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, color <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="st">'crimson'</span>,<span class="st">'seagreen'</span>]):</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    pc <span class="op">=</span> VT_p[i,:] <span class="op">*</span> scale[i]</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].annotate(<span class="st">''</span>, xy<span class="op">=</span>pc<span class="op">*</span><span class="dv">2</span>, xytext<span class="op">=-</span>pc<span class="op">*</span><span class="dv">2</span>,</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>                    arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.5</span>))</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].text(<span class="op">*</span>(pc<span class="op">*</span><span class="fl">2.2</span>), <span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>explained[i]<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)'</span>,</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span>color, fontsize<span class="op">=</span><span class="dv">9</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Sensor 1'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Sensor 2'</span>)</span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'PCA: principal components of 2D data'</span>)</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Projected data</span></span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> X_c <span class="op">@</span> VT_p.T</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(scores[:,<span class="dv">0</span>], scores[:,<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, s<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span> axes[<span class="dv">1</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="ss">f'PC1 (</span><span class="sc">{</span>explained[<span class="dv">0</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% variance)'</span>)</span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="ss">f'PC2 (</span><span class="sc">{</span>explained[<span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% variance)'</span>)</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Data in PC coordinates'</span>)</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Singular values: σ1=</span><span class="sc">{</span>s_p[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss">, σ2=</span><span class="sc">{</span>s_p[<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Variance explained: PC1=</span><span class="sc">{</span>explained[<span class="dv">0</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%, PC2=</span><span class="sc">{</span>explained[<span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%"</span>)</span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"PC1 direction: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(VT_p[<span class="dv">0</span>],<span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Singular values: σ1=14.7956, σ2=4.6493
+Variance explained: PC1=91.0%, PC2=9.0%
+PC1 direction: [-0.7773 -0.6291]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-pca" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_08_files/figure-html/fig-pca-output-2.png" width="1570" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: PCA on 2D correlated sensor data. Left: raw data cloud with two principal component directions (red arrows), scaled by their singular values. PC1 points along the main axis of variation; PC2 is orthogonal. Right: data projected onto the first two PCs — the scatter is maximized along PC1.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="application-6-low-rank-approximation-and-data-compression" class="level3">
+<h3 class="anchored" data-anchor-id="application-6-low-rank-approximation-and-data-compression">Application 6 — Low-Rank Approximation and Data Compression</h3>
+<p>The <strong>Eckart–Young theorem</strong> states that the best rank-<span class="math inline">\(k\)</span> approximation of <span class="math inline">\(A\)</span> (in either the Frobenius or spectral norm) is: <span class="math display">\[A_k = \sum_{i=1}^k \sigma_i\,\mathbf{u}_i\mathbf{v}_i^T.\]</span> This is the foundation of <strong>image compression</strong>, <strong>collaborative filtering</strong> (Netflix-style recommendations), and <strong>model reduction</strong> in engineering simulations.</p>
+<div id="cell-fig-svd-approx" class="cell" data-execution_count="19">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">3</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>m_img, n_img <span class="op">=</span> <span class="dv">30</span>, <span class="dv">40</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a low-rank-ish matrix (as if a simplified image)</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>true_rank <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>A_img <span class="op">=</span> (np.random.randn(m_img, true_rank) <span class="op">@</span> np.random.randn(true_rank, n_img)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>         <span class="op">+</span> <span class="fl">0.3</span><span class="op">*</span>np.random.randn(m_img, n_img))</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>U_i, s_i, VT_i <span class="op">=</span> svd(A_img)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>ranks <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, true_rank]</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, k <span class="kw">in</span> <span class="bu">zip</span>(axes[<span class="dv">0</span>,:], ranks):</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    A_k <span class="op">=</span> U_i[:,:k] <span class="op">@</span> np.diag(s_i[:k]) <span class="op">@</span> VT_i[:k,:]</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    rel_err <span class="op">=</span> norm(A_img<span class="op">-</span>A_k,<span class="st">'fro'</span>)<span class="op">/</span>norm(A_img,<span class="st">'fro'</span>)</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    var_frac <span class="op">=</span> np.<span class="bu">sum</span>(s_i[:k]<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>np.<span class="bu">sum</span>(s_i<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    ax.imshow(A_k, cmap<span class="op">=</span><span class="st">'viridis'</span>, aspect<span class="op">=</span><span class="st">'auto'</span>)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'rank-</span><span class="sc">{</span>k<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>var_frac<span class="op">*</span><span class="dv">100</span><span class="sc">:.0f}</span><span class="ss">% var, err=</span><span class="sc">{</span>rel_err<span class="sc">:.2f}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Original</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].imshow(A_img, cmap<span class="op">=</span><span class="st">'viridis'</span>, aspect<span class="op">=</span><span class="st">'auto'</span>)</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].set_title(<span class="st">'Original'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> axes[<span class="dv">1</span>,<span class="dv">0</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Singular value spectrum</span></span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>ax_spec <span class="op">=</span> axes[<span class="dv">1</span>,<span class="dv">1</span>]</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>ax_spec.semilogy(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(s_i)<span class="op">+</span><span class="dv">1</span>), s_i, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>ax_spec.axvline(true_rank, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f'True rank=</span><span class="sc">{</span>true_rank<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>ax_spec.set_xlabel(<span class="st">'Index $i$'</span>)<span class="op">;</span> ax_spec.set_ylabel(<span class="st">'$</span><span class="ch">\\</span><span class="st">sigma_i$'</span>)</span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>ax_spec.set_title(<span class="st">'Singular value spectrum'</span>)<span class="op">;</span> ax_spec.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Cumulative variance</span></span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>ax_cv <span class="op">=</span> axes[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>cum_var <span class="op">=</span> np.cumsum(s_i<span class="op">**</span><span class="dv">2</span>)<span class="op">/</span>np.<span class="bu">sum</span>(s_i<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>ax_cv.plot(<span class="bu">range</span>(<span class="dv">1</span>,<span class="bu">len</span>(s_i)<span class="op">+</span><span class="dv">1</span>), cum_var<span class="op">*</span><span class="dv">100</span>, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>ax_cv.axhline(<span class="dv">90</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">'90% threshold'</span>)</span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>ax_cv.set_xlabel(<span class="st">'$k$'</span>)<span class="op">;</span> ax_cv.set_ylabel(<span class="st">'% variance explained'</span>)</span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>ax_cv.set_title(<span class="st">'Cumulative variance'</span>)<span class="op">;</span> ax_cv.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>,<span class="dv">3</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Low-rank SVD approximation (Eckart–Young theorem)'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-svd-approx" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-svd-approx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_08_files/figure-html/fig-svd-approx-output-1.png" width="1785" height="889" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-svd-approx-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Low-rank SVD approximation of a <span class="math inline">\(30\times 40\)</span> test matrix (simulating a grayscale image). As the rank <span class="math inline">\(k\)</span> increases, the reconstruction quality improves. The singular value spectrum (right) shows how rapidly the information concentrates in the first few singular values.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-8-summary-linear-algebra-with-scipy-and-sympy" class="level2">
+<h2 class="anchored" data-anchor-id="part-8-summary-linear-algebra-with-scipy-and-sympy">Part 8 — Summary: Linear Algebra with SciPy and SymPy</h2>
+<section id="quick-reference-numpy-and-scipy" class="level3">
+<h3 class="anchored" data-anchor-id="quick-reference-numpy-and-scipy">Quick Reference: NumPy and SciPy</h3>
+<div id="f3bf6000" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> solve, lu, qr, svd, norm, lstsq</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="fl">2.</span>,<span class="fl">1.</span>,<span class="op">-</span><span class="fl">1.</span>],[<span class="fl">1.</span>,<span class="fl">3.</span>,<span class="fl">2.</span>],[<span class="fl">3.</span>,<span class="op">-</span><span class="fl">1.</span>,<span class="fl">1.</span>]])</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> np.array([<span class="fl">8.</span>, <span class="fl">14.</span>, <span class="fl">2.</span>])</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Solving</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> solve(A, b)                           <span class="co"># exact solution</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>x_ls, _, _, _ <span class="op">=</span> lstsq(A[:<span class="dv">2</span>,:], b[:<span class="dv">2</span>])    <span class="co"># least squares</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Factorizations</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>P, L, U     <span class="op">=</span> lu(A)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>Q, R        <span class="op">=</span> qr(A)</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>U_s, s, VT  <span class="op">=</span> svd(A)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Eigenvalues</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>vals, vecs  <span class="op">=</span> np.linalg.eig(A)           <span class="co"># general</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>vals_sym    <span class="op">=</span> np.linalg.eigh(A)[<span class="dv">0</span>]       <span class="co"># symmetric (real, sorted)</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Matrix properties</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"det=</span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>det(A)<span class="sc">:.2f}</span><span class="ss">, rank=</span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(A)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"cond=</span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>cond(A)<span class="sc">:.4f}</span><span class="ss">, trace=</span><span class="sc">{</span>np<span class="sc">.</span>trace(A)<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"norm (Frobenius)=</span><span class="sc">{</span>norm(A,<span class="st">'fro'</span>)<span class="sc">:.4f}</span><span class="ss">, norm (2)=</span><span class="sc">{</span>norm(A,<span class="dv">2</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>det=25.00, rank=3
+cond=2.2030, trace=6.00
+norm (Frobenius)=5.5678, norm (2)=4.1175</code></pre>
+</div>
+</div>
+</section>
+<section id="quick-reference-sympy" class="level3">
+<h3 class="anchored" data-anchor-id="quick-reference-sympy">Quick Reference: SymPy</h3>
+<div id="a2dd7048" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>A_s <span class="op">=</span> sym.Matrix([[<span class="dv">4</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">3</span>]])</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Determinant:"</span>, A_s.det())</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Inverse:</span><span class="ch">\n</span><span class="st">"</span>, A_s.inv())</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvalues:"</span>, A_s.eigenvals())</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Eigenvectors:"</span>)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> val, mult, vecs <span class="kw">in</span> A_s.eigenvects():</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  λ=</span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">, multiplicity=</span><span class="sc">{</span>mult<span class="sc">}</span><span class="ss">, v=</span><span class="sc">{</span>vecs<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>rref_A, pivots <span class="op">=</span> A_s.rref()</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RREF:"</span>, rref_A)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>P_d, D_d <span class="op">=</span> A_s.diagonalize()</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Diagonalization: P=</span><span class="sc">{</span>P_d<span class="sc">}</span><span class="ss">, D=</span><span class="sc">{</span>D_d<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>null_A <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>],[<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>]]).nullspace()</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Null space: </span><span class="sc">{</span>null_A<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Determinant: 10
+Inverse:
+ Matrix([[3/10, -1/10], [-1/5, 2/5]])
+Eigenvalues: {5: 1, 2: 1}
+Eigenvectors:
+  λ=2, multiplicity=1, v=[Matrix([
+[-1/2],
+[   1]])]
+  λ=5, multiplicity=1, v=[Matrix([
+[1],
+[1]])]
+RREF: Matrix([[1, 0], [0, 1]])
+Diagonalization: P=Matrix([[-1, 1], [2, 1]]), D=Matrix([[2, 0], [0, 5]])
+Null space: [Matrix([
+[ 1],
+[-2],
+[ 1]])]</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="summary-of-key-concepts" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-key-concepts">Summary of Key Concepts</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Notation</th>
+<th>Significance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Dot product</strong></td>
+<td><span class="math inline">\(\mathbf{u}\cdot\mathbf{v}\)</span></td>
+<td>Geometry, projections, orthogonality</td>
+</tr>
+<tr class="even">
+<td><strong>Matrix-vector product</strong></td>
+<td><span class="math inline">\(A\mathbf{x}\)</span></td>
+<td>Linear transformation</td>
+</tr>
+<tr class="odd">
+<td><strong>Determinant</strong></td>
+<td><span class="math inline">\(\det(A)\)</span></td>
+<td>Invertibility, volume scaling</td>
+</tr>
+<tr class="even">
+<td><strong>Rank</strong></td>
+<td><span class="math inline">\(\text{rank}(A)\)</span></td>
+<td>Dimension of column space</td>
+</tr>
+<tr class="odd">
+<td><strong>Null space</strong></td>
+<td><span class="math inline">\(\mathcal{N}(A)\)</span></td>
+<td>Solution space of <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Eigenvalue/vector</strong></td>
+<td><span class="math inline">\(A\mathbf{v}=\lambda\mathbf{v}\)</span></td>
+<td>Invariant directions and scaling</td>
+</tr>
+<tr class="odd">
+<td><strong>LU decomposition</strong></td>
+<td><span class="math inline">\(A=PLU\)</span></td>
+<td>Solving linear systems efficiently</td>
+</tr>
+<tr class="even">
+<td><strong>QR decomposition</strong></td>
+<td><span class="math inline">\(A=QR\)</span></td>
+<td>Least squares, numerically stable</td>
+</tr>
+<tr class="odd">
+<td><strong>SVD</strong></td>
+<td><span class="math inline">\(A=U\Sigma V^T\)</span></td>
+<td>Best low-rank approx, condition number</td>
+</tr>
+<tr class="even">
+<td><strong>Condition number</strong></td>
+<td><span class="math inline">\(\kappa=\sigma_1/\sigma_r\)</span></td>
+<td>Numerical sensitivity</td>
+</tr>
+<tr class="odd">
+<td><strong>Least squares</strong></td>
+<td><span class="math inline">\(\min\|A\mathbf{c}-\mathbf{b}\|\)</span></td>
+<td>Overdetermined systems, regression</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="6c98da12" class="cell" data-execution_count="22">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python:"</span>, sys.version)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m,<span class="st">'__version__'</span>,<span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
