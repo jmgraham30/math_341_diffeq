@@ -25,7 +25,7 @@ mpl.rcParams['axes.spines.right'] = False
 
 ## Goals
 
-In this section, we will cover the following topics:
+In this section, we will:
 
 1. Introduce the notion of a differential equation and what it means to have a solution, with an emphasis on the case of ordinary differential equations (ODEs).
 
@@ -56,7 +56,7 @@ $$
 $$
 asks: *what function $y(x)$ equals its own derivative?*  Of course, the answer is $y(x) = Ce^{x}$ for any constant $C$, since $(Ce^x)' = Ce^x$!
 
-It is rare that we study a general differential equation in complete isolation. Typically, we study a specific class of equations or a specific equation that arises in a particular context or an application. (See [this list on named differential equations](https://en.wikipedia.org/wiki/List_of_named_differential_equations) to get a sense of where one can find differential equations in mathematics and its applications.)  To understand the landscape of possibilities, it is useful to classify equations according to their properties.
+It is rare that we study a general differential equation in complete isolation. Typically, we study a specific class of equations or a specific equation that arises in a particular context or an application. (See [this list on named differential equations](https://en.wikipedia.org/wiki/List_of_named_differential_equations) to get a sense of where one can find differential equations in mathematics and its applications.)  To understand the landscape of possibilities, it is useful to classify equations according to their essential characteristics.
 
 **Ordinary vs. Partial Differential Equations.** The nature of the unknown function's domain leads to the first major distinction:
 
@@ -217,12 +217,12 @@ plt.tight_layout()
 plt.show()
 ```
 
-A 1st-order ODE typically has a **one-parameter family** of solutions; a 2nd-order ODE typically has a **two-parameter family**, and so on.  Fixing all free constants yields a **particular solution**.
+**Note:** A 1st-order ODE typically has a **one-parameter family** of solutions; a 2nd-order ODE typically has a **two-parameter family**, and so on.  Fixing all free constants yields a **particular solution**.
 
 
 ### Initial Value Problems
 
-In most applications we do not just want *any* solution, we want the solution whose state (value as a function) at some initial moment matches given data.
+In most applications we do not just want *any* solution, we want the solution whose state (value as a function) at some initial moment matches given *initial* data.
 
 ::: {.callout-important}
 ## Initial Value Problem (IVP)
@@ -307,11 +307,11 @@ where $x(t)$ denotes position and dots denote time derivatives ($\dot{x} = dx/dt
 $$
 m\ddot{x} = -kx \quad \Longrightarrow \quad \ddot{x} + \omega^2 x = 0, \qquad \omega = \sqrt{k/m}.
 $$
-This is a **2nd-order, linear, homogeneous, constant-coefficient, autonomous ODE**.  Its general solution is
+This is a **2nd-order, linear, homogeneous, constant-coefficient, autonomous ODE**.  As we will later learn, its general solution is
 $$
 x(t) = A\cos(\omega t) + B\sin(\omega t),
 $$
-describing oscillation with [angular frequency](https://en.wikipedia.org/wiki/Angular_frequency) $\omega$.
+which describes oscillation with [angular frequency](https://en.wikipedia.org/wiki/Angular_frequency) $\omega$.
 
 ---
 
@@ -351,14 +351,6 @@ $$
 \dot{q} = \frac{\partial H}{\partial p}, \qquad \dot{p} = -\frac{\partial H}{\partial q}.
 $$
 
-::: {.callout-tip}
-Notice that one 2nd-order ODE has been replaced by two 1st-order ODEs.  For the SHO specifically, the system is:
-$$
-\dot{x} = \frac{p}{m}, \qquad \dot{p} = -kx.
-$$
-This is a standard and important technique: any $n$th-order ODE can be converted to a system of $n$ first-order ODEs.  We will return to this systematically in Chapter 4.
-:::
-
 **For the SHO.**  With $q = x$ and $p = m\dot{x}$:
 $$
 H = \frac{p^2}{2m} + \frac{1}{2}kq^2.
@@ -368,6 +360,14 @@ $$
 \dot{q} = \frac{\partial H}{\partial p} = \frac{p}{m}, \qquad \dot{p} = -\frac{\partial H}{\partial q} = -kq.
 $$
 Differentiating the first equation: $\ddot{q} = \dot{p}/m = -kq/m$, i.e., $\ddot{q} + \omega^2 q = 0$.  Same ODE once more.
+
+::: {.callout-tip}
+Notice that one 2nd-order ODE has been replaced by two 1st-order ODEs.  For the SHO specifically, the system is:
+$$
+\dot{x} = \frac{p}{m}, \qquad \dot{p} = -kx.
+$$
+This is a standard and important technique: any $n$th-order ODE can be converted to a system of $n$ first-order ODEs.  We will return to this systematically in Chapter 4.
+:::
 
 ---
 
@@ -442,14 +442,14 @@ The **[phase portrait](https://en.wikipedia.org/wiki/Phase_portrait)** (right pa
 
 **The RLC Circuit.** Consider a series circuit containing a resistor ($R$), inductor ($L$), and capacitor ($C$) driven by a voltage source $E(t)$.  [Kirchhoff's voltage law](https://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws) states that the sum of voltage drops around any closed loop is zero:
 $$
-V_L + V_R + V_C = E(t).
+V_L + V_R + V_C - E(t) = 0.
 $$
-With $I = dQ/dt$ where $Q$ is the charge on the capacitor, and $V_C = Q/C$, this becomes:
+With current $I = dQ/dt$ where $Q$ is the charge on the capacitor, and $V_C = Q/C$, this becomes:
 $$
 L\frac{d^2Q}{dt^2} + R\frac{dQ}{dt} + \frac{Q}{C} = E(t).
 $$
 
-This is a **2nd-order, linear ODE** with constant coefficients — *mathematically identical* in form to the damped driven harmonic oscillator!  This deep analogy between mechanical and electrical systems is one of the most beautiful and useful facts in applied mathematics.
+This is a **2nd-order, linear ODE** with constant coefficients — *mathematically identical* in form to the [damped driven harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator#Driven_harmonic_oscillators)!  This deep analogy between mechanical and electrical systems is one of the most beautiful and useful facts in applied mathematics.
 
 | Mechanical | Electrical |
 |---|---|
