@@ -113,11 +113,22 @@ $$
 
 **How to read the integral:** for fixed $t$, substitute $\tau$ for the argument of $x$ and $t-\tau$ for the argument of $y$ (flipping and shifting $y$), then integrate from $0$ to $t$.
 
-. . .
+
+## Why This Structure? — Memory and History
 
 ::: {.callout-tip}
-Think of the integral as a *weighted accumulation of history*: it combines the past values of $x$ against a time-reversed, shifted copy of $y$. This memory structure arises naturally whenever a system's current output depends on all of its past inputs — exactly the behavior encoded in a forced DE.
+Think of the integral as a *weighted accumulation of history*: it combines the past values of $x$ against a time-reversed, shifted copy of $y$.
+
+This memory structure arises naturally whenever a system's current output depends on all of its past inputs — exactly the behavior encoded in a forced differential equation.
 :::
+
+. . .
+
+**The key question** the convolution answers:
+
+> Given two transforms $X(s)$ and $Y(s)$, what time-domain function has transform equal to their *product* $X(s)\,Y(s)$?
+
+The answer — the **Convolution Theorem** — is on the next slide.
 
 
 ## The Convolution Property
@@ -384,15 +395,28 @@ Integrating $\delta_a$ against $\phi$ **picks out the value of $\phi$ at $t=a$**
 
 . . .
 
-Over a variable upper limit:
+::: {.callout-tip}
+This is the *definition* of the delta function — not a derived property. It replaces the failed pointwise definition by specifying how $\delta_a$ *acts*, not what it *equals*.
+:::
+
+
+## Sifting Property — Variable Limit and Verification
+
+**Over a variable upper limit:**
 $$\int_0^t \delta_a(\tau)\,\phi(t-\tau)\,d\tau = H(t-a)\,\phi(a).$$
+
+The integral is zero for $t < a$ (the impulse hasn't fired yet) and equals $\phi(a)$ for $t \geq a$.
 
 . . .
 
-**Verification in the velocity problem:** for $t > a$,
+**Returning to the velocity problem:** for the damped mass $mv'+v = \delta_a(t)$, $v(0)=0$, we had:
 $$v(t) = \frac{1}{m}\int_0^t e^{-(t-\tau)/m}\,\delta_a(\tau)\,d\tau = \frac{H(t-a)}{m}\,e^{-(t-a)/m}. \checkmark$$
 
-Zero before the impulse, jumps to $1/m$ at $t=a$, then decays — exactly what a sharp blow should produce.
+. . .
+
+::: {.callout-note}
+Zero before the impulse, jumps to $1/m$ at $t=a$, then decays — exactly what a sharp blow should produce. The naive pointwise definition gave zero; the sifting property gives the correct physics.
+:::
 
 
 ## Laplace Transform of $\delta_a(t)$
@@ -409,10 +433,27 @@ $$\mathscr{L}[\delta_0(t)] = 1. \qquad \mathscr{L}^{-1}[1] = \delta_0(t).$$
 
 . . .
 
-**Alternate derivation** — compute $\mathscr{L}[f_\varepsilon]$ and take $\varepsilon\to 0$:
+::: {.callout-tip}
+Notice: $\mathscr{L}[\delta_a(t)] = e^{-as}$ is exactly the same factor that the **switching property** produces for time-delayed Heaviside terms. The inversion procedure is identical — a factor $e^{-as}$ always signals a delay of $a$, whether it came from a Heaviside function or a delta function.
+:::
+
+
+## Alternate Derivation — Limiting Argument
+
+We can also compute $\mathscr{L}[\delta_a(t)]$ by transforming the rectangular approximation $f_\varepsilon$ and taking $\varepsilon\to 0$:
 
 $$\mathscr{L}[f_\varepsilon(t)] = e^{-as}\,\frac{\sinh(\varepsilon s/2)}{\varepsilon s/2}
 \xrightarrow[\varepsilon\to 0]{\text{l'Hôpital}} e^{-as}\cdot 1 = e^{-as}. \checkmark$$
+
+. . .
+
+This confirms that the distributional definition (sifting property) and the limiting definition (rectangles shrinking to a spike) give the same Laplace transform.
+
+. . .
+
+::: {.callout-note}
+The limiting argument is the most physically transparent justification: as the impulse gets sharper and shorter while keeping unit area, its transform converges to $e^{-as}$. The sifting property then provides the rigorous mathematical foundation.
+:::
 
 
 ## Solving IVPs with Delta Forcing — The Method
