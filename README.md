@@ -1,4 +1,4 @@
-# MATH 341 Differential Equations
+# MATH 341 Differential Equations Course Materials
 
 ## License
 

@@ -451,7 +451,7 @@ window.Quarto = {
 </header>
 
 
-<div id="ca1193e3" class="cell" data-execution_count="1">
+<div id="ecc645c0" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -538,7 +538,7 @@ Tip
 <h3 class="anchored" data-anchor-id="using-sympy">Using SymPy</h3>
 <p>We now confirm the above calculation symbolically using <a href="https://www.sympy.org/">SymPy</a>.</p>
 <p><strong>Define the symbols and the candidate solution.</strong></p>
-<div id="579364ad" class="cell" data-execution_count="2">
+<div id="f756e3ca" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t, A, x0 <span class="op">=</span> sym.symbols(<span class="st">'t A x_0'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.S(<span class="dv">1</span>) <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> A <span class="op">*</span> sym.exp(<span class="op">-</span>t))</span>
@@ -551,7 +551,7 @@ Tip
 </div>
 <p><strong>Verify that <span class="math inline">\(\dfrac{dx}{dt} = x(1-x)\)</span>.</strong></p>
 <p>We compute both sides and subtract; if SymPy returns <span class="math inline">\(0\)</span> the identity holds.</p>
-<div id="fb35688a" class="cell" data-execution_count="3">
+<div id="b7fe8a7c" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lhs <span class="op">=</span> sym.diff(x, t)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rhs <span class="op">=</span> x <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -580,7 +580,7 @@ Note
 </div>
 </div>
 <p><strong>Solve for <span class="math inline">\(A\)</span> from the initial condition <span class="math inline">\(x(0) = x_0\)</span>.</strong></p>
-<div id="d1010fbd" class="cell" data-execution_count="4">
+<div id="26f36c74" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ic_eq <span class="op">=</span> sym.Eq(x.subs(t, <span class="dv">0</span>), x0)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Initial condition equation:"</span>, ic_eq)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -592,7 +592,7 @@ A = (1 - x_0)/x_0</code></pre>
 </div>
 </div>
 <p><strong>Write out the particular solution and simplify.</strong></p>
-<div id="8585f3ca" class="cell" data-execution_count="5">
+<div id="8592f5c0" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x_particular <span class="op">=</span> sym.simplify(x.subs(A, A_val))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Particular solution: x(t) ="</span>, x_particular)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -605,7 +605,7 @@ A = (1 - x_0)/x_0</code></pre>
 </div>
 </div>
 <p><strong>Check once more that the particular solution satisfies the ODE.</strong></p>
-<div id="10ce76b6" class="cell" data-execution_count="6">
+<div id="7bb79fb0" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lhs_p <span class="op">=</span> sym.diff(x_particular, t)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rhs_p <span class="op">=</span> x_particular <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x_particular)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>residual_p <span class="op">=</span> sym.simplify(lhs_p <span class="op">-</span> rhs_p)</span>
@@ -679,7 +679,7 @@ Figure&nbsp;1: Solutions of <span class="math inline">\(dx/dt = x(1-x)\)</span> 
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="6140ddd9" class="cell" data-execution_count="8">
+<div id="f1288627" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
@@ -697,15 +697,15 @@ matplotlib==3.10.8</code></pre>
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
 <div class="quarto-figure quarto-figure-left">
 <figure class="figure">
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
 </figure>
 </div>
-</section>
-</section>
-<section id="reuse" class="level2">
-<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p>
 
 
