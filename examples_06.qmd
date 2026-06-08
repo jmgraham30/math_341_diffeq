@@ -1,0 +1,1023 @@
+---
+title: "Laplace Transforms — Worked Examples"
+jupyter: diffeq_py
+license: "CC BY-NC-SA 4.0"
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| label: setup
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# This is a code cell that imports the necessary libraries for our session.
+import numpy as np                        # NumPy for numerical computations
+import sympy as sym                       # SymPy for symbolic mathematics
+import matplotlib as mpl                  # Matplotlib for plotting
+import matplotlib.pyplot as plt           # Matplotlib pyplot interface
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+In this document we work through fully solved examples for the topics covered in
+Sections 3.2–3.4 of the text @logan2015first:
+
+- **§3.2** — Using **Laplace transforms** to solve initial value problems, including
+  problems with piecewise (Heaviside) forcing functions and partial-fraction
+  inversion.
+- **§3.3** — The **convolution property** of the Laplace transform and its use in
+  inverting products of transforms and expressing solutions with arbitrary forcing.
+- **§3.4** — **Impulsive (delta-function) forcing** — modeling instantaneous kicks,
+  solving IVPs containing $\delta_a(t)$, and interpreting the impulse response.
+
+Each example is worked "by hand" first and then verified using
+[SymPy](https://www.sympy.org/).
+
+---
+
+## §3.2 Solving IVPs with Laplace Transforms
+
+The central strategy is:
+
+1. Take the Laplace transform of both sides of the ODE, using the derivative rule
+   $\mathcal{L}[x''] = s^2 X - sx(0) - x'(0)$ to incorporate initial conditions
+   algebraically.
+2. Solve the resulting algebraic equation for $X(s)$.
+3. Invert $X(s)$ — using partial fractions, the shift theorems, or convolution — to
+   recover $x(t)$.
+
+---
+
+### Example 1 — Partial Fractions and a Repeated Factor {#example-1}
+
+> Solve the initial value problem
+> $$x'' + 4x' + 4x = 8e^{t}, \qquad x(0) = 1,\quad x'(0) = 0.$$
+
+#### By Hand {#ex1-by-hand}
+
+**Step 1 — Take the Laplace transform.**
+
+Let $X(s) = \mathcal{L}[x(t)]$.  Applying the transform and inserting the initial
+conditions gives
+$$
+\bigl[s^2 X - s(1) - 0\bigr] + 4\bigl[sX - 1\bigr] + 4X = \frac{8}{s - 1}.
+$$
+
+Collecting terms:
+$$
+(s^2 + 4s + 4)\,X = \frac{8}{s-1} + s + 4.
+$$
+
+Note that $s^2 + 4s + 4 = (s+2)^2$, so
+$$
+X(s) = \frac{8}{(s-1)(s+2)^2} + \frac{s + 4}{(s+2)^2}.
+$$
+
+**Step 2 — Partial fractions for the first term.**
+
+Write
+$$
+\frac{8}{(s-1)(s+2)^2} = \frac{A}{s-1} + \frac{B}{s+2} + \frac{C}{(s+2)^2}.
+$$
+
+Multiplying through by $(s-1)(s+2)^2$:
+$$
+8 = A(s+2)^2 + B(s-1)(s+2) + C(s-1).
+$$
+
+- Set $s = 1$: $\;8 = A(9) \Rightarrow A = \dfrac{8}{9}$.
+- Set $s = -2$: $\;8 = C(-3) \Rightarrow C = -\dfrac{8}{3}$.
+- Expand and match the $s^2$ coefficient: $0 = A + B \Rightarrow B = -\dfrac{8}{9}$.
+
+So
+$$
+\frac{8}{(s-1)(s+2)^2} = \frac{8/9}{s-1} - \frac{8/9}{s+2} - \frac{8/3}{(s+2)^2}.
+$$
+
+**Step 3 — Handle the second term.**
+
+$$
+\frac{s+4}{(s+2)^2} = \frac{(s+2)+2}{(s+2)^2} = \frac{1}{s+2} + \frac{2}{(s+2)^2}.
+$$
+
+**Step 4 — Combine and invert.**
+
+$$
+X(s) = \frac{8/9}{s-1} + \left(-\frac{8}{9}+1\right)\frac{1}{s+2}
+        + \left(-\frac{8}{3}+2\right)\frac{1}{(s+2)^2}.
+$$
+
+$$
+X(s) = \frac{8/9}{s-1} + \frac{1/9}{s+2} - \frac{2/3}{(s+2)^2}.
+$$
+
+Using $\mathcal{L}^{-1}\!\left[\dfrac{1}{(s+2)^2}\right] = te^{-2t}$:
+
+$$
+\boxed{x(t) = \frac{8}{9}\,e^{t} + \frac{1}{9}\,e^{-2t} - \frac{2}{3}\,t e^{-2t}.}
+$$
+
+::: {.callout-tip}
+**Sanity check.**  Evaluate at $t = 0$: $x(0) = \tfrac{8}{9} + \tfrac{1}{9} = 1$ ✓.
+Differentiating and evaluating: $x'(0) = \tfrac{8}{9} - \tfrac{2}{9} - \tfrac{2}{3} = 0$ ✓.
+:::
+
+#### Using SymPy {#ex1-sympy}
+
+```{python}
+#| label: ex1-sympy
+
+t, s = sym.symbols('t s', real=True)
+x = sym.Function('x')
+
+ode1 = sym.Eq(x(t).diff(t, 2) + 4*x(t).diff(t) + 4*x(t), 8*sym.exp(t))
+
+# Particular solution
+part1 = sym.dsolve(ode1, x(t), ics={x(0): 1, x(t).diff(t).subs(t, 0): 0})
+display(Math(r'\text{Particular solution: }\quad' + sym.latex(part1)))
+
+# Verify via Laplace transform
+X = sym.Function('X')
+Xs = sym.Symbol('X_s')
+
+# Compute the Laplace transform of the solution and confirm
+sol_expr = part1.rhs
+lap = sym.laplace_transform(sol_expr, t, s, noconds=True)
+display(Math(r'X(s) = ' + sym.latex(sym.simplify(lap))))
+```
+
+```{python}
+#| label: fig-ex1
+#| fig-cap: "Solution of $x'' + 4x' + 4x = 8e^t$ with $x(0)=1$, $x'(0)=0$.  The decaying homogeneous part (dashed) and the growing exponential drive the solution upward for large $t$."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 2.5, 500)
+x_sol = (8/9)*np.exp(t_vals) + (1/9)*np.exp(-2*t_vals) - (2/3)*t_vals*np.exp(-2*t_vals)
+x_hom = (1/9)*np.exp(-2*t_vals) - (2/3)*t_vals*np.exp(-2*t_vals)
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(t_vals, x_sol, color='tomato',    lw=2.2, label=r'$x(t)$ (full solution)')
+ax.plot(t_vals, x_hom, color='steelblue', lw=1.4, ls='--',
+        label=r'Homogeneous part $\frac{1}{9}e^{-2t}-\frac{2}{3}te^{-2t}$')
+ax.plot(0, 1, 'ko', ms=6, zorder=5)
+ax.axhline(0, color='gray', lw=0.8)
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'$x$', fontsize=13)
+ax.set_title(r"$x'' + 4x' + 4x = 8e^t$", fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 2 — Piecewise (Heaviside) Forcing {#example-2}
+
+> Solve the initial value problem
+> $$x'' + 9x = f(t), \qquad x(0) = 0,\quad x'(0) = 0,$$
+> where the forcing is the rectangular pulse
+> $$f(t) = H(t-1) - H(t-4).$$
+
+#### By Hand {#ex2-by-hand}
+
+**Step 1 — Laplace transform of $f(t)$.**
+
+By the second shifting theorem, $\mathcal{L}[H(t-a)] = e^{-as}/s$, so
+$$
+F(s) = \frac{e^{-s} - e^{-4s}}{s}.
+$$
+
+**Step 2 — Transform the ODE.**
+
+With zero initial conditions, $(s^2 + 9)X(s) = F(s)$, giving
+$$
+X(s) = \frac{e^{-s} - e^{-4s}}{s(s^2+9)}.
+$$
+
+**Step 3 — Invert the base function.**
+
+Define $G(s) = \dfrac{1}{s(s^2+9)}$.  By partial fractions,
+$$
+\frac{1}{s(s^2+9)} = \frac{A}{s} + \frac{Bs + C}{s^2+9}.
+$$
+
+Multiplying through: $1 = A(s^2+9) + (Bs+C)s$.
+
+- $s=0$: $1 = 9A \Rightarrow A = \tfrac{1}{9}$.
+- Coefficient of $s^2$: $0 = A + B \Rightarrow B = -\tfrac{1}{9}$.
+- Coefficient of $s^1$: $0 = C$.
+
+So
+$$
+G(s) = \frac{1/9}{s} - \frac{s/9}{s^2+9},
+\qquad
+g(t) = \mathcal{L}^{-1}[G(s)] = \frac{1}{9}(1 - \cos 3t).
+$$
+
+**Step 4 — Apply the second shifting theorem.**
+
+Since $X(s) = e^{-s}G(s) - e^{-4s}G(s)$, we get
+$$
+x(t) = g(t-1)\,H(t-1) - g(t-4)\,H(t-4).
+$$
+
+Substituting $g$:
+$$
+\boxed{x(t) = \frac{1}{9}\bigl[1 - \cos 3(t-1)\bigr]H(t-1)
+             - \frac{1}{9}\bigl[1 - \cos 3(t-4)\bigr]H(t-4).}
+$$
+
+::: {.callout-note}
+**Physical interpretation.**  The system starts at rest.  At $t=1$ the unit
+forcing switches on and drives oscillation.  At $t=4$ the forcing switches
+off; thereafter the system oscillates freely at its natural frequency $\omega_0 = 3$
+with an amplitude determined by the state at $t=4$.
+:::
+
+#### Using SymPy {#ex2-sympy}
+
+```{python}
+#| label: ex2-sympy
+
+# Define Heaviside forcing
+f2 = sym.Heaviside(t - 1) - sym.Heaviside(t - 4)
+ode2 = sym.Eq(x(t).diff(t, 2) + 9*x(t), f2)
+
+part2 = sym.dsolve(ode2, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 0})
+display(Math(r'\text{Particular solution: }\quad' + sym.latex(part2)))
+```
+
+```{python}
+#| label: fig-ex2
+#| fig-cap: "Response of $x''+9x=0$ to a rectangular pulse on $[1,4]$.  Before $t=1$ the system is at rest; the pulse drives oscillation, which continues freely after $t=4$."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 10, 1000)
+
+def g(tau):
+    return (1/9)*(1 - np.cos(3*tau))
+
+x_sol = (g(t_vals - 1)*(t_vals >= 1).astype(float)
+         - g(t_vals - 4)*(t_vals >= 4).astype(float))
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(t_vals, x_sol, color='tomato', lw=2)
+ax.axvspan(1, 4, alpha=0.12, color='steelblue', label='Forcing active')
+ax.axhline(0, color='gray', lw=0.8)
+ax.axvline(1, color='steelblue', lw=1, ls='--')
+ax.axvline(4, color='steelblue', lw=1, ls='--')
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'$x$', fontsize=13)
+ax.set_title(r"$x'' + 9x = H(t-1) - H(t-4)$, $\;x(0)=x'(0)=0$", fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 3 — Complex Roots and the First Shifting Theorem {#example-3}
+
+> Solve the initial value problem
+> $$x'' - 2x' + 5x = 0, \qquad x(0) = 0,\quad x'(0) = 4.$$
+
+#### By Hand {#ex3-by-hand}
+
+**Step 1 — Transform the ODE.**
+
+$$
+s^2 X - s(0) - 4 - 2(sX - 0) + 5X = 0.
+$$
+$$
+(s^2 - 2s + 5)\,X = 4.
+$$
+$$
+X(s) = \frac{4}{s^2 - 2s + 5}.
+$$
+
+**Step 2 — Complete the square in the denominator.**
+
+$$
+s^2 - 2s + 5 = (s-1)^2 + 4.
+$$
+
+So
+$$
+X(s) = \frac{4}{(s-1)^2 + 4} = 2 \cdot \frac{2}{(s-1)^2 + 2^2}.
+$$
+
+**Step 3 — Apply the first shifting theorem.**
+
+Recall $\mathcal{L}[e^{at}\sin(\omega t)] = \dfrac{\omega}{(s-a)^2 + \omega^2}$.  With
+$a = 1$ and $\omega = 2$:
+
+$$
+\boxed{x(t) = 2\,e^{t}\sin(2t).}
+$$
+
+::: {.callout-tip}
+**Characteristic equation check.**  The roots of $r^2 - 2r + 5 = 0$ are
+$r = 1 \pm 2i$.  Since $\alpha = 1 > 0$, the homogeneous solutions grow in
+amplitude — the system is **unstable**.  This is visible in the plot.
+:::
+
+#### Using SymPy {#ex3-sympy}
+
+```{python}
+#| label: ex3-sympy
+
+ode3 = sym.Eq(x(t).diff(t, 2) - 2*x(t).diff(t) + 5*x(t), 0)
+
+part3 = sym.dsolve(ode3, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 4})
+display(Math(r'\text{Particular solution: }\quad' + sym.latex(part3)))
+```
+
+```{python}
+#| label: fig-ex3
+#| fig-cap: "Solution of $x''-2x'+5x=0$ with $x(0)=0$, $x'(0)=4$.  The factor $e^t$ causes the oscillation to grow without bound — the zero equilibrium is unstable."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 3, 600)
+x_sol  = 2*np.exp(t_vals)*np.sin(2*t_vals)
+env    = 2*np.exp(t_vals)
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(t_vals,  env, color='steelblue', lw=1, ls='--', label=r'$\pm 2e^t$ (envelope)')
+ax.plot(t_vals, -env, color='steelblue', lw=1, ls='--')
+ax.plot(t_vals, x_sol, color='tomato', lw=2, label=r'$x(t)=2e^t\sin 2t$')
+ax.axhline(0, color='gray', lw=0.8)
+ax.plot(0, 0, 'ko', ms=6, zorder=5)
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'$x$', fontsize=13)
+ax.set_title(r"$x'' - 2x' + 5x = 0$, $\;x(0)=0$, $\;x'(0)=4$", fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## §3.3 The Convolution Property
+
+If $\mathcal{L}[f] = F(s)$ and $\mathcal{L}[g] = G(s)$, then
+$$
+\mathcal{L}^{-1}[F(s)\,G(s)] = (f * g)(t) = \int_0^t f(\tau)\,g(t-\tau)\,d\tau.
+$$
+This is particularly useful when inverting a product $X(s) = H(s)\,F(s)$, where
+$H(s)$ is a system's **transfer function** and $F(s)$ is the transform of the input.
+
+---
+
+### Example 4 — Inverting a Product via Convolution {#example-4}
+
+> Use the convolution theorem to compute
+> $$\mathcal{L}^{-1}\!\left[\frac{s}{(s^2+4)^2}\right].$$
+
+#### By Hand {#ex4-by-hand}
+
+**Step 1 — Factor the transform.**
+
+Write
+$$
+\frac{s}{(s^2+4)^2} = \frac{s}{s^2+4} \cdot \frac{1}{s^2+4}
+= F(s)\,G(s),
+$$
+where
+$$
+F(s) = \frac{s}{s^2+4}, \qquad G(s) = \frac{1}{s^2+4}.
+$$
+
+**Step 2 — Identify the inverse transforms.**
+
+From standard tables, with $\omega = 2$:
+$$
+f(t) = \cos 2t, \qquad g(t) = \frac{1}{2}\sin 2t.
+$$
+
+**Step 3 — Evaluate the convolution integral.**
+
+$$
+(f * g)(t) = \int_0^t \cos(2\tau)\cdot \frac{1}{2}\sin 2(t-\tau)\,d\tau.
+$$
+
+Use the product-to-sum identity
+$\cos A \sin B = \tfrac{1}{2}[\sin(A+B) - \sin(A-B)]$
+with $A = 2\tau$, $B = 2(t-\tau)$:
+$$
+\cos(2\tau)\sin(2t-2\tau) = \frac{1}{2}\bigl[\sin(2t) - \sin(4\tau - 2t)\bigr].
+$$
+
+So
+$$
+(f*g)(t)
+= \frac{1}{2}\int_0^t \frac{1}{2}\bigl[\sin(2t) - \sin(4\tau-2t)\bigr]d\tau
+= \frac{1}{4}\left[t\sin(2t) + \frac{1}{4}\cos(4\tau-2t)\Big|_0^t\right].
+$$
+
+Evaluating the boundary terms:
+$$
+\cos(4t-2t) - \cos(-2t) = \cos(2t) - \cos(2t) = 0.
+$$
+
+Therefore
+$$
+\boxed{\mathcal{L}^{-1}\!\left[\frac{s}{(s^2+4)^2}\right] = \frac{t}{4}\sin(2t).}
+$$
+
+::: {.callout-note}
+**Alternative derivation.**  This result also follows from the transform formula
+$\mathcal{L}[t\sin(\omega t)] = \dfrac{2\omega s}{(s^2+\omega^2)^2}$ with $\omega = 2$:
+$$
+\mathcal{L}\!\left[\frac{t}{4}\sin 2t\right] = \frac{1}{4}\cdot\frac{4s}{(s^2+4)^2}
+= \frac{s}{(s^2+4)^2}. \checkmark
+$$
+:::
+
+#### Using SymPy {#ex4-sympy}
+
+```{python}
+#| label: ex4-sympy
+
+# Verify via inverse Laplace transform
+expr4 = s / (s**2 + 4)**2
+inv4  = sym.inverse_laplace_transform(expr4, s, t)
+display(Math(r'\mathcal{L}^{-1}\!\left[\frac{s}{(s^2+4)^2}\right] = '
+            + sym.latex(sym.simplify(inv4))))
+
+# Verify via convolution
+f4 = sym.cos(2*t)
+g4 = sym.sin(2*t) / 2
+conv4 = sym.integrate(f4.subs(t, sym.Symbol('tau'))
+                      * g4.subs(t, t - sym.Symbol('tau')),
+                      (sym.Symbol('tau'), 0, t))
+display(Math(r'(f * g)(t) = ' + sym.latex(sym.simplify(conv4))))
+```
+
+```{python}
+#| label: fig-ex4
+#| fig-cap: "The inverse transform $x(t)=\\tfrac{t}{4}\\sin(2t)$.  Like the resonance case, the amplitude envelope (dashed) grows linearly — this is the signature of a repeated pole on the imaginary axis."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 5*np.pi, 800)
+x_sol  = (t_vals/4)*np.sin(2*t_vals)
+env    = t_vals/4
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(t_vals,  env, color='steelblue', lw=1, ls='--', label=r'$\pm t/4$ (envelope)')
+ax.plot(t_vals, -env, color='steelblue', lw=1, ls='--')
+ax.plot(t_vals, x_sol, color='tomato', lw=2,
+        label=r'$\frac{t}{4}\sin 2t$')
+ax.axhline(0, color='gray', lw=0.8)
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'', fontsize=13)
+ax.set_title(r"$\mathcal{L}^{-1}\!\left[s/(s^2+4)^2\right] = (t/4)\sin 2t$",
+             fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 5 — Solution Formula for an Arbitrary Input {#example-5}
+
+> Use the Laplace transform and the convolution property to express the solution of
+> $$x'' + 6x' + 10x = f(t), \qquad x(0) = 0,\quad x'(0) = 0,$$
+> as a convolution integral for any input $f$.  Then evaluate the solution for the
+> specific case $f(t) = e^{-3t}$.
+
+#### By Hand {#ex5-by-hand}
+
+**Step 1 — Transform and solve for $X(s)$.**
+
+With zero initial conditions:
+$$
+(s^2 + 6s + 10)\,X(s) = F(s),
+\qquad
+X(s) = \underbrace{\frac{1}{s^2+6s+10}}_{H(s)}\,F(s).
+$$
+
+$H(s)$ is the **transfer function** of the system.
+
+**Step 2 — Invert the transfer function.**
+
+Complete the square: $s^2+6s+10 = (s+3)^2 + 1$.  By the first shifting theorem,
+
+$$
+h(t) = \mathcal{L}^{-1}\!\left[\frac{1}{(s+3)^2+1}\right] = e^{-3t}\sin t.
+$$
+
+This is the **impulse response** of the system.
+
+**Step 3 — Write the convolution formula.**
+
+By the convolution theorem,
+$$
+\boxed{x(t) = (h * f)(t) = \int_0^t e^{-3\tau}\sin\tau\cdot f(t-\tau)\,d\tau.}
+$$
+
+**Step 4 — Specific case $f(t) = e^{-3t}$.**
+
+$$
+x(t) = \int_0^t e^{-3\tau}\sin\tau\cdot e^{-3(t-\tau)}\,d\tau
+       = e^{-3t}\int_0^t \sin\tau\,d\tau
+       = e^{-3t}\bigl[-\cos\tau\bigr]_0^t
+       = e^{-3t}(1 - \cos t).
+$$
+
+$$
+\boxed{x(t) = e^{-3t}(1-\cos t).}
+$$
+
+::: {.callout-tip}
+**Verification.**  At $t=0$: $x(0) = e^0(1-1) = 0$ ✓.  Differentiating and
+evaluating at $t=0$ gives $x'(0) = 0$ ✓.
+:::
+
+#### Using SymPy {#ex5-sympy}
+
+```{python}
+#| label: ex5-sympy
+
+# General case: impulse response
+H_expr = 1 / (s**2 + 6*s + 10)
+h_t = sym.inverse_laplace_transform(H_expr, s, t)
+display(Math(r'h(t) = \mathcal{L}^{-1}[H(s)] = ' + sym.latex(sym.simplify(h_t))))
+
+# Specific case f(t) = e^{-3t}
+f5 = sym.exp(-3*t)
+ode5 = sym.Eq(x(t).diff(t, 2) + 6*x(t).diff(t) + 10*x(t), f5)
+part5 = sym.dsolve(ode5, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 0})
+display(Math(r'\text{Solution for }f(t)=e^{-3t}:\quad' + sym.latex(part5)))
+
+# Verify via convolution integral
+tau = sym.Symbol('tau', positive=True)
+conv5 = sym.integrate(
+    sym.exp(-3*tau)*sym.sin(tau)*sym.exp(-3*(t - tau)),
+    (tau, 0, t)
+)
+display(Math(r'\text{Via convolution: }x(t) = ' + sym.latex(sym.simplify(conv5))))
+```
+
+```{python}
+#| label: fig-ex5
+#| fig-cap: "Solution of $x''+6x'+10x = e^{-3t}$ with zero initial conditions.  The system is stable (characteristic roots $-3\\pm i$ have negative real part), so the response decays to zero."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 5, 600)
+x_sol  = np.exp(-3*t_vals)*(1 - np.cos(t_vals))
+h_vals = np.exp(-3*t_vals)*np.sin(t_vals)
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(t_vals, h_vals, color='steelblue', lw=1.4, ls='--',
+        label=r'Impulse response $h(t) = e^{-3t}\sin t$')
+ax.plot(t_vals, x_sol, color='tomato', lw=2,
+        label=r'$x(t) = e^{-3t}(1-\cos t)$')
+ax.axhline(0, color='gray', lw=0.8)
+ax.plot(0, 0, 'ko', ms=6, zorder=5)
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'$x$', fontsize=13)
+ax.set_title(r"$x'' + 6x' + 10x = e^{-3t}$, $\;x(0)=x'(0)=0$", fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 6 — Computing a Convolution Directly {#example-6}
+
+> Compute the convolution $f * g$ where $f(t) = t$ and $g(t) = e^{2t}$.
+
+#### By Hand {#ex6-by-hand}
+
+By definition,
+$$
+(f * g)(t) = \int_0^t \tau\, e^{2(t-\tau)}\,d\tau = e^{2t}\int_0^t \tau e^{-2\tau}\,d\tau.
+$$
+
+Integrate by parts with $u = \tau$, $dv = e^{-2\tau}d\tau$:
+$$
+\int_0^t \tau e^{-2\tau}\,d\tau
+= \left[-\frac{\tau}{2}e^{-2\tau}\right]_0^t + \frac{1}{2}\int_0^t e^{-2\tau}\,d\tau
+= -\frac{t}{2}e^{-2t} + \frac{1}{2}\left[-\frac{1}{2}e^{-2\tau}\right]_0^t.
+$$
+$$
+= -\frac{t}{2}e^{-2t} - \frac{1}{4}e^{-2t} + \frac{1}{4}.
+$$
+
+Multiplying by $e^{2t}$:
+$$
+\boxed{(t * e^{2t})(t) = -\frac{t}{2} - \frac{1}{4} + \frac{1}{4}e^{2t}
+= \frac{e^{2t} - 2t - 1}{4}.}
+$$
+
+**Verification via transforms.**
+
+$\mathcal{L}[t] = \dfrac{1}{s^2}$ and $\mathcal{L}[e^{2t}] = \dfrac{1}{s-2}$, so
+$$
+\mathcal{L}[f*g] = \frac{1}{s^2(s-2)}.
+$$
+
+Partial fractions: $\dfrac{1}{s^2(s-2)} = \dfrac{-1/2}{s} + \dfrac{-1/4}{s^2} + \dfrac{1/4}{s-2}$,
+giving inverse transform $-\tfrac{1}{2} - \tfrac{t}{4} + \tfrac{1}{4}e^{2t}$... wait, let's redo carefully.
+
+$$
+\frac{1}{s^2(s-2)} = \frac{A}{s} + \frac{B}{s^2} + \frac{C}{s-2}.
+$$
+Multiply: $1 = As(s-2) + B(s-2) + Cs^2$.
+- $s=0$: $1 = -2B \Rightarrow B = -\tfrac{1}{2}$.
+- $s=2$: $1 = 4C \Rightarrow C = \tfrac{1}{4}$.
+- $s^2$-coefficient: $0 = A + C \Rightarrow A = -\tfrac{1}{4}$.
+
+$$
+\mathcal{L}^{-1}\!\left[\frac{1}{s^2(s-2)}\right]
+= -\frac{1}{4} - \frac{t}{2} + \frac{1}{4}e^{2t}
+= \frac{e^{2t} - 2t - 1}{4}. \checkmark
+$$
+
+#### Using SymPy {#ex6-sympy}
+
+```{python}
+#| label: ex6-sympy
+
+tau = sym.Symbol('tau', positive=True)
+f6  = tau
+g6  = sym.exp(2*(t - tau))
+
+conv6 = sym.integrate(f6 * g6, (tau, 0, t))
+conv6 = sym.simplify(conv6)
+display(Math(r'(t * e^{2t})(t) = ' + sym.latex(conv6)))
+
+# Cross-check via Laplace
+lap_check = sym.laplace_transform(conv6, t, s, noconds=True)
+display(Math(r'\mathcal{L}[(f*g)(t)] = ' + sym.latex(sym.simplify(lap_check))
+            + r' \quad \text{(should equal } 1/(s^2(s-2))\text{)}'))
+```
+
+---
+
+## §3.4 Impulsive Sources
+
+The **Dirac delta** $\delta_a(t)$ models a unit impulse applied at time $t = a$.  Its
+key properties are:
+
+$$
+\int_{-\infty}^{\infty} \delta_a(t)\,dt = 1,
+\qquad
+\int_{-\infty}^{\infty} \varphi(t)\,\delta_a(t)\,dt = \varphi(a),
+\qquad
+\mathcal{L}[\delta_a(t)] = e^{-as}.
+$$
+
+When $a = 0$ we write $\delta(t)$ for short.
+
+---
+
+### Example 7 — A Single Impulse with Nonzero Initial Conditions {#example-7}
+
+> Solve the initial value problem
+> $$x'' + 4x' + 5x = \delta_3(t), \qquad x(0) = 1,\quad x'(0) = -2.$$
+
+#### By Hand {#ex7-by-hand}
+
+**Step 1 — Transform the ODE.**
+
+$$
+\bigl[s^2 X - s - (-2)\bigr] + 4\bigl[sX - 1\bigr] + 5X = e^{-3s}.
+$$
+$$
+(s^2 + 4s + 5)\,X = e^{-3s} + s + 2.
+$$
+
+(Note $-(-2) = +2$ from the $x'(0)$ term in $\mathcal{L}[x''] = s^2X - sx(0) - x'(0)$.)
+
+$$
+X(s) = \frac{e^{-3s}}{s^2+4s+5} + \frac{s+2}{s^2+4s+5}.
+$$
+
+**Step 2 — Complete the square.**
+
+$$
+s^2 + 4s + 5 = (s+2)^2 + 1.
+$$
+
+**Step 3 — Invert each term.**
+
+For the homogeneous part:
+$$
+\frac{s+2}{(s+2)^2+1} \xrightarrow{\mathcal{L}^{-1}} e^{-2t}\cos t.
+$$
+
+For the impulse part, using the second shifting theorem:
+$$
+\frac{e^{-3s}}{(s+2)^2+1} \xrightarrow{\mathcal{L}^{-1}}
+e^{-2(t-3)}\sin(t-3)\cdot H(t-3).
+$$
+
+**Step 4 — Write the full solution.**
+
+$$
+\boxed{x(t) = e^{-2t}\cos t + e^{-2(t-3)}\sin(t-3)\,H(t-3).}
+$$
+
+::: {.callout-note}
+**Structure of the solution.**  For $0 \le t < 3$, the system evolves freely from the
+initial conditions: $x(t) = e^{-2t}\cos t$.  At $t = 3$ the impulse instantaneously
+adds momentum to the system.  For $t > 3$ the impulse response $e^{-2(t-3)}\sin(t-3)$
+is superimposed on the decaying free response.
+:::
+
+#### Using SymPy {#ex7-sympy}
+
+```{python}
+#| label: ex7-sympy
+
+f7 = sym.DiracDelta(t - 3)
+ode7 = sym.Eq(x(t).diff(t, 2) + 4*x(t).diff(t) + 5*x(t), f7)
+
+part7 = sym.dsolve(ode7, x(t), ics={x(0): 1, x(t).diff(t).subs(t, 0): -2})
+display(Math(r'\text{Particular solution: }\quad' + sym.latex(part7)))
+```
+
+```{python}
+#| label: fig-ex7
+#| fig-cap: "Solution of $x''+4x'+5x=\\delta_3(t)$ with $x(0)=1$, $x'(0)=-2$.  The free response (dashed) decays until the impulse at $t=3$ kicks the system, adding a new damped oscillation (dotted). The full solution (solid red) is their sum."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 10, 1000)
+
+free_resp   = np.exp(-2*t_vals)*np.cos(t_vals)
+impulse_resp = (np.exp(-2*(t_vals - 3))*np.sin(t_vals - 3)
+                * (t_vals >= 3).astype(float))
+x_full = free_resp + impulse_resp
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(t_vals, free_resp,    color='steelblue', lw=1.4, ls='--',
+        label=r'Free response $e^{-2t}\cos t$')
+ax.plot(t_vals, impulse_resp, color='seagreen',  lw=1.4, ls=':',
+        label=r'Impulse response $e^{-2(t-3)}\sin(t-3)\,H(t-3)$')
+ax.plot(t_vals, x_full,       color='tomato',    lw=2,
+        label=r'Full solution $x(t)$')
+ax.axvline(3, color='gray', lw=1, ls='--', alpha=0.6)
+ax.annotate(r'Impulse at $t=3$', xy=(3, 0.08), xytext=(4, 0.35),
+            fontsize=10, arrowprops=dict(arrowstyle='->', color='gray'))
+ax.axhline(0, color='gray', lw=0.8)
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'$x$', fontsize=13)
+ax.set_title(r"$x'' + 4x' + 5x = \delta_3(t)$, $\;x(0)=1$, $\;x'(0)=-2$",
+             fontsize=13)
+ax.legend(fontsize=9, loc='upper right')
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 8 — Repeated Impulses and Resonance {#example-8}
+
+> Solve the initial value problem
+> $$x'' + \pi^2 x = \delta_1(t) + \delta_2(t), \qquad x(0) = 0,\quad x'(0) = 0,$$
+> plot the response, and describe what happens physically.
+
+#### By Hand {#ex8-by-hand}
+
+**Step 1 — Transform.**
+
+With zero initial conditions:
+$$
+(s^2 + \pi^2)X(s) = e^{-s} + e^{-2s}.
+$$
+$$
+X(s) = \frac{e^{-s} + e^{-2s}}{s^2 + \pi^2}.
+$$
+
+**Step 2 — Identify the impulse response.**
+
+The inverse transform of $\dfrac{1}{s^2+\pi^2} = \dfrac{1}{\pi}\cdot\dfrac{\pi}{s^2+\pi^2}$
+is $h(t) = \dfrac{1}{\pi}\sin(\pi t)$.
+
+**Step 3 — Apply the second shifting theorem.**
+
+$$
+x(t) = \frac{1}{\pi}\sin\pi(t-1)\,H(t-1) + \frac{1}{\pi}\sin\pi(t-2)\,H(t-2).
+$$
+
+Note that $\sin\pi(t-2) = \sin(\pi t - 2\pi) = \sin(\pi t)$.  Therefore for $t > 2$:
+$$
+x(t) = \frac{1}{\pi}\sin\pi(t-1) + \frac{1}{\pi}\sin(\pi t)
+      = \frac{1}{\pi}\bigl[\sin(\pi t - \pi) + \sin(\pi t)\bigr].
+$$
+
+Since $\sin(\pi t - \pi) = -\sin(\pi t)$, the two terms **cancel** for $t > 2$:
+
+$$
+x(t) =
+\begin{cases}
+0, & 0 \le t < 1, \\
+\dfrac{1}{\pi}\sin\pi(t-1), & 1 \le t < 2, \\
+0, & t \ge 2.
+\end{cases}
+$$
+
+$$
+\boxed{x(t) = \frac{1}{\pi}\sin\pi(t-1)\,H(t-1)
+             + \frac{1}{\pi}\sin\pi(t-2)\,H(t-2).}
+$$
+
+::: {.callout-tip}
+**Anti-resonance.**  Even though each impulse excites oscillation at the natural
+frequency $\omega_0 = \pi$, the second impulse arrives exactly one period later and
+cancels the ongoing oscillation entirely.  This is the principle behind **vibration
+cancellation** — an impulse timed correctly can null out the response from an earlier
+impulse.
+:::
+
+#### Using SymPy {#ex8-sympy}
+
+```{python}
+#| label: ex8-sympy
+
+import sympy as sym
+
+t = sym.Symbol('t', positive=True)
+x = sym.Function('x')
+
+f8 = sym.DiracDelta(t - 1) + sym.DiracDelta(t - 2)
+ode8 = sym.Eq(x(t).diff(t, 2) + sym.pi**2 * x(t), f8)
+
+part8 = sym.dsolve(ode8, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 0})
+display(Math(r'\text{Particular solution: }\quad' + sym.latex(part8)))
+```
+
+```{python}
+#| label: fig-ex8
+#| fig-cap: "Response to two impulses at $t=1$ and $t=2$.  The first impulse excites oscillation at the natural frequency $\\omega_0 = \\pi$.  The second impulse, arriving exactly one period later, cancels the motion completely for $t > 2$."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 5, 1000)
+pi = np.pi
+
+x_sol = (
+    (1/pi)*np.sin(pi*(t_vals - 1)) * (t_vals >= 1).astype(float)
+  + (1/pi)*np.sin(pi*(t_vals - 2)) * (t_vals >= 2).astype(float)
+)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(t_vals, x_sol, color='tomato', lw=2, label=r'$x(t)$')
+ax.axvline(1, color='steelblue', lw=1.5, ls='--', alpha=0.7,
+           label=r'Impulse at $t=1$')
+ax.axvline(2, color='seagreen',  lw=1.5, ls='--', alpha=0.7,
+           label=r'Impulse at $t=2$')
+ax.axhline(0, color='gray', lw=0.8)
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'$x$', fontsize=13)
+ax.set_title(r"$x'' + \pi^2 x = \delta_1(t)+\delta_2(t)$, $\;x(0)=x'(0)=0$",
+             fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 9 — Transfer Function and Impulse Response {#example-9}
+
+> For the system
+> $$x'' + 2x' + 2x = f(t), \qquad x(0) = x'(0) = 0,$$
+> **(a)** find the transfer function $H(s)$, **(b)** find the impulse response $h(t)$,
+> and **(c)** use convolution to find the response to the input $f(t) = H(t-2)$
+> (a unit step switched on at $t=2$).
+
+#### By Hand {#ex9-by-hand}
+
+**Part (a) — Transfer function.**
+
+Taking the Laplace transform with zero ICs:
+$$
+(s^2 + 2s + 2)\,X(s) = F(s)
+\;\Longrightarrow\;
+H(s) = \frac{X(s)}{F(s)} = \frac{1}{s^2+2s+2}.
+$$
+
+**Part (b) — Impulse response.**
+
+Complete the square: $s^2+2s+2 = (s+1)^2+1$.  By the first shifting theorem,
+$$
+h(t) = \mathcal{L}^{-1}\!\left[\frac{1}{(s+1)^2+1}\right] = e^{-t}\sin t.
+$$
+
+**Part (c) — Step response (delayed step input).**
+
+For input $f(t) = H(t-2)$ we use the convolution formula $x(t) = (h*f)(t)$.
+
+For $t < 2$: the Heaviside factor ensures $f(t-\tau) = H(t-\tau-2) = 0$ when
+$\tau > t-2$, and since $t < 2$ this is zero for all $\tau \ge 0$, so $x(t) = 0$.
+
+For $t \ge 2$:
+$$
+x(t) = \int_0^{t-2} e^{-\tau}\sin\tau\,d\tau.
+$$
+
+Using the standard result $\displaystyle\int e^{-\tau}\sin\tau\,d\tau =
+-\tfrac{1}{2}e^{-\tau}(\sin\tau + \cos\tau) + C$:
+
+$$
+x(t) = \left[-\frac{1}{2}e^{-\tau}(\sin\tau+\cos\tau)\right]_0^{t-2}
+= \frac{1}{2} - \frac{1}{2}e^{-(t-2)}\bigl[\sin(t-2)+\cos(t-2)\bigr].
+$$
+
+Combining with the Heaviside factor:
+$$
+\boxed{x(t) = H(t-2)\left\{\frac{1}{2} - \frac{1}{2}e^{-(t-2)}\bigl[\sin(t-2)+\cos(t-2)\bigr]\right\}.}
+$$
+
+::: {.callout-note}
+As $t\to\infty$ the exponential terms vanish and $x(t)\to\tfrac{1}{2}$.  This is
+the **steady-state response** to a unit step, equal to $H(0) = \tfrac{1}{s^2+2s+2}\big|_{s=0} = \tfrac{1}{2}$ — which is exactly the **DC gain** of the transfer function.
+:::
+
+#### Using SymPy {#ex9-sympy}
+
+```{python}
+#| label: ex9-sympy
+
+t = sym.Symbol('t', nonnegative=True)
+x = sym.Function('x')
+
+# Part (b): impulse response
+H_expr9 = 1 / (s**2 + 2*s + 2)
+h9 = sym.inverse_laplace_transform(H_expr9, s, t)
+display(Math(r'h(t) = ' + sym.latex(sym.simplify(h9))))
+
+# Part (c): delayed step response
+f9 = sym.Heaviside(t - 2)
+ode9 = sym.Eq(x(t).diff(t, 2) + 2*x(t).diff(t) + 2*x(t), f9)
+part9 = sym.dsolve(ode9, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 0})
+display(Math(r'x(t) = ' + sym.latex(sym.simplify(part9.rhs))))
+```
+
+```{python}
+#| label: fig-ex9
+#| fig-cap: "Response of $x''+2x'+2x = H(t-2)$ (zero ICs).  The delayed step input (dashed) switches on at $t=2$.  The response rises and settles toward the DC gain of $1/2$ (dotted)."
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t_vals = np.linspace(0, 10, 800)
+
+x_sol = np.where(
+    t_vals < 2,
+    0.0,
+    0.5 - 0.5*np.exp(-(t_vals-2))*(np.sin(t_vals-2) + np.cos(t_vals-2))
+)
+f_vals = (t_vals >= 2).astype(float)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(t_vals, f_vals, color='steelblue', lw=1.4, ls='--',
+        label=r'Input $f(t)=H(t-2)$')
+ax.plot(t_vals, x_sol,  color='tomato',    lw=2,
+        label=r'Response $x(t)$')
+ax.axhline(0.5, color='seagreen', lw=1, ls=':', label=r'DC gain $= 1/2$')
+ax.axvline(2, color='gray', lw=1, ls='--', alpha=0.5)
+ax.axhline(0, color='gray', lw=0.8)
+ax.set_xlabel(r'$t$', fontsize=13)
+ax.set_ylabel(r'$x$', fontsize=13)
+ax.set_title(r"$x'' + 2x' + 2x = H(t-2)$, $\;x(0)=x'(0)=0$", fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+::: {.callout-tip collapse="true"}
+## Expand for Session Info
+
+```{python}
+#| label: session-info
+
+import sys
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}'
+                for m in globals().values()
+                if getattr(m, '__version__', None)))
+```
+:::
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1)](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
+
+## Reuse
+
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
