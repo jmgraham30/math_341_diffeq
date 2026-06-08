@@ -1,0 +1,582 @@
+---
+title: "The Eigenvalue Problem and Solving Linear Systems"
+subtitle: "MATH 341 — Notes 10"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 10"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover
+
+:::: {.columns}
+::: {.column width="60%"}
+1. **Exponential ansatz** $\mathbf{x} = \mathbf{v}e^{\lambda t}$ — why exponentials work for $\mathbf{x}' = A\mathbf{x}$
+
+2. **Eigenvalues and eigenvectors** — solving $A\mathbf{v} = \lambda\mathbf{v}$ via the characteristic equation
+
+3. **Real unequal eigenvalues** — saddle points and nodes; linear orbits and separatrices
+
+4. **Complex eigenvalues** — spirals and centers via Euler's formula
+
+5. **Repeated eigenvalues** — star nodes and deficient (degenerate) nodes; generalized eigenvectors
+
+6. **Phase plane** classification and stability for each case
+:::
+::: {.column width="40%"}
+::: {.callout-note}
+**Sections 4.3 and 4.4** of @logan2015first.
+:::
+::: {.callout-tip}
+New vocabulary: eigenvalue, eigenvector, eigenpair, characteristic equation, linear orbit, separatrix, saddle, node, spiral, center, deficient matrix, generalized eigenvector.
+:::
+:::
+::::
+
+
+# Section 4.3 {background-color="#2c3e50"}
+
+## The Eigenvalue Problem
+
+
+## Why Exponentials?
+
+We want to solve $\mathbf{x}' = A\mathbf{x}$, where $A$ is a constant $2\times 2$ matrix.
+
+**Key observation:** for all terms to cancel when substituted into the ODE, the solution and its derivative must have the **same form**. Exponential functions satisfy this.
+
+. . .
+
+**Ansatz:** try $\mathbf{x} = \mathbf{v}e^{\lambda t}$, so $\mathbf{x}' = \lambda\mathbf{v}e^{\lambda t}$.
+
+Substituting into $\mathbf{x}' = A\mathbf{x}$:
+
+$$\lambda\mathbf{v}e^{\lambda t} = A\mathbf{v}e^{\lambda t}.$$
+
+Cancel $e^{\lambda t} \neq 0$:
+
+$$\boxed{A\mathbf{v} = \lambda\mathbf{v}.} \tag{4.28}$$
+
+We have converted a **differential equations problem** into an **algebraic problem**.
+
+
+## Eigenvalues, Eigenvectors, Eigenpairs
+
+::: {.callout-important}
+## Remark 4.26
+A nonzero constant vector $\mathbf{v}$ is an **eigenvector** of $A$ if $A\mathbf{v} = \lambda\mathbf{v}$ for some scalar $\lambda$. The scalar $\lambda$ is an **eigenvalue** of $A$. The pair $\lambda,\,\mathbf{v}$ is an **eigenpair**.
+
+**Every eigenpair of $A$ gives a solution $\mathbf{x}(t) = \mathbf{v}e^{\lambda t}$ of $\mathbf{x}' = A\mathbf{x}$.**
+:::
+
+. . .
+
+**Geometric picture:** $A$ transforms vectors to vectors. An eigenvector is a special vector that $A$ maps to a **scalar multiple of itself** — that multiple is the eigenvalue.
+
+. . .
+
+**Two facts:**
+
+1. Any constant multiple of an eigenvector is again an eigenvector for the same eigenvalue — so eigenvectors are unique only up to a scalar multiple.
+
+2. If $\lambda_1 \neq \lambda_2$, then $\mathbf{v}_1$ and $\mathbf{v}_2$ are **linearly independent**.
+
+
+## Solving the Eigenvalue Problem
+
+Rewrite $A\mathbf{v} = \lambda\mathbf{v}$ as the homogeneous system
+
+$$(A - \lambda I)\mathbf{v} = \mathbf{0}. \tag{4.29}$$
+
+Nontrivial solutions exist $\iff$ $\det(A - \lambda I) = 0$. For $A = \begin{pmatrix}a&b\\c&d\end{pmatrix}$:
+
+$$\det\begin{pmatrix}a-\lambda & b \\ c & d-\lambda\end{pmatrix} = \lambda^2 - (a+d)\lambda + (ad-bc) = 0,$$
+
+or more memorably:
+
+$$\boxed{\lambda^2 - (\text{tr}\,A)\lambda + \det A = 0.} \tag{4.32}$$
+
+This is the **characteristic equation** — a quadratic in $\lambda$.
+
+::: {.callout-important}
+## Algorithm
+1. **Solve** $\lambda^2 - (\text{tr}\,A)\lambda + \det A = 0$ for the eigenvalues.
+2. **Substitute** each $\lambda$ into $(A-\lambda I)\mathbf{v}=\mathbf{0}$; only one equation is needed (the other is dependent).
+:::
+
+
+## Example 4.27 — Finding Eigenpairs
+
+$$A = \begin{pmatrix}1&1\\4&1\end{pmatrix}, \quad \text{tr}\,A=2, \quad \det A = -3.$$
+
+**Characteristic equation:** $\lambda^2 - 2\lambda - 3 = (\lambda+1)(\lambda-3) = 0$.
+
+Eigenvalues: $\lambda_1 = -1$, $\lambda_2 = 3$.
+
+. . .
+
+**For $\lambda_1 = -1$:** $(A+I)\mathbf{v}=\mathbf{0}$ gives $2v_1 + v_2 = 0$, so $\mathbf{v}_1 = (1,-2)^T$.
+
+**For $\lambda_2 = 3$:** $(A-3I)\mathbf{v}=\mathbf{0}$ gives $-2v_1 + v_2 = 0$, so $\mathbf{v}_2 = (1,2)^T$.
+
+. . .
+
+$$\lambda_1=-1,\;\mathbf{v}_1=\begin{pmatrix}1\\-2\end{pmatrix} \qquad \lambda_2=3,\;\mathbf{v}_2=\begin{pmatrix}1\\2\end{pmatrix}.$$
+
+```{python}
+#| echo: true
+#| code-fold: false
+
+s = sym.Symbol('lam')
+A = sym.Matrix([[1,1],[4,1]])
+display(Math(r"\text{Char. poly: }" + sym.latex(A.charpoly(s).as_expr())))
+for val, mult, vecs in A.eigenvects():
+    display(Math(rf"\lambda={val},\;\mathbf{{v}}={sym.latex(vecs[0])}"))
+```
+
+
+## Example 4.28 — Complex Eigenvalues
+
+$$A = \begin{pmatrix}-2 & -3\\3 & -2\end{pmatrix}, \quad \text{tr}\,A=-4, \quad \det A = 13.$$
+
+**Characteristic equation:** $\lambda^2 + 4\lambda + 13 = 0 \implies \lambda = -2 \pm 3i$.
+
+. . .
+
+**Eigenvector for $\lambda = -2+3i$:** system $(A-\lambda I)\mathbf{v}=\mathbf{0}$ gives
+
+$$-3iv_1 - 3v_2 = 0 \implies v_2 = -iv_1.$$
+
+Taking $v_2 = i \Rightarrow v_1 = -1$:
+
+$$\mathbf{v}_1 = \begin{pmatrix}-1\\i\end{pmatrix}, \qquad \mathbf{v}_2 = \begin{pmatrix}-1\\-i\end{pmatrix} \text{ (conjugate)}. \;\square$$
+
+. . .
+
+::: {.callout-tip}
+Complex eigenpairs always come in conjugate pairs. We need only work with **one** — it generates both real solutions via Euler's formula.
+:::
+
+
+# Section 4.4 {background-color="#2c3e50"}
+
+## Solving Linear Systems
+
+
+## The Master Strategy
+
+Each eigenpair $\lambda,\,\mathbf{v}$ gives a solution $\mathbf{x}(t) = \mathbf{v}e^{\lambda t}$.
+
+The structure of the solution — and the **phase portrait** — depends entirely on the nature of the eigenvalues:
+
+| Eigenvalue type | Phase portrait | Stability |
+|:---|:---:|:---:|
+| Real, opposite signs | Saddle | Unstable |
+| Both negative, unequal | Stable node | Asymp. stable |
+| Both positive, unequal | Unstable node | Unstable |
+| Complex, $\text{Re}(\lambda)<0$ | Stable spiral | Asymp. stable |
+| Complex, $\text{Re}(\lambda)>0$ | Unstable spiral | Unstable |
+| Purely imaginary | Center | Stable |
+| Repeated, non-deficient | Star node | Stable ($\lambda<0$) |
+| Repeated, deficient | Degenerate node | Stable ($\lambda<0$) |
+
+
+# Real Unequal Eigenvalues {background-color="#2c3e50"}
+
+## General Solution and Linear Orbits
+
+If $\lambda_1 \neq \lambda_2$ are real with eigenvectors $\mathbf{v}_1,\,\mathbf{v}_2$ (independent), the general solution is
+
+$$\mathbf{x}(t) = c_1\mathbf{v}_1 e^{\lambda_1 t} + c_2\mathbf{v}_2 e^{\lambda_2 t}. \tag{4.34}$$
+
+. . .
+
+::: {.callout-important}
+## Linear Orbits (Remark 4.31)
+The solution $\mathbf{x}(t) = \mathbf{v}e^{\lambda t}$ is called a **linear orbit** — a ray along the direction of $\mathbf{v}$ in the phase plane:
+
+- $\lambda < 0$: ray **enters** the origin as $t \to +\infty$
+- $\lambda > 0$: ray **exits** the origin as $t \to +\infty$
+
+Every eigenpair gives **two opposing rays** (for $\pm\mathbf{v}$).
+:::
+
+
+## Saddle Points — Opposite Signs
+
+When $\lambda_1 < 0 < \lambda_2$:
+
+- Linear orbits along $\mathbf{v}_1$: **approach** origin ($\lambda_1 < 0$)
+- Linear orbits along $\mathbf{v}_2$: **leave** origin ($\lambda_2 > 0$)
+- All other orbits: **hyperbolic** curves
+
+. . .
+
+The linear orbits are called **separatrices** — they separate different types of orbital behavior.
+
+**The origin is a saddle point — always unstable.**
+
+. . .
+
+As $t\to+\infty$: $e^{\lambda_1 t}\to 0$, so all orbits approach the direction of $\mathbf{v}_2$.
+
+As $t\to-\infty$: $e^{\lambda_2 t}\to 0$, so all orbits approach the direction of $\mathbf{v}_1$.
+
+
+## Example 4.30 — Saddle Point
+
+$$\mathbf{x}' = \begin{pmatrix}1&1\\4&1\end{pmatrix}\mathbf{x}, \quad \lambda_1=-1,\;\mathbf{v}_1=\begin{pmatrix}1\\-2\end{pmatrix},\quad \lambda_2=3,\;\mathbf{v}_2=\begin{pmatrix}1\\2\end{pmatrix}.$$
+
+$$\mathbf{x}(t) = c_1\begin{pmatrix}1\\-2\end{pmatrix}e^{-t} + c_2\begin{pmatrix}1\\2\end{pmatrix}e^{3t}. \tag{4.35}$$
+
+```{python}
+#| label: fig-saddle-slides
+#| fig-height: 3.5
+
+A430 = np.array([[1., 1.], [4., 1.]])
+lim = 2.5
+x_g, y_g = np.meshgrid(np.linspace(-lim, lim, 22), np.linspace(-lim, lim, 22))
+dx = A430[0,0]*x_g + A430[0,1]*y_g; dy = A430[1,0]*x_g + A430[1,1]*y_g
+nrm = np.sqrt(dx**2+dy**2+1e-10)
+fig, ax = plt.subplots(figsize=(9, 3.3))
+ax.quiver(x_g, y_g, dx/nrm, dy/nrm, alpha=0.3, color='gray', scale=30)
+np.random.seed(42)
+for _ in range(14):
+    r = lim*(0.4+0.6*np.random.rand()); theta = np.random.uniform(0,2*np.pi)
+    sol = solve_ivp(lambda t,y: A430@y, (-2,2), [r*np.cos(theta), r*np.sin(theta)],
+                   dense_output=True, max_step=0.05)
+    xy=sol.y; mask=np.all(np.abs(xy)<lim*1.4,axis=0)
+    ax.plot(xy[0,mask],xy[1,mask],'k-',lw=0.9,alpha=0.55)
+evals, evecs = np.linalg.eig(A430)
+for i,(color,lbl) in enumerate(zip(['steelblue','crimson'],
+                                    [r'$\lambda_1=-1$, entering',r'$\lambda_2=3$, exiting'])):
+    v=evecs[:,i].real; v/=np.linalg.norm(v)
+    for s in [1,-1]:
+        ax.annotate('',xy=(s*lim*0.82*v[0],s*lim*0.82*v[1]),xytext=(0,0),
+                    arrowprops=dict(arrowstyle='->',color=color,lw=2.5))
+    ax.plot([],[],color=color,lw=2,label=lbl)
+ax.axhline(0,color='k',lw=0.5); ax.axvline(0,color='k',lw=0.5)
+ax.plot(0,0,'ko',markersize=7,zorder=5)
+ax.set_xlim(-lim,lim); ax.set_ylim(-lim,lim)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title("Example 4.30: Saddle Point ($\\lambda=-1,3$)"); ax.legend(fontsize=8)
+plt.tight_layout(); plt.show()
+```
+
+
+## Stable and Unstable Nodes
+
+**Both $\lambda_1 < \lambda_2 < 0$ (stable node):**
+
+- All orbits enter origin as $t\to+\infty$
+- Orbits tangent to **slow** eigendirection ($\mathbf{v}_2$, eigenvalue closer to 0) as $t\to+\infty$
+- Orbits parallel to **fast** eigendirection ($\mathbf{v}_1$) as $t\to-\infty$
+
+. . .
+
+**Both $0 < \lambda_1 < \lambda_2$ (unstable node):**
+
+- Same picture with arrows reversed — orbits exit origin
+- Tangent to slow direction as $t\to-\infty$
+
+. . .
+
+**$\det A = 0$, $\lambda=0$:**
+
+- Non-isolated equilibria along entire line $ax+by=0$
+- Other orbits are parallel straight lines $y=mx+C$
+
+```{python}
+#| label: fig-nodes-slides
+#| fig-height: 3.0
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 2.8))
+A433 = np.array([[-2.,2.],[2.,-5.]])
+
+for ax, A, title in [(axes[0], A433, "Stable Node ($\\lambda=-1,-6$)"),
+                     (axes[1], np.array([[1.,1.],[4.,1.]])*0 + np.array([[-1.,1.],[0.,-3.]]),
+                      "Unstable Node ($\\lambda=1,3$)")]:
+    A_un = np.array([[1.,0.],[0.,3.]]) if ax is axes[1] else A
+    lim=2.2
+    x_g,y_g = np.meshgrid(np.linspace(-lim,lim,20),np.linspace(-lim,lim,20))
+    dx=A_un[0,0]*x_g+A_un[0,1]*y_g; dy=A_un[1,0]*x_g+A_un[1,1]*y_g
+    nrm=np.sqrt(dx**2+dy**2+1e-10)
+    ax.quiver(x_g,y_g,dx/nrm,dy/nrm,alpha=0.25,color='gray',scale=30)
+    np.random.seed(3)
+    for _ in range(12):
+        r=lim*(0.35+0.65*np.random.rand()); theta=np.random.uniform(0,2*np.pi)
+        t_sp=(0,3) if ax is axes[0] else (-2,0)
+        sol=solve_ivp(lambda t,y,M=A_un: M@y,t_sp,[r*np.cos(theta),r*np.sin(theta)],
+                     dense_output=True,max_step=0.05)
+        xy=sol.y; mask=np.all(np.abs(xy)<lim*1.4,axis=0)
+        ax.plot(xy[0,mask],xy[1,mask],'steelblue',lw=1.2,alpha=0.7)
+    ax.axhline(0,color='k',lw=0.5); ax.axvline(0,color='k',lw=0.5)
+    ax.plot(0,0,'ko',markersize=6,zorder=5)
+    ax.set_xlim(-lim,lim); ax.set_ylim(-lim,lim)
+    ax.set_xlabel('$x$'); ax.set_ylabel('$y$'); ax.set_title(title)
+plt.tight_layout(); plt.show()
+```
+
+
+# Complex Eigenvalues {background-color="#1a5276"}
+
+## From Complex Eigenpairs to Real Solutions
+
+If $\lambda = a \pm bi$ (complex), write the eigenvector as $\mathbf{v} = \mathbf{w} \pm i\mathbf{z}$.
+
+Expand one complex solution via **Euler's formula** $e^{ibt} = \cos bt + i\sin bt$:
+
+$$(\mathbf{w}+i\mathbf{z})e^{(a+bi)t} = e^{at}(\mathbf{w}\cos bt - \mathbf{z}\sin bt) + i\,e^{at}(\mathbf{w}\sin bt + \mathbf{z}\cos bt).$$
+
+. . .
+
+Real and imaginary parts are each **real, independent solutions**:
+
+$$\mathbf{x}_1(t) = e^{at}(\mathbf{w}\cos bt - \mathbf{z}\sin bt), \quad
+\mathbf{x}_2(t) = e^{at}(\mathbf{w}\sin bt + \mathbf{z}\cos bt).$$
+
+. . .
+
+**General solution:**
+
+$$\mathbf{x}(t) = c_1\mathbf{x}_1(t) + c_2\mathbf{x}_2(t). \tag{4.38}$$
+
+
+## Orbital Behavior: Spirals and Centers
+
+The factor $e^{at}$ controls amplitude; the trig terms produce rotation:
+
+| Real part $a$ | Behavior | Phase portrait |
+|:---:|:---|:---:|
+| $a < 0$ | Amplitude decays | **Stable spiral** (attractor) |
+| $a > 0$ | Amplitude grows | **Unstable spiral** (repeller) |
+| $a = 0$ | No amplitude change | **Stable center** — closed ellipses |
+
+. . .
+
+::: {.callout-tip}
+To determine the **direction of rotation** (CW or CCW), compute the direction vector $(x',y')$ at any convenient point and check the sign.
+:::
+
+
+## Example 4.37 — Asymptotically Stable Spiral
+
+$$\mathbf{x}' = \begin{pmatrix}-2&-3\\3&-2\end{pmatrix}\mathbf{x}, \quad \lambda=-2\pm 3i, \quad \mathbf{w}=\begin{pmatrix}-1\\0\end{pmatrix},\; \mathbf{z}=\begin{pmatrix}0\\1\end{pmatrix}.$$
+
+Two real independent solutions:
+
+$$\mathbf{x}_1(t) = e^{-2t}\begin{pmatrix}-\cos 3t\\-\sin 3t\end{pmatrix}, \quad
+\mathbf{x}_2(t) = e^{-2t}\begin{pmatrix}-\sin 3t\\-\cos 3t\end{pmatrix}.$$
+
+Since $a = -2 < 0$: **asymptotically stable spiral**. At $(1,1)$: $(x',y')=(-5,1)$ — spirals are **counterclockwise**. $\square$
+
+```{python}
+#| label: fig-spiral-slides
+#| fig-height: 3.2
+
+A437 = np.array([[-2.,-3.],[3.,-2.]])
+lim=2.2
+x_g,y_g=np.meshgrid(np.linspace(-lim,lim,22),np.linspace(-lim,lim,22))
+dx=A437[0,0]*x_g+A437[0,1]*y_g; dy=A437[1,0]*x_g+A437[1,1]*y_g
+nrm=np.sqrt(dx**2+dy**2+1e-10)
+fig,ax=plt.subplots(figsize=(9,3.0))
+ax.quiver(x_g,y_g,dx/nrm,dy/nrm,alpha=0.25,color='gray',scale=30)
+for r_frac,color in zip([0.3,0.7,1.2,1.8],['steelblue','seagreen','crimson','darkorange']):
+    for theta in np.linspace(0,2*np.pi,5,endpoint=False):
+        x0=[r_frac*np.cos(theta),r_frac*np.sin(theta)]
+        sol=solve_ivp(lambda t,y: A437@y,(0,3.5),x0,dense_output=True,max_step=0.02)
+        xy=sol.y; mask=np.all(np.abs(xy)<lim*1.4,axis=0)
+        ax.plot(xy[0,mask],xy[1,mask],color=color,lw=1.2,alpha=0.8)
+ax.axhline(0,color='k',lw=0.5); ax.axvline(0,color='k',lw=0.5)
+ax.plot(0,0,'ko',markersize=7,zorder=5)
+ax.set_xlim(-lim,lim); ax.set_ylim(-lim,lim)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title(r"Example 4.37: Stable Spiral ($\lambda=-2\pm 3i$), counterclockwise")
+plt.tight_layout(); plt.show()
+```
+
+
+# Real Equal Eigenvalues {background-color="#1a5276"}
+
+## Two Subcases
+
+Suppose $\lambda_1 = \lambda_2 \equiv \lambda \neq 0$. There are two cases:
+
+**Case 1 — Non-deficient:** $A$ has two independent eigenvectors $\mathbf{v}_1,\,\mathbf{v}_2$.
+
+$$\mathbf{x}(t) = c_1\mathbf{v}_1 e^{\lambda t} + c_2\mathbf{v}_2 e^{\lambda t}.$$
+
+Every direction through the origin is a linear orbit — a **star node**.
+
+. . .
+
+**Case 2 — Deficient:** $A$ has only **one** eigenvector $\mathbf{v}$.
+
+$\mathbf{x}_1(t) = \mathbf{v}e^{\lambda t}$ is one solution. The second is
+
+$$\mathbf{x}_2(t) = e^{\lambda t}(t\mathbf{v} + \mathbf{w}),$$
+
+where $\mathbf{w}$ is a **generalized eigenvector** satisfying
+
+$$(A-\lambda I)\mathbf{w} = \mathbf{v}. \tag{4.39}$$
+
+General solution: $\mathbf{x}(t) = c_1\mathbf{v}e^{\lambda t} + c_2e^{\lambda t}(t\mathbf{v}+\mathbf{w})$.
+
+
+## Deficient Case: Why $t\mathbf{v}e^{\lambda t}$ Alone Fails
+
+**Intuition from Chapter 2:** for scalar equations with repeated roots, the second solution is $te^{\lambda t}$. For systems, the direct analog $t\mathbf{v}e^{\lambda t}$ does *not* work.
+
+. . .
+
+Try $\mathbf{x}_2 = e^{\lambda t}(t\mathbf{v} + \mathbf{w})$:
+
+$$\mathbf{x}_2' = e^{\lambda t}\mathbf{v} + \lambda e^{\lambda t}(t\mathbf{v}+\mathbf{w}), \qquad A\mathbf{x}_2 = e^{\lambda t}A(t\mathbf{v}+\mathbf{w}).$$
+
+Setting $\mathbf{x}_2' = A\mathbf{x}_2$ and using $A\mathbf{v} = \lambda\mathbf{v}$:
+
+$$\mathbf{v} + \lambda\mathbf{w} = A\mathbf{w} \implies (A-\lambda I)\mathbf{w} = \mathbf{v}. \;\checkmark$$
+
+. . .
+
+This system always has solutions because $\det(A-\lambda I) = 0$. Choose any one solution $\mathbf{w}$ — it is called a **generalized eigenvector**.
+
+
+## Example 4.39 — Deficient Matrix
+
+$$\mathbf{x}' = \begin{pmatrix}2&1\\-1&4\end{pmatrix}\mathbf{x}, \quad \lambda=3,3, \quad \mathbf{v}=\begin{pmatrix}1\\1\end{pmatrix}.$$
+
+**First solution:** $\mathbf{x}_1(t) = \begin{pmatrix}1\\1\end{pmatrix}e^{3t}$ (linear orbit along $y=x$).
+
+**Find $\mathbf{w}$:** solve $(A-3I)\mathbf{w} = \mathbf{v}$:
+
+$$\begin{pmatrix}-1&1\\-1&1\end{pmatrix}\mathbf{w} = \begin{pmatrix}1\\1\end{pmatrix} \implies -w_1+w_2=1.$$
+
+Choose $\mathbf{w} = (0,1)^T$.
+
+. . .
+
+**Second solution:**
+
+$$\mathbf{x}_2(t) = e^{3t}\!\left[\begin{pmatrix}1\\1\end{pmatrix}t+\begin{pmatrix}0\\1\end{pmatrix}\right] = \begin{pmatrix}te^{3t}\\(t+1)e^{3t}\end{pmatrix}.$$
+
+**IVP $\mathbf{x}(0)=(1,0)^T$:** $c_1=1$, $c_2=-1$ gives $\mathbf{x}(t) = \begin{pmatrix}(1-t)e^{3t}\\-te^{3t}\end{pmatrix}$.
+
+Unstable node ($\lambda>0$). $\square$
+
+
+## Example 4.39 — Phase Portrait
+
+```{python}
+#| label: fig-deficient-slides
+#| fig-height: 3.8
+
+A439 = np.array([[2.,1.],[-1.,4.]])
+lim=2.0
+x_g,y_g=np.meshgrid(np.linspace(-lim,lim,20),np.linspace(-lim,lim,20))
+dx=A439[0,0]*x_g+A439[0,1]*y_g; dy=A439[1,0]*x_g+A439[1,1]*y_g
+nrm=np.sqrt(dx**2+dy**2+1e-10)
+
+fig,axes=plt.subplots(1,2,figsize=(10,3.6))
+
+axes[0].quiver(x_g,y_g,dx/nrm,dy/nrm,alpha=0.25,color='gray',scale=30)
+np.random.seed(11)
+for _ in range(12):
+    r=0.3+0.5*np.random.rand(); theta=np.random.uniform(0,2*np.pi)
+    sol=solve_ivp(lambda t,y: A439@y,(-0.7,0),[r*np.cos(theta),r*np.sin(theta)],
+                 dense_output=True,max_step=0.02)
+    xy=sol.y; mask=np.all(np.abs(xy)<lim*1.4,axis=0)
+    axes[0].plot(xy[0,mask],xy[1,mask],'steelblue',lw=1.2,alpha=0.7)
+v=np.array([1.,1.])/np.sqrt(2)
+for s in [1,-1]:
+    axes[0].annotate('',xy=(s*lim*0.75*v[0],s*lim*0.75*v[1]),xytext=(0,0),
+                     arrowprops=dict(arrowstyle='->',color='crimson',lw=2.5))
+axes[0].axhline(0,color='k',lw=0.5); axes[0].axvline(0,color='k',lw=0.5)
+axes[0].plot(0,0,'ko',markersize=7,zorder=5)
+axes[0].set_xlim(-lim,lim); axes[0].set_ylim(-lim,lim)
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$y$')
+axes[0].set_title("Example 4.39: Deficient Unstable Node ($\\lambda=3$)")
+axes[0].plot([],[],color='crimson',lw=2,label='Linear orbit $y=x$')
+axes[0].legend(fontsize=8)
+
+# IVP solution
+t_plot=np.linspace(-0.8,0.4,400)
+axes[1].plot(t_plot,(1-t_plot)*np.exp(3*t_plot),'steelblue',lw=2.5,label=r'$x(t)=(1-t)e^{3t}$')
+axes[1].plot(t_plot,-t_plot*np.exp(3*t_plot),'crimson',lw=2.5,label=r'$y(t)=-te^{3t}$')
+axes[1].axhline(0,color='k',lw=0.5); axes[1].axvline(0,color='k',lw=0.5,ls='--',alpha=0.5)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('Solution'); axes[1].legend(fontsize=8)
+axes[1].set_title(r"IVP: $\mathbf{x}(0)=(1,0)^T$")
+plt.suptitle("Example 4.39: Deficient Matrix ($\\lambda=3,3$)", fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- The **eigenvalue ansatz** $\mathbf{x} = \mathbf{v}e^{\lambda t}$ converts $\mathbf{x}' = A\mathbf{x}$ into the algebraic problem $A\mathbf{v} = \lambda\mathbf{v}$. Every eigenpair gives a solution.
+
+- Eigenvalues come from the **characteristic equation** $\lambda^2 - (\text{tr}\,A)\lambda + \det A = 0$; eigenvectors from solving $(A-\lambda I)\mathbf{v}=\mathbf{0}$.
+
+- **Real unequal eigenvalues** give linear orbits (rays) and either a **saddle** (opposite signs) or a **node** (same sign). Orbits of a node enter/exit the origin tangent to the slow eigenvector.
+
+- **Complex eigenvalues** $\lambda=a\pm bi$ give oscillatory solutions via Euler's formula. The sign of $a$ determines whether orbits spiral in (**stable**), spiral out (**unstable**), or close (**center**).
+
+- **Repeated eigenvalues** with two independent eigenvectors give a **star node**. If the matrix is **deficient** (one eigenvector), a **generalized eigenvector** $\mathbf{w}$ satisfying $(A-\lambda I)\mathbf{w}=\mathbf{v}$ is needed, giving the second solution $e^{\lambda t}(t\mathbf{v}+\mathbf{w})$ — a **degenerate node**.
+
+- In all cases, stability is determined by the **sign of the real part of the eigenvalues**: negative real parts → stable; any positive real part → unstable; zero real part → inconclusive (or center).
+:::
+
+. . .
+
+::: {.callout-tip}
+**Looking Ahead:** This classification — based on $\text{tr}\,A$ and $\det A$ — is systematized in the trace-determinant plane in §4.5, giving a complete map of all possible phase portraits for linear systems.
+:::
+
+::: {.callout-note}
+**Next:** Phase Plane Analysis — Logan §4.5.
+:::
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
