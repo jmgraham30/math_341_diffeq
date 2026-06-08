@@ -1,327 +1,551 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="University of Scranton">
+<meta name="dcterms.date" content="2026-06-08">
+
+<title>Linear Systems and Matrices – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.38">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
 
-  <meta name="author" content="University of Scranton">
-  <meta name="dcterms.date" content="2026-06-07">
-  <title>MATH 341 Differential Equations – Linear Systems and Matrices</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
-  <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-      vertical-align: middle;
-    }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
       }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #f8f8f2;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #f8f8f2; } /* Normal */
-    code span.al { color: #f07178; } /* Alert */
-    code span.an { color: #d4d0ab; } /* Annotation */
-    code span.at { color: #00e0e0; } /* Attribute */
-    code span.bn { color: #d4d0ab; } /* BaseN */
-    code span.bu { color: #abe338; } /* BuiltIn */
-    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #abe338; } /* Char */
-    code span.cn { color: #ffd700; } /* Constant */
-    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
-    code span.cv { color: #ffd700; } /* CommentVar */
-    code span.do { color: #f8f8f2; } /* Documentation */
-    code span.dt { color: #ffa07a; } /* DataType */
-    code span.dv { color: #d4d0ab; } /* DecVal */
-    code span.er { color: #f07178; text-decoration: underline; } /* Error */
-    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
-    code span.fl { color: #d4d0ab; } /* Float */
-    code span.fu { color: #ffa07a; } /* Function */
-    code span.im { color: #abe338; } /* Import */
-    code span.in { color: #d4d0ab; } /* Information */
-    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
-    code span.op { color: #ffa07a; } /* Operator */
-    code span.ot { color: #00e0e0; } /* Other */
-    code span.pp { color: #dcc6e0; } /* Preprocessor */
-    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
-    code span.sc { color: #abe338; } /* SpecialChar */
-    code span.ss { color: #abe338; } /* SpecialString */
-    code span.st { color: #abe338; } /* String */
-    code span.va { color: #00e0e0; } /* Variable */
-    code span.vs { color: #abe338; } /* VerbatimString */
-    code span.wa { color: #dcc6e0; } /* Warning */
-    /* CSS for citations */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-    }
-    .hanging-indent div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }  </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-84b150702567ae7e15cad124fb9039e2.css">
-  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
 </head>
-<body class="quarto-dark">
-  <div class="reveal">
-    <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Linear Systems and Matrices</h1>
-  <p class="subtitle">MATH 341 — Notes 9</p>
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-University of Scranton 
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
-</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a>
+  <ul class="collapse">
+  <li><a href="#what-we-will-cover-today" id="toc-what-we-will-cover-today" class="nav-link" data-scroll-target="#what-we-will-cover-today">What We Will Cover Today</a></li>
+  </ul></li>
+  <li><a href="#from-ode-to-system" id="toc-from-ode-to-system" class="nav-link" data-scroll-target="#from-ode-to-system">From ODE to System</a>
+  <ul class="collapse">
+  <li><a href="#the-damped-oscillator-as-a-system" id="toc-the-damped-oscillator-as-a-system" class="nav-link" data-scroll-target="#the-damped-oscillator-as-a-system">The Damped Oscillator as a System</a></li>
+  <li><a href="#the-hamiltonian-perspective" id="toc-the-hamiltonian-perspective" class="nav-link" data-scroll-target="#the-hamiltonian-perspective">The Hamiltonian Perspective</a></li>
+  <li><a href="#hamiltonian-phase-plane" id="toc-hamiltonian-phase-plane" class="nav-link" data-scroll-target="#hamiltonian-phase-plane">Hamiltonian Phase Plane</a></li>
+  </ul></li>
+  <li><a href="#phase-plane-concepts" id="toc-phase-plane-concepts" class="nav-link" data-scroll-target="#phase-plane-concepts">Phase Plane Concepts</a>
+  <ul class="collapse">
+  <li><a href="#orbits-vector-field-and-nullclines" id="toc-orbits-vector-field-and-nullclines" class="nav-link" data-scroll-target="#orbits-vector-field-and-nullclines">Orbits, Vector Field, and Nullclines</a></li>
+  <li><a href="#example-4.4-logan-verifying-and-finding-the-orbit" id="toc-example-4.4-logan-verifying-and-finding-the-orbit" class="nav-link" data-scroll-target="#example-4.4-logan-verifying-and-finding-the-orbit">Example 4.4 (Logan) — Verifying and Finding the Orbit</a></li>
+  </ul></li>
+  <li><a href="#method-of-elimination" id="toc-method-of-elimination" class="nav-link" data-scroll-target="#method-of-elimination">Method of Elimination</a>
+  <ul class="collapse">
+  <li><a href="#converting-a-system-back-to-a-single-ode" id="toc-converting-a-system-back-to-a-single-ode" class="nav-link" data-scroll-target="#converting-a-system-back-to-a-single-ode">Converting a System Back to a Single ODE</a></li>
+  <li><a href="#example-4.6-logan-elliptic-case" id="toc-example-4.6-logan-elliptic-case" class="nav-link" data-scroll-target="#example-4.6-logan-elliptic-case">Example 4.6 (Logan) — Elliptic Case</a></li>
+  <li><a href="#example-4.12-logan-hyperbolic-case" id="toc-example-4.12-logan-hyperbolic-case" class="nav-link" data-scroll-target="#example-4.12-logan-hyperbolic-case">Example 4.12 (Logan) — Hyperbolic Case</a></li>
+  </ul></li>
+  <li><a href="#key-theorems" id="toc-key-theorems" class="nav-link" data-scroll-target="#key-theorems">Key Theorems</a>
+  <ul class="collapse">
+  <li><a href="#superposition-uniqueness-general-solution" id="toc-superposition-uniqueness-general-solution" class="nav-link" data-scroll-target="#superposition-uniqueness-general-solution">Superposition, Uniqueness, General Solution</a></li>
+  </ul></li>
+  <li><a href="#the-general-companion-system" id="toc-the-general-companion-system" class="nav-link" data-scroll-target="#the-general-companion-system">The General Companion System</a>
+  <ul class="collapse">
+  <li><a href="#reducing-n-th-order-odes" id="toc-reducing-n-th-order-odes" class="nav-link" data-scroll-target="#reducing-n-th-order-odes">Reducing <span class="math inline">\(n\)</span>-th Order ODEs</a></li>
+  </ul></li>
+  <li><a href="#section-4.2-matrices" id="toc-section-4.2-matrices" class="nav-link" data-scroll-target="#section-4.2-matrices">Section 4.2: Matrices</a>
+  <ul class="collapse">
+  <li><a href="#notation-and-basic-operations" id="toc-notation-and-basic-operations" class="nav-link" data-scroll-target="#notation-and-basic-operations">Notation and Basic Operations</a></li>
+  <li><a href="#examples-4.16-and-4.17-logan" id="toc-examples-4.16-and-4.17-logan" class="nav-link" data-scroll-target="#examples-4.16-and-4.17-logan">Examples 4.16 and 4.17 (Logan)</a></li>
+  <li><a href="#determinant-inverse-theorem-4.19" id="toc-determinant-inverse-theorem-4.19" class="nav-link" data-scroll-target="#determinant-inverse-theorem-4.19">Determinant, Inverse, Theorem 4.19</a></li>
+  <li><a href="#cramers-rule-theorem-4.21-and-example-4.22" id="toc-cramers-rule-theorem-4.21-and-example-4.22" class="nav-link" data-scroll-target="#cramers-rule-theorem-4.21-and-example-4.22">Cramer’s Rule (Theorem 4.21) and Example 4.22</a></li>
+  </ul></li>
+  <li><a href="#the-matrix-ode-mathbfxamathbfx" id="toc-the-matrix-ode-mathbfxamathbfx" class="nav-link" data-scroll-target="#the-matrix-ode-mathbfxamathbfx">The Matrix ODE <span class="math inline">\(\mathbf{x}'=A\mathbf{x}\)</span></a>
+  <ul class="collapse">
+  <li><a href="#compact-form-and-equilibria" id="toc-compact-form-and-equilibria" class="nav-link" data-scroll-target="#compact-form-and-equilibria">Compact Form and Equilibria</a></li>
+  <li><a href="#stability-vocabulary-definition-4.25" id="toc-stability-vocabulary-definition-4.25" class="nav-link" data-scroll-target="#stability-vocabulary-definition-4.25">Stability Vocabulary (Definition 4.25)</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="notes_09_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Linear Systems and Matrices</h1>
+<p class="subtitle lead">MATH 341 — Notes 9</p>
 </div>
 
-  <p class="date">2026-06-07</p>
-</section>
-<section>
-<section id="goals" class="title-slide slide level1 center" data-background-color="#2c3e50">
-<h1>Goals</h1>
 
-</section>
-<section id="what-we-will-cover-today" class="slide level2">
-<h2>What We Will Cover Today</h2>
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>University of Scranton </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 8, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goals" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Goals</h1>
+<section id="what-we-will-cover-today" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-will-cover-today">What We Will Cover Today</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><strong>Section 4.1</strong> 1. Second-order ODE <span class="math inline">\(\leftrightarrow\)</span> planar first-order system 2. The Hamiltonian formulation of classical mechanics 3. The general companion system for <span class="math inline">\(n\)</span>-th order ODEs 4. Phase plane, vector field, nullclines, orbits 5. Method of elimination; Wronskian; general solution</p>
 <p><strong>Section 4.2</strong> 6. <span class="math inline">\(2\times 2\)</span> matrix arithmetic: <span class="math inline">\(+\)</span>, <span class="math inline">\(\times\)</span>, <span class="math inline">\(A^{-1}\)</span>, <span class="math inline">\(\det\)</span> 7. Matrix form <span class="math inline">\(\mathbf{x}'=A\mathbf{x}\)</span>; equilibria; stability</p>
 </div><div class="column" style="width:40%;">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>Sections 4.1 and 4.2</strong> of <span class="citation" data-cites="logan2015first">Logan (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span>.</p>
+<div class="callout-title-container flex-fill">
+Note
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p><strong>Sections 4.1 and 4.2</strong> of <span class="citation" data-cites="logan2015first">Logan (<a href="#ref-logan2015first" role="doc-biblioref">2015</a>)</span>.</p>
 </div>
-</div></div>
-</section></section>
-<section>
-<section id="from-ode-to-system" class="title-slide slide level1 center" data-background-color="#2c3e50">
-<h1>From ODE to System</h1>
-
+</div>
+</div>
+</div>
 </section>
-<section id="the-damped-oscillator-as-a-system" class="slide level2">
-<h2>The Damped Oscillator as a System</h2>
+</section>
+<section id="from-ode-to-system" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">From ODE to System</h1>
+<section id="the-damped-oscillator-as-a-system" class="level2">
+<h2 class="anchored" data-anchor-id="the-damped-oscillator-as-a-system">The Damped Oscillator as a System</h2>
 <p>The damped oscillator <span class="math inline">\(mx''+\gamma x'+kx=0\)</span> with <span class="math inline">\(y=x'\)</span>:</p>
 <p><span class="math display">\[\begin{cases}x'=y\\[4pt]y'=-\dfrac{k}{m}x-\dfrac{\gamma}{m}y\end{cases} \quad\Longleftrightarrow\quad \mathbf{x}' = A\mathbf{x}, \quad A=\begin{pmatrix}0&amp;1\\-k/m&amp;-\gamma/m\end{pmatrix}\]</span></p>
-<div class="fragment">
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<p>. . .</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Remark 4.1 (Logan)</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Remark 4.1 (Logan)
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p>We can <strong>always</strong> reduce <span class="math inline">\(ax''+bx'+cx=0\)</span> to a first-order linear system by defining <span class="math inline">\(y=x'\)</span>.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Why do this?</strong> - Reveals <strong>geometrical structure</strong> (phase-plane orbits) hidden in the scalar equation. - The eigenvalues of the <span class="math inline">\(2\times 2\)</span> matrix <span class="math inline">\(A\)</span> are <strong>exactly the roots</strong> of the characteristic equation <span class="math inline">\(a\lambda^2+b\lambda+c=0\)</span> from Notes 4. - Extends naturally to higher-dimensional systems.</p>
-</div>
 </section>
-<section id="the-hamiltonian-perspective" class="slide level2">
-<h2>The Hamiltonian Perspective</h2>
+<section id="the-hamiltonian-perspective" class="level2">
+<h2 class="anchored" data-anchor-id="the-hamiltonian-perspective">The Hamiltonian Perspective</h2>
 <p>For a particle with position <span class="math inline">\(q\)</span>, momentum <span class="math inline">\(p=m\dot{q}\)</span>, and energy <span class="math inline">\(H(q,p) = p^2/(2m)+V(q)\)</span>:</p>
 <p><span class="math display">\[\boxed{\dot{q} = \frac{\partial H}{\partial p} = \frac{p}{m}, \qquad \dot{p} = -\frac{\partial H}{\partial q} = -V'(q).}\]</span></p>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Simple harmonic oscillator</strong> <span class="math inline">\(V(q)=\frac{1}{2}kq^2\)</span>, <span class="math inline">\(m=1\)</span>, <span class="math inline">\(k=4\)</span>, <span class="math inline">\((x,y)=(q,p)\)</span>: <span class="math display">\[x' = y, \qquad y' = -4x. \quad \longrightarrow \quad \text{Example 4.3--4.4 of Logan!}\]</span></p>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>The Hamiltonian <span class="math inline">\(H = y^2/2 + 2x^2\)</span> is <strong>conserved</strong> along every orbit: <span class="math display">\[\frac{dH}{dt} = \frac{\partial H}{\partial x}x' + \frac{\partial H}{\partial y}y' = 4x\cdot y + y\cdot(-4x) = 0.\]</span></p>
 <p>Orbits are <strong>level curves of <span class="math inline">\(H\)</span></strong> — ellipses <span class="math inline">\(y^2/2+2x^2=C\)</span>.</p>
-</div>
-<div class="fragment">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<div class="callout-title-container flex-fill">
+Tip
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p>For the <strong>damped</strong> oscillator: <span class="math inline">\(dH/dt = -\gamma(x')^2 \leq 0\)</span> — energy decreases, orbits spiral inward.</p>
 </div>
 </div>
-</div>
-</div>
 </section>
-<section id="hamiltonian-phase-plane" class="slide level2">
-<h2>Hamiltonian Phase Plane</h2>
+<section id="hamiltonian-phase-plane" class="level2">
+<h2 class="anchored" data-anchor-id="hamiltonian-phase-plane">Hamiltonian Phase Plane</h2>
 <div id="cell-fig-ham-slides" class="cell" data-fig-height="3.8" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<div id="fig-ham-slides" class="quarto-float quarto-figure quarto-figure-center" height="535" width="1287">
-<figure class="quarto-float quarto-float-fig">
+<div id="fig-ham-slides" class="quarto-float quarto-figure quarto-figure-center anchored" height="535" width="1287">
+<figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ham-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="notes_09_slides_files/figure-revealjs/fig-ham-slides-output-1.png" id="fig-ham-slides" width="1287" height="535">
+<img src="notes_09_slides_files/figure-revealjs/fig-ham-slides-output-1.png" id="fig-ham-slides" width="1287" height="535" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-ham-slides-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1
@@ -330,17 +554,15 @@ Figure&nbsp;1
 </div>
 </div>
 </div>
-</section></section>
-<section>
-<section id="phase-plane-concepts" class="title-slide slide level1 center" data-background-color="#2c3e50">
-<h1>Phase Plane Concepts</h1>
-
 </section>
-<section id="orbits-vector-field-and-nullclines" class="slide level2">
-<h2>Orbits, Vector Field, and Nullclines</h2>
+</section>
+<section id="phase-plane-concepts" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Phase Plane Concepts</h1>
+<section id="orbits-vector-field-and-nullclines" class="level2">
+<h2 class="anchored" data-anchor-id="orbits-vector-field-and-nullclines">Orbits, Vector Field, and Nullclines</h2>
 <p><strong>Solution</strong> to <span class="math inline">\(x'=ax+by\)</span>, <span class="math inline">\(y'=cx+dy\)</span>: a pair of functions <span class="math inline">\(x(t)\)</span>, <span class="math inline">\(y(t)\)</span>.</p>
 <p><strong>Two views</strong> (Logan, Figure 4.4):</p>
-<table class="caption-top">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
@@ -362,10 +584,10 @@ Figure&nbsp;1
 </tr>
 </tbody>
 </table>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Vector field</strong>: <span class="math inline">\(\mathbf{F}(x,y) = (ax+by, cx+dy)\)</span> — tangent direction at each point.</p>
 <p><strong>Nullclines</strong> (Logan, §4.1):</p>
-<table class="caption-top">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Nullcline</th>
@@ -386,178 +608,164 @@ Figure&nbsp;1
 </tr>
 </tbody>
 </table>
-</div>
 </section>
-<section id="example-4.4-logan-verifying-and-finding-the-orbit" class="slide level2">
-<h2>Example 4.4 (Logan) — Verifying and Finding the Orbit</h2>
+<section id="example-4.4-logan-verifying-and-finding-the-orbit" class="level2">
+<h2 class="anchored" data-anchor-id="example-4.4-logan-verifying-and-finding-the-orbit">Example 4.4 (Logan) — Verifying and Finding the Orbit</h2>
 <p><strong>System:</strong> <span class="math inline">\(x'=y\)</span>, <span class="math inline">\(y'=-4x\)</span>. <strong>Claim:</strong> <span class="math inline">\(x(t)=\cos 2t\)</span>, <span class="math inline">\(y(t)=-2\sin 2t\)</span> is a solution.</p>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Verify:</strong> <span class="math inline">\(x'=-2\sin 2t = y\)</span> ✓; <span class="math inline">\(y'=-4\cos 2t = -4x\)</span> ✓.</p>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Find the orbit</strong> (eliminate <span class="math inline">\(t\)</span>): <span class="math display">\[x^2 + \frac{1}{4}y^2 = \cos^2 2t + \sin^2 2t = 1. \quad\Longrightarrow\quad \text{Ellipse!}\]</span></p>
 <p>Period <span class="math inline">\(\pi\)</span>; starts at <span class="math inline">\((1,0)\)</span>; winds <strong>clockwise</strong>.</p>
-</div>
-<div class="fragment">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<p>. . .</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Remark 4.5 — Zero Solution</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Remark 4.5 — Zero Solution
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p><span class="math inline">\(\mathbf{x}(t)=\mathbf{0}\)</span> always solves the linear system. In the phase plane it is the single point <span class="math inline">\((0,0)\)</span> — the <strong>critical point</strong> (equilibrium solution).</p>
 </div>
 </div>
-</div>
-</div>
-</section></section>
-<section>
-<section id="method-of-elimination" class="title-slide slide level1 center" data-background-color="#2c3e50">
-<h1>Method of Elimination</h1>
-
 </section>
-<section id="converting-a-system-back-to-a-single-ode" class="slide level2">
-<h2>Converting a System Back to a Single ODE</h2>
+</section>
+<section id="method-of-elimination" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Method of Elimination</h1>
+<section id="converting-a-system-back-to-a-single-ode" class="level2">
+<h2 class="anchored" data-anchor-id="converting-a-system-back-to-a-single-ode">Converting a System Back to a Single ODE</h2>
 <p>For <span class="math inline">\(x'=ax+by\)</span>, <span class="math inline">\(y'=cx+dy\)</span>: differentiate the first, substitute the second.</p>
 <p><span class="math display">\[x'' = ax'+by' = ax'+b(cx+dy) = ax'+bcx+d(x'-ax).\]</span></p>
 <p>Rearranging: <span class="math display">\[\boxed{x'' - (a+d)x' + (ad-bc)x = 0} \tag{4.7}\]</span></p>
 <p>Then <span class="math inline">\(y(t) = \dfrac{1}{b}(x'-ax)\)</span> recovers <span class="math inline">\(y\)</span>. <span class="math inline">\(\tag{4.8}\)</span></p>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Key observation:</strong> the coefficients of (4.7) are: <span class="math display">\[-(a+d) = -\text{tr}(A), \qquad (ad-bc) = \det(A).\]</span> The characteristic equation of (4.7) is exactly <span class="math inline">\(\lambda^2 - \text{tr}(A)\lambda + \det(A) = 0\)</span>.</p>
-</div>
 </section>
-<section id="example-4.6-logan-elliptic-case" class="slide level2">
-<h2>Example 4.6 (Logan) — Elliptic Case</h2>
+<section id="example-4.6-logan-elliptic-case" class="level2">
+<h2 class="anchored" data-anchor-id="example-4.6-logan-elliptic-case">Example 4.6 (Logan) — Elliptic Case</h2>
 <p><strong>Solve:</strong> <span class="math inline">\(x'=y\)</span>, <span class="math inline">\(y'=-4x\)</span>.</p>
 <p><span class="math inline">\(x''=y'=-4x \Rightarrow x''+4x=0\)</span>. General solution: <span class="math inline">\(x=c_1\cos 2t+c_2\sin 2t\)</span>, <span class="math inline">\(y=x'=-2c_1\sin 2t+2c_2\cos 2t\)</span>.</p>
 <p><span class="math display">\[\mathbf{x}(t) = c_1\begin{pmatrix}\cos 2t\\-2\sin 2t\end{pmatrix} + c_2\begin{pmatrix}\sin 2t\\2\cos 2t\end{pmatrix}\]</span></p>
 <p><strong>Wronskian:</strong> <span class="math inline">\(W = 2\cos^2 2t + 2\sin^2 2t = 2 \neq 0\)</span> ✓ (fundamental set)</p>
+<p>. . .</p>
 </section>
-<section id="example-4.12-logan-hyperbolic-case" class="slide level2">
-<h2>Example 4.12 (Logan) — Hyperbolic Case</h2>
+<section id="example-4.12-logan-hyperbolic-case" class="level2">
+<h2 class="anchored" data-anchor-id="example-4.12-logan-hyperbolic-case">Example 4.12 (Logan) — Hyperbolic Case</h2>
 <p><strong>Solve:</strong> <span class="math inline">\(x'=y\)</span>, <span class="math inline">\(y'=4x\)</span> (positive sign!).</p>
 <p><span class="math inline">\(x''-4x=0 \Rightarrow x=c_1e^{2t}+c_2e^{-2t}\)</span>, <span class="math inline">\(y=2c_1e^{2t}-2c_2e^{-2t}\)</span>.</p>
 <p><span class="math display">\[\mathbf{x}(t) = c_1\begin{pmatrix}e^{2t}\\2e^{2t}\end{pmatrix} + c_2\begin{pmatrix}e^{-2t}\\-2e^{-2t}\end{pmatrix}\]</span></p>
 <p><strong>IVP</strong> <span class="math inline">\(x(0)=0\)</span>, <span class="math inline">\(y(0)=1\)</span>: <span class="math inline">\(c_1=1/4\)</span>, <span class="math inline">\(c_2=-1/4\)</span>.</p>
-</section></section>
-<section>
-<section id="key-theorems" class="title-slide slide level1 center" data-background-color="#2c3e50">
-<h1>Key Theorems</h1>
-
 </section>
-<section id="superposition-uniqueness-general-solution" class="slide level2">
-<h2>Superposition, Uniqueness, General Solution</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+</section>
+<section id="key-theorems" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Key Theorems</h1>
+<section id="superposition-uniqueness-general-solution" class="level2">
+<h2 class="anchored" data-anchor-id="superposition-uniqueness-general-solution">Superposition, Uniqueness, General Solution</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Theorem 4.8 — Superposition</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem 4.8 — Superposition
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p>If <span class="math inline">\(\mathbf{x}_1\)</span>, <span class="math inline">\(\mathbf{x}_2\)</span> solve the system, then <span class="math inline">\(c_1\mathbf{x}_1+c_2\mathbf{x}_2\)</span> is a solution.</p>
 </div>
 </div>
-</div>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Theorem 4.9 — Uniqueness</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem 4.9 — Uniqueness
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p>The IVP has a <strong>unique solution</strong> for all <span class="math inline">\(t\in(-\infty,\infty)\)</span>. <em>Corollary: no two orbits in the phase plane can intersect.</em></p>
 </div>
 </div>
-</div>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Theorem 4.10 — General Solution</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem 4.10 — General Solution
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p>If <span class="math inline">\(\mathbf{x}_1\)</span>, <span class="math inline">\(\mathbf{x}_2\)</span> form a <strong>fundamental set</strong> (<span class="math inline">\(W \neq 0\)</span>), then <span class="math inline">\(\mathbf{x}=c_1\mathbf{x}_1+c_2\mathbf{x}_2\)</span> is the <strong>general solution</strong> containing all solutions.</p>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Wronskian:</strong> <span class="math inline">\(W(t) = \phi_1\psi_2 - \phi_2\psi_1 \neq 0\)</span> <span class="math inline">\(\Longleftrightarrow\)</span> linearly independent solutions.</p>
-</div>
-</section></section>
-<section>
-<section id="the-general-companion-system" class="title-slide slide level1 center" data-background-color="#1a5276">
-<h1>The General Companion System</h1>
-
 </section>
-<section id="reducing-n-th-order-odes" class="slide level2">
-<h2>Reducing <span class="math inline">\(n\)</span>-th Order ODEs</h2>
+</section>
+<section id="the-general-companion-system" class="level1" data-background-color="#1a5276">
+<h1 data-background-color="#1a5276">The General Companion System</h1>
+<section id="reducing-n-th-order-odes" class="level2">
+<h2 class="anchored" data-anchor-id="reducing-n-th-order-odes">Reducing <span class="math inline">\(n\)</span>-th Order ODEs</h2>
 <p>For <span class="math inline">\(x^{(n)} + p_{n-1}x^{(n-1)} + \cdots + p_0 x = 0\)</span>, let <span class="math inline">\(x_1=x\)</span>, <span class="math inline">\(x_2=x'\)</span>, …, <span class="math inline">\(x_n=x^{(n-1)}\)</span>:</p>
 <p><span class="math display">\[\mathbf{x}' = A\mathbf{x}, \quad A = \begin{pmatrix}0&amp;1&amp;0&amp;\cdots&amp;0\\0&amp;0&amp;1&amp;\cdots&amp;0\\\vdots&amp;&amp;&amp;\ddots&amp;\vdots\\0&amp;0&amp;0&amp;\cdots&amp;1\\-p_0&amp;-p_1&amp;\cdots&amp;&amp;-p_{n-1}\end{pmatrix}\]</span></p>
 <p>The characteristic polynomial of <span class="math inline">\(A\)</span> is <span class="math inline">\(\lambda^n+p_{n-1}\lambda^{n-1}+\cdots+p_0=0\)</span> — the <strong>same</strong> as the original ODE’s characteristic equation.</p>
 <div id="16d5f6cb" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>lam <span class="op">=</span> sym.Symbol(<span class="st">'lambda'</span>)</span>
-<span id="cb1-2"><a></a><span class="co"># 2nd order: x''+3x'+2x=0, companion A</span></span>
-<span id="cb1-3"><a></a>A2 <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>,<span class="dv">1</span>],[<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">3</span>]])</span>
-<span id="cb1-4"><a></a><span class="bu">print</span>(<span class="st">"Char poly:"</span>, sym.expand((lam<span class="op">*</span>sym.eye(<span class="dv">2</span>)<span class="op">-</span>A2).det()))</span>
-<span id="cb1-5"><a></a><span class="co"># 3rd order: x'''+2x''-x'+3x=0</span></span>
-<span id="cb1-6"><a></a>A3 <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>],[<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>]])</span>
-<span id="cb1-7"><a></a><span class="bu">print</span>(<span class="st">"Char poly:"</span>, sym.expand((lam<span class="op">*</span>sym.eye(<span class="dv">3</span>)<span class="op">-</span>A3).det()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lam <span class="op">=</span> sym.Symbol(<span class="st">'lambda'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2nd order: x''+3x'+2x=0, companion A</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>A2 <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>,<span class="dv">1</span>],[<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">3</span>]])</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Char poly:"</span>, sym.expand((lam<span class="op">*</span>sym.eye(<span class="dv">2</span>)<span class="op">-</span>A2).det()))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 3rd order: x'''+2x''-x'+3x=0</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>A3 <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>],[<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>]])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Char poly:"</span>, sym.expand((lam<span class="op">*</span>sym.eye(<span class="dv">3</span>)<span class="op">-</span>A3).det()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Char poly: lambda**2 + 3*lambda + 2
 Char poly: lambda**3 + 2*lambda**2 - lambda + 3</code></pre>
 </div>
 </div>
-</section></section>
-<section>
-<section id="section-4.2-matrices" class="title-slide slide level1 center" data-background-color="#2c3e50">
-<h1>Section 4.2: Matrices</h1>
-
 </section>
-<section id="notation-and-basic-operations" class="slide level2">
-<h2>Notation and Basic Operations</h2>
+</section>
+<section id="section-4.2-matrices" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Section 4.2: Matrices</h1>
+<section id="notation-and-basic-operations" class="level2">
+<h2 class="anchored" data-anchor-id="notation-and-basic-operations">Notation and Basic Operations</h2>
 <p><span class="math display">\[A = \begin{pmatrix}a_{11}&amp;a_{12}\\a_{21}&amp;a_{22}\end{pmatrix}, \quad \mathbf{x} = \begin{pmatrix}x_1\\x_2\end{pmatrix} = (x_1,x_2)^T\]</span></p>
 <p>Matrices: <strong>uppercase</strong>. Vectors: <strong>lowercase boldface</strong>.</p>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Addition</strong> (entrywise): <span class="math inline">\((A+B)_{ij}=a_{ij}+b_{ij}\)</span>.</p>
 <p><strong>Scalar multiplication</strong>: <span class="math inline">\((cA)_{ij}=ca_{ij}\)</span>.</p>
 <p><strong>Matrix product</strong> (row <span class="math inline">\(\cdot\)</span> column): <span class="math display">\[(AB)_{ij} = a_{i1}b_{1j}+a_{i2}b_{2j}.\]</span></p>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Important</strong></p>
+<div class="callout-title-container flex-fill">
+Important
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p><span class="math inline">\(AB \neq BA\)</span> in general — multiplication is <strong>not commutative</strong>.</p>
 </div>
 </div>
-</div>
 <p><strong>Matrix-vector product:</strong> <span class="math inline">\(A\mathbf{x} = \bigl(\begin{smallmatrix}ax+by\\cx+dy\end{smallmatrix}\bigr)\)</span></p>
-</div>
 </section>
-<section id="examples-4.16-and-4.17-logan" class="slide level2">
-<h2>Examples 4.16 and 4.17 (Logan)</h2>
+<section id="examples-4.16-and-4.17-logan" class="level2">
+<h2 class="anchored" data-anchor-id="examples-4.16-and-4.17-logan">Examples 4.16 and 4.17 (Logan)</h2>
 <div id="5c46780f" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>A <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="op">-</span><span class="dv">4</span>]])<span class="op">;</span> B <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>,<span class="op">-</span><span class="dv">2</span>],[<span class="dv">7</span>,<span class="op">-</span><span class="dv">4</span>]])</span>
-<span id="cb3-2"><a></a>x_v <span class="op">=</span> sym.Matrix([<span class="op">-</span><span class="dv">4</span>,<span class="dv">6</span>])<span class="op">;</span> y_v <span class="op">=</span> sym.Matrix([<span class="dv">5</span>,<span class="dv">1</span>])</span>
-<span id="cb3-3"><a></a><span class="bu">print</span>(<span class="st">"A+B ="</span>,    (A<span class="op">+</span>B).tolist())</span>
-<span id="cb3-4"><a></a><span class="bu">print</span>(<span class="st">"-3B ="</span>,    (<span class="op">-</span><span class="dv">3</span><span class="op">*</span>B).tolist())</span>
-<span id="cb3-5"><a></a><span class="bu">print</span>(<span class="st">"x+2y ="</span>,   (x_v<span class="op">+</span><span class="dv">2</span><span class="op">*</span>y_v).T.tolist())</span>
-<span id="cb3-6"><a></a></span>
-<span id="cb3-7"><a></a>A2 <span class="op">=</span> sym.Matrix([[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>]])<span class="op">;</span> B2 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">5</span>,<span class="dv">2</span>]])</span>
-<span id="cb3-8"><a></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">AB ="</span>, (A2<span class="op">*</span>B2).tolist())</span>
-<span id="cb3-9"><a></a><span class="bu">print</span>(<span class="st">"A^2 ="</span>, (A2<span class="op">**</span><span class="dv">2</span>).tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="op">-</span><span class="dv">4</span>]])<span class="op">;</span> B <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>,<span class="op">-</span><span class="dv">2</span>],[<span class="dv">7</span>,<span class="op">-</span><span class="dv">4</span>]])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x_v <span class="op">=</span> sym.Matrix([<span class="op">-</span><span class="dv">4</span>,<span class="dv">6</span>])<span class="op">;</span> y_v <span class="op">=</span> sym.Matrix([<span class="dv">5</span>,<span class="dv">1</span>])</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A+B ="</span>,    (A<span class="op">+</span>B).tolist())</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-3B ="</span>,    (<span class="op">-</span><span class="dv">3</span><span class="op">*</span>B).tolist())</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"x+2y ="</span>,   (x_v<span class="op">+</span><span class="dv">2</span><span class="op">*</span>y_v).T.tolist())</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>A2 <span class="op">=</span> sym.Matrix([[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>]])<span class="op">;</span> B2 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">4</span>],[<span class="dv">5</span>,<span class="dv">2</span>]])</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">AB ="</span>, (A2<span class="op">*</span>B2).tolist())</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A^2 ="</span>, (A2<span class="op">**</span><span class="dv">2</span>).tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A+B = [[1, 0], [10, -8]]
 -3B = [[0, 6], [-21, 12]]
@@ -568,95 +776,89 @@ A^2 = [[1, 6], [-2, -3]]</code></pre>
 </div>
 </div>
 </section>
-<section id="determinant-inverse-theorem-4.19" class="slide level2">
-<h2>Determinant, Inverse, Theorem 4.19</h2>
+<section id="determinant-inverse-theorem-4.19" class="level2">
+<h2 class="anchored" data-anchor-id="determinant-inverse-theorem-4.19">Determinant, Inverse, Theorem 4.19</h2>
 <p><span class="math display">\[\det A = \det\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix} = ad - bc\]</span></p>
 <p>If <span class="math inline">\(\det A \neq 0\)</span>: <span class="math display">\[A^{-1} = \frac{1}{\det A}\begin{pmatrix}d&amp;-b\\-c&amp;a\end{pmatrix} \tag{4.17}\]</span></p>
 <p>Recipe: <strong>swap diagonal, negate off-diagonal, divide by <span class="math inline">\(\det A\)</span></strong>.</p>
-<div class="fragment">
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<p>. . .</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Theorem 4.19</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem 4.19
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(\det A \neq 0\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> has <strong>unique solution</strong> <span class="math inline">\(\mathbf{x}=A^{-1}\mathbf{b}\)</span>.</li>
 <li><span class="math inline">\(\det A = 0\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span> has <strong>infinitely many solutions</strong>.</li>
 </ul>
 </div>
 </div>
-</div>
 <div id="2f9056d1" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>A18 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">4</span>,<span class="dv">3</span>]])</span>
-<span id="cb5-2"><a></a><span class="bu">print</span>(<span class="ss">f"det A = </span><span class="sc">{</span>A18<span class="sc">.</span>det()<span class="sc">}</span><span class="ss">,  A^(-1) = </span><span class="sc">{</span>A18<span class="sc">.</span>inv()<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb5-3"><a></a><span class="bu">print</span>(<span class="ss">f"A*A^(-1) = </span><span class="sc">{</span>(A18<span class="op">*</span>A18.inv())<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>A18 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">4</span>,<span class="dv">3</span>]])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"det A = </span><span class="sc">{</span>A18<span class="sc">.</span>det()<span class="sc">}</span><span class="ss">,  A^(-1) = </span><span class="sc">{</span>A18<span class="sc">.</span>inv()<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A*A^(-1) = </span><span class="sc">{</span>(A18<span class="op">*</span>A18.inv())<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>det A = -5,  A^(-1) = [[-3/5, 2/5], [4/5, -1/5]]
 A*A^(-1) = [[1, 0], [0, 1]]</code></pre>
 </div>
 </div>
-</div>
 </section>
-<section id="cramers-rule-theorem-4.21-and-example-4.22" class="slide level2">
-<h2>Cramer’s Rule (Theorem 4.21) and Example 4.22</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<section id="cramers-rule-theorem-4.21-and-example-4.22" class="level2">
+<h2 class="anchored" data-anchor-id="cramers-rule-theorem-4.21-and-example-4.22">Cramer’s Rule (Theorem 4.21) and Example 4.22</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Theorem 4.21 — Cramer’s Rule</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem 4.21 — Cramer’s Rule
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p><span class="math display">\[x_1 = \frac{\det\bigl[\mathbf{b}\ |\ \mathbf{a}_2\bigr]}{\det A}, \qquad x_2 = \frac{\det\bigl[\mathbf{a}_1\ |\ \mathbf{b}\bigr]}{\det A}.\]</span> Replace column <span class="math inline">\(j\)</span> with <span class="math inline">\(\mathbf{b}\)</span>; divide by <span class="math inline">\(\det A\)</span>.</p>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Example 4.22:</strong> <span class="math inline">\(2x-3y=4\)</span>, <span class="math inline">\(4x-y=-1\)</span>.</p>
 <p><span class="math inline">\(\det A = 2(-1)-4(-3) = 10\)</span>.</p>
 <p><span class="math display">\[x = \frac{\det\bigl[\begin{smallmatrix}4&amp;-3\\-1&amp;-1\end{smallmatrix}\bigr]}{10} = \frac{-7}{10}, \qquad y = \frac{\det\bigl[\begin{smallmatrix}2&amp;4\\4&amp;-1\end{smallmatrix}\bigr]}{10} = \frac{-18}{10}.\]</span></p>
-</div>
-</section></section>
-<section>
-<section id="the-matrix-ode-mathbfxamathbfx" class="title-slide slide level1 center" data-background-color="#1a5276">
-<h1>The Matrix ODE <span class="math inline">\(\mathbf{x}'=A\mathbf{x}\)</span></h1>
-
 </section>
-<section id="compact-form-and-equilibria" class="slide level2">
-<h2>Compact Form and Equilibria</h2>
+</section>
+<section id="the-matrix-ode-mathbfxamathbfx" class="level1" data-background-color="#1a5276">
+<h1 data-background-color="#1a5276">The Matrix ODE <span class="math inline">\(\mathbf{x}'=A\mathbf{x}\)</span></h1>
+<section id="compact-form-and-equilibria" class="level2">
+<h2 class="anchored" data-anchor-id="compact-form-and-equilibria">Compact Form and Equilibria</h2>
 <p><span class="math display">\[\mathbf{x}'(t) = A\mathbf{x}(t), \quad A=\begin{pmatrix}a&amp;b\\c&amp;d\end{pmatrix}, \quad \mathbf{x}=\begin{pmatrix}x\\y\end{pmatrix}. \tag{4.22}\]</span></p>
 <p>Autonomous: right side does not depend explicitly on <span class="math inline">\(t\)</span>.</p>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Equilibrium</strong> <span class="math inline">\(\mathbf{x}^*\)</span>: constant solution satisfying <span class="math inline">\(A\mathbf{x}^*=\mathbf{0}\)</span>.</p>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Theorem 4.23</strong></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem 4.23
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(\det A \neq 0\)</span>: unique isolated equilibrium at <span class="math inline">\((0,0)\)</span>.</li>
 <li><span class="math inline">\(\det A = 0\)</span>: a line of equilibria through the origin.</li>
 </ul>
 </div>
 </div>
-</div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p><strong>Remark 4.24 (Nonhomogeneous):</strong> For <span class="math inline">\(\mathbf{x}'=A\mathbf{x}+\mathbf{b}\)</span>: <span class="math display">\[\mathbf{x}^* = -A^{-1}\mathbf{b}. \tag{4.24}\]</span> Let <span class="math inline">\(\mathbf{y}=\mathbf{x}-\mathbf{x}^*\)</span>; then <span class="math inline">\(\mathbf{y}'=A\mathbf{y}\)</span> — reduces to homogeneous case.</p>
-</div>
 </section>
-<section id="stability-vocabulary-definition-4.25" class="slide level2">
-<h2>Stability Vocabulary (Definition 4.25)</h2>
-<table class="caption-top">
+<section id="stability-vocabulary-definition-4.25" class="level2">
+<h2 class="anchored" data-anchor-id="stability-vocabulary-definition-4.25">Stability Vocabulary (Definition 4.25)</h2>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
@@ -687,438 +889,469 @@ A*A^(-1) = [[1, 0], [0, 1]]</code></pre>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
+<p>. . .</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<div class="callout-title-container flex-fill">
+Tip
 </div>
-<div class="callout-content">
+</div>
+<div class="callout-body-container callout-body">
 <p>In Section 4.3 we will see exactly how the <strong>eigenvalues of <span class="math inline">\(A\)</span></strong> determine which case occurs — the trace <span class="math inline">\(\text{tr}(A)\)</span> and <span class="math inline">\(\det(A)\)</span> classify the stability completely.</p>
 </div>
 </div>
-</div>
-</div>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center" data-background-color="#2c3e50">
-<h1>Summary</h1>
-
 </section>
-<section id="key-takeaways" class="slide level2">
-<h2>Key Takeaways</h2>
-<ul>
-<li class="fragment"><p>A <strong>second-order ODE</strong> <span class="math inline">\(ax''+bx'+cx=0\)</span> becomes the planar system <span class="math inline">\(\mathbf{x}'=A\mathbf{x}\)</span> with companion matrix <span class="math inline">\(A=\bigl[\begin{smallmatrix}0&amp;1\\-c/a&amp;-b/a\end{smallmatrix}\bigr]\)</span>. The eigenvalues of <span class="math inline">\(A\)</span> are the roots of the ODE characteristic equation.</p></li>
-<li class="fragment"><p><strong>Hamiltonian mechanics</strong> produces <span class="math inline">\((\dot{q},\dot{p}) = (\partial H/\partial p, -\partial H/\partial q)\)</span> — a first-order system. The SHO’s orbits are level curves of <span class="math inline">\(H\)</span>.</p></li>
-<li class="fragment"><p>An <strong><span class="math inline">\(n\)</span>-th order ODE</strong> reduces to the companion <span class="math inline">\(n\)</span>-dimensional system; the characteristic polynomial is unchanged.</p></li>
-<li class="fragment"><p>The <strong>phase plane</strong> visualizes solution curves (orbits); the vector field, nullclines, and the sign analysis of <span class="math inline">\(x'\)</span>, <span class="math inline">\(y'\)</span> in each quadrant reveal the orbit structure without solving.</p></li>
-<li class="fragment"><p><strong>Elimination</strong> (§4.1) converts the system back to a second-order ODE (4.7); the Wronskian tests linear independence.</p></li>
-<li class="fragment"><p><strong>Matrix facts</strong> (§4.2): <span class="math inline">\(\det A\neq 0 \Leftrightarrow\)</span> invertible <span class="math inline">\(\Leftrightarrow\)</span> unique solution; inverse formula (4.17); Cramer’s rule.</p></li>
-<li class="fragment"><p><strong>Equilibria</strong>: <span class="math inline">\(A\mathbf{x}^*=\mathbf{0}\)</span> for homogeneous; <span class="math inline">\(\mathbf{x}^*=-A^{-1}\mathbf{b}\)</span> for nonhomogeneous. Stability depends on eigenvalues (Section 4.3).</p></li>
+</section>
+<section id="summary" class="level1" data-background-color="#2c3e50">
+<h1 data-background-color="#2c3e50">Summary</h1>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>A <strong>second-order ODE</strong> <span class="math inline">\(ax''+bx'+cx=0\)</span> becomes the planar system <span class="math inline">\(\mathbf{x}'=A\mathbf{x}\)</span> with companion matrix <span class="math inline">\(A=\bigl[\begin{smallmatrix}0&amp;1\\-c/a&amp;-b/a\end{smallmatrix}\bigr]\)</span>. The eigenvalues of <span class="math inline">\(A\)</span> are the roots of the ODE characteristic equation.</p></li>
+<li><p><strong>Hamiltonian mechanics</strong> produces <span class="math inline">\((\dot{q},\dot{p}) = (\partial H/\partial p, -\partial H/\partial q)\)</span> — a first-order system. The SHO’s orbits are level curves of <span class="math inline">\(H\)</span>.</p></li>
+<li><p>An <strong><span class="math inline">\(n\)</span>-th order ODE</strong> reduces to the companion <span class="math inline">\(n\)</span>-dimensional system; the characteristic polynomial is unchanged.</p></li>
+<li><p>The <strong>phase plane</strong> visualizes solution curves (orbits); the vector field, nullclines, and the sign analysis of <span class="math inline">\(x'\)</span>, <span class="math inline">\(y'\)</span> in each quadrant reveal the orbit structure without solving.</p></li>
+<li><p><strong>Elimination</strong> (§4.1) converts the system back to a second-order ODE (4.7); the Wronskian tests linear independence.</p></li>
+<li><p><strong>Matrix facts</strong> (§4.2): <span class="math inline">\(\det A\neq 0 \Leftrightarrow\)</span> invertible <span class="math inline">\(\Leftrightarrow\)</span> unique solution; inverse formula (4.17); Cramer’s rule.</p></li>
+<li><p><strong>Equilibria</strong>: <span class="math inline">\(A\mathbf{x}^*=\mathbf{0}\)</span> for homogeneous; <span class="math inline">\(\mathbf{x}^*=-A^{-1}\mathbf{b}\)</span> for nonhomogeneous. Stability depends on eigenvalues (Section 4.3).</p></li>
 </ul>
+</div>
 </section>
-<section id="references" class="slide level2 smaller scrollable">
-<h2>References</h2>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-logan2015first" class="csl-entry" role="listitem">
 Logan, J David. 2015. <em>A First Course in Differential Equations, Third Edition</em>.
 </div>
 </div>
+<hr>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid" style="width:12.0%"></a></p>
+
+
 </section>
-<section class="slide level2">
+</section>
 
-<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img data-src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" style="width:12.0%"></a></p>
-
-
-</section></section>
-    </div>
-  <div class="quarto-auto-generated-content" style="display: none;">
-<div class="footer footer-default">
-<p>MATH 341 Differential Equations — Notes 9</p>
-</div>
-</div></div>
-
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
-
-      // Full list of configuration options available at:
-      // https://revealjs.com/config/
-      Reveal.initialize({
-'controlsAuto': true,
-'previewLinksAuto': false,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
-'smaller': true,
- 
-        // Display controls in the bottom right corner
-        controls: false,
-
-        // Help the user learn the controls by providing hints, for example by
-        // bouncing the down arrow when they first encounter a vertical slide
-        controlsTutorial: false,
-
-        // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
-
-        // Visibility rule for backwards navigation arrows; "faded", "hidden"
-        // or "visible"
-        controlsBackArrows: 'faded',
-
-        // Display a presentation progress bar
-        progress: true,
-
-        // Display the page number of the current slide
-        slideNumber: 'c/t',
-
-        // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
-
-        // Add the current slide number to the URL hash so that reloading the
-        // page/copying the URL will return you to the same slide
-        hash: true,
-
-        // Start with 1 for the hash rather than 0
-        hashOneBasedIndex: false,
-
-        // Flags if we should monitor the hash and change slides accordingly
-        respondToHashChanges: true,
-
-        // Push each slide change to the browser history
-        history: true,
-
-        // Enable keyboard shortcuts for navigation
-        keyboard: true,
-
-        // Enable the slide overview mode
-        overview: true,
-
-        // Disables the default reveal.js slide layout (scaling and centering)
-        // so that you can use custom CSS layout
-        disableLayout: false,
-
-        // Vertical centering of slides
-        center: false,
-
-        // Enables touch navigation on devices with touch input
-        touch: true,
-
-        // Loop the presentation
-        loop: false,
-
-        // Change the presentation direction to be RTL
-        rtl: false,
-
-        // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
-
-        // Randomizes the order of slides each time the presentation loads
-        shuffle: false,
-
-        // Turns fragments on and off globally
-        fragments: true,
-
-        // Flags whether to include the current fragment in the URL,
-        // so that reloading brings you to the same fragment position
-        fragmentInURL: false,
-
-        // Flags if the presentation is running in an embedded mode,
-        // i.e. contained within a limited portion of the screen
-        embedded: false,
-
-        // Flags if we should show a help overlay when the questionmark
-        // key is pressed
-        help: true,
-
-        // Flags if it should be possible to pause the presentation (blackout)
-        pause: true,
-
-        // Flags if speaker notes should be visible to all viewers
-        showNotes: false,
-
-        // Global override for autoplaying embedded media (null/true/false)
-        autoPlayMedia: null,
-
-        // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: null,
-
-        // Specify the average time in seconds that you think you will spend
-        // presenting each slide. This is used to show a pacing timer in the
-        // speaker view
-        defaultTiming: null,
-
-        // Enable slide navigation via mouse wheel
-        mouseWheel: false,
-
-        // The display mode that will be used to show slides
-        display: 'block',
-
-        // Hide cursor if inactive
-        hideInactiveCursor: true,
-
-        // Time before the cursor is hidden (in ms)
-        hideCursorTime: 5000,
-
-        // Opens links in an iframe preview overlay
-        previewLinks: false,
-
-        // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
-
-        // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
-
-        // Transition style for full page slide backgrounds
-        // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
-
-        // Number of slides away from the current that are visible
-        viewDistance: 3,
-
-        // Number of slides away from the current that are visible on mobile
-        // devices. It is advisable to set this to a lower number than
-        // viewDistance in order to save resources.
-        mobileViewDistance: 2,
-
-        // The "normal" size of the presentation, aspect ratio will be preserved
-        // when the presentation is scaled to fit different resolutions. Can be
-        // specified using percentage units.
-        width: 1050,
-
-        height: 700,
-
-        // Factor of the display size that should remain empty around the content
-        margin: 0.1,
-
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
-        // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
-
-          RevealMath,
-          RevealNotes,
-          RevealSearch,
-          RevealZoom
-        ]
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
-    </script>
-    <script id="quarto-html-after-body" type="application/javascript">
-      window.document.addEventListener("DOMContentLoaded", function (event) {
-        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-        tabsets.forEach(function(tabset) {
-          const tabby = new Tabby('#' + tabset.id);
-        });
-        const isCodeAnnotation = (el) => {
-          for (const clz of el.classList) {
-            if (clz.startsWith('code-annotation-')) {                     
-              return true;
-            }
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
-          return false;
         }
-        const onCopySuccess = function(e) {
-          // button target
-          const button = e.trigger;
-          // don't keep focus
-          button.blur();
-          // flash "checked"
-          button.classList.add('code-copy-button-checked');
-          var currentTitle = button.getAttribute("title");
-          button.setAttribute("title", "Copied!");
-          let tooltip;
-          if (window.bootstrap) {
-            button.setAttribute("data-bs-toggle", "tooltip");
-            button.setAttribute("data-bs-placement", "left");
-            button.setAttribute("data-bs-title", "Copied!");
-            tooltip = new bootstrap.Tooltip(button, 
-              { trigger: "manual", 
-                customClass: "code-copy-button-tooltip",
-                offset: [0, -8]});
-            tooltip.show();    
-          }
-          setTimeout(function() {
-            if (tooltip) {
-              tooltip.hide();
-              button.removeAttribute("data-bs-title");
-              button.removeAttribute("data-bs-toggle");
-              button.removeAttribute("data-bs-placement");
-            }
-            button.setAttribute("title", currentTitle);
-            button.classList.remove('code-copy-button-checked');
-          }, 1000);
-          // clear code selection
-          e.clearSelection();
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        const getTextToCopy = function(trigger) {
-          const outerScaffold = trigger.parentElement.cloneNode(true);
-          const codeEl = outerScaffold.querySelector('code');
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
-          return codeEl.innerText;
         }
-        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-          text: getTextToCopy
-        });
-        clipboard.on('success', onCopySuccess);
-        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-            text: getTextToCopy,
-            container: window.document.getElementById('quarto-embedded-source-code-modal')
-          });
-          clipboardModal.on('success', onCopySuccess);
-        }
-          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-          var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
-          var isInternal = (href) => {
-              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-          }
-          // Inspect non-navigation links and adorn them if external
-         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-          for (var i=0; i<links.length; i++) {
-            const link = links[i];
-            if (!isInternal(link.href)) {
-              // undo the damage that might have been done by quarto-nav.js in the case of
-              // links that we want to consider external
-              if (link.dataset.originalHref !== undefined) {
-                link.href = link.dataset.originalHref;
-              }
-            }
-          }
-        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-          const config = {
-            allowHTML: true,
-            maxWidth: 500,
-            delay: 100,
-            arrow: false,
-            appendTo: function(el) {
-                return el.closest('section.slide') || el.parentElement;
-            },
-            interactive: true,
-            interactiveBorder: 10,
-            theme: 'light-border',
-            placement: 'bottom-start',
-          };
-          if (contentFn) {
-            config.content = contentFn;
-          }
-          if (onTriggerFn) {
-            config.onTrigger = onTriggerFn;
-          }
-          if (onUntriggerFn) {
-            config.onUntrigger = onUntriggerFn;
-          }
-            config['offset'] = [0,0];
-            config['maxWidth'] = 700;
-          window.tippy(el, config); 
-        }
-        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-        for (var i=0; i<noterefs.length; i++) {
-          const ref = noterefs[i];
-          tippyHover(ref, function() {
-            // use id or data attribute instead here
-            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-            try { href = new URL(href).hash; } catch {}
-            const id = href.replace(/^#\/?/, "");
-            const note = window.document.getElementById(id);
-            if (note) {
-              return note.innerHTML;
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
             } else {
-              return "";
+              container.appendChild(child.cloneNode(true));
+              break;
             }
-          });
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        const findCites = (el) => {
-          const parentEl = el.parentElement;
-          if (parentEl) {
-            const cites = parentEl.dataset.cites;
-            if (cites) {
-              return {
-                el,
-                cites: cites.split(' ')
-              };
-            } else {
-              return findCites(el.parentElement)
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
             }
           } else {
-            return undefined;
-          }
-        };
-        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-        for (var i=0; i<bibliorefs.length; i++) {
-          const ref = bibliorefs[i];
-          const citeInfo = findCites(ref);
-          if (citeInfo) {
-            tippyHover(citeInfo.el, function() {
-              var popup = window.document.createElement('div');
-              citeInfo.cites.forEach(function(cite) {
-                var citeDiv = window.document.createElement('div');
-                citeDiv.classList.add('hanging-indent');
-                citeDiv.classList.add('csl-entry');
-                var biblioDiv = window.document.getElementById('ref-' + cite);
-                if (biblioDiv) {
-                  citeDiv.innerHTML = biblioDiv.innerHTML;
-                }
-                popup.appendChild(citeDiv);
-              });
-              return popup.innerHTML;
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
             });
           }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
         }
+      }, function(instance) {
       });
-      </script>
-    
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
 
 </body></html>
