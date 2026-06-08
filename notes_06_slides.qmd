@@ -113,7 +113,7 @@ provided the improper integral converges.
 :::
 
 ::: {.callout-note}
-**Notation:** These slides use $\mathscr{L}$ (script); the long-form notes and Logan use $\mathcal{L}$ (calligraphic).  Both denote the same operator.
+**Notation:** These slides use $\mathscr{L}$ (script); Logan and the long-form notes use $\mathcal{L}$ (calligraphic).  Both denote the same operator.  The script form is used here solely because it renders more cleanly in the slide environment — do not let the font difference confuse you when reading the textbook.
 :::
 
 . . .
@@ -260,55 +260,38 @@ display(Math(r"x(t)=" + sym.latex(sym.inverse_laplace_transform(expr,s_v,t_v))))
 
 # Transform of Derivatives {background-color="#2c3e50"}
 
-## The Key ODE Formula
+## The Key ODE Formula — Preview
+
+The properties above let us compute transforms and inverses.  To solve ODEs we need one more ingredient: what does $\mathscr{L}$ do to $x'$ and $x''$?
 
 ::: {.callout-important}
-## Transform of Derivatives
+## Transform of Derivatives (stated here; proved in Notes 7 as Theorem 3.11)
 $$\mathscr{L}[x'(t)] = s\,X(s) - x(0)$$
 $$\mathscr{L}[x''(t)] = s^2 X(s) - s\,x(0) - x'(0)$$
+
+**Pattern:** $\mathscr{L}[x^{(n)}] = s^n X(s) - s^{n-1}x(0) - \cdots - x^{(n-1)}(0)$.
 :::
 
-**Derivation** (integration by parts, $u=e^{-st}$, $dv=x'dt$):
-$$\int_0^\infty x'e^{-st}dt = [xe^{-st}]_0^\infty + s\int_0^\infty xe^{-st}dt = -x(0)+sX(s). \checkmark$$
-
 . . .
 
-**Why this is powerful.** Applying $\mathscr{L}$ to $ax''+bx'+cx=f(t)$:
+**Why this is powerful.** Applying $\mathscr{L}$ to $ax''+bx'+cx=f(t)$ with ICs $x(0)=x_0$, $x'(0)=x_1$:
 $$(as^2+bs+c)X(s) = F(s) + a(sx_0+x_1) + bx_0.$$
 
-The ODE becomes an **algebraic equation** for $X(s)$. ICs appear automatically on the right-hand side — no separate enforcement needed.
-
-
-## Full ODE Example
-
-Solve $x''+4x'+3x=0$, $x(0)=2$, $x'(0)=1$.
+The ODE becomes an **algebraic equation** for $X(s)$, and the initial conditions appear on the right automatically — no separate enforcement step needed.
 
 . . .
 
-**Step 1 — Transform:**
-$$[s^2X-2s-1]+4[sX-2]+3X = 0 \;\Rightarrow\; (s^2+4s+3)X = 2s+9.$$
-
-**Step 2 — Solve:**
-$$X(s) = \frac{2s+9}{(s+1)(s+3)}.$$
-
-**Step 3 — PF + invert:**
-$$x(t) = \tfrac{7}{2}e^{-t} - \tfrac{3}{2}e^{-3t}.$$
-
-```{python}
-#| label: fig-ode1-slides
-#| fig-height: 2.8
-
-t_pl = np.linspace(0,4,300)
-x_ex = 3.5*np.exp(-t_pl) - 1.5*np.exp(-3*t_pl)
-def ode1(t,y): return [y[1], -4*y[1]-3*y[0]]
-sol = solve_ivp(ode1,(0,4),[2,1],dense_output=True,max_step=0.02)
-fig,ax = plt.subplots(figsize=(9,2.6))
-ax.plot(t_pl, x_ex, color='steelblue', lw=2.5, label=r'$\frac{7}{2}e^{-t}-\frac{3}{2}e^{-3t}$')
-ax.plot(np.linspace(0,4,20), sol.sol(np.linspace(0,4,20))[0], 'ro', markersize=5, label='Numerical')
-ax.axhline(0,color='k',lw=0.5); ax.set_xlabel('$t$'); ax.legend(fontsize=8)
-ax.set_title(r"$x''+4x'+3x=0$, $x(0)=2$, $x'(0)=1$")
-plt.tight_layout(); plt.show()
-```
+::: {.callout-tip}
+## First Look at the Three-Step Method
+$$\boxed{\text{ODE in }x(t)}
+\xrightarrow{\;\mathscr{L}\;}
+\boxed{\text{Algebra in }X(s)}
+\xrightarrow{\;\text{solve}\;}
+\boxed{X(s)}
+\xrightarrow{\;\mathscr{L}^{-1}\;}
+\boxed{x(t)}$$
+**Notes 7** develops this method fully, with proofs and multiple worked examples.
+:::
 
 
 # The Heaviside Function {background-color="#1a5276"}
@@ -462,6 +445,8 @@ plt.tight_layout(); plt.show()
 
 ::: {.callout-note}
 The solution $x(t)$ is **continuous** even though the forcing is discontinuous. Its derivative $x'(t)$ has a jump at $t=3$.
+
+This is a first taste of discontinuous forcing — **Notes 7** develops the full technique with more complex piecewise functions and second-order equations.
 :::
 
 
@@ -485,12 +470,17 @@ The solution $x(t)$ is **continuous** even though the forcing is discontinuous. 
 | $\int_0^t f(\tau)g(t-\tau)d\tau$ | $F(s)G(s)$ |
 
 
-## Summary: The Five-Step Method
+## Summary: The Solution Checklist
+
+::: {.callout-note}
+## Relationship to Notes 7
+Notes 7 presents this as the **Three-Step Method** (transform → solve → invert), following Logan's Figure 3.2.  The checklist below is the same algorithm expanded with implementation details for each step.
+:::
 
 ::: {.callout-important}
-## Algorithm
+## Detailed Checklist (same algorithm, more granular)
 1. **Write** $f(t)$ using Heaviside steps if piecewise.
-2. **Apply $\mathscr{L}$** to both sides; use the derivative formula.
+2. **Apply $\mathscr{L}$** to both sides; use the derivative formulas (Notes 7, Theorem 3.11).
 3. **Solve** for $X(s)$ algebraically.
 4. **Partial fractions** to decompose $X(s)$ into table forms.
 5. **Invert** term by term; use the switching property for each $e^{-as}$ factor.
