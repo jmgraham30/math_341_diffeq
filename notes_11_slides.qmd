@@ -1,0 +1,531 @@
+---
+title: "Phase Plane Analysis and Nonhomogeneous Systems"
+subtitle: "MATH 341 — Notes 11"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 11"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover
+
+:::: {.columns}
+::: {.column width="60%"}
+1. **Table 4.1** and **Theorem 4.41** — eigenvalue classification and stability criterion $\text{tr}\,A<0$, $\det A>0$
+
+2. **Theorem 4.40** — the trace–determinant plane; reading off the phase portrait type at a glance
+
+3. **Drawing phase diagrams** — nullclines, direction fields, eigenvectors
+
+4. **Applied examples** — crop–soil, glucose–insulin, circuits, chemical reactors
+
+5. **Fundamental matrix** $\Phi(t)$ for homogeneous systems
+
+6. **Variation of parameters** for nonhomogeneous systems $\mathbf{x}'=A\mathbf{x}+\mathbf{f}(t)$
+
+7. **Undetermined coefficients** for nonhomogeneous systems
+:::
+::: {.column width="40%"}
+::: {.callout-note}
+**Sections 4.5 and 4.6** of @logan2015first.
+:::
+::: {.callout-tip}
+New vocabulary: trace–determinant plane, stability theorem, nullcline, fundamental matrix, variation of parameters (systems), undetermined coefficients (systems).
+:::
+:::
+::::
+
+
+# Section 4.5 {background-color="#2c3e50"}
+
+## Phase Plane Analysis
+
+
+## Classification Summary (Table 4.1)
+
+Eigenvalues of $A$ determine *everything* about the phase portrait of $\mathbf{x}' = A\mathbf{x}$:
+
+| Eigenvalues | Portrait | Stability |
+|:---|:---:|:---:|
+| $\lambda_1,\lambda_2>0$, real, unequal | Unstable node | Unstable |
+| $\lambda_1,\lambda_2<0$, real, unequal | Stable node | Asymp. stable |
+| $\lambda_1<0<\lambda_2$ | Saddle | Unstable |
+| $\lambda=\pm bi$ | Center | Stable |
+| $\lambda=a\pm bi$, $a>0$ | Unstable spiral | Unstable |
+| $\lambda=a\pm bi$, $a<0$ | Stable spiral | Asymp. stable |
+| $\lambda_1=\lambda_2>0$ | Unstable node | Unstable |
+| $\lambda_1=\lambda_2<0$ | Stable node | Asymp. stable |
+
+. . .
+
+**But we never need to compute eigenvalues to check stability:**
+
+
+## Theorem 4.41 — The Stability Theorem
+
+::: {.callout-important}
+## Theorem 4.41
+The origin $(0,0)$ of $\mathbf{x}'=A\mathbf{x}$ is **asymptotically stable** if, and only if,
+$$\text{tr}\,A < 0 \quad \text{and} \quad \det A > 0.$$
+:::
+
+. . .
+
+**Why this works:**
+
+- $\det A > 0$: eigenvalues are either both-negative-real, or complex-conjugates (no zero eigenvalue, no opposite signs)
+- $\text{tr}\,A = \lambda_1+\lambda_2 < 0$: real parts are negative
+
+. . .
+
+::: {.callout-tip}
+In applications: **compute $\text{tr}\,A$ and $\det A$ in terms of parameters**, then check their signs. This immediately settles stability without solving the characteristic equation.
+:::
+
+
+## Theorem 4.40 — The Trace–Determinant Plane
+
+The parabola $(\text{tr}\,A)^2 = 4\det A$ is the **discriminant boundary** separating real eigenvalues (below/on) from complex eigenvalues (above).
+
+::: {.callout-important}
+## Theorem 4.40
+Plot the point $(\text{tr}\,A,\, \det A)$. The region it falls in determines the portrait:
+
+| Region | Portrait |
+|:---|:---|
+| $\det A < 0$ | **Saddle** |
+| $\det A > 0$, $\text{tr}\,A = 0$ | **Center** |
+| $\det A > 0$, $\text{tr}\,A > 0$, on/below parabola | **Unstable node** |
+| $\det A > 0$, $\text{tr}\,A > 0$, above parabola | **Unstable spiral** |
+| $\det A > 0$, $\text{tr}\,A < 0$, on/below parabola | **Stable node** |
+| $\det A > 0$, $\text{tr}\,A < 0$, above parabola | **Stable spiral** |
+:::
+
+
+## The Trace–Determinant Plane — Diagram
+
+```{python}
+#| label: fig-td-slides
+#| fig-height: 4.2
+
+tr_vals = np.linspace(-3.5, 3.5, 500)
+det_parabola = tr_vals**2 / 4
+
+fig, ax = plt.subplots(figsize=(9, 4.0))
+ax.fill_betweenx(np.linspace(0, 4, 200), -3.5, 0,
+                 alpha=0.1, color='steelblue')
+ax.plot(tr_vals, det_parabola, 'k-', lw=2.0,
+        label=r'$({\rm tr}\,A)^2 = 4\det A$')
+ax.axhline(0, color='k', lw=1.2); ax.axvline(0, color='k', lw=1.2)
+
+kw = dict(fontsize=10, ha='center', va='center')
+ax.text(-2.2, 2.6, 'Stable\nSpirals', color='steelblue', **kw)
+ax.text( 2.2, 2.6, 'Unstable\nSpirals', color='crimson', **kw)
+ax.text(-2.3, 0.45, 'Stable\nNodes', color='steelblue', fontsize=9,
+        ha='center', va='center')
+ax.text( 2.3, 0.45, 'Unstable\nNodes', color='crimson', fontsize=9,
+        ha='center', va='center')
+ax.text( 0.0, 3.4, 'Centers', color='seagreen', fontsize=10,
+        ha='center', va='center')
+ax.text( 0.0, -1.2, 'Saddle Points (Unstable)', color='darkorange',
+        fontsize=10, ha='center', va='center')
+ax.annotate(r'$({\rm tr}\,A)^2=4\det A$', xy=(1.6, 0.64),
+            xytext=(2.6, 1.7), fontsize=8,
+            arrowprops=dict(arrowstyle='->', color='k', lw=1.0))
+ax.set_xlabel(r'${\rm tr}\,A$', fontsize=12)
+ax.set_ylabel(r'$\det A$', fontsize=12)
+ax.set_title('Trace–Determinant Plane (Figure 4.13)', fontsize=11)
+ax.set_xlim(-3.5, 3.5); ax.set_ylim(-2.0, 4.0)
+ax.legend(fontsize=8, loc='upper right')
+plt.tight_layout(); plt.show()
+```
+
+
+## Using the Trace–Determinant Plane
+
+**Example.** Classify the origin for each system:
+
+| System | $\text{tr}\,A$ | $\det A$ | Discriminant | Type |
+|:---|:---:|:---:|:---:|:---:|
+| $\begin{pmatrix}-2&-3\\3&-2\end{pmatrix}$ | $-4$ | $13$ | $16-52=-36<0$ | Stable spiral |
+| $\begin{pmatrix}1&1\\4&1\end{pmatrix}$ | $2$ | $-3$ | — | Saddle |
+| $\begin{pmatrix}-2&0\\0&-5\end{pmatrix}$ | $-7$ | $10$ | $49-40=9>0$ | Stable node |
+
+. . .
+
+::: {.callout-tip}
+**Workflow:** (1) Compute $\text{tr}\,A$ and $\det A$. (2) Check $\det A$: if $<0$, it's a saddle. (3) If $\det A>0$, check $\text{tr}\,A$ for stability. (4) Compare $(\text{tr}\,A)^2$ to $4\det A$ for node vs. spiral.
+:::
+
+
+## How to Draw a Phase Diagram
+
+**(a) Real unequal eigenvalues:**
+Draw linear orbits along eigenvectors (arrows toward origin for $\lambda<0$, away for $\lambda>0$). Fill between with direction field. Add nullclines.
+
+. . .
+
+**(b) Purely imaginary eigenvalues ($\lambda=\pm bi$):**
+Orbits are closed ellipses. Compute one direction field vector to determine CW or CCW. Add nullclines.
+
+. . .
+
+**(c) Complex eigenvalues ($\lambda=a\pm bi$):**
+Orbits are spirals; sign of $a$ determines in vs. out. Compute one direction field vector for orientation.
+
+. . .
+
+**(d) $\det A = 0$:**
+Line of equilibria along $ax+by=0$. Orbits are parallel lines $y=mx+C$.
+
+
+# Applied Examples {background-color="#1a5276"}
+
+## Example 4.42 — Crop–Soil Model
+
+Pesticide in crops ($x$) and soil ($y$):
+$$x'=-\beta x+\alpha y, \quad y'=\beta x-(\alpha+\gamma)y, \quad \alpha,\beta,\gamma>0.$$
+
+. . .
+
+**Nullclines:** $x'=0$ on $y=(\beta/\alpha)x$; $\;y'=0$ on $y=\beta/(\alpha+\gamma)\,x$.
+
+The $x$-nullcline has **greater slope** than the $y$-nullcline.
+
+. . .
+
+**Stability:** $\text{tr}\,A=-(\alpha+\beta+\gamma)<0$ and $\det A=\beta\gamma>0$.
+
+$\implies$ **Asymptotically stable** by Theorem 4.41.
+
+The pesticide eventually disappears from the system. $\square$
+
+. . .
+
+::: {.callout-note}
+We reached this conclusion **without solving the system** — just from $\text{tr}\,A$ and $\det A$. This is the power of the geometric approach.
+:::
+
+
+## Example 4.42 — Phase Portrait
+
+```{python}
+#| label: fig-cs-slides
+#| fig-height: 3.5
+
+alpha, beta, gamma = 0.5, 0.3, 0.2
+A_cs = np.array([[-beta, alpha], [beta, -(alpha+gamma)]])
+lim = 3.0
+x_g, y_g = np.meshgrid(np.linspace(0, lim, 20), np.linspace(0, lim, 20))
+dx = A_cs[0,0]*x_g + A_cs[0,1]*y_g
+dy = A_cs[1,0]*x_g + A_cs[1,1]*y_g
+nrm = np.sqrt(dx**2+dy**2+1e-10)
+fig, ax = plt.subplots(figsize=(9, 3.3))
+ax.quiver(x_g, y_g, dx/nrm, dy/nrm, alpha=0.3, color='gray', scale=28)
+x_nc = np.linspace(0, lim, 200)
+ax.plot(x_nc, (beta/alpha)*x_nc, 'steelblue', ls='--', lw=1.8,
+        label=r"$x'=0$")
+ax.plot(x_nc, (beta/(alpha+gamma))*x_nc, 'crimson', ls='--', lw=1.8,
+        label=r"$y'=0$")
+for x0 in [(2.5,0.3),(0.3,2.5),(2.0,2.0),(1.5,0.1),(0.2,1.8)]:
+    sol = solve_ivp(lambda t,y: A_cs@y, (0,15), list(x0),
+                    dense_output=True, max_step=0.05)
+    xy = sol.y; mask = (xy[0]>=-0.05)&(xy[1]>=-0.05)
+    ax.plot(xy[0,mask], xy[1,mask], 'k-', lw=1.1, alpha=0.6)
+ax.plot(0,0,'ko',markersize=8,zorder=5)
+ax.set_xlim(0,lim); ax.set_ylim(0,lim)
+ax.set_xlabel('$x$ (crop)'); ax.set_ylabel('$y$ (soil)')
+ax.set_title(r'Crop–soil model: tr$A<0$, det$A>0$ $\Rightarrow$ asymp. stable node')
+ax.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+
+## Example 4.44 — Glucose–Insulin Dynamics {.smaller}
+
+$$x'=-gx-ry,\quad y'=sx-dy, \quad A=\begin{pmatrix}-g&-r\\s&-d\end{pmatrix}, \quad g,r,s,d>0.$$
+
+. . .
+
+$\text{tr}\,A=-(g+d)<0$ and $\det A=gd+rs>0$ $\implies$ **always asymptotically stable**.
+
+. . .
+
+Eigenvalues: $\lambda=\tfrac{1}{2}\!\left(-(g+d)\pm\sqrt{(g-d)^2-4rs}\right)$.
+
+| Condition | Eigenvalue type | Behavior |
+|:---|:---:|:---|
+| $(g-d)^2>4rs$ | Real, negative | **Stable node** — monotone return |
+| $(g-d)^2<4rs$ | Complex, $\text{Re}<0$ | **Stable spiral** — decaying oscillations (hypoglycemic overshoot) |
+
+. . .
+
+For $g=2.9$, $r=4.3$, $s=0.21$, $d=0.78$: $(g-d)^2-4rs \approx -3.22 < 0$ $\implies$ **stable spiral**.
+
+```{python}
+#| label: fig-gi-slides
+#| fig-height: 2.5
+
+g_v,r_v,s_v,d_v=2.9,4.3,0.21,0.78
+A444=np.array([[-g_v,-r_v],[s_v,-d_v]])
+t_plot=np.linspace(0,12,400)
+sol=solve_ivp(lambda t,y: A444@y,(0,12),[3.,0.],dense_output=True,max_step=0.05)
+fig,ax=plt.subplots(figsize=(9,2.3))
+ax.plot(t_plot,sol.sol(t_plot)[0],'steelblue',lw=2.5,label='$x(t)$ glucose')
+ax.plot(t_plot,sol.sol(t_plot)[1],'crimson',lw=2.5,label='$y(t)$ insulin')
+ax.axhline(0,color='k',lw=0.5)
+ax.set_xlabel('$t$'); ax.legend(fontsize=9)
+ax.set_title('Glucose–insulin: decaying spiral ($g=2.9,r=4.3,s=0.21,d=0.78$)')
+plt.tight_layout(); plt.show()
+```
+
+
+## Example 4.45 — Electrical Circuit {.smaller}
+
+Two-loop circuit (capacitor $C$, resistor $R$, inductor $L$):
+
+$$I_2'=\frac{1}{RC}(-I_2+I_3),\quad I_3'=-\frac{R}{L}I_2. \qquad
+A=\begin{pmatrix}-\frac{1}{RC} & \frac{1}{RC}\\[4pt]-\frac{R}{L} & 0\end{pmatrix}.$$
+
+$\text{tr}\,A=-1/(RC)<0$ and $\det A=1/(LC)>0$ $\implies$ always asymptotically stable.
+
+. . .
+
+$(\text{tr}\,A)^2-4\det A = \dfrac{1}{(RC)^2}-\dfrac{4}{LC}$:
+
+| Condition | Type |
+|:---|:---:|
+| $L/(R^2C)>4$ | **Node** (overdamped — no oscillations) |
+| $L/(R^2C)<4$ | **Spiral** (underdamped — decaying oscillations) |
+
+. . .
+
+::: {.callout-note}
+The case $L/(R^2C)<4$ models a **resonant** RLC circuit — currents oscillate while decaying toward zero.
+:::
+
+
+## Example 4.46 — Coupled Chemical Reactors
+
+Two tanks, concentrations $C_1(t)$, $C_2(t)$ with $c_\text{in}=0$:
+
+$$C_1'=-\frac{q_1}{V}C_1+\frac{q_2}{V}C_2, \qquad C_2'=\frac{q_1}{V}C_1-\frac{q_2+q}{V}C_2.$$
+
+. . .
+
+$$A=\begin{pmatrix}-q_1/V & q_2/V \\ q_1/V & -(q_2+q)/V\end{pmatrix}.$$
+
+. . .
+
+$\text{tr}\,A = -(q_1+q_2+q)/V < 0$ and $\det A = q_1 q/V^2 > 0$.
+
+$\implies$ **Asymptotically stable.** Both concentrations $\to 0$ as $t\to\infty$. $\square$
+
+
+# Section 4.6 {background-color="#2c3e50"}
+
+## Nonhomogeneous Systems
+
+
+## Setup
+
+We now study the **nonhomogeneous** system
+
+$$\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t). \tag{4.43}$$
+
+where $\mathbf{f}(t)=(f_1(t),f_2(t))^T$ is a prescribed forcing function.
+
+. . .
+
+**Structure of the general solution** (same as for scalar equations):
+
+$$\mathbf{x}(t) = \underbrace{\mathbf{x}_h(t)}_{\text{homogeneous}} + \underbrace{\mathbf{x}_p(t)}_{\text{particular}}.$$
+
+. . .
+
+Two methods for finding $\mathbf{x}_p$:
+
+1. **Variation of parameters** — works for any $\mathbf{f}(t)$
+2. **Undetermined coefficients** — efficient when $\mathbf{f}(t)$ is a polynomial, exponential, sine/cosine, or their products
+
+
+## The Fundamental Matrix
+
+::: {.callout-important}
+## Definition
+A **fundamental matrix** $\Phi(t)$ is a $2\times 2$ matrix whose **columns are two independent solutions** of the homogeneous system $\mathbf{x}'=A\mathbf{x}$:
+$$\Phi(t)=\bigl(\mathbf{x}_1(t)\;\big|\;\mathbf{x}_2(t)\bigr).$$
+:::
+
+. . .
+
+**Key properties:**
+
+- $\Phi'(t)=A\Phi(t)$ (satisfies the matrix ODE)
+- General solution of homogeneous system: $\mathbf{x}_h(t)=\Phi(t)\mathbf{c}$ for arbitrary $\mathbf{c}=(c_1,c_2)^T$
+- $\Phi(t)$ is invertible (columns are independent, so $\det\Phi\neq 0$)
+
+
+## Variation of Parameters — Derivation
+
+Assume a particular solution $\mathbf{x}(t)=\Phi(t)\mathbf{c}(t)$ (vary the constants).
+
+**Differentiate:**
+$$\mathbf{x}'(t)=\Phi(t)\mathbf{c}'(t)+\Phi'(t)\mathbf{c}(t)=\Phi(t)\mathbf{c}'(t)+A\Phi(t)\mathbf{c}(t).$$
+
+**Set equal to** $A\mathbf{x}+\mathbf{f}(t)$:
+$$\Phi(t)\mathbf{c}'(t)=\mathbf{f}(t)\implies \mathbf{c}'(t)=\Phi(t)^{-1}\mathbf{f}(t).$$
+
+**Integrate:**
+
+::: {.callout-important}
+## Variation of Parameters Formula (4.45)
+$$\mathbf{x}(t)=\underbrace{\Phi(t)\mathbf{k}}_{\text{general homogeneous}}+\underbrace{\Phi(t)\int_0^t\Phi(s)^{-1}\mathbf{f}(s)\,ds}_{\text{particular solution}}.$$
+:::
+
+
+## Example 4.47 — Variation of Parameters {.smaller}
+
+$$\mathbf{x}'=\begin{pmatrix}4&3\\-1&0\end{pmatrix}\mathbf{x}+\begin{pmatrix}0\\t\end{pmatrix}.$$
+
+**Eigenpairs:** $\lambda_1=1$, $\mathbf{v}_1=(1,-1)^T$; $\;\lambda_2=3$, $\mathbf{v}_2=(-3,1)^T$.
+
+$$\Phi(t)=\begin{pmatrix}e^t&-3e^{3t}\\-e^t&e^{3t}\end{pmatrix},\qquad
+\Phi^{-1}(t)=-\frac{1}{2}\begin{pmatrix}e^{-t}&3e^{-t}\\e^{-3t}&e^{-3t}\end{pmatrix}.$$
+
+. . .
+
+After evaluating the integrals by parts, formula (4.45) gives:
+
+$$\mathbf{x}(t)=\begin{pmatrix}k_1e^t-3k_2e^{3t}\\-k_1e^t+k_2e^{3t}\end{pmatrix}
++\begin{pmatrix}t+\tfrac{4}{3}\\[4pt]-\tfrac{4}{3}t-\tfrac{13}{9}\end{pmatrix}.\;\square$$
+
+. . .
+
+::: {.callout-tip}
+The particular solution has the same polynomial degree as $\mathbf{f}(t)$ — a degree-1 forcing gives a degree-1 particular solution.
+:::
+
+
+## Undetermined Coefficients for Systems
+
+::: {.callout-important}
+## Strategy
+Guess $\mathbf{x}_p$ to match the form of $\mathbf{f}(t)$. If a term appears in **one** component of $\mathbf{f}$, it must appear in **all** components of the guess.
+
+| $\mathbf{f}(t)$ contains | Guess for $\mathbf{x}_p$ |
+|:---|:---|
+| Polynomial degree $n$ | $\mathbf{x}_p=\mathbf{a}_n t^n+\cdots+\mathbf{a}_0$ |
+| $e^{\mu t}$ ($\mu\neq$ eigenvalue) | $\mathbf{x}_p=\mathbf{a}e^{\mu t}$ |
+| $\cos\omega t$ or $\sin\omega t$ | $\mathbf{x}_p=\mathbf{a}\cos\omega t+\mathbf{b}\sin\omega t$ |
+:::
+
+Rules are **identical** to the scalar case from Chapter 2.
+
+
+## Example 4.49 — Undetermined Coefficients
+
+Revisit Example 4.47. $\mathbf{f}(t)=(0,t)^T$ is linear, so guess
+
+$$\mathbf{x}_p=\begin{pmatrix}at+b\\ct+d\end{pmatrix}.$$
+
+. . .
+
+Substitute $\mathbf{x}_p'=A\mathbf{x}_p+\mathbf{f}$:
+$$\begin{pmatrix}a\\c\end{pmatrix}=\begin{pmatrix}4&3\\-1&0\end{pmatrix}\begin{pmatrix}at+b\\ct+d\end{pmatrix}+\begin{pmatrix}0\\t\end{pmatrix}.$$
+
+. . .
+
+Comparing coefficients of $t$ and constants:
+
+$$a=1,\quad b=-c=\frac{4}{3},\quad d=-\frac{13}{9}.$$
+
+$$\mathbf{x}_p=\begin{pmatrix}t+\tfrac{4}{3}\\[4pt]-\tfrac{4}{3}t-\tfrac{13}{9}\end{pmatrix}.\;\square$$
+
+Agrees exactly with the variation of parameters result — **much less work!**
+
+
+## Example 4.48 — Guessing for Higher-Degree Forcing
+
+If the forcing is $\mathbf{f}(t)=\begin{pmatrix}1\\t^2+2\end{pmatrix}$, the highest degree is 2, so we guess
+
+$$\mathbf{x}_p(t)=\begin{pmatrix}a_1t^2+b_1t+c_1\\a_2t^2+b_2t+c_2\end{pmatrix}.$$
+
+. . .
+
+Both components are degree 2, regardless of which component of $\mathbf{f}$ has which degree. Substituting and comparing coefficients determines the six unknowns $a_1,b_1,c_1,a_2,b_2,c_2$. $\square$
+
+. . .
+
+::: {.callout-tip}
+When $\mathbf{f}(t)$ is complicated or involves resonance (forcing frequency = eigenvalue), **variation of parameters** is always available as a fallback. For simple $\mathbf{f}$, undetermined coefficients is faster.
+:::
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- The **trace–determinant plane** (Figure 4.13, Theorem 4.40) gives a complete map: locate $(\text{tr}\,A,\,\det A)$ to read off the portrait type without computing eigenvalues. The parabola $(\text{tr}\,A)^2 = 4\det A$ separates nodes from spirals.
+
+- **Theorem 4.41**: the origin is asymptotically stable $\iff$ $\text{tr}\,A<0$ **and** $\det A>0$. In applied problems this reduces stability analysis to checking two simple inequalities.
+
+- **Nullclines** ($x'=0$ and $y'=0$) are powerful tools for sketching phase portraits. On the $x$-nullcline the vector field is vertical; on the $y$-nullcline it is horizontal. Together with one computed direction-field vector per region, the qualitative behavior is completely determined.
+
+- For the **nonhomogeneous system** $\mathbf{x}'=A\mathbf{x}+\mathbf{f}(t)$: the fundamental matrix $\Phi(t)$ (columns = independent homogeneous solutions) is the key object. The **variation of parameters formula** (4.45) always works; **undetermined coefficients** is faster when $\mathbf{f}$ is a polynomial, exponential, or sinusoid.
+
+- In all applied models (crop–soil, glucose–insulin, circuits, reactors): **stability follows immediately from $\text{tr}\,A$ and $\det A$**, without ever solving the characteristic equation. The geometric approach is often all that is needed.
+:::
+
+. . .
+
+::: {.callout-tip}
+**Looking Ahead:** These techniques extend to **nonlinear systems** in Chapter 5. Near an equilibrium $\mathbf{x}^*$ the linearization (Jacobian) governs local behavior — the same trace–determinant classification applies to the Jacobian.
+:::
+
+::: {.callout-note}
+**Next:** Nonlinear Systems and Linearization — Logan §5.1–5.2.
+:::
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)

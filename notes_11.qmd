@@ -1,0 +1,854 @@
+---
+title: "Notes 11"
+subtitle: "Phase Plane Analysis and Nonhomogeneous Systems"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyArrowPatch
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+## Goals
+
+In this section, we will:
+
+1. Summarize the classification of all phase portraits for two-dimensional linear systems in terms of eigenvalues, and state the complete **stability theorem** (Theorem 4.41): the origin is asymptotically stable if and only if $\text{tr}\,A < 0$ and $\det A > 0$.
+
+2. Interpret the classification geometrically through the **trace–determinant plane** (Theorem 4.40, Figure 4.13), identifying regions corresponding to saddles, nodes, spirals, and centers.
+
+3. Apply a systematic procedure for **drawing phase diagrams** using nullclines, direction fields, and eigenvectors.
+
+4. Analyze four classical applied models — the crop–soil compartmental model, glucose–insulin dynamics, an electrical circuit, and coupled chemical tank reactors — qualitatively and analytically.
+
+5. Define the **fundamental matrix** $\Phi(t)$ for a homogeneous system $\mathbf{x}' = A\mathbf{x}$.
+
+6. Derive and apply the **variation of parameters formula** for nonhomogeneous systems $\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t)$.
+
+7. Use **undetermined coefficients** as an alternative method for finding particular solutions when $\mathbf{f}(t)$ has a simple form.
+
+::: {.callout-note}
+This material corresponds to **Sections 4.5 and 4.6** of @logan2015first.
+:::
+
+---
+
+## Section 4.5 — Phase Plane Analysis
+
+### Summary of Solution Types
+
+We have developed all the tools to completely analyze two-dimensional linear systems $\mathbf{x}' = A\mathbf{x}$, both analytically and graphically. All the analytic information can be obtained from the eigenvalues of $A$, which are roots of the characteristic equation
+
+$$
+\lambda^2 - (\text{tr}\,A)\lambda + \det A = 0, \qquad
+\lambda = \frac{1}{2}\left(\text{tr}\,A \pm \sqrt{(\text{tr}\,A)^2 - 4\det A}\right).
+$$
+
+Table 4.1 below (from Logan) summarizes the orbital structure for each eigenvalue type in the case $\det A \neq 0$.
+
+| Eigenvalues | Orbital Structure |
+|---|---|
+| $\lambda_1,\,\lambda_2 > 0$, real, unequal | Unstable node |
+| $\lambda_1,\,\lambda_2 < 0$, real, unequal | Asymptotically stable node |
+| $\lambda_1 < 0 < \lambda_2$, opposite signs | Unstable saddle |
+| $\lambda = \pm bi$, purely imaginary | Center; stable ellipses or circles |
+| $\lambda = a \pm bi$, $a > 0$ | Unstable spiral |
+| $\lambda = a \pm bi$, $a < 0$ | Asymptotically stable spiral |
+| $\lambda_1 = \lambda_2 > 0$ | Unstable node |
+| $\lambda_1 = \lambda_2 < 0$ | Asymptotically stable node |
+
+---
+
+### The Stability Theorem
+
+::: {.callout-important}
+## Theorem 4.41 — Stability of the Origin
+The origin $(0,0)$ of $\mathbf{x}' = A\mathbf{x}$ is **asymptotically stable** if, and only if,
+$$
+\text{tr}\,A < 0 \quad \text{and} \quad \det A > 0.
+$$
+:::
+
+This elegant result means we never need to compute eigenvalues explicitly to determine stability: the sign of the trace and the sign of the determinant are sufficient.
+
+---
+
+### The Trace–Determinant Plane (Theorem 4.40)
+
+The classification of all phase portrait types can be displayed on a single diagram by plotting $\det A$ (vertical axis) against $\text{tr}\,A$ (horizontal axis). The discriminant of the characteristic equation is $(\text{tr}\,A)^2 - 4\det A$; the parabola $(\text{tr}\,A)^2 = 4\det A$ separates the regions of real and complex eigenvalues.
+
+::: {.callout-important}
+## Theorem 4.40 — Classification in the Trace–Determinant Plane
+Consider $\mathbf{x}' = A\mathbf{x}$ with $\det A \neq 0$. Then:
+
+- $\det A < 0$: **saddle point** (opposite-sign real eigenvalues; always unstable).
+- $\det A > 0$, $\text{tr}\,A = 0$: **center** (purely imaginary eigenvalues; stable).
+- $\det A > 0$, $\text{tr}\,A > 0$, $4\det A \le (\text{tr}\,A)^2$: **unstable node**.
+- $\det A > 0$, $\text{tr}\,A > 0$, $4\det A > (\text{tr}\,A)^2$: **unstable spiral**.
+- $\det A > 0$, $\text{tr}\,A < 0$, $4\det A \le (\text{tr}\,A)^2$: **asymptotically stable node**.
+- $\det A > 0$, $\text{tr}\,A < 0$, $4\det A > (\text{tr}\,A)^2$: **asymptotically stable spiral**.
+:::
+
+The diagram below reproduces Figure 4.13 from Logan.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-trace-det
+#| fig-cap: "The trace–determinant plane (Figure 4.13 in Logan). Each point $(\\text{tr}\\,A, \\det A)$ corresponds to a unique phase portrait type. The parabola $(\\text{tr}\\,A)^2 = 4\\det A$ separates nodes (below or on) from spirals (above). Along $\\det A = 0$ one eigenvalue is zero and there is a line of non-isolated equilibria. The shaded half-plane $\\text{tr}\\,A<0$, $\\det A>0$ is the asymptotically stable region."
+
+tr_vals = np.linspace(-3.5, 3.5, 500)
+det_parabola = tr_vals**2 / 4   # 4 det A = (tr A)^2
+
+fig, ax = plt.subplots(figsize=(9, 7))
+
+# Shaded stable region: tr < 0, det > 0
+tr_neg = tr_vals[tr_vals <= 0]
+ax.fill_betweenx(np.linspace(0, 4, 200),
+                 -3.5, 0,
+                 alpha=0.08, color='steelblue', label='Asymp. stable region')
+
+# Parabola
+ax.plot(tr_vals, det_parabola, 'k-', lw=2.0, label=r'$({\rm tr}\,A)^2 - 4\det A = 0$')
+
+# Axes
+ax.axhline(0, color='k', lw=1.2)
+ax.axvline(0, color='k', lw=1.2)
+
+# Region labels
+label_kwargs = dict(fontsize=11, ha='center', va='center')
+ax.text(-2.2, 2.8, 'Stable\nSpirals', color='steelblue', **label_kwargs)
+ax.text( 2.2, 2.8, 'Unstable\nSpirals', color='crimson', **label_kwargs)
+ax.text(-2.4, 0.5, 'Stable\nNodes', color='steelblue', fontsize=10, ha='center', va='center')
+ax.text( 2.4, 0.5, 'Unstable\nNodes', color='crimson', fontsize=10, ha='center', va='center')
+ax.text( 0.0, 3.5, 'Centers', color='seagreen', fontsize=11, ha='center', va='center')
+ax.text( 0.0, -1.3, 'Saddle Points (Unstable)', color='darkorange', fontsize=11,
+         ha='center', va='center')
+ax.text( 0.0, -0.4, r'$\det A = 0$: line of equilibria', color='gray',
+         fontsize=9, ha='center', va='center')
+
+# Center dot on tr-axis
+ax.plot(0, 0, 'ko', markersize=6, zorder=5)
+
+# Arrows indicating the parabola boundary
+ax.annotate(r'$({\rm tr}\,A)^2 - 4\det A = 0$', xy=(1.6, 0.64),
+            xytext=(2.5, 1.8), fontsize=9,
+            arrowprops=dict(arrowstyle='->', color='k', lw=1.2))
+
+ax.set_xlabel(r'${\rm tr}\,A$', fontsize=13)
+ax.set_ylabel(r'$\det A$', fontsize=13)
+ax.set_title('Trace–Determinant Plane: Classification of Phase Portraits\n'
+             r'($\mathbf{x}\'=A\mathbf{x}$, $\det A\neq 0$)', fontsize=12)
+ax.set_xlim(-3.5, 3.5)
+ax.set_ylim(-2.0, 4.0)
+ax.legend(fontsize=9, loc='upper right')
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-tip}
+## How to Use the Trace–Determinant Plane
+Given any $2\times 2$ matrix $A$: compute $\text{tr}\,A = a + d$ and $\det A = ad - bc$, then locate the point $(\text{tr}\,A,\, \det A)$ on the diagram. The region it falls in immediately tells you the phase portrait type and stability — no eigenvalue computation required.
+:::
+
+---
+
+### How to Draw a Phase Diagram
+
+To draw a rough phase diagram for $\mathbf{x}' = A\mathbf{x}$, use the following procedure from the text.
+
+**(a) Real unequal eigenvalues.** Draw the linear orbits along the eigenvectors; arrow toward the origin if $\lambda < 0$, away if $\lambda > 0$. Fill in between using the direction field, paying attention to which eigendirection dominates as $t \to \pm\infty$. Draw nullclines for finer detail.
+
+**(b) Purely imaginary eigenvalues.** Orbits are closed ellipses. Compute one direction field vector to determine clockwise or counterclockwise orientation. Draw nullclines where orbits are vertical ($x' = 0$) or horizontal ($y' = 0$).
+
+**(c) Complex eigenvalues.** Orbits are spirals; direction of spiraling determined by sign of real part. Compute one direction field vector for orientation. Draw nullclines for detail.
+
+**(d) $\det A = 0$.** A line of equilibria along $ax + by = 0$. Divide the equations to find $dy/dx = m$; orbits are parallel straight lines $y = mx + C$ either approaching or exiting the equilibrium line.
+
+---
+
+### Example 4.42 — Crop–Soil Pesticide Model
+
+**(Crop–Soil Model.)** Pesticide concentrations in crops ($x$) and soil ($y$) obey
+
+$$
+\frac{dx}{dt} = -\beta x + \alpha y, \qquad \frac{dy}{dt} = \beta x - (\alpha + \gamma)y,
+$$
+
+with coefficient matrix
+
+$$
+A = \begin{pmatrix}-\beta & \alpha \\ \beta & -(\alpha+\gamma)\end{pmatrix}, \quad \alpha,\beta,\gamma > 0.
+$$
+
+Rather than finding the general solution (which involves parameter-dependent cases), we use a **geometric/qualitative approach**.
+
+**Nullclines.** Setting $x' = 0$: $y = (\beta/\alpha)x$ ($x$-nullcline, vector field is vertical). Setting $y' = 0$: $y = \beta/(\alpha+\gamma)\,x$ ($y$-nullcline, vector field is horizontal). The $x$-nullcline has greater slope than the $y$-nullcline.
+
+**Stability check.** $\text{tr}\,A = -(\alpha + \beta + \gamma) < 0$ and $\det A = \beta\gamma > 0$. By Theorem 4.41, the origin is **asymptotically stable** — the pesticide eventually disappears from both compartments.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-crop-soil
+#| fig-cap: "Crop–soil pesticide model with $\\alpha=0.5$, $\\beta=0.3$, $\\gamma=0.2$. Left: phase portrait in the first quadrant showing nullclines (dashed) and several orbits all converging to the origin — the pesticide eventually disappears. Right: time series for a sample orbit confirming that both $x(t)$ and $y(t)$ decay to zero."
+
+alpha, beta, gamma = 0.5, 0.3, 0.2
+A_cs = np.array([[-beta, alpha], [beta, -(alpha + gamma)]])
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 5))
+
+# Phase portrait (first quadrant)
+lim = 3.0
+x_g, y_g = np.meshgrid(np.linspace(0, lim, 20), np.linspace(0, lim, 20))
+dx = A_cs[0,0]*x_g + A_cs[0,1]*y_g
+dy = A_cs[1,0]*x_g + A_cs[1,1]*y_g
+nrm = np.sqrt(dx**2 + dy**2 + 1e-10)
+axes[0].quiver(x_g, y_g, dx/nrm, dy/nrm, alpha=0.3, color='gray', scale=28)
+
+# Nullclines
+x_nc = np.linspace(0, lim, 200)
+axes[0].plot(x_nc, (beta/alpha)*x_nc, 'steelblue', ls='--', lw=1.8,
+             label=r"$x'=0$: $y=\frac{\beta}{\alpha}x$")
+axes[0].plot(x_nc, (beta/(alpha+gamma))*x_nc, 'crimson', ls='--', lw=1.8,
+             label=r"$y'=0$: $y=\frac{\beta}{\alpha+\gamma}x$")
+
+# Orbits
+np.random.seed(3)
+for x0 in [(2.5, 0.3), (0.3, 2.5), (2.0, 2.0), (1.5, 0.1), (0.2, 1.8)]:
+    sol = solve_ivp(lambda t, y: A_cs @ y, (0, 15), list(x0),
+                    dense_output=True, max_step=0.05)
+    xy = sol.y
+    mask = (xy[0] >= -0.05) & (xy[1] >= -0.05)
+    axes[0].plot(xy[0, mask], xy[1, mask], 'k-', lw=1.2, alpha=0.6)
+
+axes[0].plot(0, 0, 'ko', markersize=8, zorder=5, label='Origin (stable)')
+axes[0].set_xlim(0, lim); axes[0].set_ylim(0, lim)
+axes[0].set_xlabel('$x$ (crop)'); axes[0].set_ylabel('$y$ (soil)')
+axes[0].set_title('Phase portrait — first quadrant\n'
+                  r'($\alpha=0.5,\,\beta=0.3,\,\gamma=0.2$)')
+axes[0].legend(fontsize=8)
+
+# Time series
+t_plot = np.linspace(0, 20, 400)
+sol_ts = solve_ivp(lambda t, y: A_cs @ y, (0, 20), [2.0, 0.5],
+                   dense_output=True, max_step=0.05)
+axes[1].plot(t_plot, sol_ts.sol(t_plot)[0], color='steelblue', lw=2.5,
+             label='$x(t)$ (crop)')
+axes[1].plot(t_plot, sol_ts.sol(t_plot)[1], color='crimson', lw=2.5,
+             label='$y(t)$ (soil)')
+axes[1].axhline(0, color='k', lw=0.5)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('Concentration')
+axes[1].set_title('Time series: $x(0)=2,\\ y(0)=0.5$')
+axes[1].legend(fontsize=9)
+
+plt.suptitle("Example 4.42: Crop–Soil Pesticide Model", fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 4.43 — Saddle Point via Nullclines
+
+Consider
+
+$$
+x' = -7x + 6y, \qquad y' = 6x + 2y.
+$$
+
+Immediately, $\det A = (-7)(2) - (6)(6) = -50 < 0$, so the origin is a **saddle point** without further calculation. The $x$-nullcline is $y = (7/6)x$ and the $y$-nullcline is $y = -3x$. The eigenvalues are $\lambda = -3$ and $\lambda = 8$ (computed via SymPy below), confirming the saddle. We identify the separatrices (incoming along the negative eigenvector, outgoing along the positive eigenvector) and fill in the orbits using the direction field in each of the four regions bounded by the nullclines.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex443
+#| fig-cap: "Example 4.43: saddle point with $\\det A=-50<0$. Nullclines are dashed (steelblue: $x'=0$, crimson: $y'=0$). Separatrices along eigenvectors are shown in bold. The direction field in each of the four nullcline regions is also visible."
+
+A443 = np.array([[-7., 6.], [6., 2.]])
+A443_sym = sym.Matrix([[-7, 6], [6, 2]])
+print("Eigenvalues of Example 4.43:")
+for val, mult, vecs in A443_sym.eigenvects():
+    display(Math(rf"\lambda={sym.latex(val)},\quad \mathbf{{v}}={sym.latex(vecs[0])}"))
+
+lim = 3.0
+x_g, y_g = np.meshgrid(np.linspace(-lim, lim, 22), np.linspace(-lim, lim, 22))
+dx = A443[0,0]*x_g + A443[0,1]*y_g
+dy = A443[1,0]*x_g + A443[1,1]*y_g
+nrm = np.sqrt(dx**2 + dy**2 + 1e-10)
+
+fig, ax = plt.subplots(figsize=(8, 6.5))
+ax.quiver(x_g, y_g, dx/nrm, dy/nrm, alpha=0.3, color='gray', scale=28)
+
+# Nullclines
+x_nc = np.linspace(-lim, lim, 300)
+ax.plot(x_nc, (7/6)*x_nc, 'steelblue', ls='--', lw=1.8, label=r"$x'=0$: $y=\frac{7}{6}x$")
+ax.plot(x_nc, -3*x_nc, 'crimson', ls='--', lw=1.8, label=r"$y'=0$: $y=-3x$")
+
+# Orbits
+np.random.seed(17)
+for _ in range(12):
+    r = lim*(0.4 + 0.5*np.random.rand())
+    theta = np.random.uniform(0, 2*np.pi)
+    x0 = [r*np.cos(theta), r*np.sin(theta)]
+    sol = solve_ivp(lambda t, y: A443 @ y, (-0.6, 0.6), x0,
+                    dense_output=True, max_step=0.02)
+    xy = sol.y; mask = np.all(np.abs(xy) < lim*1.4, axis=0)
+    ax.plot(xy[0, mask], xy[1, mask], 'k-', lw=0.9, alpha=0.5)
+
+# Separatrices
+evals443, evecs443 = np.linalg.eig(A443)
+for i, (color, lbl) in enumerate(zip(['seagreen', 'darkorange'],
+                                      [r'$\lambda=-3$ (entering)', r'$\lambda=8$ (exiting)'])):
+    v = evecs443[:, i].real; v /= np.linalg.norm(v)
+    for s in [1, -1]:
+        ax.annotate('', xy=(s*lim*0.82*v[0], s*lim*0.82*v[1]), xytext=(0, 0),
+                    arrowprops=dict(arrowstyle='->', color=color, lw=2.5))
+    ax.plot([], [], color=color, lw=2.5, label=lbl)
+
+ax.axhline(0, color='k', lw=0.5); ax.axvline(0, color='k', lw=0.5)
+ax.plot(0, 0, 'ko', markersize=7, zorder=5)
+ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title("Example 4.43: Saddle Point ($\\det A < 0$)")
+ax.legend(fontsize=8)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 4.44 — Glucose–Insulin Dynamics
+
+**(Glucose–Insulin Interaction.)** Let $x$ = excess blood glucose and $y$ = excess insulin above equilibrium. A simplified model is:
+
+$$
+x' = -gx - ry, \qquad y' = sx - dy,
+$$
+
+where $g > 0$ (glucose decay), $r > 0$ (insulin decreases glucose), $s > 0$ (glucose stimulates insulin), and $d > 0$ (insulin decay). The coefficient matrix is
+
+$$
+A = \begin{pmatrix}-g & -r \\ s & -d\end{pmatrix}.
+$$
+
+**Stability.** $\text{tr}\,A = -(g+d) < 0$ and $\det A = gd + rs > 0$, so the origin is always **asymptotically stable** by Theorem 4.41 — excess glucose and insulin always return to equilibrium.
+
+**Node or spiral?** The eigenvalues are $\lambda = \tfrac{1}{2}\!\left(-(g+d) \pm \sqrt{(g-d)^2 - 4rs}\right)$.
+
+- If $(g-d)^2 > 4rs$: eigenvalues are **real and negative** — **stable node** (monotone return to equilibrium).
+- If $(g-d)^2 < 4rs$: eigenvalues are **complex with negative real part** — **stable spiral** (decaying oscillations; hypoglycemic overshoot possible).
+
+With the representative values $g = 2.9$, $r = 4.3$, $s = 0.21$, $d = 0.78$ from the text (equation 4.40), we check which case applies.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-glucose-insulin
+#| fig-cap: "Glucose–insulin dynamics (Example 4.44). Left: phase portrait with nullclines (dashed). Right: time series starting at $(x,y)=(3,0)$ — the representative parameter values give a stable spiral (complex eigenvalues with negative real part), indicating a slight hypoglycemic overshoot before returning to equilibrium."
+
+g_val, r_val, s_val, d_val = 2.9, 4.3, 0.21, 0.78
+A444 = np.array([[-g_val, -r_val], [s_val, -d_val]])
+
+disc = (g_val - d_val)**2 - 4*r_val*s_val
+print(f"(g-d)^2 - 4rs = {disc:.4f}")
+evals = np.linalg.eigvals(A444)
+print(f"Eigenvalues: {evals[0]:.4f}, {evals[1]:.4f}")
+print("Case:", "stable node" if disc > 0 else "stable spiral")
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 5))
+
+lim = 4.0
+x_g, y_g = np.meshgrid(np.linspace(-lim, lim, 22), np.linspace(-lim, lim, 22))
+dx = A444[0,0]*x_g + A444[0,1]*y_g
+dy = A444[1,0]*x_g + A444[1,1]*y_g
+nrm = np.sqrt(dx**2 + dy**2 + 1e-10)
+axes[0].quiver(x_g, y_g, dx/nrm, dy/nrm, alpha=0.25, color='gray', scale=28)
+
+# Nullclines
+x_nc = np.linspace(-lim, lim, 300)
+axes[0].plot(x_nc, -(g_val/r_val)*x_nc, 'steelblue', ls='--', lw=1.8,
+             label=r"$x'=0$: $y=-(g/r)x$")
+axes[0].plot(x_nc, (s_val/d_val)*x_nc, 'crimson', ls='--', lw=1.8,
+             label=r"$y'=0$: $y=(s/d)x$")
+
+# Orbits
+for r_frac, color in zip([0.5, 1.0, 1.8, 2.8],
+                          ['steelblue', 'seagreen', 'crimson', 'darkorange']):
+    for theta in np.linspace(0, 2*np.pi, 5, endpoint=False):
+        x0 = [r_frac*np.cos(theta), r_frac*np.sin(theta)]
+        sol = solve_ivp(lambda t, y: A444 @ y, (0, 8), x0,
+                        dense_output=True, max_step=0.05)
+        xy = sol.y; mask = np.all(np.abs(xy) < lim*1.4, axis=0)
+        axes[0].plot(xy[0, mask], xy[1, mask], color=color, lw=1.1, alpha=0.65)
+
+axes[0].axhline(0, color='k', lw=0.5); axes[0].axvline(0, color='k', lw=0.5)
+axes[0].plot(0, 0, 'ko', markersize=7, zorder=5)
+axes[0].set_xlim(-lim, lim); axes[0].set_ylim(-lim, lim)
+axes[0].set_xlabel('$x$ (glucose)'); axes[0].set_ylabel('$y$ (insulin)')
+axes[0].set_title('Phase portrait (stable spiral)')
+axes[0].legend(fontsize=8)
+
+# Time series starting at (3, 0)
+t_plot = np.linspace(0, 12, 600)
+sol_ts = solve_ivp(lambda t, y: A444 @ y, (0, 12), [3.0, 0.0],
+                   dense_output=True, max_step=0.05)
+axes[1].plot(t_plot, sol_ts.sol(t_plot)[0], color='steelblue', lw=2.5,
+             label='$x(t)$ (glucose)')
+axes[1].plot(t_plot, sol_ts.sol(t_plot)[1], color='crimson', lw=2.5,
+             label='$y(t)$ (insulin)')
+axes[1].axhline(0, color='k', lw=0.5)
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('Excess concentration')
+axes[1].set_title('Time series: $x(0)=3,\\ y(0)=0$')
+axes[1].legend(fontsize=9)
+axes[1].set_xlim(0, 12)
+
+plt.suptitle("Example 4.44: Glucose–Insulin Interaction", fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 4.45 — Two-Loop Electrical Circuit
+
+**(Circuits.)** A two-loop circuit with capacitor ($C$), resistor ($R$), and inductor ($L$) produces the system (after eliminating $I_1 = I_3 - I_2$):
+
+$$
+I_2' = \frac{1}{RC}(-I_2 + I_3), \qquad I_3' = -\frac{R}{L}I_2,
+$$
+
+with coefficient matrix
+
+$$
+A = \begin{pmatrix}-\frac{1}{RC} & \frac{1}{RC} \\[4pt] -\frac{R}{L} & 0\end{pmatrix}.
+$$
+
+**Stability.** $\text{tr}\,A = -1/(RC) < 0$ and $\det A = 1/(LC) > 0$, so the origin is **asymptotically stable**: currents decay to zero. Moreover, $(\text{tr}\,A)^2 - 4\det A = 1/(RC)^2 - 4/(LC)$, giving:
+
+- If $L/(R^2 C) > 4$: **(0,0) is a node** (overdamped, no oscillations).
+- If $L/(R^2 C) < 4$: **(0,0) is a spiral** (underdamped, decaying oscillations).
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-circuit
+#| fig-cap: "Example 4.45: Two-loop circuit phase portraits. Left: stable node (overdamped, $L/(R^2C)>4$, parameters $R=1,C=1,L=5$). Right: stable spiral (underdamped, $L/(R^2C)<4$, parameters $R=2,C=1,L=1$). In both cases $\\text{tr}\\,A<0$ and $\\det A>0$."
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 5))
+
+params = [
+    (1.0, 1.0, 5.0, "Stable Node ($L/R^2C=5>4$, overdamped)"),
+    (2.0, 1.0, 1.0, "Stable Spiral ($L/R^2C=0.25<4$, underdamped)"),
+]
+t_spans = [(0, 5), (0, 8)]
+
+for ax, (R, C, L, title), t_span in zip(axes, params, t_spans):
+    A_circ = np.array([[-1/(R*C), 1/(R*C)], [-R/L, 0]])
+    ratio = L/(R**2 * C)
+    print(f"R={R}, C={C}, L={L}: L/(R^2 C)={ratio:.2f}, "
+          f"tr={np.trace(A_circ):.3f}, det={np.linalg.det(A_circ):.3f}")
+
+    lim = 2.5
+    x_g, y_g = np.meshgrid(np.linspace(-lim, lim, 22), np.linspace(-lim, lim, 22))
+    dx = A_circ[0,0]*x_g + A_circ[0,1]*y_g
+    dy = A_circ[1,0]*x_g + A_circ[1,1]*y_g
+    nrm = np.sqrt(dx**2 + dy**2 + 1e-10)
+    ax.quiver(x_g, y_g, dx/nrm, dy/nrm, alpha=0.25, color='gray', scale=28)
+
+    for r_frac, color in zip([0.4, 0.9, 1.5, 2.1],
+                              ['steelblue', 'seagreen', 'crimson', 'darkorange']):
+        for theta in np.linspace(0, 2*np.pi, 5, endpoint=False):
+            x0 = [r_frac*np.cos(theta), r_frac*np.sin(theta)]
+            sol = solve_ivp(lambda t, y, M=A_circ: M @ y, t_span, x0,
+                            dense_output=True, max_step=0.05)
+            xy = sol.y; mask = np.all(np.abs(xy) < lim*1.4, axis=0)
+            ax.plot(xy[0, mask], xy[1, mask], color=color, lw=1.2, alpha=0.7)
+
+    ax.axhline(0, color='k', lw=0.5); ax.axvline(0, color='k', lw=0.5)
+    ax.plot(0, 0, 'ko', markersize=7, zorder=5)
+    ax.set_xlim(-lim, lim); ax.set_ylim(-lim, lim)
+    ax.set_xlabel('$I_2$'); ax.set_ylabel('$I_3$')
+    ax.set_title(title, fontsize=10)
+
+plt.suptitle("Example 4.45: Two-Loop Electrical Circuit", fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Example 4.46 — Coupled Chemical Tank Reactors
+
+**(Chemical tank reactors.)** Two tanks of equal volume $V$ exchange a chemical at volumetric flow rates $q_1$ (Tank 1 → Tank 2) and $q_2$ (Tank 2 → Tank 1), with outflow rate $q$ from Tank 2. With $c_\text{in} = 0$ the homogeneous system for the concentrations $C_1(t)$, $C_2(t)$ is
+
+$$
+C_1' = -\frac{q_1}{V}C_1 + \frac{q_2}{V}C_2, \tag{4.41}
+$$
+
+$$
+C_2' = \frac{q_1}{V}C_1 - \frac{q_2 + q}{V}C_2. \tag{4.42}
+$$
+
+The coefficient matrix is
+
+$$
+A = \begin{pmatrix}-q_1/V & q_2/V \\ q_1/V & -(q_2+q)/V\end{pmatrix}.
+$$
+
+Since all parameters are positive, $\text{tr}\,A < 0$ and $\det A = q_1 q/V^2 > 0$. By Theorem 4.41 the origin is **asymptotically stable**: the concentrations in both tanks eventually go to zero. $\square$
+
+---
+
+## Section 4.6 — Nonhomogeneous Systems
+
+### Setup
+
+Corresponding to the homogeneous system $\mathbf{x}' = A\mathbf{x}$, we now examine the **nonhomogeneous system**
+
+$$
+\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t), \tag{4.43}
+$$
+
+where $\mathbf{f}(t) = (f_1(t),\,f_2(t))^T$ is a prescribed forcing function. We think of $\mathbf{f}(t)$ as a driving force or source. The general solution will be the sum of the general solution to the homogeneous equation and a particular solution.
+
+---
+
+### The Fundamental Matrix
+
+::: {.callout-important}
+## Definition: Fundamental Matrix
+A **fundamental matrix** $\Phi(t)$ is a $2\times 2$ matrix whose **columns are two independent solutions** of the homogeneous system $\mathbf{x}' = A\mathbf{x}$:
+$$
+\Phi(t) = \begin{pmatrix} | & | \\ \mathbf{x}_1(t) & \mathbf{x}_2(t) \\ | & | \end{pmatrix}.
+$$
+:::
+
+It is straightforward to verify that $\Phi'(t) = A\Phi(t)$, and that the general solution of the homogeneous system can be written compactly as
+
+$$
+\mathbf{x}_h(t) = \Phi(t)\mathbf{c},
+$$
+
+where $\mathbf{c} = (c_1,\, c_2)^T$ is an arbitrary constant vector. (See Exercise 1 of §4.6.)
+
+---
+
+### Variation of Parameters for Systems
+
+The variation of parameters method from Chapter 2 extends directly to first-order systems. We assume a particular solution of the form
+
+$$
+\mathbf{x}(t) = \Phi(t)\mathbf{c}(t), \tag{4.44}
+$$
+
+where the constant vector $\mathbf{c}$ has been replaced by a vector function $\mathbf{c}(t)$. Differentiating using the product rule (which works for matrices):
+
+$$
+\mathbf{x}'(t) = \Phi(t)\mathbf{c}'(t) + \Phi'(t)\mathbf{c}(t) = \Phi(t)\mathbf{c}'(t) + A\Phi(t)\mathbf{c}(t).
+$$
+
+Equating this to $A\mathbf{x} + \mathbf{f}(t) = A\Phi(t)\mathbf{c}(t) + \mathbf{f}(t)$ gives
+
+$$
+\Phi(t)\mathbf{c}'(t) = \mathbf{f}(t) \implies \mathbf{c}'(t) = \Phi(t)^{-1}\mathbf{f}(t).
+$$
+
+We can invert $\Phi(t)$ because its columns are independent (so its determinant is nonzero). Integrating from $0$ to $t$:
+
+$$
+\mathbf{c}(t) = \int_0^t \Phi(s)^{-1}\mathbf{f}(s)\,ds + \mathbf{k},
+$$
+
+where $\mathbf{k}$ is an arbitrary constant vector. Substituting back into (4.44):
+
+::: {.callout-important}
+## Theorem: Variation of Parameters Formula for Systems
+The **general solution** of $\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t)$ is
+$$
+\mathbf{x}(t) = \underbrace{\Phi(t)\mathbf{k}}_{\text{homogeneous}} + \underbrace{\Phi(t)\int_0^t \Phi(s)^{-1}\mathbf{f}(s)\,ds}_{\text{particular}}. \tag{4.45}
+$$
+This formula is valid for systems of any dimension.
+:::
+
+The first term is the general solution of the homogeneous equation; the second term is a particular solution of the nonhomogeneous equation — exactly as for a single first-order linear DE.
+
+::: {.callout-note}
+In practice, computing (4.45) involves four steps: (1) find two independent solutions to the homogeneous system; (2) form $\Phi(t)$; (3) invert $\Phi(t)$; (4) integrate. This can be formidable for complicated $\mathbf{f}(t)$, and a CAS is often preferred.
+:::
+
+---
+
+### Example 4.47 — Variation of Parameters
+
+**Find the general solution of**
+
+$$
+\mathbf{x}' = \begin{pmatrix}4 & 3\\-1 & 0\end{pmatrix}\mathbf{x} + \begin{pmatrix}0\\t\end{pmatrix}.
+$$
+
+**Step 1 — Solve the homogeneous system.** The eigenpairs of the coefficient matrix are $\lambda_1 = 1$, $\mathbf{v}_1 = (1,-1)^T$ and $\lambda_2 = 3$, $\mathbf{v}_2 = (-3,1)^T$, giving independent solutions $\mathbf{x}_1(t) = (e^t,-e^t)^T$ and $\mathbf{x}_2(t) = (-3e^{3t},e^{3t})^T$.
+
+**Step 2 — Form the fundamental matrix and its inverse.**
+
+$$
+\Phi(t) = \begin{pmatrix}e^t & -3e^{3t}\\-e^t & e^{3t}\end{pmatrix}, \qquad
+\Phi(t)^{-1} = -\frac{1}{2}\begin{pmatrix}e^{-t} & 3e^{-t}\\e^{-3t} & e^{-3t}\end{pmatrix}.
+$$
+
+**Step 3 — Apply formula (4.45).** After evaluating the integrals $\int_0^t se^{-s}\,ds$ and $\int_0^t se^{-3s}\,ds$ by parts, the general solution is
+
+$$
+\mathbf{x}(t) = \begin{pmatrix}k_1 e^t - 3k_2 e^{3t}\\-k_1 e^t + k_2 e^{3t}\end{pmatrix}
++ \begin{pmatrix}t + \tfrac{4}{3}\\[4pt]-\tfrac{4}{3}t - \tfrac{13}{9}\end{pmatrix}. \qquad\square
+$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex447
+#| fig-cap: "Example 4.47: variation of parameters. The general solution is confirmed numerically (red dots) against the analytical formula (blue curves) for the particular solution components with $k_1=k_2=0$: $x_p(t)=t+4/3$ and $y_p(t)=-4t/3-13/9$."
+
+t_sym, s_sym = sym.symbols('t s')
+# Verify by substitution
+x_p = sym.Matrix([t_sym + sym.Rational(4,3),
+                  -sym.Rational(4,3)*t_sym - sym.Rational(13,9)])
+A447 = sym.Matrix([[4,3],[-1,0]])
+f447 = sym.Matrix([0, t_sym])
+lhs = x_p.diff(t_sym)
+rhs = A447 * x_p + f447
+print("Verification: x_p' - A x_p - f =", sym.simplify(lhs - rhs).T)
+
+t_plot = np.linspace(0, 2, 300)
+xp = t_plot + 4/3
+yp = -4*t_plot/3 - 13/9
+
+# Numerical check (k1=k2=0 means starting at x_p(0))
+A447_np = np.array([[4., 3.], [-1., 0.]])
+x0_num = [4/3, -13/9]
+f_func = lambda t: np.array([0., t])
+sol_num = solve_ivp(lambda t, y: A447_np @ y + f_func(t),
+                    (0, 2), x0_num, dense_output=True, max_step=0.01)
+t_dots = np.linspace(0, 2, 15)
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+for i, (ax, comp, lbl, color) in enumerate(zip(axes,
+        [xp, yp],
+        [r'$x_p(t)=t+\frac{4}{3}$', r'$y_p(t)=-\frac{4}{3}t-\frac{13}{9}$'],
+        ['steelblue', 'crimson'])):
+    ax.plot(t_plot, comp, color=color, lw=2.5, label=lbl)
+    ax.plot(t_dots, sol_num.sol(t_dots)[i], 'ro', markersize=6, label='Numerical')
+    ax.axhline(0, color='k', lw=0.5)
+    ax.set_xlabel('$t$'); ax.set_ylabel('Value')
+    ax.set_title(f'Particular solution component {i+1}')
+    ax.legend(fontsize=9)
+
+plt.suptitle("Example 4.47: Variation of Parameters — Particular Solution Check",
+             fontsize=11)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+### Method of Undetermined Coefficients
+
+When $\mathbf{f}(t)$ has a simple form (polynomials, exponentials, sines, cosines, or their products), **undetermined coefficients** (judicious guessing) is often more efficient than the full variation of parameters formula.
+
+::: {.callout-important}
+## Strategy: Undetermined Coefficients for Systems
+The trial form for a particular solution mimics $\mathbf{f}(t)$, with the same type of functions appearing in *every* component:
+
+- If $\mathbf{f}(t)$ contains a polynomial of degree $n$, guess $\mathbf{x}_p = (p_n(t),\, q_n(t))^T$ where $p_n$ and $q_n$ are polynomials of degree $n$.
+- If $\mathbf{f}(t)$ contains $e^{\mu t}$, guess $\mathbf{x}_p = \mathbf{a}e^{\mu t}$ (provided $\mu$ is not an eigenvalue of $A$).
+- If $\mathbf{f}(t)$ contains $\cos\omega t$ or $\sin\omega t$, guess $\mathbf{x}_p = \mathbf{a}\cos\omega t + \mathbf{b}\sin\omega t$.
+
+If a term appears in **one component** of $\mathbf{f}(t)$, that term must appear in **all components** of the guess. The rules are the same as for single second-order equations.
+:::
+
+---
+
+### Example 4.49 — Undetermined Coefficients
+
+**Find a particular solution** of Example 4.47 using undetermined coefficients.
+
+The forcing term is $\mathbf{f}(t) = (0,\,t)^T$, which is linear in $t$. We guess
+
+$$
+\mathbf{x}_p = \begin{pmatrix}at + b \\ ct + d\end{pmatrix}.
+$$
+
+Substituting into the system $\mathbf{x}_p' = A\mathbf{x}_p + \mathbf{f}(t)$:
+
+$$
+\begin{pmatrix}a \\ c\end{pmatrix} = \begin{pmatrix}4 & 3\\-1 & 0\end{pmatrix}\begin{pmatrix}at + b \\ ct + d\end{pmatrix} + \begin{pmatrix}0 \\ t\end{pmatrix}.
+$$
+
+Collecting constant and $t$ terms and comparing coefficients:
+
+$$
+a = 1, \quad b = -c = \frac{4}{3}, \quad d = -\frac{13}{9}.
+$$
+
+Therefore the particular solution is
+
+$$
+\mathbf{x}_p = \begin{pmatrix}t + \tfrac{4}{3}\\[4pt]-\tfrac{4}{3}t - \tfrac{13}{9}\end{pmatrix}. \qquad\square
+$$
+
+This matches the result obtained by variation of parameters in Example 4.47.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-undetermined
+#| fig-cap: "Example 4.49: undetermined coefficients. Both components of the particular solution found by undetermined coefficients (solid lines) agree exactly with the variation of parameters result (red dots). The calculation is considerably shorter."
+
+t_plot = np.linspace(0, 2, 300)
+xp = t_plot + 4/3
+yp = -4*t_plot/3 - 13/9
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+for ax, y_anal, vop, lbl, color in zip(
+        axes,
+        [xp, yp],
+        [sol_num.sol(t_dots)[0], sol_num.sol(t_dots)[1]],
+        [r'$x_p(t)=t+\frac{4}{3}$ (undetermined coeff.)',
+         r'$y_p(t)=-\frac{4}{3}t-\frac{13}{9}$ (undetermined coeff.)'],
+        ['steelblue', 'crimson']):
+    ax.plot(t_plot, y_anal, color=color, lw=2.5, label=lbl)
+    ax.plot(t_dots, vop, 'ro', markersize=6, label='Variation of parameters')
+    ax.axhline(0, color='k', lw=0.5)
+    ax.set_xlabel('$t$'); ax.legend(fontsize=8)
+
+axes[0].set_title('$x_p(t)$ component'); axes[1].set_title('$y_p(t)$ component')
+plt.suptitle("Example 4.49: Undetermined Coefficients vs. Variation of Parameters",
+             fontsize=11)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Summary
+
+**Section 4.5 — Phase Plane Analysis:**
+
+| Concept | Key Idea |
+|---|---|
+| **Table 4.1** | Eigenvalue type completely determines orbital structure |
+| **Theorem 4.41** | Origin asymptotically stable $\iff$ $\text{tr}\,A < 0$ and $\det A > 0$ |
+| **Theorem 4.40** | Trace–determinant plane: locate $(\text{tr}\,A,\det A)$ to read off portrait type |
+| **Parabola** | $(\text{tr}\,A)^2 = 4\det A$ separates nodes (below/on) from spirals (above) |
+| **Nullclines** | $x'=0$ gives vertical flow; $y'=0$ gives horizontal flow; refine phase diagram |
+| **Qualitative analysis** | Trace, determinant, and one direction-field vector often suffice |
+
+**Section 4.6 — Nonhomogeneous Systems:**
+
+| Concept | Key Idea |
+|---|---|
+| **Fundamental matrix** $\Phi(t)$ | Columns are two independent solutions of $\mathbf{x}'=A\mathbf{x}$; satisfies $\Phi'=A\Phi$ |
+| **Variation of parameters** | $\mathbf{x}(t)=\Phi(t)\mathbf{k}+\Phi(t)\int_0^t\Phi(s)^{-1}\mathbf{f}(s)\,ds$ |
+| **Undetermined coefficients** | Guess $\mathbf{x}_p$ matching the form of $\mathbf{f}(t)$; each term appears in all components |
+| **Structure** | General solution $=$ homogeneous general solution $+$ particular solution |
+
+::: {.callout-tip}
+## Looking Ahead
+The phase plane analysis techniques developed here extend directly to **nonlinear systems** in Chapter 5. Near each equilibrium $\mathbf{x}^*$ of a nonlinear system, the behavior is governed by the linearization (Jacobian matrix $J$), and the phase portrait of $\mathbf{u}' = J\mathbf{u}$ (where $\mathbf{u} = \mathbf{x} - \mathbf{x}^*$) describes the local dynamics — provided the equilibrium is **hyperbolic** (no eigenvalue with zero real part). This is the Hartman–Grobman theorem.
+:::
+
+---
+
+These notes are also viewable as a slide deck presentation: [Open slides in full screen](https://math341diffeq.netlify.app/notes_11_slides.html){target="_blank"}
+
+::: {.callout-note}
+**Next:** Nonlinear Systems and Linearization — Logan §5.1–5.2.
+:::
+
+---
+
+## Relevant Videos
+
+### The Trace-Determinant Plane:
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/UBz59rjMSxM?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+### Nullclines and Phase Portraits:
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/9vCRXcCCqXc?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+### Variation of Parameters for Systems:
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/9F7i2rrpEwg?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+## Reuse
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
+
+
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
