@@ -1,0 +1,415 @@
+---
+title: "Linearization and Phase Plane Analysis of Nonlinear Systems"
+subtitle: "MATH 341 — Notes 12"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 12"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover
+
+:::: {.columns}
+::: {.column width="60%"}
+1. **Critical points** of nonlinear systems — definition and location via nullclines
+
+2. **Jacobian matrix** — derived from the Taylor expansion; the linearized system
+
+3. **Behavior near a critical point** — the nonlinear system inherits stability from its linearization (with one exception)
+
+4. **Asymptotic stability criterion**: $\text{tr}\,J < 0$ and $\det J > 0$
+
+5. **Nullclines and direction fields** — tools for the global phase diagram
+
+6. **Seven-step procedure** for sketching phase diagrams
+
+7. **Three worked examples** — two critical points, three critical points, and a degenerate case where linearization fails
+:::
+::: {.column width="40%"}
+::: {.callout-note}
+**Section 5.1** of @logan2015first.
+:::
+::: {.callout-tip}
+New vocabulary: critical point, Jacobian matrix, linearization, perturbation, nullcline, degenerate critical point.
+:::
+:::
+::::
+
+
+# From Scalar to Planar {background-color="#2c3e50"}
+
+## Linearization for a Scalar Equation (Review)
+
+For $x' = f(x)$: equilibrium $x_e$ satisfies $f(x_e) = 0$.
+
+**Perturb:** $x(t) = x_e + u(t)$, expand by Taylor's theorem:
+
+$$u' = f(x_e) + f'(x_e)\,u + \tfrac{1}{2}f''(x_e)\,u^2 + \cdots$$
+
+Since $f(x_e)=0$ and higher terms are small:
+
+$$u' \approx f'(x_e)\,u \implies u(t) = u(0)\,e^{f'(x_e)t}.$$
+
+. . .
+
+| Sign of $f'(x_e)$ | Behavior | Stability |
+|:---:|:---:|:---:|
+| $< 0$ | Perturbations **decay** | Asymptotically stable |
+| $> 0$ | Perturbations **grow** | Unstable |
+| $= 0$ | No information | Must go to higher order |
+
+. . .
+
+We now carry out the **same program** for two-dimensional nonlinear systems.
+
+
+## Critical Points of Nonlinear Systems
+
+Consider the nonlinear autonomous system
+
+$$x' = f(x,y), \qquad y' = g(x,y). \tag{5.1–5.2}$$
+
+::: {.callout-important}
+## Definition: Critical Point
+A **critical point** (equilibrium) $(x_e, y_e)$ satisfies
+$$f(x_e, y_e) = 0 \quad\text{and}\quad g(x_e, y_e) = 0$$
+simultaneously. Critical points represent constant solutions.
+:::
+
+. . .
+
+::: {.callout-tip}
+**How to find them:** the set $f=0$ defines the **$x$-nullclines**; the set $g=0$ defines the **$y$-nullclines**. Critical points are **intersections of $x$-nullclines with $y$-nullclines**.
+:::
+
+
+## The Jacobian Matrix
+
+**Perturb:** $x = x_e + u$, $y = y_e + v$, where $u,v$ are small. Taylor-expand the right sides about $(x_e, y_e)$:
+
+$$u' = \underbrace{f(x_e,y_e)}_{=\,0} + f_x u + f_y v + \cdots \approx f_x u + f_y v,$$
+$$v' = \underbrace{g(x_e,y_e)}_{=\,0} + g_x u + g_y v + \cdots \approx g_x u + g_y v.$$
+
+In matrix form: $\mathbf{z}' = J\,\mathbf{z}$, where
+
+::: {.callout-important}
+## Definition: Jacobian Matrix
+$$J(x_e,y_e) = \begin{pmatrix} f_x(x_e,y_e) & f_y(x_e,y_e) \\ g_x(x_e,y_e) & g_y(x_e,y_e) \end{pmatrix}. \tag{5.4}$$
+
+The **linearized system** $\mathbf{z}' = J\mathbf{z}$ is a **linear constant-coefficient system** — everything from Chapter 4 applies.
+:::
+
+
+## Behavior Near a Critical Point
+
+::: {.callout-important}
+## Key Results (assuming $\det J \neq 0$)
+- **Asymptotically stable:** If $J$ has eigenvalues with **negative real parts**, then $(x_e,y_e)$ is asymptotically stable for the nonlinear system. Equivalent conditions:
+$$\text{tr}\,J(x_e,y_e) < 0 \quad\text{and}\quad \det J(x_e,y_e) > 0. \tag{5.5}$$
+
+- **Unstable:** If $J$ has an eigenvalue with positive real part, then $(x_e,y_e)$ is unstable.
+
+- **Exceptional case:** If $J$ has **purely imaginary eigenvalues** (center for the linearization), the nonlinear system may be a center **or** a spiral — linearization is inconclusive.
+
+- **Borderline case:** Equal eigenvalues preserve stability/instability but the orbital shape may differ (e.g., node → spiral).
+:::
+
+. . .
+
+::: {.callout-tip}
+In practice: **compute $\text{tr}\,J$ and $\det J$ at each equilibrium.** This determines stability without solving the characteristic equation.
+:::
+
+
+## Nullclines and the Phase Diagram
+
+::: {.callout-important}
+## Nullclines
+- **$x$-nullclines** ($f(x,y)=0$): vector field is **vertical** (straight up or down)
+- **$y$-nullclines** ($g(x,y)=0$): vector field is **horizontal** (straight left or right)
+- Intersections of $x$- and $y$-nullclines are **critical points**
+:::
+
+. . .
+
+## Seven-Step Procedure
+
+1. Find critical points; classify by $J$ (eigenvalues, or tr/det test)
+2. Draw $x$- and $y$-nullclines
+3. Determine sign of $f$ and $g$ in each region: N/S/E/W → NE/NW/SE/SW
+4. Sketch representative orbits
+5. Find separatrix directions from eigenvectors of $J$ at saddles/nodes
+6. If possible, divide and integrate to find orbits $y=y(x)$
+7. Use software for accurate phase portrait
+
+
+# Worked Examples {background-color="#2c3e50"}
+
+## Example 5.1 — Setup
+
+**System:**
+
+$$x' = -x + xy, \qquad y' = -4y + 8xy.$$
+
+. . .
+
+**Critical points.** Factor each equation:
+
+$$x(-1+y)=0 \implies x=0 \text{ or } y=1.$$
+$$4y(-1+2x)=0 \implies y=0 \text{ or } x=\tfrac{1}{2}.$$
+
+. . .
+
+- Case $x=0$: second equation gives $y=0$. $\implies (0,0)$.
+- Case $y=1$: second equation gives $x=\tfrac{1}{2}$. $\implies (\tfrac{1}{2},1)$.
+
+. . .
+
+**Jacobian:**
+
+$$J(x,y) = \begin{pmatrix}-1+y & x \\ 8y & -4+8x\end{pmatrix}.$$
+
+
+## Example 5.1 — Classification
+
+**At $(0,0)$:**
+
+$$J(0,0) = \begin{pmatrix}-1 & 0 \\ 0 & -4\end{pmatrix}, \quad \lambda = -1,\,-4.$$
+
+$\text{tr}\,J = -5 < 0$, $\det J = 4 > 0$ $\implies$ **asymptotically stable node**. $\checkmark$
+
+. . .
+
+**At $(\tfrac{1}{2},1)$:**
+
+$$J\!\left(\tfrac{1}{2},1\right) = \begin{pmatrix}0 & \tfrac{1}{2} \\ 8 & 0\end{pmatrix}, \quad \lambda^2-4=0, \quad \lambda=\pm 2.$$
+
+$\det J = -4 < 0$ $\implies$ **unstable saddle point**. $\checkmark$
+
+. . .
+
+**Nullclines.**
+$x$-nullclines: $x=0$ and $y=1$.
+$y$-nullclines: $y=0$ and $x=\tfrac{1}{2}$.
+
+
+## Example 5.1 — Phase Portrait
+
+```{python}
+#| label: fig-ex51-slides
+#| fig-height: 4.2
+
+def f51(x,y): return -x + x*y
+def g51(x,y): return -4*y + 8*x*y
+
+lim = 2.0
+x_g, y_g = np.meshgrid(np.linspace(-lim, lim, 24), np.linspace(-lim, lim, 24))
+dx = f51(x_g, y_g); dy = g51(x_g, y_g)
+nrm = np.sqrt(dx**2 + dy**2 + 1e-10)
+
+fig, ax = plt.subplots(figsize=(9, 4.0))
+ax.quiver(x_g, y_g, dx/nrm, dy/nrm, alpha=0.28, color='gray', scale=28)
+ax.axvline(0, color='steelblue', ls='--', lw=1.8, label=r"$x$-nullclines")
+ax.axhline(1, color='steelblue', ls='--', lw=1.8)
+ax.axhline(0, color='crimson',   ls='--', lw=1.8, label=r"$y$-nullclines")
+ax.axvline(0.5, color='crimson', ls='--', lw=1.8)
+
+ics = [(1.5,1.5),(1.5,0.5),(1.5,-0.5),(1.5,-1.5),
+       (-1.5,1.5),(-1.5,0.5),(-1.5,-0.5),(-1.5,-1.5),
+       (0.3,1.5),(0.8,1.5),(-0.3,0.5),(0.1,0.1),(-0.1,0.1)]
+for x0,y0 in ics:
+    sol = solve_ivp(lambda t,z: [f51(z[0],z[1]),g51(z[0],z[1])],
+                    (0,6),[x0,y0],dense_output=True,max_step=0.02)
+    xy=sol.y; mask=np.all(np.abs(xy)<lim*1.35,axis=0)
+    ax.plot(xy[0,mask],xy[1,mask],'k-',lw=0.9,alpha=0.5)
+
+ax.plot(0,0,'o',color='steelblue',markersize=9,zorder=5,label='Stable node $(0,0)$')
+ax.plot(0.5,1,'s',color='crimson',markersize=9,zorder=5,label='Saddle $(1/2,1)$')
+ax.set_xlim(-lim,lim); ax.set_ylim(-lim,lim)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title(r"Example 5.1: $x'=-x+xy$, $y'=-4y+8xy$",fontsize=10)
+ax.legend(fontsize=8,loc='lower right')
+plt.tight_layout(); plt.show()
+```
+
+
+## Example 5.2 — Three Critical Points
+
+**System:** $x' = x - x^3$, $y' = 2y$. Equilibria: $(0,0)$, $(\pm 1, 0)$.
+
+$$J(x,y) = \begin{pmatrix}1-3x^2 & 0 \\ 0 & 2\end{pmatrix}.$$
+
+| Point | $J$ | Eigenvalues | Type |
+|:---:|:---:|:---:|:---:|
+| $(0,0)$ | $\begin{pmatrix}1&0\\0&2\end{pmatrix}$ | $1,\,2$ | **Unstable node** |
+| $(\pm 1,0)$ | $\begin{pmatrix}-2&0\\0&2\end{pmatrix}$ | $-2,\,2$ | **Saddle** |
+
+```{python}
+#| label: fig-ex52-slides
+#| fig-height: 3.2
+
+def f52(x,y): return x - x**3
+def g52(x,y): return 2*y
+lim=2.0
+x_g,y_g=np.meshgrid(np.linspace(-lim,lim,24),np.linspace(-lim,lim,24))
+dx=f52(x_g,y_g); dy=g52(x_g,y_g)
+nrm=np.sqrt(dx**2+dy**2+1e-10)
+fig,ax=plt.subplots(figsize=(9,3.0))
+ax.quiver(x_g,y_g,dx/nrm,dy/nrm,alpha=0.25,color='gray',scale=28)
+for xv in [-1,0,1]:
+    ax.axvline(xv,color='steelblue',ls='--',lw=1.6)
+ax.axhline(0,color='crimson',ls='--',lw=1.6)
+ics52=[(1.5,0.1),(1.5,-0.1),(-1.5,0.1),(-1.5,-0.1),
+       (0.5,0.1),(0.5,-0.1),(-0.5,0.1),(-0.5,-0.1),
+       (0.05,1.5),(0.05,-1.5),(1.5,1.0),(-1.5,1.0)]
+for x0,y0 in ics52:
+    sol=solve_ivp(lambda t,z:[f52(z[0],z[1]),g52(z[0],z[1])],
+                  (0,1.5),[x0,y0],dense_output=True,max_step=0.02)
+    xy=sol.y; mask=np.all(np.abs(xy)<lim*1.35,axis=0)
+    ax.plot(xy[0,mask],xy[1,mask],'k-',lw=0.9,alpha=0.5)
+ax.plot(0,0,'o',color='darkorange',markersize=8,zorder=5,label='Unstable node')
+ax.plot(1,0,'s',color='crimson',markersize=8,zorder=5,label='Saddle $(\\pm 1,0)$')
+ax.plot(-1,0,'s',color='crimson',markersize=8,zorder=5)
+ax.set_xlim(-lim,lim); ax.set_ylim(-lim,lim)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title(r"Example 5.2: $x'=x-x^3$, $y'=2y$",fontsize=10)
+ax.legend(fontsize=8); plt.tight_layout(); plt.show()
+```
+
+
+# When Linearization Fails {background-color="#1a5276"}
+
+## Example 5.3 — Degenerate Critical Point
+
+**System:** $x' = y^2$, $y' = -\tfrac{2}{3}x$. Only critical point: $(0,0)$.
+
+$$J(0,0) = \begin{pmatrix}0 & 0 \\ -\tfrac{2}{3} & 0\end{pmatrix}, \quad \det J = 0, \quad \lambda = 0,\,0.$$
+
+. . .
+
+::: {.callout-important}
+## $\det J = 0$: Linearization Does Not Apply
+When both eigenvalues are zero, the standard linear classification fails. We must use a different strategy.
+:::
+
+. . .
+
+**Alternative — Divide and Integrate:**
+
+$$\frac{dy}{dx} = \frac{-\tfrac{2}{3}x}{y^2} \implies 3y^2\,dy = -2x\,dx \implies y^3 = -x^2 + C.$$
+
+Orbits are the curves $y = (C - x^2)^{1/3}$. Since $x' = y^2 \ge 0$, all orbits move **to the right**.
+
+
+## Example 5.3 — Phase Portrait
+
+```{python}
+#| label: fig-ex53-slides
+#| fig-height: 4.0
+
+fig, ax = plt.subplots(figsize=(9, 3.8))
+x_plot = np.linspace(-1.0, 1.0, 400)
+for C, color in zip(np.linspace(-0.8, 0.8, 9),
+                    plt.cm.viridis(np.linspace(0.1, 0.9, 9))):
+    y_curve = np.cbrt(C - x_plot**2)
+    ax.plot(x_plot, y_curve, color=color, lw=1.8, alpha=0.8,
+            label=f'$C={C:.2f}$' if abs(C) < 0.1 else None)
+
+ics53 = [(0.0,0.7),(0.0,-0.7),(0.0,0.4),(0.0,-0.4),
+         (-0.8,0.0),(-0.8,0.3),(-0.8,-0.3)]
+for x0,y0 in ics53:
+    sol = solve_ivp(lambda t,z:[z[1]**2, -2/3*z[0]],
+                    (0,3),[x0,y0],dense_output=True,max_step=0.02)
+    xy=sol.y; mask=np.all(np.abs(xy)<1.05,axis=0)
+    ax.plot(xy[0,mask],xy[1,mask],'k-',lw=1.0,alpha=0.5)
+    if mask.sum()>5:
+        mid=mask.sum()//2
+        ax.annotate('',xy=(xy[0,mask][mid+2],xy[1,mask][mid+2]),
+                    xytext=(xy[0,mask][mid],xy[1,mask][mid]),
+                    arrowprops=dict(arrowstyle='->',color='k',lw=1.1))
+
+ax.axhline(0,color='steelblue',ls='--',lw=1.6,label=r"$x$-nullcline $y=0$")
+ax.axvline(0,color='crimson',ls='--',lw=1.6,label=r"$y$-nullcline $x=0$")
+ax.plot(0,0,'ko',markersize=9,zorder=5,label=r'Origin ($\det J=0$)')
+ax.set_xlim(-1,1); ax.set_ylim(-1,1)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title(r"Example 5.3: $x'=y^2$, $y'=-\frac{2}{3}x$ — orbits $y=(C-x^2)^{1/3}$",
+             fontsize=10)
+ax.legend(fontsize=8,loc='upper right')
+plt.tight_layout(); plt.show()
+```
+
+::: {.callout-note}
+All orbits move **to the right** since $x' = y^2 \ge 0$. The critical point is not of standard type — unusual orbital behavior is common for nonlinear systems.
+:::
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- A **critical point** $(x_e, y_e)$ satisfies $f(x_e,y_e)=0$ and $g(x_e,y_e)=0$. Critical points are intersections of $x$-nullclines with $y$-nullclines.
+
+- The **Jacobian matrix** $J(x_e,y_e) = \begin{pmatrix}f_x & f_y \\ g_x & g_y\end{pmatrix}$ evaluated at the equilibrium gives the coefficient matrix of the **linearized perturbation equations** $\mathbf{z}' = J\mathbf{z}$.
+
+- The nonlinear system **inherits stability** from its linearization in all non-exceptional cases. The key test is condition (5.5): $\text{tr}\,J < 0$ and $\det J > 0$ $\implies$ asymptotically stable.
+
+- **Exception (center):** If $J$ has purely imaginary eigenvalues, the nonlinear system may be a center or a spiral — linearization cannot distinguish these. Higher-order analysis or a Lyapunov function is required.
+
+- **Degenerate case ($\det J = 0$):** Linearization fails. Divide and separate variables to find orbits $y=y(x)$ when possible, or use numerical methods.
+
+- For the phase diagram: find nullclines, classify all critical points via $J$, determine direction field in each region, and sketch representative orbits. Eigenvectors of $J$ give the directions of separatrices at saddle points.
+:::
+
+. . .
+
+::: {.callout-tip}
+**Looking Ahead:** §5.2 applies linearization to nonlinear mechanics: Newton's law $mx''=F(x,x')$ written as $x'=y$, $y'=F(x,y)/m$. The critical points correspond to equilibrium positions, and their type describes whether the motion is oscillatory or monotone.
+:::
+
+::: {.callout-note}
+**Next:** Nonlinear Mechanics — Logan §5.2.
+:::
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
