@@ -1,0 +1,627 @@
+---
+title: "Applications of Nonlinear Systems"
+subtitle: "MATH 341 — Notes 13"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 13"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover
+
+:::: {.columns}
+::: {.column width="60%"}
+1. **Lotka–Volterra** predator–prey model — periodic orbits, conserved quantity, the exceptional center case
+
+2. **Competing species** — coexistence vs. competitive exclusion depending on competition strength
+
+3. **SIR epidemic model** — disease-free equilibrium, the basic reproduction number $R_0$
+
+4. **Chemical kinetics** — law of mass action, consecutive reactions, asymptotically stable node
+
+5. **Nonlinear pendulum** — centers vs. saddles, energy conservation, the separatrix
+
+6. **Van der Pol oscillator** — unstable origin, attracting limit cycle, self-sustained oscillations
+:::
+::: {.column width="40%"}
+::: {.callout-note}
+**Section 5.3** of @logan2015first.
+:::
+::: {.callout-tip}
+New vocabulary: predator–prey, conserved quantity, competitive exclusion, basic reproduction number $R_0$, law of mass action, separatrix (pendulum), limit cycle.
+:::
+:::
+::::
+
+
+# Lotka–Volterra Predator–Prey {background-color="#2c3e50"}
+
+## The Model
+
+Let $x(t)$ = prey, $y(t)$ = predator. Parameters $a,b,c,d > 0$.
+
+$$x' = ax - bxy, \qquad y' = -cy + dxy. \tag{5.14--5.15}$$
+
+| Term | Meaning |
+|:---|:---|
+| $ax$ | Prey grow exponentially without predators |
+| $-bxy$ | Predation reduces prey |
+| $-cy$ | Predators die without prey |
+| $dxy$ | Predators grow by consuming prey |
+
+. . .
+
+**Critical points:** $(0,0)$ and $\left(\dfrac{c}{d},\dfrac{a}{b}\right)$.
+
+
+## Jacobian Analysis
+
+$$J(x,y)=\begin{pmatrix}a-by & -bx \\ dy & -c+dx\end{pmatrix}.$$
+
+. . .
+
+**At $(0,0)$:** eigenvalues $a>0$ and $-c<0$ $\implies$ **unstable saddle**.
+
+. . .
+
+**At $\left(\dfrac{c}{d},\dfrac{a}{b}\right)$:**
+$$J=\begin{pmatrix}0 & -bc/d \\ da/b & 0\end{pmatrix}, \quad \lambda^2+ac=0, \quad \lambda=\pm i\sqrt{ac}.$$
+
+::: {.callout-important}
+## Purely Imaginary Eigenvalues — Exceptional Case
+Linearization gives a **center**. We cannot conclude whether the nonlinear system has a center or a spiral from linearization alone.
+
+**Resolution:** find the conserved quantity $H(x,y) = dx - c\ln x + by - a\ln y$. Its level curves are the orbits — they are **closed**, confirming the nonlinear system also has a center.
+:::
+
+
+## Conserved Quantity and Periodic Orbits
+
+Divide $y'$ by $x'$ and separate variables:
+
+$$\frac{-c+dx}{x}\,dx + \frac{a-by}{y}\,dy = 0.$$
+
+Integrating:
+
+$$\boxed{H(x,y) = dx - c\ln x + by - a\ln y = \text{const.}}$$
+
+. . .
+
+- Level curves of $H$ are **closed curves** encircling $(c/d,\, a/b)$.
+- Both populations oscillate **periodically** — the classic boom–bust cycle.
+- The orbit period depends on the energy level (orbit size).
+
+. . .
+
+::: {.callout-note}
+Volterra used this model to explain why fishing *reductions* during WWI increased the *proportion* of predatory fish (sharks) in the Adriatic — because removing both species equally shifts the oscillation average.
+:::
+
+
+## Phase Portrait and Time Series
+
+```{python}
+#| label: fig-lv-slides
+#| fig-height: 3.8
+
+a, b, c, d = 0.6, 0.5, 0.3, 0.4
+xe, ye = c/d, a/b
+
+def f_lv(x,y): return a*x - b*x*y
+def g_lv(x,y): return -c*y + d*x*y
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+
+lim_x, lim_y = 3.0, 3.0
+x_g,y_g=np.meshgrid(np.linspace(0.02,lim_x,22),np.linspace(0.02,lim_y,22))
+dx=f_lv(x_g,y_g); dy=g_lv(x_g,y_g); nrm=np.sqrt(dx**2+dy**2+1e-10)
+axes[0].quiver(x_g,y_g,dx/nrm,dy/nrm,alpha=0.22,color='gray',scale=28)
+axes[0].axvline(xe,color='crimson',ls='--',lw=1.6,label=rf'$x={xe:.2f}$')
+axes[0].axhline(ye,color='steelblue',ls='--',lw=1.6,label=rf'$y={ye:.2f}$')
+
+for r_frac,color in zip([0.15,0.4,0.65,0.9],
+                         plt.cm.viridis(np.linspace(0.15,0.85,4))):
+    sol=solve_ivp(lambda t,z:[f_lv(z[0],z[1]),g_lv(z[0],z[1])],
+                  (0,60),[xe+r_frac*xe,ye],dense_output=True,
+                  max_step=0.05,rtol=1e-8,atol=1e-10)
+    xy=sol.y; mask=(xy[0]>0)&(xy[1]>0)&(xy[0]<lim_x)&(xy[1]<lim_y)
+    axes[0].plot(xy[0,mask],xy[1,mask],color=color,lw=1.5)
+
+axes[0].plot(xe,ye,'o',color='steelblue',markersize=9,zorder=6,label='Center')
+axes[0].plot(0,0,'s',color='crimson',markersize=8,zorder=6,label='Saddle')
+axes[0].set_xlim(0,lim_x); axes[0].set_ylim(0,lim_y)
+axes[0].set_xlabel('$x$ (prey)'); axes[0].set_ylabel('$y$ (predator)')
+axes[0].set_title('Phase portrait'); axes[0].legend(fontsize=7)
+
+sol_ts=solve_ivp(lambda t,z:[f_lv(z[0],z[1]),g_lv(z[0],z[1])],
+                 (0,40),[xe+0.5*xe,ye],dense_output=True,
+                 max_step=0.05,rtol=1e-8,atol=1e-10)
+t_p=np.linspace(0,40,600)
+axes[1].plot(t_p,sol_ts.sol(t_p)[0],'steelblue',lw=2.5,label='prey $x(t)$')
+axes[1].plot(t_p,sol_ts.sol(t_p)[1],'crimson',lw=2.5,label='predator $y(t)$')
+axes[1].set_xlabel('$t$'); axes[1].legend(fontsize=9)
+axes[1].set_title('Time series')
+plt.suptitle(f'Lotka–Volterra ($a={a},b={b},c={c},d={d}$)',fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+# Competing Species {background-color="#2c3e50"}
+
+## The Model
+
+Two species compete for the same resource. Logistic growth with interspecific competition:
+
+$$x' = x(a_1 - b_1 x - c_1 y), \qquad y' = y(a_2 - b_2 y - c_2 x).$$
+
+. . .
+
+Four critical points:
+
+| Equilibrium | Meaning |
+|:---|:---|
+| $(0,0)$ | Both extinct (always unstable) |
+| $(a_1/b_1,\; 0)$ | $x$ alone at carrying capacity |
+| $(0,\; a_2/b_2)$ | $y$ alone at carrying capacity |
+| $(x^*,y^*)$ (interior) | Potential coexistence |
+
+. . .
+
+**Outcome depends on competition strengths** $c_1, c_2$ relative to $b_1, b_2$:
+
+- **$c_1 c_2 < b_1 b_2$ (weak competition):** interior equilibrium is **stable** — coexistence.
+- **$c_1 c_2 > b_1 b_2$ (strong competition):** interior equilibrium is a **saddle** — competitive exclusion; one species wins depending on initial conditions.
+
+
+## Competing Species — Phase Portraits
+
+```{python}
+#| label: fig-comp-slides
+#| fig-height: 3.6
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.4))
+
+cases = [
+    dict(a1=1,b1=1,c1=0.3,a2=1,b2=1,c2=0.5,
+         title="Weak competition ($c_1c_2<b_1b_2$)\nCoexistence"),
+    dict(a1=1,b1=1,c1=1.4,a2=1,b2=1,c2=1.2,
+         title="Strong competition ($c_1c_2>b_1b_2$)\nCompetitive exclusion"),
+]
+for ax, case in zip(axes, cases):
+    a1,b1,c1,a2,b2,c2=(case[k] for k in('a1','b1','c1','a2','b2','c2'))
+    def f_(x,y,a1=a1,b1=b1,c1=c1): return x*(a1-b1*x-c1*y)
+    def g_(x,y,a2=a2,b2=b2,c2=c2): return y*(a2-b2*y-c2*x)
+    lim=1.6
+    x_g,y_g=np.meshgrid(np.linspace(0,lim,22),np.linspace(0,lim,22))
+    dx=f_(x_g,y_g); dy=g_(x_g,y_g); nrm=np.sqrt(dx**2+dy**2+1e-10)
+    ax.quiver(x_g,y_g,dx/nrm,dy/nrm,alpha=0.22,color='gray',scale=28)
+    x_nc=np.linspace(0,lim,200)
+    ax.plot(x_nc,(a1-b1*x_nc)/c1,'steelblue',ls='--',lw=1.6,label=r"$x'=0$")
+    ax.plot(x_nc,(a2-c2*x_nc)/b2,'crimson',ls='--',lw=1.6,label=r"$y'=0$")
+    np.random.seed(42)
+    for _ in range(12):
+        x0=np.random.uniform(0.05,1.3); y0=np.random.uniform(0.05,1.3)
+        sol=solve_ivp(lambda t,z:[f_(z[0],z[1]),g_(z[0],z[1])],
+                      (0,20),[x0,y0],dense_output=True,max_step=0.05)
+        xy=sol.y; mask=(xy[0]>=0)&(xy[1]>=0)&(xy[0]<=lim)&(xy[1]<=lim)
+        ax.plot(xy[0,mask],xy[1,mask],'k-',lw=0.85,alpha=0.45)
+    denom=b1*b2-c1*c2
+    if abs(denom)>1e-6:
+        xs=(a1*b2-c1*a2)/denom; ys=(a2*b1-c2*a1)/denom
+        if xs>0 and ys>0:
+            col='seagreen' if c1*c2<b1*b2 else 'darkorange'
+            ax.plot(xs,ys,'*',color=col,markersize=13,zorder=6,
+                    label=f'Interior $({xs:.2f},{ys:.2f})$')
+    ax.set_xlim(0,lim); ax.set_ylim(0,lim)
+    ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+    ax.set_title(case['title'],fontsize=9); ax.legend(fontsize=7)
+plt.suptitle('Competing Species',fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+# SIR Epidemic Model {background-color="#1a5276"}
+
+## The Model
+
+Compartments: $S$ (susceptible), $I$ (infected), $R$ (removed). $N = S+I+R$ constant.
+
+$$S' = -\beta SI, \quad I' = \beta SI - \gamma I, \quad R' = \gamma I. \tag{5.18--5.20}$$
+
+| Parameter | Meaning |
+|:---:|:---|
+| $\beta$ | Transmission rate (contacts × infection probability) |
+| $\gamma$ | Recovery rate ($1/\gamma$ = mean infectious period) |
+
+. . .
+
+The 2D system $(S,I)$ is autonomous. From $I' = I(\beta S - \gamma)$:
+
+- $I'>0$ (epidemic grows) $\iff$ $S > \gamma/\beta$.
+- $I'<0$ (epidemic dies) $\iff$ $S < \gamma/\beta$.
+
+
+## The Basic Reproduction Number $R_0$
+
+At the start of an outbreak, $S \approx N$, so $I' \approx I(\beta N - \gamma)$.
+
+::: {.callout-important}
+## Basic Reproduction Number
+$$R_0 = \frac{\beta N}{\gamma}$$
+
+= average number of secondary infections from one infected individual in a fully susceptible population.
+
+| $R_0 > 1$ | Epidemic occurs |
+| $R_0 < 1$ | Infection dies out |
+| $R_0 = 1$ | Threshold (endemic equilibrium) |
+:::
+
+. . .
+
+**Stability of disease-free state $(S^*, 0)$:**
+
+$$J(S^*,0)=\begin{pmatrix}0 & -\beta S^* \\ 0 & \beta S^*-\gamma\end{pmatrix}, \quad \lambda_2 = \beta S^* - \gamma < 0 \iff R_0 < 1.$$
+
+
+## SIR Phase Portrait and Time Series
+
+```{python}
+#| label: fig-sir-slides
+#| fig-height: 3.8
+
+beta, gamma_sir, N = 0.3, 0.1, 1.0
+R0 = beta*N/gamma_sir
+
+def f_sir(S,I): return -beta*S*I
+def g_sir(S,I): return beta*S*I - gamma_sir*I
+
+fig, axes = plt.subplots(1,2,figsize=(10,3.6))
+
+lim_S, lim_I = 1.05, 0.35
+S_g,I_g=np.meshgrid(np.linspace(0,lim_S,22),np.linspace(0,lim_I,22))
+dS=f_sir(S_g,I_g); dI=g_sir(S_g,I_g); nrm=np.sqrt(dS**2+dI**2+1e-10)
+axes[0].quiver(S_g,I_g,dS/nrm,dI/nrm,alpha=0.22,color='gray',scale=28)
+axes[0].axvline(gamma_sir/beta,color='crimson',ls='--',lw=2.0,
+                label=rf"$S^*=\gamma/\beta={gamma_sir/beta:.2f}$")
+
+for I0,color in zip([0.01,0.04,0.08,0.13,0.18,0.22],
+                     plt.cm.viridis(np.linspace(0.1,0.9,6))):
+    S0=N-I0
+    sol=solve_ivp(lambda t,z:[f_sir(z[0],z[1]),g_sir(z[0],z[1])],
+                  (0,200),[S0,I0],dense_output=True,
+                  max_step=0.1,rtol=1e-8,atol=1e-10)
+    Si=sol.y; mask=(Si[0]>=0)&(Si[1]>=0)&(Si[0]<=lim_S)&(Si[1]<=lim_I)
+    axes[0].plot(Si[0,mask],Si[1,mask],color=color,lw=1.8,alpha=0.85)
+
+axes[0].set_xlim(0,lim_S); axes[0].set_ylim(0,lim_I)
+axes[0].set_xlabel('$S$'); axes[0].set_ylabel('$I$')
+axes[0].set_title(f'$(S,I)$ phase portrait, $R_0={R0:.1f}$')
+axes[0].legend(fontsize=9)
+
+I0_ts=0.01; S0_ts=N-I0_ts
+sol_ts=solve_ivp(
+    lambda t,z:[f_sir(z[0],z[1]),g_sir(z[0],z[1]),gamma_sir*z[1]],
+    (0,120),[S0_ts,I0_ts,0.0],dense_output=True,max_step=0.1)
+t_p=np.linspace(0,120,500)
+vals=sol_ts.sol(t_p)
+axes[1].plot(t_p,vals[0],'steelblue',lw=2.5,label='$S(t)$')
+axes[1].plot(t_p,vals[1],'crimson',lw=2.5,label='$I(t)$')
+axes[1].plot(t_p,vals[2],'seagreen',lw=2.5,label='$R(t)$')
+axes[1].set_xlabel('$t$ (days)'); axes[1].legend(fontsize=9)
+axes[1].set_title('Time series')
+plt.suptitle(rf'SIR: $\beta={beta}$, $\gamma={gamma_sir}$, $R_0={R0:.1f}$',fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+# Chemical Kinetics {background-color="#2c3e50"}
+
+## Law of Mass Action
+
+The **law of mass action** states that the rate of a reaction is proportional to the product of the concentrations of the reacting species.
+
+For consecutive reactions $A \xrightarrow{k_1} B \xrightarrow{k_2} C$, letting $x=[A]$ and $y=[B]$:
+
+$$x' = -k_1 x, \qquad y' = k_1 x - k_2 y. \tag{5.21--5.22}$$
+
+. . .
+
+**Only equilibrium:** $(0,0)$ — all material converts to $C$.
+
+$$J(0,0) = \begin{pmatrix}-k_1 & 0 \\ k_1 & -k_2\end{pmatrix}, \quad \lambda = -k_1,\,-k_2 < 0.$$
+
+$\implies$ **Asymptotically stable node** — all concentrations approach chemical equilibrium.
+
+. . .
+
+**Analytical solution** (first equation decouples):
+
+$$[A](t) = x_0 e^{-k_1 t}, \quad [B](t) = \frac{k_1 x_0}{k_2-k_1}\left(e^{-k_1 t}-e^{-k_2 t}\right), \quad [C]=x_0-x-y.$$
+
+$[B]$ has a characteristic **intermediate peak** before decaying to zero.
+
+
+## Chemical Kinetics — Plot
+
+```{python}
+#| label: fig-chem-slides
+#| fig-height: 3.2
+
+k1, k2 = 0.5, 0.2
+t_p = np.linspace(0, 20, 400)
+x_t = np.exp(-k1*t_p)
+y_t = (k1/(k2-k1))*(np.exp(-k1*t_p) - np.exp(-k2*t_p))
+z_t = 1 - x_t - y_t
+
+fig, ax = plt.subplots(figsize=(9, 3.0))
+ax.plot(t_p, x_t, 'steelblue', lw=2.5, label='$[A](t)=e^{-k_1 t}$')
+ax.plot(t_p, y_t, 'crimson',   lw=2.5, label='$[B](t)$ (intermediate)')
+ax.plot(t_p, z_t, 'seagreen',  lw=2.5, ls='--', label='$[C](t)$')
+ax.axhline(0, color='k', lw=0.5)
+ax.set_xlabel('$t$'); ax.set_ylabel('Concentration')
+ax.set_title(f'$A \\to B \\to C$:  $k_1={k1}$, $k_2={k2}$')
+ax.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+::: {.callout-tip}
+The **intermediate peak** in $[B](t)$ is a hallmark of consecutive reactions. Its height and time of occurrence depend on the ratio $k_1/k_2$.
+:::
+
+
+# Nonlinear Pendulum {background-color="#1a5276"}
+
+## The Model
+
+Newton's law for a pendulum: $\theta'' + \omega_0^2\sin\theta = 0$.
+
+Let $x=\theta$, $y=\theta'$:
+
+$$x' = y, \qquad y' = -\omega_0^2\sin x. \tag{5.23--5.24}$$
+
+**Equilibria:** $y=0$ and $\sin x=0$, so $x=n\pi$.
+
+. . .
+
+**Jacobian:** $J(x,y) = \begin{pmatrix}0 & 1 \\ -\omega_0^2\cos x & 0\end{pmatrix}$.
+
+| Equilibrium | $\cos x$ | $\lambda$ | Type |
+|:---:|:---:|:---:|:---:|
+| $(0,0),(2\pi,0),\ldots$ | $+1$ | $\pm i\omega_0$ | **Center** (pendulum down) |
+| $(\pi,0),(3\pi,0),\ldots$ | $-1$ | $\pm\omega_0$ | **Saddle** (pendulum up) |
+
+
+## Energy and the Separatrix
+
+The system is **conservative** with energy
+
+$$H(x,y) = \tfrac{1}{2}y^2 - \omega_0^2\cos x = \text{const.}$$
+
+Orbits lie on level curves of $H$:
+
+| Energy level | Orbit type | Motion |
+|:---|:---:|:---|
+| $H < \omega_0^2$ | Closed | **Oscillation** (swings back and forth) |
+| $H = \omega_0^2$ | **Separatrix** | Approaches inverted position asymptotically |
+| $H > \omega_0^2$ | Open | **Full rotation** (swings over the top) |
+
+. . .
+
+The separatrix is the boundary between oscillatory and rotational motion. It passes through the saddle points $(\pm\pi, 0)$.
+
+
+## Pendulum Phase Portrait
+
+```{python}
+#| label: fig-pend-slides
+#| fig-height: 3.8
+
+omega0=1.0
+def H_pend(x,y): return 0.5*y**2 - omega0**2*np.cos(x)
+
+x_g=np.linspace(-3.5*np.pi,3.5*np.pi,300)
+y_g=np.linspace(-3.0,3.0,300)
+X,Y=np.meshgrid(x_g,y_g)
+H_vals=H_pend(X,Y)
+
+fig,ax=plt.subplots(figsize=(10,3.6))
+ax.contourf(X,Y,H_vals,levels=40,cmap='RdYlBu_r',alpha=0.3)
+ax.contour(X,Y,H_vals,levels=np.linspace(-omega0**2+0.02,omega0**2-0.05,6),
+           colors='steelblue',linewidths=1.5,alpha=0.8)
+ax.contour(X,Y,H_vals,levels=[omega0**2+0.4,omega0**2+1.5,omega0**2+3.0],
+           colors='seagreen',linewidths=1.5,alpha=0.8)
+ax.contour(X,Y,H_vals,levels=[omega0**2],colors='black',linewidths=3.0)
+
+for n in range(-3,4):
+    ax.plot(2*n*np.pi,0,'o',color='steelblue',markersize=8,zorder=6)
+for n in range(-2,3):
+    ax.plot((2*n+1)*np.pi,0,'s',color='crimson',markersize=8,zorder=6)
+
+ax.plot([],[],color='steelblue',lw=1.5,label='Oscillating orbits')
+ax.plot([],[],color='seagreen',lw=1.5,label='Rotating orbits')
+ax.plot([],[],'k-',lw=3.0,label='Separatrix')
+ax.plot([],'o',color='steelblue',markersize=8,label='Center (pendulum down)')
+ax.plot([],'s',color='crimson',markersize=8,label='Saddle (pendulum up)')
+
+ax.set_xlim(-3.5*np.pi,3.5*np.pi); ax.set_ylim(-3,3)
+ax.set_xlabel(r'$x=\theta$'); ax.set_ylabel(r"$y=\theta'$")
+ax.set_xticks([-2*np.pi,-np.pi,0,np.pi,2*np.pi])
+ax.set_xticklabels([r'$-2\pi$',r'$-\pi$','$0$',r'$\pi$',r'$2\pi$'])
+ax.set_title(r"Nonlinear Pendulum: $x'=y$, $y'=-\omega_0^2\sin x$",fontsize=10)
+ax.legend(fontsize=7,loc='upper right')
+plt.tight_layout(); plt.show()
+```
+
+
+# Van der Pol Oscillator {background-color="#1a5276"}
+
+## The Model
+
+Nonlinear electronic circuit oscillator (van der Pol, 1926):
+
+$$\mu'' - \varepsilon(1-\mu^2)\mu' + \mu = 0, \quad \varepsilon > 0.$$
+
+Let $x=\mu$, $y=\mu'$:
+
+$$x' = y, \qquad y' = \varepsilon(1-x^2)y - x. \tag{5.25--5.26}$$
+
+. . .
+
+**Nonlinear damping** $\varepsilon(1-x^2)y$:
+
+- $|x|<1$: negative damping — **energy added** (system amplifies small oscillations)
+- $|x|>1$: positive damping — **energy removed** (system suppresses large oscillations)
+
+. . .
+
+This self-regulating mechanism produces a **stable limit cycle** — all orbits converge to the same periodic orbit regardless of initial conditions.
+
+
+## Critical Point Analysis
+
+Only critical point: $(0,0)$.
+
+$$J(0,0)=\begin{pmatrix}0&1\\-1&\varepsilon\end{pmatrix}, \quad \text{tr}\,J=\varepsilon>0, \quad \det J=1>0.$$
+
+$\implies$ **Unstable spiral** (for small $\varepsilon$). Orbits spiral **outward** from the origin.
+
+. . .
+
+::: {.callout-important}
+## Limit Cycle
+A **limit cycle** is an isolated closed orbit. The van der Pol system has a **stable (attracting) limit cycle**:
+
+- Orbits inside the cycle spiral outward toward it.
+- Orbits outside the cycle spiral inward toward it.
+- This represents **self-sustained oscillations** — independent of initial conditions.
+
+Limit cycles are a **purely nonlinear phenomenon**: they cannot exist in linear systems.
+:::
+
+
+## Van der Pol Phase Portrait
+
+```{python}
+#| label: fig-vdp-slides
+#| fig-height: 3.8
+
+eps=1.0
+def f_vdp(x,y): return y
+def g_vdp(x,y): return eps*(1-x**2)*y - x
+
+lim=3.5
+x_g,y_g=np.meshgrid(np.linspace(-lim,lim,24),np.linspace(-lim,lim,24))
+dx=f_vdp(x_g,y_g); dy=g_vdp(x_g,y_g); nrm=np.sqrt(dx**2+dy**2+1e-10)
+
+fig,axes=plt.subplots(1,2,figsize=(10,3.6))
+axes[0].quiver(x_g,y_g,dx/nrm,dy/nrm,alpha=0.18,color='gray',scale=30)
+
+for r in [0.2,0.5,0.9]:
+    sol=solve_ivp(lambda t,z:[f_vdp(z[0],z[1]),g_vdp(z[0],z[1])],
+                  (0,30),[r,0.0],dense_output=True,max_step=0.05)
+    xy=sol.y; mask=np.all(np.abs(xy)<lim+0.5,axis=0)
+    axes[0].plot(xy[0,mask],xy[1,mask],color='crimson',lw=1.3,alpha=0.7)
+
+for r in [3.0,2.5]:
+    sol=solve_ivp(lambda t,z:[f_vdp(z[0],z[1]),g_vdp(z[0],z[1])],
+                  (0,20),[r,0.0],dense_output=True,max_step=0.05)
+    xy=sol.y; mask=np.all(np.abs(xy)<lim+0.5,axis=0)
+    axes[0].plot(xy[0,mask],xy[1,mask],color='steelblue',lw=1.3,alpha=0.7)
+
+sol_lc=solve_ivp(lambda t,z:[f_vdp(z[0],z[1]),g_vdp(z[0],z[1])],
+                 (0,100),[0.5,0.0],dense_output=True,max_step=0.02)
+xy_lc=sol_lc.y; mask_lc=sol_lc.t>80
+axes[0].plot(xy_lc[0,mask_lc],xy_lc[1,mask_lc],'k-',lw=2.8,
+             zorder=5,label='Limit cycle')
+axes[0].plot(0,0,'s',color='darkorange',markersize=9,zorder=6,
+             label='Unstable origin')
+axes[0].plot([],[],'crimson',lw=1.5,label='Outward spiral')
+axes[0].plot([],[],'steelblue',lw=1.5,label='Inward spiral')
+axes[0].set_xlim(-lim,lim); axes[0].set_ylim(-lim,lim)
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$y$')
+axes[0].set_title(f'Phase portrait ($\\varepsilon={eps}$)'); axes[0].legend(fontsize=7)
+axes[0].axhline(0,color='k',lw=0.4); axes[0].axvline(0,color='k',lw=0.4)
+
+t_ts=np.linspace(0,30,600)
+sol_ts=solve_ivp(lambda t,z:[f_vdp(z[0],z[1]),g_vdp(z[0],z[1])],
+                 (0,30),[0.1,0.0],dense_output=True,max_step=0.05)
+axes[1].plot(t_ts,sol_ts.sol(t_ts)[0],'steelblue',lw=2.5,label='$x(t)$')
+axes[1].plot(t_ts,sol_ts.sol(t_ts)[1],'crimson',lw=2.0,ls='--',
+             label="$y(t)=x'(t)$",alpha=0.8)
+axes[1].axhline(0,color='k',lw=0.5)
+axes[1].set_xlabel('$t$'); axes[1].legend(fontsize=9)
+axes[1].set_title(f'Time series ($x(0)=0.1$)')
+plt.suptitle(f'Van der Pol Oscillator ($\\varepsilon={eps}$)',fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- **Lotka–Volterra:** the non-trivial equilibrium $(c/d,\, a/b)$ is a center for the linearization and a true center for the nonlinear system, confirmed by the conserved quantity $H = dx - c\ln x + by - a\ln y$. Both populations oscillate periodically.
+
+- **Competing species:** if $c_1 c_2 < b_1 b_2$ (weak competition) the interior equilibrium is stable and both species coexist; if $c_1 c_2 > b_1 b_2$ (strong competition) the interior equilibrium is a saddle and competitive exclusion occurs — which species wins depends on initial conditions.
+
+- **SIR epidemic:** the key quantity is the **basic reproduction number** $R_0 = \beta N/\gamma$. An epidemic occurs if and only if $R_0 > 1$. The disease-free equilibrium is stable when $R_0 < 1$, unstable when $R_0 > 1$.
+
+- **Chemical kinetics:** consecutive reactions $A\to B\to C$ give an asymptotically stable node at the origin; the intermediate species $B$ exhibits a characteristic peak before decaying to zero.
+
+- **Nonlinear pendulum:** centers at the downward equilibria and saddles at the inverted equilibria. The conserved energy $H = \tfrac{1}{2}y^2 - \omega_0^2\cos x$ gives the orbits; the separatrix ($H = \omega_0^2$) bounds oscillatory from rotational motion.
+
+- **Van der Pol:** the origin is an unstable spiral; all orbits are attracted to a **stable limit cycle** — a purely nonlinear phenomenon representing self-sustained oscillations.
+:::
+
+. . .
+
+::: {.callout-tip}
+**Looking Ahead:** The existence of limit cycles and their stability is addressed by the **Poincaré–Bendixson theorem**, which provides criteria for when planar autonomous systems must have periodic orbits — a fundamental result in nonlinear dynamics.
+:::
+
+::: {.callout-note}
+**Next:** Numerical methods — Logan §6.2.
+:::
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
