@@ -1,0 +1,518 @@
+---
+title: "Numerical Methods for Differential Equations"
+subtitle: "MATH 341 — Notes 14"
+author: "University of Scranton"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    smaller: true
+    scrollable: true
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    fig-align: center
+    footer: "MATH 341 Differential Equations — Notes 14"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+license: "CC BY-NC-SA 4.0"
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| echo: false
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top']   = False
+mpl.rcParams['axes.spines.right'] = False
+
+def f_ex(t, x): return t - x
+def exact_ex(t): return t - 1 + 2*np.exp(-t)
+
+def euler(f, t0, T, x0, N):
+    h = (T - t0)/N
+    t = np.linspace(t0, T, N+1)
+    X = np.zeros(N+1); X[0] = x0
+    for n in range(N):
+        X[n+1] = X[n] + h*f(t[n], X[n])
+    return t, X
+
+def modified_euler(f, t0, T, x0, N):
+    h = (T - t0)/N
+    t = np.linspace(t0, T, N+1)
+    X = np.zeros(N+1); X[0] = x0
+    for n in range(N):
+        Xt = X[n] + h*f(t[n], X[n])
+        X[n+1] = X[n] + (h/2)*(f(t[n], X[n]) + f(t[n+1], Xt))
+    return t, X
+
+def rk4(f, t0, T, x0, N):
+    h = (T - t0)/N
+    t = np.linspace(t0, T, N+1)
+    X = np.zeros(N+1); X[0] = x0
+    for n in range(N):
+        k1 = f(t[n],     X[n])
+        k2 = f(t[n]+h/2, X[n]+h/2*k1)
+        k3 = f(t[n]+h/2, X[n]+h/2*k2)
+        k4 = f(t[n]+h,   X[n]+h*k3)
+        X[n+1] = X[n] + (h/6)*(k1+2*k2+2*k3+k4)
+    return t, X
+```
+
+
+# Goals {background-color="#2c3e50"}
+
+## What We Will Cover
+
+:::: {.columns}
+::: {.column width="60%"}
+1. **Why numerical methods?** — analytic solutions are the exception, not the rule
+
+2. **Euler method** (§6.2.1) — derivation, geometric picture, $O(h)$ global error
+
+3. **Modified Euler / RK2** — predictor–corrector, $O(h^2)$ global error
+
+4. **Runge–Kutta RK4** (§6.2.2) — four slopes, $O(h^4)$ global error
+
+5. **Error analysis** — truncation, stability, roundoff; stiff equations
+
+6. **Systems** (§6.3) — extending all methods to $x'=f(t,x,y)$, $y'=g(t,x,y)$
+
+7. **`scipy.integrate.solve_ivp`** — practical adaptive solver usage
+:::
+::: {.column width="40%"}
+::: {.callout-note}
+**Sections 6.2 and 6.3** of @logan2015first.
+:::
+::: {.callout-tip}
+New vocabulary: step size, local truncation error, global error, explicit/implicit, predictor–corrector, adaptive step size, stiff equation.
+:::
+:::
+::::
+
+
+# Why Numerical Methods? {background-color="#2c3e50"}
+
+## The Reality of ODEs in Practice
+
+Most DEs arising in science and engineering **cannot** be solved analytically:
+
+- The force $F(x,x')$ is nonlinear (pendulum, van der Pol, …)
+- Parameters are time-varying or data-driven
+- The model is a large coupled system
+
+Even when an analytic solution exists, it may involve complicated integrals or infinite series requiring numerical evaluation anyway.
+
+. . .
+
+**Logan:** *"Many would say that the material in this brief section is the most important in the entire book."*
+
+. . .
+
+**The plan:** replace the continuous IVP
+
+$$x' = f(t,x), \quad x(t_0)=x_0 \tag{6.3}$$
+
+with a **discrete recursive formula** that a computer can evaluate step by step.
+
+
+## Discretization
+
+Divide $[t_0, T]$ into $N$ equal subintervals of length
+
+$$h = \frac{T - t_0}{N} \qquad \text{(step size)}.$$
+
+Grid: $t_n = t_0 + nh$, $n = 0,1,\ldots,N$.
+
+. . .
+
+**Goal:** find a recursive formula $X_{n+1} = \Phi(t_n, X_n, h)$ such that
+
+$$X_n \approx x(t_n) \quad \text{for all } n.$$
+
+Starting from $X_0 = x_0$, apply the formula $N$ times.
+
+. . .
+
+| Quantity | Meaning |
+|:---|:---|
+| $x(t_n)$ | True solution at grid point |
+| $X_n$ | Numerical approximation |
+| $x(t_n)-X_n$ | Error at step $n$ |
+
+
+# The Euler Method {background-color="#2c3e50"}
+
+## Derivation
+
+Integrate $x'(t)=f(t,x(t))$ from $t_n$ to $t_{n+1}$:
+
+$$\int_{t_n}^{t_{n+1}} x'(t)\,dt = \int_{t_n}^{t_{n+1}} f(t,x(t))\,dt. \tag{6.4}$$
+
+Left side: $x(t_{n+1})-x(t_n)$ (Fundamental Theorem).
+
+Right side: **left-hand rectangle rule** — approximate $f$ by its value at $t_n$:
+
+$$x(t_{n+1}) = x(t_n) + h\,f(t_n,x(t_n)) + \underbrace{O(h^2)}_{\text{local error}}.$$
+
+. . .
+
+Drop the error term, write $X_n \approx x(t_n)$:
+
+::: {.callout-important}
+## Euler Method (6.5)
+$$\boxed{X_{n+1} = X_n + h\,f(t_n, X_n)}, \quad X_0 = x_0.$$
+
+**Explicit** — $X_{n+1}$ computed directly. **Global error:** $O(h)$.
+:::
+
+
+## Geometric Picture — The Animation
+
+At each step: **follow the slope field** at the current point for distance $h$.
+
+![Euler method: $x'=t-x$, $x(0)=1$, $h=0.25$. Green = Euler step (local tangent); orange = local error; blue = exact solution; red = numerical approximation.](euler_animation.gif){width=90%}
+
+
+## Error Analysis
+
+| Error type | Order | Meaning |
+|:---|:---:|:---|
+| Local truncation | $O(h^2)$ | Error over **one** step |
+| Global (cumulative) | $O(h)$ | Error over **all** $N=\frac{T-t_0}{h}$ steps |
+
+. . .
+
+**Consequence of** $O(h)$ **global error:**
+
+Halving $h$ (doubling $N$) **halves** the global error.
+
+. . .
+
+From Example 6.3 ($x'=t-x$, $x(0)=1$, exact $x(2)=1.2707$):
+
+| $h$ | $X_8$ (approx) | Error |
+|:---:|:---:|:---:|
+| 0.5 | 1.125 | 0.1457 |
+| 0.25 | 1.2002 | 0.0705 |
+| 0.125 | 1.2361 | 0.0346 |
+
+Error approximately **halved** each time $h$ is halved. ✓
+
+
+## Example 6.3 — Euler Convergence
+
+```{python}
+#| label: fig-euler-slides
+#| fig-height: 3.8
+
+t_fine = np.linspace(0, 2, 400)
+fig, ax = plt.subplots(figsize=(9, 3.6))
+ax.plot(t_fine, exact_ex(t_fine), 'steelblue', lw=2.8, label='Exact $x(t)=t-1+2e^{-t}$')
+for N, color, h in zip([4,8,16], ['crimson','darkorange','seagreen'], [0.5,0.25,0.125]):
+    t_e, X_e = euler(f_ex, 0, 2, 1, N)
+    err = abs(exact_ex(2)-X_e[-1])
+    ax.plot(t_e, X_e, color=color, lw=1.8, marker='o', markersize=5,
+            label=f'Euler $h={h}$, err={err:.4f}')
+ax.set_xlabel('$t$'); ax.set_ylabel('$x$')
+ax.set_title("Euler method: $x'=t-x$, $x(0)=1$")
+ax.legend(fontsize=8)
+plt.tight_layout(); plt.show()
+```
+
+
+# Modified Euler and RK4 {background-color="#2c3e50"}
+
+## Modified Euler (RK2) — Predictor–Corrector
+
+**Idea:** use the **trapezoidal rule** instead of the rectangle rule for the integral in (6.4):
+
+$$x(t_{n+1})-x(t_n) = \frac{h}{2}\bigl[f(t_n,x(t_n))+f(t_{n+1},x(t_{n+1}))\bigr]+O(h^3).$$
+
+This gives an implicit equation. Fix it with a **predictor–corrector**:
+
+::: {.callout-important}
+## Modified Euler / RK2
+**Predictor** (Euler step):
+$$\widetilde{X}_{n+1} = X_n + h\,f(t_n, X_n). \tag{6.7}$$
+
+**Corrector** (trapezoidal average):
+$$X_{n+1} = X_n + \frac{h}{2}\bigl[f(t_n,X_n) + f(t_{n+1},\widetilde{X}_{n+1})\bigr]. \tag{6.8}$$
+
+**Global error: $O(h^2)$** — halving $h$ quarters the error.
+:::
+
+
+## The Runge–Kutta Method (RK4)
+
+The **workhorse** of numerical ODEs. Evaluates $f$ at four points per step:
+
+::: {.callout-important}
+## RK4 Update
+$$X_{n+1} = X_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4),$$
+
+$$k_1 = f(t_n,\;X_n), \qquad k_2 = f\!\left(t_n+\tfrac{h}{2},\;X_n+\tfrac{h}{2}k_1\right),$$
+$$k_3 = f\!\left(t_n+\tfrac{h}{2},\;X_n+\tfrac{h}{2}k_2\right), \qquad k_4 = f(t_n+h,\;X_n+hk_3).$$
+
+**Global error: $O(h^4)$** — halving $h$ reduces error by factor of 16.
+:::
+
+. . .
+
+For $h=0.1$: Euler error $\sim 0.1$, RK2 error $\sim 0.01$, **RK4 error $\sim 0.0001$**.
+
+
+## Method Comparison
+
+```{python}
+#| label: fig-compare-slides
+#| fig-height: 3.8
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+
+N_demo = 4
+t_fine = np.linspace(0, 2, 400)
+axes[0].plot(t_fine, exact_ex(t_fine), 'steelblue', lw=2.8, label='Exact')
+for method, color, lbl in [
+        (euler, 'crimson', 'Euler (RK1)'),
+        (modified_euler, 'darkorange', 'Modified Euler (RK2)'),
+        (rk4, 'seagreen', 'Runge–Kutta (RK4)')]:
+    t_m, X_m = method(f_ex, 0, 2, 1, N_demo)
+    axes[0].plot(t_m, X_m, marker='o', markersize=6, lw=2.0, color=color, label=lbl)
+axes[0].set_xlabel('$t$'); axes[0].set_ylabel('$x$')
+axes[0].set_title('Solutions ($h=0.5$)'); axes[0].legend(fontsize=8)
+
+h_vals = [0.5, 0.25, 0.125, 0.0625, 0.03125]
+for method, color, lbl, order in [
+        (euler, 'crimson', r'Euler $O(h)$', 1),
+        (modified_euler, 'darkorange', r'RK2 $O(h^2)$', 2),
+        (rk4, 'seagreen', r'RK4 $O(h^4)$', 4)]:
+    errs = []
+    for h in h_vals:
+        _, X_m = method(f_ex, 0, 2, 1, int(2/h))
+        errs.append(abs(exact_ex(2)-X_m[-1]))
+    axes[1].loglog(h_vals, errs, marker='o', color=color, lw=2.0, label=lbl)
+    axes[1].loglog(np.array(h_vals),
+                   np.array(errs)[0]*(np.array(h_vals)/h_vals[0])**order,
+                   ls='--', color=color, lw=0.9, alpha=0.5)
+
+axes[1].set_xlabel('$h$'); axes[1].set_ylabel('Global error at $t=2$')
+axes[1].set_title('Convergence (log–log)'); axes[1].legend(fontsize=8)
+axes[1].grid(True, which='both', alpha=0.3)
+plt.suptitle(r"$x'=t-x$, $x(0)=1$", fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+## Error Sources and Stiff Equations
+
+Three sources of error in any finite difference scheme:
+
+::: {.incremental}
+- **Truncation error** — from approximating a continuous problem by a discrete one. This is the $O(h^p)$ analysis we have been doing.
+
+- **Stability error** — the discrete algorithm itself may be unstable. An early error can be amplified exponentially as it propagates forward. The step size $h$ must stay below a problem-dependent threshold.
+
+- **Roundoff error** — computers represent real numbers with finite precision. The actually computed $\overline{X}_n$ differs from the exact discrete $X_n$; reducing $h$ too far eventually makes roundoff dominate.
+:::
+
+. . .
+
+::: {.callout-important}
+## Stiff Equations
+A DE is **stiff** when the solution has components that change at vastly different time scales. Euler and even RK4 require extremely small $h$ for stability. Use **implicit solvers** (backward Euler, `method='Radau'` or `'BDF'` in `solve_ivp`).
+:::
+
+
+# Systems of Equations {background-color="#1a5276"}
+
+## Extending to Systems (§6.3)
+
+For the 2D system $x'=f(t,x,y)$, $y'=g(t,x,y)$, $x(t_0)=x_0$, $y(t_0)=y_0$:
+
+**Euler:**
+$$X_{n+1}=X_n+hf(t_n,X_n,Y_n), \quad Y_{n+1}=Y_n+hg(t_n,X_n,Y_n).$$
+
+**Modified Euler** — predictors then correctors (same structure, applied to both components simultaneously).
+
+**RK4** — compute **eight slopes** $k_{11},k_{21},k_{12},k_{22},k_{13},k_{23},k_{14},k_{24}$ (one pair per component at each of the four evaluation points), then:
+
+$$X_{n+1}=X_n+\frac{h}{6}(k_{11}+2k_{12}+2k_{13}+k_{14}),$$
+$$Y_{n+1}=Y_n+\frac{h}{6}(k_{21}+2k_{22}+2k_{23}+k_{24}).$$
+
+. . .
+
+**Global errors remain $O(h)$, $O(h^2)$, $O(h^4)$.** The procedure extends to any number of equations.
+
+
+# scipy.integrate.solve_ivp {background-color="#1a5276"}
+
+## Why Use `solve_ivp`?
+
+Rather than coding methods from scratch, use `scipy.integrate.solve_ivp`:
+
+- **Adaptive step size**: automatically tightens $h$ where the solution changes rapidly, relaxes it where it is smooth.
+- **Multiple solvers**: `'RK45'` (default), `'RK23'`, `'DOP853'`, `'Radau'` (stiff), `'BDF'` (stiff).
+- **Dense output**: continuous interpolant `sol.sol(t)` for plotting.
+- **Event detection**: find zero-crossings (e.g., when a population hits zero).
+
+. . .
+
+::: {.callout-important}
+## Basic Call Pattern
+```python
+from scipy.integrate import solve_ivp
+
+sol = solve_ivp(
+    fun    = lambda t, y: [f(t, y[0])],  # rhs: (t, y-vector) → dy/dt vector
+    t_span = (t0, T),                     # integration interval
+    y0     = [x0],                        # initial condition (list/array)
+    method = 'RK45',                      # solver
+    dense_output = True,                  # enable sol.sol(t) interpolant
+    rtol   = 1e-6,                        # relative tolerance
+    atol   = 1e-8,                        # absolute tolerance
+)
+```
+:::
+
+
+## `solve_ivp` — Single Equation
+
+```{python}
+#| echo: true
+#| code-fold: false
+#| label: fig-scipy-slides
+
+sol = solve_ivp(
+    fun          = lambda t, y: [t - y[0]],
+    t_span       = (0, 2),
+    y0           = [1.0],
+    method       = 'RK45',
+    dense_output = True,
+    rtol=1e-6, atol=1e-8,
+)
+print(f"Steps: {len(sol.t)}   x(2) ≈ {sol.y[0,-1]:.8f}   exact: {exact_ex(2):.8f}")
+```
+
+```{python}
+#| label: fig-scipy-plot
+#| fig-height: 2.8
+
+t_p = np.linspace(0, 2, 400)
+fig, ax = plt.subplots(figsize=(9, 2.6))
+ax.plot(t_p, exact_ex(t_p), 'steelblue', lw=2.5, label='Exact')
+ax.plot(t_p, sol.sol(t_p)[0], 'seagreen', lw=2.0, ls='--',
+        label='solve_ivp (RK45, dense)')
+ax.plot(sol.t, sol.y[0], 'go', ms=5, label=f'Adaptive steps (N={len(sol.t)})')
+ax.set_xlabel('$t$'); ax.set_ylabel('$x$')
+ax.set_title(r"$x'=t-x$, $x(0)=1$ via `solve_ivp`")
+ax.legend(fontsize=8)
+plt.tight_layout(); plt.show()
+```
+
+
+## `solve_ivp` — System Example (Lotka–Volterra)
+
+```{python}
+#| echo: true
+#| code-fold: false
+
+a, b, c, d = 0.6, 0.5, 0.3, 0.4
+sol_lv = solve_ivp(
+    fun = lambda t, z: [a*z[0]-b*z[0]*z[1],   # x' = ax - bxy
+                        -c*z[1]+d*z[0]*z[1]],  # y' = -cy + dxy
+    t_span = (0, 60),
+    y0     = [c/d + 0.4, a/b],
+    method = 'RK45',
+    dense_output = True,
+    rtol=1e-9, atol=1e-11, max_step=0.05,
+)
+```
+
+```{python}
+#| label: fig-lv-scipy-slides
+#| fig-height: 3.0
+
+t_p = np.linspace(0, 60, 1200)
+z_p = sol_lv.sol(t_p)
+fig, axes = plt.subplots(1, 2, figsize=(10, 2.8))
+axes[0].plot(t_p, z_p[0], 'steelblue', lw=2.0, label='prey $x(t)$')
+axes[0].plot(t_p, z_p[1], 'crimson',   lw=2.0, label='predator $y(t)$')
+axes[0].set_xlabel('$t$'); axes[0].legend(fontsize=8)
+axes[0].set_title('Time series')
+axes[1].plot(z_p[0], z_p[1], 'seagreen', lw=1.5)
+axes[1].plot(c/d, a/b, 'o', color='steelblue', ms=8)
+axes[1].set_xlabel('$x$ (prey)'); axes[1].set_ylabel('$y$ (predator)')
+axes[1].set_title('Phase portrait')
+plt.suptitle('Lotka–Volterra via solve_ivp', fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+## Solver Selection Guide
+
+| Situation | Recommended solver |
+|:---|:---:|
+| General non-stiff (default) | `'RK45'` |
+| Higher accuracy needed | `'DOP853'` |
+| Stiff system (large eigenvalue spread) | `'Radau'` or `'BDF'` |
+| Unknown stiffness | Try `'RK45'`; if slow/fails → `'Radau'` |
+
+. . .
+
+**Key tolerances:**
+
+- `rtol` (relative tolerance, default `1e-3`): controls relative accuracy. Tighten to `1e-6` for physics/engineering work.
+- `atol` (absolute tolerance, default `1e-6`): important when solution passes through zero.
+
+. . .
+
+::: {.callout-tip}
+**Rule of thumb:** for most problems in this course, `solve_ivp(fun, t_span, y0, method='RK45', rtol=1e-6, atol=1e-8, dense_output=True)` is more than sufficient.
+:::
+
+
+# Summary {background-color="#2c3e50"}
+
+## Key Takeaways
+
+::: {.incremental}
+- The **Euler method** (6.5) $X_{n+1}=X_n+hf(t_n,X_n)$ follows the slope field step by step. It is first-order: global error $O(h)$, so halving $h$ halves the error.
+
+- The **modified Euler / RK2** method uses a predictor–corrector pair (6.7)–(6.8). Global error $O(h^2)$: halving $h$ quarters the error.
+
+- **Runge–Kutta RK4** uses a weighted average of four slope evaluations $k_1,\ldots,k_4$. Global error $O(h^4)$: halving $h$ reduces error by a factor of 16. RK4 is the standard workhorse of numerical ODE solving.
+
+- All three methods extend to **systems** by treating the state as a vector and applying the formula component-wise. Error orders are unchanged.
+
+- **Error sources:** truncation (Taylor series), stability (scheme may amplify errors), and roundoff (finite-precision arithmetic). **Stiff equations** require implicit solvers.
+
+- **`scipy.integrate.solve_ivp`** provides high-quality adaptive RK solvers with automatic step-size control. Use `dense_output=True` for a continuous interpolant, `method='Radau'` for stiff problems, and always tighten `rtol`/`atol` for accuracy-sensitive work.
+:::
+
+. . .
+
+::: {.callout-tip}
+**Looking Ahead:** The numerical tools developed here — especially `solve_ivp` — are the practical foundation for everything in Chapters 4 and 5: every phase portrait, every time series for a nonlinear system, every stability analysis we could not do by hand.
+:::
+
+::: {.callout-note}
+**Next:** Review and additional computational topics.
+:::
+
+
+## References
+
+::: {#refs}
+:::
+
+---
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){width=12%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
