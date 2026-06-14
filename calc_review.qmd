@@ -1,0 +1,830 @@
+---
+title: "Calculus Review"
+subtitle: "Essential Topics for Differential Equations"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# This is a code cell that imports the necessary libraries for our session.
+import numpy as np                        # NumPy for numerical computations
+import scipy as sp                        # SciPy for scientific computing
+import sympy as sym                       # SymPy for symbolic mathematics
+import matplotlib as mpl                  # Matplotlib for plotting
+import matplotlib.pyplot as plt           # Matplotlib pyplot interface
+from scipy.integrate import solve_ivp     # ODE solver
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+This page summarizes the key calculus concepts and formulas that arise most frequently in MATH 341. A solid command of these topics---derivatives, integrals, and series---is essential for understanding the techniques developed throughout the course. Where appropriate, we also show how [SymPy](https://www.sympy.org/), Python's symbolic mathematics library, can be used to check and explore these ideas computationally.
+
+## Review of Basic Functions
+
+### Polynomials and Rational Functions
+
+A **polynomial** of degree $n$ is a function of the form
+
+$$
+p(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0, \qquad a_n \neq 0,
+$$
+
+where the coefficients $a_0, a_1, \ldots, a_n$ are real numbers. Polynomials are defined and continuous on all of $\mathbb{R}$.
+
+A **rational function** is a ratio of two polynomials,
+
+$$
+r(x) = \frac{p(x)}{q(x)},
+$$
+
+defined wherever $q(x) \neq 0$. Rational functions appear prominently in the method of partial fractions (see @sec-partial-fractions) and in Laplace transform computations.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Define a symbolic variable
+x = sym.Symbol('x')
+
+# Define a polynomial and a rational function
+p = x**4 - 3*x**2 + 2*x - 5
+r = (x**2 + 1) / (x**2 - x - 6)
+
+print("Polynomial p(x) =", p)
+print()
+print("Rational function r(x) =", r)
+print()
+
+# Factor each expression
+print("Factored p(x):", sym.factor(p))
+print("Factored r(x):", sym.factor(r))
+print()
+
+# Find the roots (zeros) of p(x)
+roots = sym.solve(p, x)
+print("Roots of p(x):", roots)
+```
+
+### Exponential and Logarithmic Functions
+
+The **natural exponential function** $e^x$ (also written $\exp(x)$) satisfies
+
+$$
+\frac{d}{dx} e^x = e^x, \qquad e^0 = 1.
+$$
+
+This self-reproducing property makes it the fundamental building block of solutions to linear differential equations. Key identities include:
+
+$$
+e^{a+b} = e^a e^b, \qquad e^{-x} = \frac{1}{e^x}, \qquad \left(e^x\right)^r = e^{rx}.
+$$
+
+The **natural logarithm** $\ln x = \log_e x$ is the inverse of $e^x$:
+
+$$
+\ln(e^x) = x \quad (x \in \mathbb{R}), \qquad e^{\ln x} = x \quad (x > 0).
+$$
+
+Important logarithm rules:
+
+$$
+\ln(ab) = \ln a + \ln b, \qquad \ln\!\left(\frac{a}{b}\right) = \ln a - \ln b, \qquad \ln(a^r) = r \ln a.
+$$
+
+The general exponential $a^x = e^{x \ln a}$ for $a > 0$ reduces all exponential functions to the natural base, which is why $e$ plays a privileged role throughout the course.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+# Demonstrate key identities symbolically
+a, b = sym.symbols('a b', positive=True)
+r = sym.Symbol('r', real=True)
+
+print("Exponential product rule:")
+print("  exp(a)*exp(b) =", sym.simplify(sym.exp(a) * sym.exp(b)), "= exp(a+b)?",
+      sym.simplify(sym.exp(a) * sym.exp(b) - sym.exp(a + b)) == 0)
+
+print()
+print("Logarithm of a product:")
+lhs = sym.log(a * b)
+rhs = sym.log(a) + sym.log(b)
+print("  ln(a*b) - (ln(a)+ln(b)) =", sym.simplify(lhs - rhs))
+
+print()
+# Plot e^x and ln(x)
+fig, axes = plt.subplots(1, 2, figsize=(9, 3.5))
+
+xv = np.linspace(-2, 2, 300)
+axes[0].plot(xv, np.exp(xv), color='steelblue', linewidth=2)
+axes[0].axhline(0, color='k', linewidth=0.8)
+axes[0].axvline(0, color='k', linewidth=0.8)
+axes[0].set_title(r'$y = e^x$')
+axes[0].set_xlabel('$x$')
+axes[0].set_ylabel('$y$')
+
+xv2 = np.linspace(0.05, 5, 300)
+axes[1].plot(xv2, np.log(xv2), color='tomato', linewidth=2)
+axes[1].axhline(0, color='k', linewidth=0.8)
+axes[1].axvline(0, color='k', linewidth=0.8)
+axes[1].set_title(r'$y = \ln x$')
+axes[1].set_xlabel('$x$')
+axes[1].set_ylabel('$y$')
+
+plt.tight_layout()
+plt.savefig('exp_log.png', bbox_inches='tight')
+plt.show()
+```
+
+### Trigonometric and Inverse Trigonometric Functions
+
+The six trigonometric functions are defined via the unit circle. The two that arise most often in differential equations are $\sin x$ and $\cos x$, which satisfy
+
+$$
+\sin^2 x + \cos^2 x = 1
+$$
+
+and the derivative relations $\frac{d}{dx}\sin x = \cos x$ and $\frac{d}{dx}\cos x = -\sin x$. These make $\sin$ and $\cos$ the natural basis of solutions to the equation $y'' + y = 0$ and, more generally, to any constant-coefficient linear ODE whose characteristic roots are purely imaginary.
+
+Key identities used frequently in this course:
+
+| Identity | Formula |
+|---|---|
+| Pythagorean | $\sin^2 x + \cos^2 x = 1$ |
+| Double angle (sine) | $\sin 2x = 2\sin x \cos x$ |
+| Double angle (cosine) | $\cos 2x = \cos^2 x - \sin^2 x$ |
+| Half-angle (sine) | $\sin^2 x = \dfrac{1 - \cos 2x}{2}$ |
+| Half-angle (cosine) | $\cos^2 x = \dfrac{1 + \cos 2x}{2}$ |
+| Sum-to-product | $\sin(A \pm B) = \sin A \cos B \pm \cos A \sin B$ |
+| Sum-to-product | $\cos(A \pm B) = \cos A \cos B \mp \sin A \sin B$ |
+
+: Selected trigonometric identities {.striped}
+
+The **inverse trigonometric functions** $\arcsin x$, $\arccos x$, and $\arctan x$ arise in antiderivatives of algebraic expressions. The most common in this course is
+
+$$
+\int \frac{dx}{1 + x^2} = \arctan x + C.
+$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+# Verify the Pythagorean identity symbolically
+identity = sym.trigsimp(sym.sin(x)**2 + sym.cos(x)**2)
+print("sin²(x) + cos²(x) =", identity)
+
+# Verify the double-angle formula for sin
+double_angle = sym.trigsimp(sym.sin(2*x) - 2*sym.sin(x)*sym.cos(x))
+print("sin(2x) - 2sin(x)cos(x) =", double_angle)
+
+# Plot sin and cos
+xv = np.linspace(-2*np.pi, 2*np.pi, 500)
+fig, ax = plt.subplots(figsize=(8, 3.5))
+ax.plot(xv, np.sin(xv), label=r'$\sin x$', color='steelblue', linewidth=2)
+ax.plot(xv, np.cos(xv), label=r'$\cos x$', color='tomato', linewidth=2, linestyle='--')
+ax.axhline(0, color='k', linewidth=0.8)
+ax.set_xticks([-2*np.pi, -np.pi, 0, np.pi, 2*np.pi])
+ax.set_xticklabels([r'$-2\pi$', r'$-\pi$', r'$0$', r'$\pi$', r'$2\pi$'])
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
+ax.set_title('Sine and Cosine')
+ax.legend()
+plt.tight_layout()
+plt.savefig('trig.png', bbox_inches='tight')
+plt.show()
+```
+
+### Hyperbolic Functions
+
+The **hyperbolic functions** are defined in terms of the exponential function:
+
+$$
+\cosh x = \frac{e^x + e^{-x}}{2}, \qquad \sinh x = \frac{e^x - e^{-x}}{2}.
+$$
+
+They satisfy an identity analogous to the Pythagorean theorem,
+
+$$
+\cosh^2 x - \sinh^2 x = 1,
+$$
+
+and their derivatives mirror (with a sign change) those of the circular trig functions:
+
+$$
+\frac{d}{dx}\sinh x = \cosh x, \qquad \frac{d}{dx}\cosh x = \sinh x.
+$$
+
+Hyperbolic functions appear as solutions to the ODE $y'' - y = 0$ (note the minus sign, versus $y'' + y = 0$ for circular functions), and arise in problems involving catenary curves, heat conduction, and certain boundary-value problems. The remaining hyperbolic functions are defined analogously: $\tanh x = \sinh x / \cosh x$, etc.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+# Verify the hyperbolic Pythagorean identity
+hyp_id = sym.simplify(sym.cosh(x)**2 - sym.sinh(x)**2)
+print("cosh²(x) - sinh²(x) =", hyp_id)
+
+# Derivatives
+print("d/dx sinh(x) =", sym.diff(sym.sinh(x), x))
+print("d/dx cosh(x) =", sym.diff(sym.cosh(x), x))
+
+# Plot sinh and cosh
+xv = np.linspace(-2.5, 2.5, 400)
+fig, ax = plt.subplots(figsize=(7, 3.8))
+ax.plot(xv, np.cosh(xv), label=r'$\cosh x$', color='steelblue', linewidth=2)
+ax.plot(xv, np.sinh(xv), label=r'$\sinh x$', color='tomato', linewidth=2, linestyle='--')
+ax.axhline(0, color='k', linewidth=0.8)
+ax.axvline(0, color='k', linewidth=0.8)
+ax.set_ylim(-5, 8)
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
+ax.set_title('Hyperbolic Functions')
+ax.legend()
+plt.tight_layout()
+plt.savefig('hyperbolic.png', bbox_inches='tight')
+plt.show()
+```
+
+## Derivatives
+
+### Derivative Rules
+
+The fundamental **differentiation rules** used throughout this course are collected below. Let $f$ and $g$ be differentiable functions, and let $c$ be a constant.
+
+| Rule | Formula |
+|---|---|
+| Constant | $\dfrac{d}{dx}[c] = 0$ |
+| Constant multiple | $\dfrac{d}{dx}[c\,f] = c\,f'$ |
+| Sum / Difference | $\dfrac{d}{dx}[f \pm g] = f' \pm g'$ |
+| Product | $\dfrac{d}{dx}[f\,g] = f'g + fg'$ |
+| Quotient | $\dfrac{d}{dx}\!\left[\dfrac{f}{g}\right] = \dfrac{f'g - fg'}{g^2}$ |
+| Chain | $\dfrac{d}{dx}[f(g(x))] = f'(g(x))\,g'(x)$ |
+
+: Differentiation rules {.striped}
+
+The **chain rule** is particularly important in differential equations because solutions frequently take the form $e^{rt}$, $\sin(\omega t)$, or other composed functions whose derivatives we must compute routinely.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+# Demonstrate product, quotient, and chain rules with SymPy
+f = sym.exp(x) * sym.sin(x)          # product
+g = sym.sin(x) / (1 + x**2)          # quotient
+h = sym.exp(-x**2)                    # chain rule (composition)
+
+print("Product rule example:")
+print("  f(x)  =", f)
+print("  f'(x) =", sym.diff(f, x))
+
+print()
+print("Quotient rule example:")
+print("  g(x)  =", g)
+print("  g'(x) =", sym.simplify(sym.diff(g, x)))
+
+print()
+print("Chain rule example:")
+print("  h(x)  =", h)
+print("  h'(x) =", sym.diff(h, x))
+```
+
+### Basic Derivatives and Antiderivatives
+
+The table below lists the derivatives and corresponding antiderivatives (indefinite integrals) that appear most frequently in MATH 341. In each antiderivative, $C$ denotes an arbitrary constant of integration.
+
+| Function $f(x)$ | Derivative $f'(x)$ | Antiderivative $\displaystyle\int f(x)\,dx$ |
+|---|---|---|
+| $x^n$ | $n x^{n-1}$ | $\dfrac{x^{n+1}}{n+1} + C \quad (n\neq -1)$ |
+| $\ln\lvert x\rvert$ | $\dfrac{1}{x}$ | $x\ln\lvert x\rvert - x + C$ |
+| $e^{ax}$ | $a e^{ax}$ | $\dfrac{1}{a}e^{ax} + C$ |
+| $\sin(ax)$ | $a\cos(ax)$ | $-\dfrac{1}{a}\cos(ax) + C$ |
+| $\cos(ax)$ | $-a\sin(ax)$ | $\dfrac{1}{a}\sin(ax) + C$ |
+| $\tan x$ | $\sec^2 x$ | $-\ln\lvert\cos x\rvert + C$ |
+| $\sinh(ax)$ | $a\cosh(ax)$ | $\dfrac{1}{a}\cosh(ax) + C$ |
+| $\cosh(ax)$ | $a\sinh(ax)$ | $\dfrac{1}{a}\sinh(ax) + C$ |
+| $\dfrac{1}{x^2 + a^2}$ | --- | $\dfrac{1}{a}\arctan\!\left(\dfrac{x}{a}\right) + C$ |
+| $\dfrac{1}{\sqrt{a^2 - x^2}}$ | --- | $\arcsin\!\left(\dfrac{x}{a}\right) + C$ |
+
+: Basic derivatives and antiderivatives {.striped}
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x, a = sym.symbols('x a', real=True, positive=True)
+
+# Verify several entries in the table using SymPy
+entries = [
+    ("x^n",            x**sym.Symbol('n')),
+    ("e^(ax)",         sym.exp(a*x)),
+    ("sin(ax)",        sym.sin(a*x)),
+    ("cos(ax)",        sym.cos(a*x)),
+    ("1/(x^2+a^2)",    1 / (x**2 + a**2)),
+]
+
+print(f"{'Function':<20}  {'Derivative':<30}  {'Antiderivative (no C)'}")
+print("-" * 85)
+for name, expr in entries:
+    deriv = sym.diff(expr, x)
+    antideriv = sym.integrate(expr, x)
+    print(f"{name:<20}  {str(sym.simplify(deriv)):<30}  {antideriv}")
+```
+
+## Integration Techniques
+
+### Substitution
+
+**$u$-substitution** reverses the chain rule. If $u = g(x)$ so that $du = g'(x)\,dx$, then
+
+$$
+\int f(g(x))\,g'(x)\,dx = \int f(u)\,du.
+$$
+
+**Strategy:** Choose $u$ to be an "inner" function whose derivative also appears (or can be manufactured) in the integrand.
+
+::: {.callout-note}
+## Example
+Evaluate $\displaystyle\int x e^{x^2}\,dx$.
+
+Let $u = x^2$, so $du = 2x\,dx$, i.e.\ $x\,dx = \tfrac{1}{2}\,du$. Then
+
+$$
+\int x e^{x^2}\,dx = \frac{1}{2}\int e^u\,du = \frac{1}{2}e^u + C = \frac{1}{2}e^{x^2} + C.
+$$
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+# SymPy computes the substitution automatically
+integrand = x * sym.exp(x**2)
+result = sym.integrate(integrand, x)
+print("∫ x·exp(x²) dx =", result)
+
+# A definite integral with substitution: ∫₀¹ 2x/(1+x²) dx
+integrand2 = 2*x / (1 + x**2)
+result2 = sym.integrate(integrand2, (x, 0, 1))
+print()
+print("∫₀¹ 2x/(1+x²) dx =", result2, "=", sym.simplify(result2))
+print("Note: ln(2) ≈", float(sym.log(2)))
+```
+
+### Integration by Parts
+
+**Integration by parts** reverses the product rule:
+
+$$
+\int u\,dv = uv - \int v\,du.
+$$
+
+The classic mnemonic for choosing $u$ is **LIATE**: Logarithms, Inverse trig, Algebraic (polynomials), Trigonometric, Exponential — pick $u$ as the function that appears earliest in this list.
+
+::: {.callout-note}
+## Example
+Evaluate $\displaystyle\int t e^{-t}\,dt$.
+
+Set $u = t$ and $dv = e^{-t}\,dt$. Then $du = dt$ and $v = -e^{-t}$. Thus
+
+$$
+\int t e^{-t}\,dt = -t e^{-t} + \int e^{-t}\,dt = -t e^{-t} - e^{-t} + C = -e^{-t}(t+1) + C.
+$$
+
+This type of integral arises naturally when computing inverse Laplace transforms of functions like $\frac{1}{(s+1)^2}$.
+:::
+
+Sometimes integration by parts must be applied **twice**, or the original integral reappears on the right-hand side and can be solved algebraically (the "loop" trick):
+
+$$
+\int e^{ax}\cos(bx)\,dx = \frac{e^{ax}(a\cos bx + b\sin bx)}{a^2 + b^2} + C.
+$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x, a, b = sym.symbols('x a b', real=True)
+t = sym.Symbol('t')
+
+# Example 1: ∫ t·e^{-t} dt
+result1 = sym.integrate(t * sym.exp(-t), t)
+print("∫ t·exp(-t) dt =", result1)
+
+# Example 2: double integration by parts
+result2 = sym.integrate(sym.exp(a*x) * sym.cos(b*x), x)
+print()
+print("∫ exp(ax)·cos(bx) dx =", sym.simplify(result2))
+
+# Example 3: ∫ x²·sin(x) dx  (needs two rounds of by-parts)
+result3 = sym.integrate(x**2 * sym.sin(x), x)
+print()
+print("∫ x²·sin(x) dx =", result3)
+```
+
+### Partial Fractions {#sec-partial-fractions}
+
+**Partial fraction decomposition** expresses a proper rational function as a sum of simpler fractions that can be integrated term by term. It is also the primary tool for computing inverse Laplace transforms.
+
+Given $r(x) = p(x)/q(x)$ with $\deg p < \deg q$, factor $q(x)$ over the reals and write:
+
+- For each **linear factor** $(x - a)^k$:
+$$\frac{A_1}{x-a} + \frac{A_2}{(x-a)^2} + \cdots + \frac{A_k}{(x-a)^k}$$
+
+- For each **irreducible quadratic factor** $(x^2 + bx + c)^k$:
+$$\frac{B_1 x + C_1}{x^2+bx+c} + \frac{B_2 x + C_2}{(x^2+bx+c)^2} + \cdots$$
+
+::: {.callout-note}
+## Example
+Decompose $\displaystyle\frac{3x + 5}{(x-1)(x+3)}$ into partial fractions.
+
+Write $\dfrac{3x+5}{(x-1)(x+3)} = \dfrac{A}{x-1} + \dfrac{B}{x+3}$.
+
+Multiplying through: $3x + 5 = A(x+3) + B(x-1)$.
+
+Setting $x = 1$: $8 = 4A \Rightarrow A = 2$.
+Setting $x = -3$: $-4 = -4B \Rightarrow B = 1$.
+
+$$\frac{3x+5}{(x-1)(x+3)} = \frac{2}{x-1} + \frac{1}{x+3}.$$
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+# Example 1: linear factors
+r1 = (3*x + 5) / ((x - 1)*(x + 3))
+print("Partial fraction decomposition:")
+print("  (3x+5)/[(x-1)(x+3)] =", sym.apart(r1, x))
+
+# Example 2: repeated linear factor
+r2 = (2*x + 3) / ((x + 1)**2 * (x - 2))
+print()
+print("  (2x+3)/[(x+1)²(x-2)] =", sym.apart(r2, x))
+
+# Example 3: irreducible quadratic factor
+r3 = (x**2 + x + 1) / ((x - 1)*(x**2 + 1))
+print()
+print("  (x²+x+1)/[(x-1)(x²+1)] =", sym.apart(r3, x))
+
+# Integrate the first example to confirm
+print()
+print("∫ [(3x+5)/((x-1)(x+3))] dx =", sym.integrate(r1, x))
+```
+
+## Taylor Series
+
+The **Taylor series** of a smooth function $f$ centered at $x = a$ is
+
+$$
+f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n
+      = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \cdots
+$$
+
+When $a = 0$ this is called a **Maclaurin series**. The series converges to $f(x)$ on an interval of radius $R$ (the **radius of convergence**) centered at $a$.
+
+The four Maclaurin series used most often in differential equations are:
+
+$$
+e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots, \quad R = \infty
+$$
+
+$$
+\sin x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots, \quad R = \infty
+$$
+
+$$
+\cos x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots, \quad R = \infty
+$$
+
+$$
+\frac{1}{1-x} = \sum_{n=0}^{\infty} x^n = 1 + x + x^2 + x^3 + \cdots, \quad \lvert x\rvert < 1
+$$
+
+**Euler's formula** ties together the exponential and trigonometric series:
+
+$$
+e^{i\theta} = \cos\theta + i\sin\theta,
+$$
+
+and is used extensively when solving linear ODEs with complex characteristic roots.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+# Compute Maclaurin series up to order 8
+funcs = {
+    'exp(x)':   sym.exp(x),
+    'sin(x)':   sym.sin(x),
+    'cos(x)':   sym.cos(x),
+    '1/(1-x)':  1/(1 - x),
+}
+
+for name, f in funcs.items():
+    series = sym.series(f, x, 0, n=9).removeO()
+    print(f"  {name} ≈ {series}")
+print()
+
+# Illustrate how partial sums approximate sin(x)
+xv = np.linspace(-2*np.pi, 2*np.pi, 500)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(xv, np.sin(xv), 'k', linewidth=2, label=r'$\sin x$')
+
+import math
+colors = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3']
+for k, (n, color) in enumerate(zip([1, 2, 3, 4], colors)):
+    # Partial sum: x - x³/3! + x⁵/5! - ... up to term 2n-1
+    s = sum((-1)**m * xv**(2*m+1) / float(math.factorial(2*m+1)) for m in range(n))
+    ax.plot(xv, s, color=color, linewidth=1.5, linestyle='--',
+            label=rf'$P_{{{2*n-1}}}(x)$')
+
+ax.set_ylim(-2, 2)
+ax.set_xticks([-2*np.pi, -np.pi, 0, np.pi, 2*np.pi])
+ax.set_xticklabels([r'$-2\pi$', r'$-\pi$', '$0$', r'$\pi$', r'$2\pi$'])
+ax.set_xlabel('$x$')
+ax.set_ylabel('$y$')
+ax.set_title('Taylor Polynomials Approximating $\\sin x$')
+ax.legend(fontsize=9)
+plt.tight_layout()
+plt.savefig('taylor_sin.png', bbox_inches='tight')
+plt.show()
+```
+
+## Parametric Curves
+
+A **parametric curve** in the plane is described by a pair of functions
+
+$$
+x = x(t), \qquad y = y(t), \qquad t \in [a, b].
+$$
+
+The variable $t$ is the **parameter**, and is often interpreted as time. The curve traces the set of points $\bigl(x(t), y(t)\bigr)$ as $t$ varies.
+
+**Slope of the tangent line.** Applying the chain rule,
+
+$$
+\frac{dy}{dx} = \frac{dy/dt}{dx/dt}, \qquad \frac{dx}{dt} \neq 0.
+$$
+
+**Arc length.** The length of the curve from $t = a$ to $t = b$ is
+
+$$
+L = \int_a^b \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\,dt.
+$$
+
+Parametric curves are most relevant in MATH 341 when we study **systems of differential equations**, where the solution $(x(t), y(t))$ is a curve in the **phase plane**. Plotting these trajectories is a central tool for understanding the long-time behavior of a system.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+t = sym.Symbol('t')
+
+# Lissajous-type parametric curve
+x_t = sym.cos(2*t)
+y_t = sym.sin(3*t)
+
+# Compute dy/dx
+dydx = sym.simplify(sym.diff(y_t, t) / sym.diff(x_t, t))
+print("Parametric curve: x(t) = cos(2t), y(t) = sin(3t)")
+print("dx/dt =", sym.diff(x_t, t))
+print("dy/dt =", sym.diff(y_t, t))
+print("dy/dx =", dydx)
+
+# Arc length over [0, 2π]  -- numerical since the integral is elliptic
+L_num, _ = sp.integrate.quad(
+    lambda tv: np.sqrt((-2*np.sin(2*tv))**2 + (3*np.cos(3*tv))**2),
+    0, 2*np.pi
+)
+print(f"\nArc length over [0, 2π] ≈ {L_num:.5f}")
+
+# Plot the Lissajous curve
+tv = np.linspace(0, 2*np.pi, 1000)
+xv = np.cos(2*tv)
+yv = np.sin(3*tv)
+
+fig, ax = plt.subplots(figsize=(5, 4))
+ax.plot(xv, yv, color='steelblue', linewidth=2)
+ax.set_aspect('equal')
+ax.set_xlabel('$x(t) = \\cos 2t$')
+ax.set_ylabel('$y(t) = \\sin 3t$')
+ax.set_title('Lissajous Curve ($x = \\cos 2t$, $y = \\sin 3t$)')
+plt.tight_layout()
+plt.savefig('parametric.png', bbox_inches='tight')
+plt.show()
+```
+
+## Partial Derivatives
+
+For a function $F(x, y)$ of two variables, the **partial derivative** with respect to $x$ is defined by treating $y$ as a constant:
+
+$$
+F_x = \frac{\partial F}{\partial x} = \lim_{h \to 0} \frac{F(x+h, y) - F(x, y)}{h}.
+$$
+
+Similarly, $F_y = \partial F / \partial y$ treats $x$ as a constant. Higher-order partial derivatives are computed iteratively. For functions with continuous second-order partials, **Clairaut's theorem** guarantees symmetry:
+
+$$
+F_{xy} = \frac{\partial^2 F}{\partial y \partial x} = \frac{\partial^2 F}{\partial x \partial y} = F_{yx}.
+$$
+
+**Exactness.** Partial derivatives play a central role in **exact differential equations**. An expression $M(x,y)\,dx + N(x,y)\,dy$ is an **exact differential** if and only if
+
+$$
+\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}.
+$$
+
+In that case there exists a potential function $F(x,y)$ such that $F_x = M$ and $F_y = N$, and the general solution is $F(x,y) = C$.
+
+**The total derivative.** If $y = y(x)$ is implicitly a function of $x$ through a relation $F(x,y) = C$, then differentiating with respect to $x$ gives
+
+$$
+\frac{dF}{dx} = F_x + F_y \frac{dy}{dx} = 0 \implies \frac{dy}{dx} = -\frac{F_x}{F_y}.
+$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x, y = sym.symbols('x y')
+
+# Example function
+F = x**3 * y**2 - sym.exp(x*y) + sym.sin(x + y**2)
+
+Fx = sym.diff(F, x)
+Fy = sym.diff(F, y)
+Fxy = sym.diff(F, x, y)
+Fyx = sym.diff(F, y, x)
+
+print("F(x,y) =", F)
+print()
+print("∂F/∂x =", Fx)
+print()
+print("∂F/∂y =", Fy)
+print()
+print("∂²F/∂y∂x =", sym.simplify(Fxy))
+print("∂²F/∂x∂y =", sym.simplify(Fyx))
+print("Equal (Clairaut's thm):", sym.simplify(Fxy - Fyx) == 0)
+
+# Exactness check for an exact equation M dx + N dy
+print()
+print("--- Exactness example ---")
+M = 2*x*y + 3*x**2
+N = x**2 + 4*y**3
+print("M =", M, "  N =", N)
+print("∂M/∂y =", sym.diff(M, y))
+print("∂N/∂x =", sym.diff(N, x))
+print("Exact?", sym.diff(M, y) == sym.diff(N, x))
+
+# Recover the potential function F
+F_pot = sym.integrate(M, x) + sym.Function('g')(y)
+print()
+print("Potential F (integrating M with respect to x):")
+print(" F =", sym.integrate(M, x), "+ g(y)")
+g_deriv = sym.diff(sym.integrate(M, x), y) - N
+print(" g'(y) = N - ∂/∂y[∫M dx] =", sym.simplify(g_deriv + N - N), "... solving:", sym.simplify(-g_deriv))
+g_y = sym.integrate(-g_deriv, y)
+print(" g(y) =", g_y)
+F_final = sym.integrate(M, x) + g_y
+print(" F(x,y) =", sym.expand(F_final))
+```
+
+## Relevant Videos
+
+
+### Derivatives:
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/-NhgElcA3K8?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+### Integration by Parts: https://youtu.be/sWSLLO3DS1I?si=UMqZqZ80XSKaGJ8d
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/sWSLLO3DS1I?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+
+### Partial Fractions: 
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/6rXByMcuAyI?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+
+### Taylor Series: 
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/ebfOSDj4j3I?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+### Euler's Formula: 
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/H0Zbg_CqMCs?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+
+### Parametric Curves: 
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/Yr6EJHWvR64?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys # sys for system-specific parameters and functions
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+## Reuse
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
+
+
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
