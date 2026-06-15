@@ -519,7 +519,7 @@ window.Quarto = {
 </header>
 
 
-<div id="fec7b9cf" class="cell" data-execution_count="1">
+<div id="725025b6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -608,7 +608,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="the-vibrating-circular-drum-motivation">The Vibrating Circular Drum: Motivation</h2>
 <p>To see where Bessel’s equation comes from naturally, consider the <strong>vibrating circular drumhead</strong> — a thin elastic membrane clamped at a circular boundary of radius <span class="math inline">\(R\)</span>. If <span class="math inline">\(u(r, \theta, t)\)</span> denotes the transverse displacement, the wave equation in polar coordinates is <span class="math display">\[
 u_{tt} = c^2\!\left(u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta}\right).
-\]</span> Looking for normal modes of the form <span class="math inline">\(u = R(r)\,\Theta(\theta)\,T(t)\)</span>, separating variables, and focusing on the radially symmetric modes ($= $ constant), one finds that the radial factor <span class="math inline">\(R(r)\)</span> satisfies <span class="math display">\[
+\]</span> Looking for normal modes of the form <span class="math inline">\(u = R(r)\,\Theta(\theta)\,T(t)\)</span>, separating variables, and focusing on the radially symmetric modes (<span class="math inline">\(\Theta =\)</span> constant), one finds that the radial factor <span class="math inline">\(R(r)\)</span> satisfies <span class="math display">\[
 r^2 R'' + r R' + \lambda^2 r^2 R = 0,
 \]</span> where <span class="math inline">\(\lambda\)</span> is related to the frequency of vibration. Setting <span class="math inline">\(x = \lambda r\)</span> converts this to <strong>Bessel’s equation of order zero</strong>: <span class="math display">\[
 x^2 y'' + x y' + x^2 y = 0.
@@ -729,7 +729,7 @@ J_\nu(x) = \sum_{k=0}^{\infty} \frac{(-1)^k}{k!\,\Gamma(\nu+k+1)}
 <section id="computing-j_nu-with-sympy" class="level3">
 <h3 class="anchored" data-anchor-id="computing-j_nu-with-sympy">Computing <span class="math inline">\(J_\nu\)</span> with SymPy</h3>
 <p>SymPy provides Bessel functions via <code>sym.besselj(nu, x)</code>. We can verify the series definition, compute values, and differentiate symbolically.</p>
-<div id="09b181de" class="cell" data-execution_count="2">
+<div id="bdb7f30a" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -766,7 +766,7 @@ Power series for J_0(x) about x = 0 (first 5 terms):</code></pre>
 <p><span class="math inline">\(\displaystyle J_0(x) = 1 - \frac{x^{2}}{4} + \frac{x^{4}}{64} - \frac{x^{6}}{2304} + \frac{x^{8}}{147456} + O\left(x^{10}\right)\)</span></p>
 </div>
 </div>
-<div id="3ab5ff87" class="cell" data-execution_count="3">
+<div id="97ae1309" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Verify the ODE: x^2 y'' + x y' + (x^2 - nu^2) y = 0 ----</span></span>
@@ -840,7 +840,7 @@ y(x) = c_1 J_\nu(x) + c_2 Y_\nu(x).
 \]</span> Both <span class="math inline">\(J_\nu\)</span> and <span class="math inline">\(Y_\nu\)</span> are oscillatory and decay like <span class="math inline">\(x^{-1/2}\)</span> for large <span class="math inline">\(x\)</span>. <span class="math inline">\(J_\nu(0)\)</span> is finite; <span class="math inline">\(Y_\nu(x) \to -\infty\)</span> as <span class="math inline">\(x \to 0^+\)</span>.</p>
 </div>
 </div>
-<div id="660d189e" class="cell" data-execution_count="4">
+<div id="993f16f0" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Y0_sym <span class="op">=</span> sym.bessely(<span class="dv">0</span>, x)</span>
@@ -1018,7 +1018,7 @@ J_{\nu-1}(x) - J_{\nu+1}(x) = 2J_\nu'(x).
 \]</span></p>
 <p>The same recurrences hold with <span class="math inline">\(J_\nu\)</span> replaced by <span class="math inline">\(Y_\nu\)</span>.</p>
 <p>Let us verify (R1) and (R2) symbolically with SymPy:</p>
-<div id="3ad4cf07" class="cell" data-execution_count="7">
+<div id="4997ff9c" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -1078,7 +1078,7 @@ nu = 3/2:</code></pre>
 J_\nu(j_{\nu,m}) = 0, \qquad 0 &lt; j_{\nu,1} &lt; j_{\nu,2} &lt; \cdots \to \infty.
 \]</span></p>
 <p>SciPy computes these via <code>scipy.special.jn_zeros(n, k)</code>, which returns the first <span class="math inline">\(k\)</span> positive zeros of <span class="math inline">\(J_n\)</span>.</p>
-<div id="2f8b24e3" class="cell" data-execution_count="8">
+<div id="447b8d78" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First five positive zeros of J_nu:</span><span class="ch">\n</span><span class="st">"</span>)</span>
@@ -1211,7 +1211,7 @@ Figure&nbsp;4: Left: <span class="math inline">\(J_0(x)\)</span> (blue) and its 
 </div>
 </div>
 <p>The weight function <span class="math inline">\(x\)</span> (rather than <span class="math inline">\(1\)</span>) reflects the geometry of polar coordinates — integration in polar coordinates carries a factor of <span class="math inline">\(r\)</span>. This orthogonality underlies the <strong>Fourier–Bessel series</strong>, the cylindrical analog of a Fourier sine series.</p>
-<div id="13f91e15" class="cell" data-execution_count="11">
+<div id="ec854a9e" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical verification of orthogonality for J_0</span></span>
@@ -1338,7 +1338,7 @@ Figure&nbsp;5: Radial profiles (left) and two-dimensional mode shapes (right) of
 <section id="symbolic-differentiation-and-the-derivative-formula" class="level2">
 <h2 class="anchored" data-anchor-id="symbolic-differentiation-and-the-derivative-formula">Symbolic Differentiation and the Derivative Formula</h2>
 <p>We conclude with a SymPy demonstration of the derivative formula <span class="math inline">\(\frac{d}{dx}[x^{-\nu}J_\nu(x)] = -x^{-\nu}J_{\nu+1}(x)\)</span>, which encodes an elegant downward-shift property.</p>
-<div id="01305a0e" class="cell" data-execution_count="13">
+<div id="9a3447b5" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -1521,7 +1521,7 @@ Figure&nbsp;5: Radial profiles (left) and two-dimensional mode shapes (right) of
 </div>
 <div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f02a915a" class="cell" data-execution_count="14">
+<div id="e21adf83" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
