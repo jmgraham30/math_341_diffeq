@@ -249,13 +249,15 @@ The new value is a **weighted average** of four slopes $k_1, \ldots, k_4$ sample
 
 #### Error Comparison
 
-For $h = 0.1$, the cumulative errors for the three methods are proportional to:
+The table below shows **theoretical** error orders and **concrete computed errors** for $x' = t - x$, $x(0) = 1$, comparing the error at $t = 2$ for two step sizes.  The exact answer is $x(2) = 1.27067\ldots$
 
-| Method | Order | Error ($h=0.1$) |
-|---|---|---|
-| Euler | $O(h)$ | $\sim 0.1$ |
-| Modified Euler (RK2) | $O(h^2)$ | $\sim 0.01$ |
-| Runge–Kutta (RK4) | $O(h^4)$ | $\sim 0.0001$ |
+| Method | Order | Error ($h=0.5$) | Error ($h=0.25$) | Ratio |
+|---|---|---:|---:|---:|
+| Euler | $O(h)$ | $0.1457$ | $0.0704$ | $2.07\approx 2^1$ |
+| Modified Euler (RK2) | $O(h^2)$ | $0.0107$ | $0.0027$ | $3.96\approx 2^2$ |
+| Runge–Kutta (RK4) | $O(h^4)$ | $0.0000540$ | $0.0000034$ | $15.9\approx 2^4$ |
+
+The **Ratio** column confirms the theoretical orders: halving $h$ approximately halves the error for Euler ($\times 2$), quarters it for RK2 ($\times 4$), and reduces it by a factor of 16 for RK4 ($\times 16 = 2^4$). This dramatic difference is why RK4 is the standard choice when accuracy matters.
 
 ```{python}
 #| code-fold: true
@@ -327,6 +329,21 @@ axes[1].grid(True, which='both', alpha=0.3)
 plt.suptitle(r"Method comparison: $x'=t-x$, $x(0)=1$", fontsize=12)
 plt.tight_layout()
 plt.show()
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Verify the concrete error table values above (all method functions now defined)
+_methods = [('Euler', euler), ('Modified Euler (RK2)', modified_euler), ('RK4', rk4)]
+print(f"{'Method':<24} {'h=0.5 error':>12} {'h=0.25 error':>13} {'Ratio':>7}")
+print("-" * 60)
+for name, method in _methods:
+    err_half    = abs(exact_ex(2) - method(f_ex, 0, 2, 1,  4)[-1][-1])
+    err_quarter = abs(exact_ex(2) - method(f_ex, 0, 2, 1,  8)[-1][-1])
+    ratio = err_half / err_quarter
+    print(f"{name:<24} {err_half:>12.7f} {err_quarter:>13.7f} {ratio:>7.2f}")
 ```
 
 ---

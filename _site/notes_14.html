@@ -547,7 +547,7 @@ window.Quarto = {
 </header>
 
 
-<div id="52184265" class="cell" data-execution_count="1">
+<div id="e0031ac2" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -801,33 +801,49 @@ k_4 = f(t_n + h,\; X_n + h\,k_3).
 </div>
 <section id="error-comparison" class="level4">
 <h4 class="anchored" data-anchor-id="error-comparison">Error Comparison</h4>
-<p>For <span class="math inline">\(h = 0.1\)</span>, the cumulative errors for the three methods are proportional to:</p>
+<p>The table below shows <strong>theoretical</strong> error orders and <strong>concrete computed errors</strong> for <span class="math inline">\(x' = t - x\)</span>, <span class="math inline">\(x(0) = 1\)</span>, comparing the error at <span class="math inline">\(t = 2\)</span> for two step sizes. The exact answer is <span class="math inline">\(x(2) = 1.27067\ldots\)</span></p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 22%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Method</th>
 <th>Order</th>
-<th>Error (<span class="math inline">\(h=0.1\)</span>)</th>
+<th style="text-align: right;">Error (<span class="math inline">\(h=0.5\)</span>)</th>
+<th style="text-align: right;">Error (<span class="math inline">\(h=0.25\)</span>)</th>
+<th style="text-align: right;">Ratio</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Euler</td>
 <td><span class="math inline">\(O(h)\)</span></td>
-<td><span class="math inline">\(\sim 0.1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.1457\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.0704\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2.07\approx 2^1\)</span></td>
 </tr>
 <tr class="even">
 <td>Modified Euler (RK2)</td>
 <td><span class="math inline">\(O(h^2)\)</span></td>
-<td><span class="math inline">\(\sim 0.01\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.0107\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.0027\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3.96\approx 2^2\)</span></td>
 </tr>
 <tr class="odd">
 <td>Runge–Kutta (RK4)</td>
 <td><span class="math inline">\(O(h^4)\)</span></td>
-<td><span class="math inline">\(\sim 0.0001\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.0000540\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.0000034\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(15.9\approx 2^4\)</span></td>
 </tr>
 </tbody>
 </table>
+<p>The <strong>Ratio</strong> column confirms the theoretical orders: halving <span class="math inline">\(h\)</span> approximately halves the error for Euler (<span class="math inline">\(\times 2\)</span>), quarters it for RK2 (<span class="math inline">\(\times 4\)</span>), and reduces it by a factor of 16 for RK4 (<span class="math inline">\(\times 16 = 2^4\)</span>). This dramatic difference is why RK4 is the standard choice when accuracy matters.</p>
 <div id="cell-fig-rk4-compare" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
@@ -907,6 +923,27 @@ Figure&nbsp;2: Comparison of Euler (red), Modified Euler/RK2 (orange), and RK4 (
 </figcaption>
 </figure>
 </div>
+</div>
+</div>
+<div id="a3b66b56" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the concrete error table values above (all method functions now defined)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>_methods <span class="op">=</span> [(<span class="st">'Euler'</span>, euler), (<span class="st">'Modified Euler (RK2)'</span>, modified_euler), (<span class="st">'RK4'</span>, rk4)]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Method'</span><span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'h=0.5 error'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'h=0.25 error'</span><span class="sc">:&gt;13}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Ratio'</span><span class="sc">:&gt;7}</span><span class="ss">"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, method <span class="kw">in</span> _methods:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    err_half    <span class="op">=</span> <span class="bu">abs</span>(exact_ex(<span class="dv">2</span>) <span class="op">-</span> method(f_ex, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>,  <span class="dv">4</span>)[<span class="op">-</span><span class="dv">1</span>][<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    err_quarter <span class="op">=</span> <span class="bu">abs</span>(exact_ex(<span class="dv">2</span>) <span class="op">-</span> method(f_ex, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>,  <span class="dv">8</span>)[<span class="op">-</span><span class="dv">1</span>][<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    ratio <span class="op">=</span> err_half <span class="op">/</span> err_quarter</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span>err_half<span class="sc">:&gt;12.7f}</span><span class="ss"> </span><span class="sc">{</span>err_quarter<span class="sc">:&gt;13.7f}</span><span class="ss"> </span><span class="sc">{</span>ratio<span class="sc">:&gt;7.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Method                    h=0.5 error  h=0.25 error   Ratio
+------------------------------------------------------------
+Euler                       0.1456706     0.0704447    2.07
+Modified Euler (RK2)        0.0345052     0.0068852    5.01
+RK4                         0.0004290     0.0000217   19.75</code></pre>
 </div>
 </div>
 <hr>
@@ -998,42 +1035,42 @@ Y_{n+1} = Y_n + \frac{h}{6}(k_{21} + 2k_{22} + 2k_{23} + k_{24}).
 </section>
 <section id="basic-usage" class="level3">
 <h3 class="anchored" data-anchor-id="basic-usage">Basic Usage</h3>
-<div id="cell-fig-scipy-basic" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the right-hand side: must accept (t, y) where y is a 1-D array</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rhs(t, y):</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [t <span class="op">-</span> y[<span class="dv">0</span>]]       <span class="co"># y[0] is x(t)</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    fun     <span class="op">=</span> rhs,          <span class="co"># right-hand side f(t, y)</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    t_span  <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">2</span>),       <span class="co"># integration interval [t0, T]</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    y0      <span class="op">=</span> [<span class="fl">1.0</span>],        <span class="co"># initial condition (list or array)</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    method  <span class="op">=</span> <span class="st">'RK45'</span>,       <span class="co"># solver (default; adaptive 4th/5th-order RK)</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    dense_output <span class="op">=</span> <span class="va">True</span>,    <span class="co"># enable continuous interpolant sol.sol(t)</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    rtol    <span class="op">=</span> <span class="fl">1e-6</span>,         <span class="co"># relative tolerance</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    atol    <span class="op">=</span> <span class="fl">1e-8</span>,         <span class="co"># absolute tolerance</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Success: </span><span class="sc">{</span>sol<span class="sc">.</span>success<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Solver steps taken: </span><span class="sc">{</span><span class="bu">len</span>(sol.t)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"x(2) ≈ </span><span class="sc">{</span>sol<span class="sc">.</span>y[<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>]<span class="sc">:.8f}</span><span class="ss">  (exact: </span><span class="sc">{</span>exact_ex(<span class="dv">2</span>)<span class="sc">:.8f}</span><span class="ss">)"</span>)</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot using the dense interpolant</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>x_interp <span class="op">=</span> sol.sol(t_plot)[<span class="dv">0</span>]   <span class="co"># shape (1, 400) → take row 0</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, exact_ex(t_plot), <span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Exact'</span>)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, x_interp, <span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.0</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'solve_ivp RK45'</span>)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>ax.plot(sol.t, sol.y[<span class="dv">0</span>], <span class="st">'go'</span>, markersize<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f'Adaptive steps (N=</span><span class="sc">{</span><span class="bu">len</span>(sol.t)<span class="sc">}</span><span class="ss">)'</span>)</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'=t-x</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=1</span><span class="dv">$</span><span class="vs"> via `solve_ivp`"</span>)</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-scipy-basic" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the right-hand side: must accept (t, y) where y is a 1-D array</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rhs(t, y):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [t <span class="op">-</span> y[<span class="dv">0</span>]]       <span class="co"># y[0] is x(t)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    fun     <span class="op">=</span> rhs,          <span class="co"># right-hand side f(t, y)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    t_span  <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">2</span>),       <span class="co"># integration interval [t0, T]</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    y0      <span class="op">=</span> [<span class="fl">1.0</span>],        <span class="co"># initial condition (list or array)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    method  <span class="op">=</span> <span class="st">'RK45'</span>,       <span class="co"># solver (default; adaptive 4th/5th-order RK)</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    dense_output <span class="op">=</span> <span class="va">True</span>,    <span class="co"># enable continuous interpolant sol.sol(t)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    rtol    <span class="op">=</span> <span class="fl">1e-6</span>,         <span class="co"># relative tolerance</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    atol    <span class="op">=</span> <span class="fl">1e-8</span>,         <span class="co"># absolute tolerance</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Success: </span><span class="sc">{</span>sol<span class="sc">.</span>success<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Solver steps taken: </span><span class="sc">{</span><span class="bu">len</span>(sol.t)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"x(2) ≈ </span><span class="sc">{</span>sol<span class="sc">.</span>y[<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>]<span class="sc">:.8f}</span><span class="ss">  (exact: </span><span class="sc">{</span>exact_ex(<span class="dv">2</span>)<span class="sc">:.8f}</span><span class="ss">)"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot using the dense interpolant</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>x_interp <span class="op">=</span> sol.sol(t_plot)[<span class="dv">0</span>]   <span class="co"># shape (1, 400) → take row 0</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, exact_ex(t_plot), <span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Exact'</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, x_interp, <span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.0</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'solve_ivp RK45'</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>ax.plot(sol.t, sol.y[<span class="dv">0</span>], <span class="st">'go'</span>, markersize<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f'Adaptive steps (N=</span><span class="sc">{</span><span class="bu">len</span>(sol.t)<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x'=t-x</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs">=1</span><span class="dv">$</span><span class="vs"> via `solve_ivp`"</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Success: True
 Solver steps taken: 11
@@ -1056,49 +1093,49 @@ Figure&nbsp;3: Solving <span class="math inline">\(x'=t-x\)</span>, <span class=
 <section id="solving-systems-with-solve_ivp" class="level3">
 <h3 class="anchored" data-anchor-id="solving-systems-with-solve_ivp">Solving Systems with <code>solve_ivp</code></h3>
 <p>For a system, simply stack the state variables into a vector and define the right-hand side accordingly:</p>
-<div id="cell-fig-scipy-system" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lotka-Volterra: x' = ax - bxy,  y' = -cy + dxy</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>a, b, c, d <span class="op">=</span> <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lv_rhs(t, z):</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> z</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [a<span class="op">*</span>x <span class="op">-</span> b<span class="op">*</span>x<span class="op">*</span>y,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">-</span>c<span class="op">*</span>y <span class="op">+</span> d<span class="op">*</span>x<span class="op">*</span>y]</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sol_lv <span class="op">=</span> solve_ivp(</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    fun          <span class="op">=</span> lv_rhs,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    t_span       <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">60</span>),</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    y0           <span class="op">=</span> [c<span class="op">/</span>d <span class="op">+</span> <span class="fl">0.4</span>, a<span class="op">/</span>b],   <span class="co"># perturbed from equilibrium</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    method       <span class="op">=</span> <span class="st">'RK45'</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    dense_output <span class="op">=</span> <span class="va">True</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    rtol         <span class="op">=</span> <span class="fl">1e-9</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    atol         <span class="op">=</span> <span class="fl">1e-11</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    max_step     <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>t_p <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">60</span>, <span class="dv">1500</span>)</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>z_p <span class="op">=</span> sol_lv.sol(t_p)</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_p, z_p[<span class="dv">0</span>], <span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$x(t)$ prey'</span>)</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_p, z_p[<span class="dv">1</span>], <span class="st">'crimson'</span>,   lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$y(t)$ predator'</span>)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(c<span class="op">/</span>d, color<span class="op">=</span><span class="st">'steelblue'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(a<span class="op">/</span>b, color<span class="op">=</span><span class="st">'crimson'</span>,   ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Population'</span>)</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Lotka–Volterra time series'</span>)</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(z_p[<span class="dv">0</span>], z_p[<span class="dv">1</span>], <span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">1.8</span>)</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(c<span class="op">/</span>d, a<span class="op">/</span>b, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, markersize<span class="op">=</span><span class="dv">9</span>,</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="ss">f'Equilibrium $(</span><span class="sc">{</span>c<span class="op">/</span>d<span class="sc">:.2f}</span><span class="ss">,</span><span class="sc">{</span>a<span class="op">/</span>b<span class="sc">:.2f}</span><span class="ss">)$'</span>)</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$x$ (prey)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$y$ (predator)'</span>)</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Phase portrait'</span>)</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="ss">f'Lotka–Volterra ($a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$, $b=</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">$, $c=</span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">$, $d=</span><span class="sc">{</span>d<span class="sc">}</span><span class="ss">$)'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-scipy-system" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lotka-Volterra: x' = ax - bxy,  y' = -cy + dxy</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>a, b, c, d <span class="op">=</span> <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lv_rhs(t, z):</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> z</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [a<span class="op">*</span>x <span class="op">-</span> b<span class="op">*</span>x<span class="op">*</span>y,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">-</span>c<span class="op">*</span>y <span class="op">+</span> d<span class="op">*</span>x<span class="op">*</span>y]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>sol_lv <span class="op">=</span> solve_ivp(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    fun          <span class="op">=</span> lv_rhs,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    t_span       <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">60</span>),</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    y0           <span class="op">=</span> [c<span class="op">/</span>d <span class="op">+</span> <span class="fl">0.4</span>, a<span class="op">/</span>b],   <span class="co"># perturbed from equilibrium</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    method       <span class="op">=</span> <span class="st">'RK45'</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    dense_output <span class="op">=</span> <span class="va">True</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    rtol         <span class="op">=</span> <span class="fl">1e-9</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    atol         <span class="op">=</span> <span class="fl">1e-11</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    max_step     <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>t_p <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">60</span>, <span class="dv">1500</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>z_p <span class="op">=</span> sol_lv.sol(t_p)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_p, z_p[<span class="dv">0</span>], <span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$x(t)$ prey'</span>)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_p, z_p[<span class="dv">1</span>], <span class="st">'crimson'</span>,   lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$y(t)$ predator'</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(c<span class="op">/</span>d, color<span class="op">=</span><span class="st">'steelblue'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(a<span class="op">/</span>b, color<span class="op">=</span><span class="st">'crimson'</span>,   ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Population'</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Lotka–Volterra time series'</span>)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(z_p[<span class="dv">0</span>], z_p[<span class="dv">1</span>], <span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(c<span class="op">/</span>d, a<span class="op">/</span>b, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, markersize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="ss">f'Equilibrium $(</span><span class="sc">{</span>c<span class="op">/</span>d<span class="sc">:.2f}</span><span class="ss">,</span><span class="sc">{</span>a<span class="op">/</span>b<span class="sc">:.2f}</span><span class="ss">)$'</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$x$ (prey)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$y$ (predator)'</span>)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Phase portrait'</span>)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="ss">f'Lotka–Volterra ($a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$, $b=</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">$, $c=</span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">$, $d=</span><span class="sc">{</span>d<span class="sc">}</span><span class="ss">$)'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-scipy-system" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1324,12 +1361,12 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="9a25e8b1" class="cell" data-execution_count="6">
+<div id="26b72470" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]

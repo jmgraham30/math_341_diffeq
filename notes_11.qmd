@@ -569,7 +569,7 @@ $$
 \Phi(t)\mathbf{c}'(t) = \mathbf{f}(t) \implies \mathbf{c}'(t) = \Phi(t)^{-1}\mathbf{f}(t).
 $$
 
-We can invert $\Phi(t)$ because its columns are independent (so its determinant is nonzero). Integrating from $0$ to $t$:
+We can invert $\Phi(t)$ because its columns are independent (so its determinant is nonzero). Note that $\Phi(t)^{-1}$ is a **time-varying** matrix inverse — it must be recomputed at each value of $t$, unlike the constant inverse $A^{-1}$ from Section 4.2. For a $2\times 2$ fundamental matrix the inverse at each $t$ is given by the same formula as before: swap the diagonal, negate the off-diagonal, and divide by the determinant (which is the Wronskian $W(t) = \det\Phi(t)$). Integrating from $0$ to $t$:
 
 $$
 \mathbf{c}(t) = \int_0^t \Phi(s)^{-1}\mathbf{f}(s)\,ds + \mathbf{k},
@@ -589,7 +589,7 @@ This formula is valid for systems of any dimension.
 The first term is the general solution of the homogeneous equation; the second term is a particular solution of the nonhomogeneous equation — exactly as for a single first-order linear DE.
 
 ::: {.callout-note}
-In practice, computing (4.45) involves four steps: (1) find two independent solutions to the homogeneous system; (2) form $\Phi(t)$; (3) invert $\Phi(t)$; (4) integrate. This can be formidable for complicated $\mathbf{f}(t)$, and a CAS is often preferred.
+In practice, computing (4.45) involves four steps: (1) find two independent solutions to the homogeneous system; (2) form $\Phi(t)$; (3) compute $\Phi(t)^{-1}$ — this is a **matrix of functions of $t$**, not a constant matrix, so it is evaluated by applying the $2\times2$ inverse formula at each $t$ using the time-varying entries of $\Phi(t)$; (4) integrate. This can be formidable for complicated $\mathbf{f}(t)$, and a CAS is often preferred.
 :::
 
 ---
