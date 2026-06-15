@@ -445,7 +445,12 @@ $$\mathbf{x} = \begin{pmatrix}x_1 \\ x_2\end{pmatrix}, \quad \text{written as } 
 
 ::: {.callout-important}
 ## Important: Matrix Multiplication is NOT Commutative
-In general $AB \neq BA$.  Order matters.  However:
+In general $AB \neq BA$.  Order matters.  A concrete counterexample:
+$$A = \begin{pmatrix}1&1\\0&0\end{pmatrix}, \quad B = \begin{pmatrix}0&0\\1&1\end{pmatrix}.$$
+$$AB = \begin{pmatrix}1&1\\0&0\end{pmatrix}\begin{pmatrix}0&0\\1&1\end{pmatrix} = \begin{pmatrix}1&1\\0&0\end{pmatrix}, \qquad BA = \begin{pmatrix}0&0\\1&1\end{pmatrix}\begin{pmatrix}1&1\\0&0\end{pmatrix} = \begin{pmatrix}0&0\\1&1\end{pmatrix}.$$
+Since $AB = A \neq B = BA$, these two products are different.  (See the code block below for a SymPy check.)
+
+Properties that *do* hold:
 - Associativity: $A(BC) = (AB)C$.
 - Distributivity: $A(B+C) = AB + AC$.
 - Identity: $AI = IA = A$.
@@ -487,6 +492,13 @@ print(f"x+2y = {(x_v+2*y_v).T}")
 A2 = sym.Matrix([[2,3],[-1,0]]); B2 = sym.Matrix([[1,4],[5,2]])
 print(f"\nAB =\n{A2*B2}")
 print(f"A^2 =\n{A2**2}")
+
+print("\n=== Non-commutativity: AB ≠ BA ===")
+Anc = sym.Matrix([[1,1],[0,0]]); Bnc = sym.Matrix([[0,0],[1,1]])
+print(f"A =\n{Anc}\nB =\n{Bnc}")
+print(f"AB =\n{Anc*Bnc}")
+print(f"BA =\n{Bnc*Anc}")
+print(f"AB == BA? {Anc*Bnc == Bnc*Anc}")
 
 print("\n=== Example 4.18 ===")
 A18 = sym.Matrix([[1,2],[4,3]])

@@ -548,7 +548,7 @@ window.Quarto = {
 </header>
 
 
-<div id="019e5635" class="cell" data-execution_count="1">
+<div id="1be680e4" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -920,7 +920,7 @@ x_n' = -p_0 x_1 - p_1 x_2 - \cdots - p_{n-1}x_n.
 <p>When <span class="math inline">\(n=2\)</span> the companion matrix is <span class="math inline">\(A = \bigl[\begin{smallmatrix}0&amp;1\\-c/a&amp;-b/a\end{smallmatrix}\bigr]\)</span>, with characteristic equation <span class="math inline">\(\lambda^2 + (b/a)\lambda + (c/a) = 0\)</span> — precisely equation (2.4) from Notes 4. The eigenvalues of the companion matrix are the roots of the ODE characteristic equation. This is the rigorous justification for the terminology “eigenvalues of a differential equation” used in Notes 4.</p>
 </div>
 </div>
-<div id="e0550870" class="cell" data-execution_count="4">
+<div id="7e1b56a2" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2nd-order companion: x'' + (b/a)x' + (c/a)x = 0, y = x'"</span>)</span>
@@ -1021,7 +1021,8 @@ Figure&nbsp;3: Compartmental pesticide model with <span class="math inline">\(\a
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In general <span class="math inline">\(AB \neq BA\)</span>. Order matters. However: - Associativity: <span class="math inline">\(A(BC) = (AB)C\)</span>. - Distributivity: <span class="math inline">\(A(B+C) = AB + AC\)</span>. - Identity: <span class="math inline">\(AI = IA = A\)</span>.</p>
+<p>In general <span class="math inline">\(AB \neq BA\)</span>. Order matters. A concrete counterexample: <span class="math display">\[A = \begin{pmatrix}1&amp;1\\0&amp;0\end{pmatrix}, \quad B = \begin{pmatrix}0&amp;0\\1&amp;1\end{pmatrix}.\]</span> <span class="math display">\[AB = \begin{pmatrix}1&amp;1\\0&amp;0\end{pmatrix}\begin{pmatrix}0&amp;0\\1&amp;1\end{pmatrix} = \begin{pmatrix}1&amp;1\\0&amp;0\end{pmatrix}, \qquad BA = \begin{pmatrix}0&amp;0\\1&amp;1\end{pmatrix}\begin{pmatrix}1&amp;1\\0&amp;0\end{pmatrix} = \begin{pmatrix}0&amp;0\\1&amp;1\end{pmatrix}.\]</span> Since <span class="math inline">\(AB = A \neq B = BA\)</span>, these two products are different. (See the code block below for a SymPy check.)</p>
+<p>Properties that <em>do</em> hold: - Associativity: <span class="math inline">\(A(BC) = (AB)C\)</span>. - Distributivity: <span class="math inline">\(A(B+C) = AB + AC\)</span>. - Identity: <span class="math inline">\(AI = IA = A\)</span>.</p>
 </div>
 </div>
 </section>
@@ -1056,7 +1057,7 @@ Figure&nbsp;3: Compartmental pesticide model with <span class="math inline">\(\a
 
 </div>
 </div>
-<div id="89bdbfe1" class="cell" data-execution_count="6">
+<div id="9e333821" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Examples 4.16 and 4.17 (Logan) ==="</span>)</span>
@@ -1071,10 +1072,17 @@ Figure&nbsp;3: Compartmental pesticide model with <span class="math inline">\(\a
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">AB =</span><span class="ch">\n</span><span class="sc">{</span>A2<span class="op">*</span>B2<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A^2 =</span><span class="ch">\n</span><span class="sc">{</span>A2<span class="op">**</span><span class="dv">2</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">=== Example 4.18 ==="</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>A18 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">4</span>,<span class="dv">3</span>]])</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"det(A) = </span><span class="sc">{</span>A18<span class="sc">.</span>det()<span class="sc">}</span><span class="ss">,  A^(-1) =</span><span class="ch">\n</span><span class="sc">{</span>A18<span class="sc">.</span>inv()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A*A^(-1) = </span><span class="sc">{</span>A18<span class="op">*</span>A18<span class="sc">.</span>inv()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">=== Non-commutativity: AB ≠ BA ==="</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>Anc <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">0</span>]])<span class="op">;</span> Bnc <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>]])</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A =</span><span class="ch">\n</span><span class="sc">{</span>Anc<span class="sc">}</span><span class="ch">\n</span><span class="ss">B =</span><span class="ch">\n</span><span class="sc">{</span>Bnc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AB =</span><span class="ch">\n</span><span class="sc">{</span>Anc<span class="op">*</span>Bnc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"BA =</span><span class="ch">\n</span><span class="sc">{</span>Bnc<span class="op">*</span>Anc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AB == BA? </span><span class="sc">{</span>Anc<span class="op">*</span>Bnc <span class="op">==</span> Bnc<span class="op">*</span>Anc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">=== Example 4.18 ==="</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>A18 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">4</span>,<span class="dv">3</span>]])</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"det(A) = </span><span class="sc">{</span>A18<span class="sc">.</span>det()<span class="sc">}</span><span class="ss">,  A^(-1) =</span><span class="ch">\n</span><span class="sc">{</span>A18<span class="sc">.</span>inv()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A*A^(-1) = </span><span class="sc">{</span>A18<span class="op">*</span>A18<span class="sc">.</span>inv()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>=== Examples 4.16 and 4.17 (Logan) ===
@@ -1089,6 +1097,17 @@ AB =
 Matrix([[17, 14], [-1, -4]])
 A^2 =
 Matrix([[1, 6], [-2, -3]])
+
+=== Non-commutativity: AB ≠ BA ===
+A =
+Matrix([[1, 1], [0, 0]])
+B =
+Matrix([[0, 0], [1, 1]])
+AB =
+Matrix([[1, 1], [0, 0]])
+BA =
+Matrix([[0, 0], [1, 1]])
+AB == BA? False
 
 === Example 4.18 ===
 det(A) = -5,  A^(-1) =
@@ -1157,7 +1176,7 @@ A*A^(-1) = Matrix([[1, 0], [0, 1]])</code></pre>
 <h3 class="anchored" data-anchor-id="linear-independence-and-the-nullspace">Linear Independence and the Nullspace</h3>
 <p>Two vectors <span class="math inline">\(\mathbf{v}, \mathbf{w}\)</span> are <strong>linearly independent</strong> if the only solution to <span class="math inline">\(c_1\mathbf{v} + c_2\mathbf{w} = \mathbf{0}\)</span> is <span class="math inline">\(c_1 = c_2 = 0\)</span>. This is equivalent to: <span class="math display">\[\det\begin{pmatrix}v_1 &amp; w_1 \\ v_2 &amp; w_2\end{pmatrix} \neq 0. \tag{4.19}\]</span></p>
 <p>The <strong>nullspace</strong> of <span class="math inline">\(A\)</span> is the set of all solutions to <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span>: - <span class="math inline">\(\det A \neq 0\)</span>: nullspace = <span class="math inline">\(\{\mathbf{0}\}\)</span> (only the trivial solution). - <span class="math inline">\(\det A = 0\)</span>: nullspace = a line through the origin.</p>
-<div id="9be5d3da" class="cell" data-execution_count="7">
+<div id="bc87cb79" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Example 4.20 (Logan): singular matrix ==="</span>)</span>
@@ -1422,7 +1441,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div id="callout-19" class="callout-19-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f7c1ef02" class="cell" data-execution_count="9">
+<div id="975771fc" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
