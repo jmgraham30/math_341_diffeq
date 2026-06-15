@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Bessel’s Equation and Bessel Functions – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./topics.html" aria-current="page"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./topics_09.html">Bessel’s Equation and Bessel Functions</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Topics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dimensional Analysis and Non-Dimensionalization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bernoulli Equations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linearity and the Principle of Superposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Existence, Uniqueness, and Continuous Dependence</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Mechanics and the Spring–Mass System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RLC Circuits, Filters, and the DC Motor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Power Series Solutions of Differential Equations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Algebra for Applications</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_09.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Bessel’s Equation and Bessel Functions</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#historical-background" id="toc-historical-background" class="nav-link active" data-scroll-target="#historical-background">Historical Background</a>
+  <ul class="collapse">
+  <li><a href="#the-origins-bernoulli-euler-and-bessel" id="toc-the-origins-bernoulli-euler-and-bessel" class="nav-link" data-scroll-target="#the-origins-bernoulli-euler-and-bessel">The Origins: Bernoulli, Euler, and Bessel</a></li>
+  </ul></li>
+  <li><a href="#the-vibrating-circular-drum-motivation" id="toc-the-vibrating-circular-drum-motivation" class="nav-link" data-scroll-target="#the-vibrating-circular-drum-motivation">The Vibrating Circular Drum: Motivation</a></li>
+  <li><a href="#regular-singular-points-and-the-frobenius-method" id="toc-regular-singular-points-and-the-frobenius-method" class="nav-link" data-scroll-target="#regular-singular-points-and-the-frobenius-method">Regular Singular Points and the Frobenius Method</a>
+  <ul class="collapse">
+  <li><a href="#singular-points" id="toc-singular-points" class="nav-link" data-scroll-target="#singular-points">Singular Points</a></li>
+  <li><a href="#the-indicial-equation-for-bessels-equation" id="toc-the-indicial-equation-for-bessels-equation" class="nav-link" data-scroll-target="#the-indicial-equation-for-bessels-equation">The Indicial Equation for Bessel’s Equation</a></li>
+  </ul></li>
+  <li><a href="#deriving-the-bessel-function-j_nux" id="toc-deriving-the-bessel-function-j_nux" class="nav-link" data-scroll-target="#deriving-the-bessel-function-j_nux">Deriving the Bessel Function <span class="math inline">\(J_\nu(x)\)</span></a>
+  <ul class="collapse">
+  <li><a href="#computing-j_nu-with-sympy" id="toc-computing-j_nu-with-sympy" class="nav-link" data-scroll-target="#computing-j_nu-with-sympy">Computing <span class="math inline">\(J_\nu\)</span> with SymPy</a></li>
+  </ul></li>
+  <li><a href="#the-bessel-function-of-the-second-kind-y_nux" id="toc-the-bessel-function-of-the-second-kind-y_nux" class="nav-link" data-scroll-target="#the-bessel-function-of-the-second-kind-y_nux">The Bessel Function of the Second Kind <span class="math inline">\(Y_\nu(x)\)</span></a></li>
+  <li><a href="#plotting-bessel-functions" id="toc-plotting-bessel-functions" class="nav-link" data-scroll-target="#plotting-bessel-functions">Plotting Bessel Functions</a>
+  <ul class="collapse">
+  <li><a href="#j_nu-and-y_nu-for-small-orders" id="toc-j_nu-and-y_nu-for-small-orders" class="nav-link" data-scroll-target="#j_nu-and-y_nu-for-small-orders"><span class="math inline">\(J_\nu\)</span> and <span class="math inline">\(Y_\nu\)</span> for Small Orders</a></li>
+  <li><a href="#comparing-sympy-and-scipy" id="toc-comparing-sympy-and-scipy" class="nav-link" data-scroll-target="#comparing-sympy-and-scipy">Comparing SymPy and SciPy</a></li>
+  </ul></li>
+  <li><a href="#key-properties-of-bessel-functions" id="toc-key-properties-of-bessel-functions" class="nav-link" data-scroll-target="#key-properties-of-bessel-functions">Key Properties of Bessel Functions</a>
+  <ul class="collapse">
+  <li><a href="#recurrence-relations" id="toc-recurrence-relations" class="nav-link" data-scroll-target="#recurrence-relations">Recurrence Relations</a></li>
+  <li><a href="#zeros-of-j_nu" id="toc-zeros-of-j_nu" class="nav-link" data-scroll-target="#zeros-of-j_nu">Zeros of <span class="math inline">\(J_\nu\)</span></a></li>
+  <li><a href="#asymptotic-behavior" id="toc-asymptotic-behavior" class="nav-link" data-scroll-target="#asymptotic-behavior">Asymptotic Behavior</a></li>
+  <li><a href="#orthogonality" id="toc-orthogonality" class="nav-link" data-scroll-target="#orthogonality">Orthogonality</a></li>
+  </ul></li>
+  <li><a href="#application-normal-modes-of-a-circular-drumhead" id="toc-application-normal-modes-of-a-circular-drumhead" class="nav-link" data-scroll-target="#application-normal-modes-of-a-circular-drumhead">Application: Normal Modes of a Circular Drumhead</a></li>
+  <li><a href="#symbolic-differentiation-and-the-derivative-formula" id="toc-symbolic-differentiation-and-the-derivative-formula" class="nav-link" data-scroll-target="#symbolic-differentiation-and-the-derivative-formula">Symbolic Differentiation and the Derivative Formula</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#relevant-videos" id="toc-relevant-videos" class="nav-link" data-scroll-target="#relevant-videos">Relevant Videos</a>
+  <ul class="collapse">
+  <li><a href="#introduction-to-bessel-functions" id="toc-introduction-to-bessel-functions" class="nav-link" data-scroll-target="#introduction-to-bessel-functions">Introduction to Bessel functions:</a></li>
+  <li><a href="#solving-bessel-equations" id="toc-solving-bessel-equations" class="nav-link" data-scroll-target="#solving-bessel-equations">Solving Bessel equations:</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="topics_09.ipynb" download="topics_09.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bessel’s Equation and Bessel Functions</h1>
+<p class="subtitle lead">Series Solutions at a Singular Point, and a Remarkable Family of Functions</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="fec7b9cf" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> jv, yv, jn_zeros</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Among all second-order linear ODEs, <strong>Bessel’s equation</strong> is perhaps the one whose solutions appear most frequently in the physical world. Vibrations of a circular drumhead, heat flow in a cylinder, the quantum mechanics of the hydrogen atom, the propagation of electromagnetic waves in a coaxial cable — all of these lead, after an appropriate change of variables, to Bessel’s equation. The solutions, called <strong>Bessel functions</strong>, are as fundamental to mathematical physics as the trigonometric functions are to the theory of constant-coefficient ODEs.</p>
+<p>This section develops Bessel’s equation as a natural application of the <strong>Frobenius method</strong> (power series solutions at a regular singular point), derives the Bessel functions of the first and second kind, studies their most important properties, and demonstrates how to work with them in SymPy and SciPy.</p>
+<hr>
+<section id="historical-background" class="level2">
+<h2 class="anchored" data-anchor-id="historical-background">Historical Background</h2>
+<section id="the-origins-bernoulli-euler-and-bessel" class="level3">
+<h3 class="anchored" data-anchor-id="the-origins-bernoulli-euler-and-bessel">The Origins: Bernoulli, Euler, and Bessel</h3>
+<p>The functions now named after Friedrich Wilhelm Bessel were encountered long before Bessel himself. <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli">Daniel Bernoulli</a> (1700–1782) used them in 1732 when studying the oscillations of a hanging chain — one of the first vibration problems in mathematical physics. <a href="https://en.wikipedia.org/wiki/Leonhard_Euler">Leonhard Euler</a> (1707–1783) encountered similar series in his work on circular membrane vibrations and on the motion of a solid body.</p>
+<p><strong><a href="https://en.wikipedia.org/wiki/Friedrich_Wilhelm_Bessel">Friedrich Wilhelm Bessel</a></strong> (1784–1846) was an astronomer, not a mathematician by trade. In 1817, while studying the perturbations of planetary orbits, he carried out the first systematic investigation of the functions that now bear his name, including deriving their integral representation and establishing the recurrence relations. Bessel’s equation itself was studied even earlier by <a href="https://en.wikipedia.org/wiki/Joseph_Fourier">Joseph Fourier</a>, in his 1807 treatise on the theory of heat, where it arises naturally when solving the heat equation in cylindrical coordinates.</p>
+<p>The rigorous theory of Bessel functions was built up throughout the 19th century by <a href="https://en.wikipedia.org/wiki/Carl_Neumann">Carl Neumann</a> (who introduced the Bessel functions of the second kind, sometimes called <strong>Neumann functions</strong>), <a href="https://en.wikipedia.org/wiki/Hermann_Hankel">Hermann Hankel</a> (Hankel functions), and many others. The definitive reference remains the 1922 treatise <em>A Treatise on the Theory of Bessel Functions</em> by <a href="https://en.wikipedia.org/wiki/G._N._Watson">G. N. Watson</a>, which runs to over 800 pages.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Timeline
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Year</th>
+<th>Person</th>
+<th>Contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1732</td>
+<td>Bernoulli</td>
+<td>Series solutions for the oscillating chain — first Bessel functions</td>
+</tr>
+<tr class="even">
+<td>1764</td>
+<td>Euler</td>
+<td>Bessel functions in circular membrane vibrations</td>
+</tr>
+<tr class="odd">
+<td>1807</td>
+<td>Fourier</td>
+<td>Heat equation in cylinders — Bessel’s equation in cylindrical coordinates</td>
+</tr>
+<tr class="even">
+<td>1817</td>
+<td>Bessel</td>
+<td>Systematic study: recurrences, integrals, orthogonality</td>
+</tr>
+<tr class="odd">
+<td>1867</td>
+<td>Neumann</td>
+<td>Bessel functions of the second kind (Neumann functions <span class="math inline">\(Y_\nu\)</span>)</td>
+</tr>
+<tr class="even">
+<td>1922</td>
+<td>Watson</td>
+<td>Definitive treatise on Bessel functions</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-vibrating-circular-drum-motivation" class="level2">
+<h2 class="anchored" data-anchor-id="the-vibrating-circular-drum-motivation">The Vibrating Circular Drum: Motivation</h2>
+<p>To see where Bessel’s equation comes from naturally, consider the <strong>vibrating circular drumhead</strong> — a thin elastic membrane clamped at a circular boundary of radius <span class="math inline">\(R\)</span>. If <span class="math inline">\(u(r, \theta, t)\)</span> denotes the transverse displacement, the wave equation in polar coordinates is <span class="math display">\[
+u_{tt} = c^2\!\left(u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta}\right).
+\]</span> Looking for normal modes of the form <span class="math inline">\(u = R(r)\,\Theta(\theta)\,T(t)\)</span>, separating variables, and focusing on the radially symmetric modes ($= $ constant), one finds that the radial factor <span class="math inline">\(R(r)\)</span> satisfies <span class="math display">\[
+r^2 R'' + r R' + \lambda^2 r^2 R = 0,
+\]</span> where <span class="math inline">\(\lambda\)</span> is related to the frequency of vibration. Setting <span class="math inline">\(x = \lambda r\)</span> converts this to <strong>Bessel’s equation of order zero</strong>: <span class="math display">\[
+x^2 y'' + x y' + x^2 y = 0.
+\]</span> For non-radially-symmetric modes one obtains <strong>Bessel’s equation of order <span class="math inline">\(\nu\)</span></strong>: <span class="math display">\[
+\boxed{x^2 y'' + x y' + (x^2 - \nu^2)y = 0.}
+\tag{BE}
+\]</span> The natural frequencies of the drum are determined by the zeros of the solutions — a fact we will return to at the end of this section.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Other applications of Bessel’s equation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Bessel’s equation (BE) also arises in:</p>
+<ul>
+<li><strong>Heat conduction</strong> in a solid cylinder: <span class="math inline">\(u_t = \kappa(u_{rr} + r^{-1}u_r)\)</span>, separating variables.</li>
+<li><strong>Electromagnetic waves</strong> in cylindrical waveguides and coaxial cables.</li>
+<li><strong>Quantum mechanics</strong>: the radial Schrödinger equation for the hydrogen atom leads (after substitutions) to related equations whose solutions are expressed in terms of Bessel functions.</li>
+<li><strong>Acoustics</strong>: sound radiation from a circular piston or the resonance modes of a circular room.</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="regular-singular-points-and-the-frobenius-method" class="level2">
+<h2 class="anchored" data-anchor-id="regular-singular-points-and-the-frobenius-method">Regular Singular Points and the Frobenius Method</h2>
+<section id="singular-points" class="level3">
+<h3 class="anchored" data-anchor-id="singular-points">Singular Points</h3>
+<p>Bessel’s equation (BE), in standard form <span class="math inline">\(y'' + P(x)y' + Q(x)y = 0\)</span>, has <span class="math display">\[
+P(x) = \frac{1}{x}, \qquad Q(x) = 1 - \frac{\nu^2}{x^2}.
+\]</span> Both <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span> are <strong>singular at <span class="math inline">\(x = 0\)</span></strong>: ordinary power series solutions <span class="math inline">\(y = \sum a_n x^n\)</span> cannot be expected to work there.</p>
+<p>The point <span class="math inline">\(x = 0\)</span> is, however, a <strong>regular singular point</strong> because the limits <span class="math display">\[
+\lim_{x\to 0} x P(x) = 1, \qquad \lim_{x\to 0} x^2 Q(x) = -\nu^2
+\]</span> both exist and are finite. At a regular singular point, the <strong>Frobenius method</strong> guarantees at least one solution of the form <span class="math display">\[
+y = x^r \sum_{n=0}^{\infty} a_n x^n = \sum_{n=0}^{\infty} a_n x^{n+r}, \quad a_0 \neq 0,
+\]</span> where <span class="math inline">\(r\)</span> is determined by the <strong>indicial equation</strong>.</p>
+</section>
+<section id="the-indicial-equation-for-bessels-equation" class="level3">
+<h3 class="anchored" data-anchor-id="the-indicial-equation-for-bessels-equation">The Indicial Equation for Bessel’s Equation</h3>
+<p>Substituting <span class="math inline">\(y = \sum_{n=0}^\infty a_n x^{n+r}\)</span> into (BE) and collecting the lowest-order term (the <span class="math inline">\(x^r\)</span> coefficient) gives the indicial equation: <span class="math display">\[
+r(r-1) + r - \nu^2 = 0 \quad\Longrightarrow\quad r^2 - \nu^2 = 0
+\quad\Longrightarrow\quad r = \pm \nu.
+\]</span> The two roots are <span class="math inline">\(r_1 = \nu\)</span> and <span class="math inline">\(r_2 = -\nu\)</span>. When <span class="math inline">\(\nu \geq 0\)</span>, the larger root is <span class="math inline">\(r_1 = \nu\)</span>, and the Frobenius method with this root yields the first, better-behaved solution.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The Indicial Equation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For Bessel’s equation of order <span class="math inline">\(\nu\)</span>, the indicial equation is <span class="math inline">\(r^2 = \nu^2\)</span>, giving roots <span class="math inline">\(r = \pm\nu\)</span>. The structure of the general solution depends on whether <span class="math inline">\(2\nu\)</span> is a non-negative integer:</p>
+<ul>
+<li><strong><span class="math inline">\(2\nu \notin \mathbb{Z}_{\geq 0}\)</span></strong>: two independent Frobenius series <span class="math inline">\(J_\nu\)</span> and <span class="math inline">\(J_{-\nu}\)</span>.</li>
+<li><strong><span class="math inline">\(\nu = 0\)</span></strong>: the two roots coincide (<span class="math inline">\(r = 0\)</span>); the second solution involves a logarithm.</li>
+<li><strong><span class="math inline">\(\nu \in \mathbb{Z}^+\)</span></strong>: roots differ by a positive integer <span class="math inline">\(2\nu\)</span>; the second solution again involves a logarithm.</li>
+</ul>
+<p>In every case the general solution is written <span class="math inline">\(y = c_1 J_\nu(x) + c_2 Y_\nu(x)\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="deriving-the-bessel-function-j_nux" class="level2">
+<h2 class="anchored" data-anchor-id="deriving-the-bessel-function-j_nux">Deriving the Bessel Function <span class="math inline">\(J_\nu(x)\)</span></h2>
+<p>We derive the series for <span class="math inline">\(J_\nu(x)\)</span> using the Frobenius root <span class="math inline">\(r = \nu \geq 0\)</span>. Substituting <span class="math inline">\(y = \sum_{n=0}^\infty a_n x^{n+\nu}\)</span> into (BE):</p>
+<p><span class="math display">\[
+\sum_{n=0}^\infty (n+\nu)(n+\nu-1)a_n x^{n+\nu}
++ \sum_{n=0}^\infty (n+\nu)a_n x^{n+\nu}
++ \sum_{n=0}^\infty a_n x^{n+\nu+2}
+- \nu^2 \sum_{n=0}^\infty a_n x^{n+\nu} = 0.
+\]</span></p>
+<p>Combining the first, second, and fourth sums: <span class="math display">\[
+\sum_{n=0}^\infty \bigl[(n+\nu)^2 - \nu^2\bigr] a_n x^{n+\nu}
++ \sum_{n=0}^\infty a_n x^{n+\nu+2} = 0,
+\]</span> which simplifies to <span class="math display">\[
+\sum_{n=0}^\infty n(n + 2\nu)\, a_n x^{n+\nu}
++ \sum_{n=2}^\infty a_{n-2} x^{n+\nu} = 0.
+\]</span></p>
+<p>Matching coefficients of <span class="math inline">\(x^{n+\nu}\)</span>:</p>
+<ul>
+<li><span class="math inline">\(n=0\)</span>: <span class="math inline">\(0 \cdot a_0 = 0\)</span> — <span class="math inline">\(a_0\)</span> is free (set it by convention).</li>
+<li><span class="math inline">\(n=1\)</span>: <span class="math inline">\(1 \cdot (1+2\nu)\, a_1 = 0\)</span>, so <span class="math inline">\(a_1 = 0\)</span> (since <span class="math inline">\(1 + 2\nu \neq 0\)</span> for <span class="math inline">\(\nu \geq 0\)</span>).</li>
+<li><span class="math inline">\(n \geq 2\)</span>: the <strong>recurrence relation</strong> <span class="math display">\[
+a_n = -\frac{a_{n-2}}{n(n + 2\nu)}.
+\]</span></li>
+</ul>
+<p>Since <span class="math inline">\(a_1 = 0\)</span>, all odd-indexed coefficients vanish: <span class="math inline">\(a_{2k+1} = 0\)</span>. For the even coefficients, writing <span class="math inline">\(n = 2k\)</span>: <span class="math display">\[
+a_{2k} = -\frac{a_{2k-2}}{2k(2k + 2\nu)} = -\frac{a_{2k-2}}{4k(k+\nu)}.
+\]</span></p>
+<p>Unrolling the recurrence from <span class="math inline">\(a_0\)</span> gives <span class="math display">\[
+a_{2k} = \frac{(-1)^k\, a_0}{4^k\, k!\, (\nu+1)(\nu+2)\cdots(\nu+k)}.
+\]</span></p>
+<p>The standard normalization convention is <span class="math inline">\(a_0 = \dfrac{1}{2^\nu\,\Gamma(\nu+1)}\)</span>, which leads to the elegant closed form</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Definition: Bessel Function of the First Kind <span class="math inline">\(J_\nu(x)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+J_\nu(x) = \sum_{k=0}^{\infty} \frac{(-1)^k}{k!\,\Gamma(\nu+k+1)}
+\left(\frac{x}{2}\right)^{2k+\nu}, \qquad x &gt; 0.
+\]</span></p>
+</div>
+</div>
+<p>The Gamma function <span class="math inline">\(\Gamma\)</span> generalizes the factorial: <span class="math inline">\(\Gamma(n+1) = n!\)</span> for non-negative integers. This normalization is the universal convention and is what SymPy and SciPy implement.</p>
+<section id="computing-j_nu-with-sympy" class="level3">
+<h3 class="anchored" data-anchor-id="computing-j_nu-with-sympy">Computing <span class="math inline">\(J_\nu\)</span> with SymPy</h3>
+<p>SymPy provides Bessel functions via <code>sym.besselj(nu, x)</code>. We can verify the series definition, compute values, and differentiate symbolically.</p>
+<div id="09b181de" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>nu <span class="op">=</span> sym.Symbol(<span class="st">'nu'</span>, nonnegative<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Symbolic Bessel functions ----</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>J0_sym <span class="op">=</span> sym.besselj(<span class="dv">0</span>, x)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>J1_sym <span class="op">=</span> sym.besselj(<span class="dv">1</span>, x)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>J2_sym <span class="op">=</span> sym.besselj(<span class="dv">2</span>, x)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bessel functions of the first kind (SymPy):"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'J_0</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(J0_sym)))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'J_1</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(J1_sym)))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Series expansion of J_0 about x=0</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>J0_series <span class="op">=</span> sym.series(J0_sym, x, <span class="dv">0</span>, n<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Power series for J_0(x) about x = 0 (first 5 terms):"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'J_0</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(J0_series)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bessel functions of the first kind (SymPy):</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_0(x) = J_{0}\left(x\right)\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_1(x) = J_{1}\left(x\right)\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Power series for J_0(x) about x = 0 (first 5 terms):</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_0(x) = 1 - \frac{x^{2}}{4} + \frac{x^{4}}{64} - \frac{x^{6}}{2304} + \frac{x^{8}}{147456} + O\left(x^{10}\right)\)</span></p>
+</div>
+</div>
+<div id="3ab5ff87" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Verify the ODE: x^2 y'' + x y' + (x^2 - nu^2) y = 0 ----</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Verifying that J_0 satisfies Bessel's equation of order 0:"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> J0_sym</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ode_lhs <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.diff(y, x, <span class="dv">2</span>) <span class="op">+</span> x <span class="op">*</span> sym.diff(y, x) <span class="op">+</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> y</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> sym.simplify(ode_lhs)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"x</span><span class="dv">^</span><span class="vs">2 J_0'' </span><span class="op">+</span><span class="vs"> x J_0' </span><span class="op">+</span><span class="vs"> x</span><span class="dv">^</span><span class="vs">2 J_0 = "</span> <span class="op">+</span> sym.latex(residual)))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Verifying that J_1 satisfies Bessel's equation of order 1:"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> J1_sym</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ode_lhs1 <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.diff(y1, x, <span class="dv">2</span>) <span class="op">+</span> x <span class="op">*</span> sym.diff(y1, x) <span class="op">+</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> y1</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>residual1 <span class="op">=</span> sym.simplify(ode_lhs1)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"x</span><span class="dv">^</span><span class="vs">2 J_1'' </span><span class="op">+</span><span class="vs"> x J_1' </span><span class="op">+</span><span class="vs"> </span><span class="kw">(</span><span class="vs">x</span><span class="dv">^</span><span class="vs">2-1</span><span class="kw">)</span><span class="vs"> J_1 = "</span> <span class="op">+</span> sym.latex(residual1)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Verifying that J_0 satisfies Bessel's equation of order 0:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x^2 J_0'' + x J_0' + x^2 J_0 = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Verifying that J_1 satisfies Bessel's equation of order 1:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x^2 J_1'' + x J_1' + (x^2-1) J_1 = 0\)</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>SymPy confirms the definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>sym.simplify</code> calls above return <span class="math inline">\(0\)</span>, confirming that SymPy’s <code>besselj</code> satisfies Bessel’s equation exactly — a reassuring sanity check before numerical work.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-bessel-function-of-the-second-kind-y_nux" class="level2">
+<h2 class="anchored" data-anchor-id="the-bessel-function-of-the-second-kind-y_nux">The Bessel Function of the Second Kind <span class="math inline">\(Y_\nu(x)\)</span></h2>
+<p>The series <span class="math inline">\(J_\nu(x)\)</span> is a perfectly good solution, but for <span class="math inline">\(\nu \geq 0\)</span> it satisfies <span class="math inline">\(J_\nu(0) = 0\)</span> (for <span class="math inline">\(\nu &gt; 0\)</span>) or <span class="math inline">\(J_0(0) = 1\)</span>. To form the general solution we need a <strong>linearly independent</strong> second solution.</p>
+<p>When <span class="math inline">\(\nu\)</span> is not an integer, <span class="math inline">\(J_{-\nu}(x)\)</span> is that second solution. When <span class="math inline">\(\nu\)</span> is an integer <span class="math inline">\(n\)</span>, however, <span class="math inline">\(J_{-n}(x) = (-1)^n J_n(x)\)</span> and the two are proportional — a new construction is needed.</p>
+<p>The standard second solution, valid for all <span class="math inline">\(\nu\)</span>, is the <strong>Bessel function of the second kind</strong> (also called the <strong>Neumann function</strong> or <strong>Weber function</strong>):</p>
+<p><span class="math display">\[
+Y_\nu(x) = \frac{J_\nu(x)\cos(\nu\pi) - J_{-\nu}(x)}{\sin(\nu\pi)},
+\]</span> with the integer-order cases defined by the limit <span class="math inline">\(\nu \to n\)</span>. For integer <span class="math inline">\(\nu = n\)</span>, this limit produces a solution involving <span class="math inline">\(\ln(x/2)\)</span>: <span class="math display">\[
+Y_0(x) = \frac{2}{\pi}\!\left[J_0(x)\ln\!\left(\tfrac{x}{2}\right) + \gamma
++ \sum_{k=1}^{\infty}\frac{(-1)^{k+1}H_k}{(k!)^2}\!\left(\tfrac{x}{2}\right)^{\!2k}\right],
+\]</span> where <span class="math inline">\(\gamma \approx 0.5772\)</span> is the Euler–Mascheroni constant and <span class="math inline">\(H_k = 1 + \tfrac{1}{2}
++ \cdots + \tfrac{1}{k}\)</span> are the harmonic numbers.</p>
+<p>The key behavior is: <strong><span class="math inline">\(Y_\nu(x) \to -\infty\)</span> as <span class="math inline">\(x \to 0^+\)</span></strong>. In any physical problem where the domain includes <span class="math inline">\(x = 0\)</span> (e.g., the center of a drum), the condition that the solution remain finite forces <span class="math inline">\(c_2 = 0\)</span>, leaving only <span class="math inline">\(J_\nu\)</span>. <span class="math inline">\(Y_\nu\)</span> is needed only when the origin is excluded from the domain.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>General Solution of Bessel’s Equation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For any order <span class="math inline">\(\nu \geq 0\)</span> and <span class="math inline">\(x &gt; 0\)</span>: <span class="math display">\[
+y(x) = c_1 J_\nu(x) + c_2 Y_\nu(x).
+\]</span> Both <span class="math inline">\(J_\nu\)</span> and <span class="math inline">\(Y_\nu\)</span> are oscillatory and decay like <span class="math inline">\(x^{-1/2}\)</span> for large <span class="math inline">\(x\)</span>. <span class="math inline">\(J_\nu(0)\)</span> is finite; <span class="math inline">\(Y_\nu(x) \to -\infty\)</span> as <span class="math inline">\(x \to 0^+\)</span>.</p>
+</div>
+</div>
+<div id="660d189e" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Y0_sym <span class="op">=</span> sym.bessely(<span class="dv">0</span>, x)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Y1_sym <span class="op">=</span> sym.bessely(<span class="dv">1</span>, x)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bessel functions of the second kind (SymPy):"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'Y_0</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(Y0_sym)))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'Y_1</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(Y1_sym)))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify Y_0 satisfies Bessel's equation of order 0</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>y_Y0 <span class="op">=</span> Y0_sym</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ode_Y0 <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.diff(y_Y0, x, <span class="dv">2</span>) <span class="op">+</span> x <span class="op">*</span> sym.diff(y_Y0, x) <span class="op">+</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> y_Y0</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r"x</span><span class="dv">^</span><span class="vs">2 Y_0'' </span><span class="op">+</span><span class="vs"> x Y_0' </span><span class="op">+</span><span class="vs"> x</span><span class="dv">^</span><span class="vs">2 Y_0 = "</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>             <span class="op">+</span> sym.latex(sym.simplify(ode_Y0))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bessel functions of the second kind (SymPy):</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle Y_0(x) = Y_{0}\left(x\right)\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle Y_1(x) = Y_{1}\left(x\right)\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle x^2 Y_0'' + x Y_0' + x^2 Y_0 = 0\)</span></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="plotting-bessel-functions" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-bessel-functions">Plotting Bessel Functions</h2>
+<section id="j_nu-and-y_nu-for-small-orders" class="level3">
+<h3 class="anchored" data-anchor-id="j_nu-and-y_nu-for-small-orders"><span class="math inline">\(J_\nu\)</span> and <span class="math inline">\(Y_\nu\)</span> for Small Orders</h3>
+<div id="cell-fig-bessel-jy" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use SymPy lambdify to convert symbolic Bessel functions to fast numerical callables.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We supply a custom module dictionary so that lambdify maps SymPy's besselj/bessely</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># to scipy.special.jv/yv, which numpy alone does not provide.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>x_sym <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> jv <span class="im">as</span> _jv, yv <span class="im">as</span> _yv</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>bessel_modules <span class="op">=</span> [{<span class="st">'besselj'</span>: _jv, <span class="st">'bessely'</span>: _yv}, <span class="st">'numpy'</span>]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.tab10(np.arange(<span class="bu">len</span>(orders)))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>x_vals <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">20</span>, <span class="dv">1000</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build lambdified functions from SymPy</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>J_funcs <span class="op">=</span> [sym.lambdify(x_sym, sym.besselj(n, x_sym), bessel_modules) <span class="cf">for</span> n <span class="kw">in</span> orders]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>Y_funcs <span class="op">=</span> [sym.lambdify(x_sym, sym.bessely(n, x_sym), bessel_modules) <span class="cf">for</span> n <span class="kw">in</span> orders]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">4.5</span>))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n, color, Jf, Yf <span class="kw">in</span> <span class="bu">zip</span>(orders, colors, J_funcs, Y_funcs):</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(x_vals, Jf(x_vals), color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$J_</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">(x)$'</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    y_vals <span class="op">=</span> Yf(x_vals)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mask values below display range to keep the plot clean near x=0</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    y_vals_masked <span class="op">=</span> np.where(y_vals <span class="op">&lt;</span> <span class="op">-</span><span class="fl">1.5</span>, np.nan, y_vals)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(x_vals, y_vals_masked, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$Y_</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">(x)$'</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes:</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.8</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'$x$'</span>)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.2</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Bessel functions of the first kind $J_</span><span class="ch">\\</span><span class="st">nu(x)$'</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$J_</span><span class="ch">\\</span><span class="st">nu(x)$'</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Bessel functions of the second kind $Y_</span><span class="ch">\\</span><span class="st">nu(x)$'</span>)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$Y_</span><span class="ch">\\</span><span class="st">nu(x)$'</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-bessel-jy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bessel-jy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_09_files/figure-html/fig-bessel-jy-output-1.png" width="1782" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bessel-jy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Bessel functions of the first kind <span class="math inline">\(J_\nu\)</span> (left) and second kind <span class="math inline">\(Y_\nu\)</span> (right) for <span class="math inline">\(\nu = 0, 1, 2, 3\)</span>. All <span class="math inline">\(J_\nu\)</span> are finite at the origin; all <span class="math inline">\(Y_\nu\)</span> diverge to <span class="math inline">\(-\infty\)</span> as <span class="math inline">\(x \to 0^+\)</span>. Both families are oscillatory and decay in amplitude for large <span class="math inline">\(x\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-sympy-and-scipy" class="level3">
+<h3 class="anchored" data-anchor-id="comparing-sympy-and-scipy">Comparing SymPy and SciPy</h3>
+<p>It is instructive to verify that SymPy’s symbolic Bessel functions agree numerically with SciPy’s highly optimized implementations.</p>
+<div id="cell-fig-bessel-compare" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x_check <span class="op">=</span> np.linspace(<span class="fl">0.5</span>, <span class="dv">15</span>, <span class="dv">500</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>J0_sp <span class="op">=</span> sym.lambdify(x_sym, sym.besselj(<span class="dv">0</span>, x_sym), bessel_modules)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>J1_sp <span class="op">=</span> sym.lambdify(x_sym, sym.besselj(<span class="dv">1</span>, x_sym), bessel_modules)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col, (order, Jf_sym, label) <span class="kw">in</span> <span class="bu">enumerate</span>([</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        (<span class="dv">0</span>, J0_sp, <span class="st">'$J_0$'</span>),</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        (<span class="dv">1</span>, J1_sp, <span class="st">'$J_1$'</span>)]):</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    y_sym   <span class="op">=</span> Jf_sym(x_check)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    y_scipy <span class="op">=</span> jv(order, x_check)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, col].plot(x_check, y_sym,   lw<span class="op">=</span><span class="fl">2.5</span>, color<span class="op">=</span><span class="st">'steelblue'</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                      label<span class="op">=</span><span class="st">'SymPy (lambdified)'</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, col].plot(x_check, y_scipy, lw<span class="op">=</span><span class="fl">1.2</span>, color<span class="op">=</span><span class="st">'crimson'</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                      ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'SciPy `jv`'</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, col].set_title(<span class="ss">f'</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">(x): SymPy vs SciPy'</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, col].set_ylabel(<span class="ss">f'</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">(x)'</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, col].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, col].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.7</span>, ls<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    diff <span class="op">=</span> np.<span class="bu">abs</span>(y_sym <span class="op">-</span> y_scipy)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, col].semilogy(x_check, diff <span class="op">+</span> <span class="fl">1e-18</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, col].set_title(<span class="ss">f'Absolute difference |SymPy $-$ SciPy| for </span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, col].set_xlabel(<span class="st">'$x$'</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, col].set_ylabel(<span class="st">'Absolute error'</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-bessel-compare" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bessel-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_09_files/figure-html/fig-bessel-compare-output-1.png" width="1784" height="1034" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bessel-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Comparison of SymPy (lambdified) and SciPy implementations of <span class="math inline">\(J_0\)</span> and <span class="math inline">\(J_1\)</span>. The two implementations agree to machine precision; the difference (bottom panels, plotted on a log scale) is at the level of floating-point rounding error, around <span class="math inline">\(10^{-15}\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>SymPy vs SciPy: when to use each
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>SymPy</strong> is ideal for symbolic manipulation: verifying that a function satisfies an ODE, computing derivatives and series, applying recurrence relations, and producing exact expressions. <strong>SciPy</strong> (<code>scipy.special.jv</code>, <code>yv</code>, <code>jn_zeros</code>) is the right tool for numerical work requiring speed or high precision over arrays. The two are complementary: use SymPy to understand the structure, SciPy to compute.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="key-properties-of-bessel-functions" class="level2">
+<h2 class="anchored" data-anchor-id="key-properties-of-bessel-functions">Key Properties of Bessel Functions</h2>
+<section id="recurrence-relations" class="level3">
+<h3 class="anchored" data-anchor-id="recurrence-relations">Recurrence Relations</h3>
+<p>One of the most useful features of Bessel functions is the web of recurrence relations connecting functions of adjacent orders. The two fundamental recurrences are:</p>
+<p><span class="math display">\[
+J_{\nu-1}(x) + J_{\nu+1}(x) = \frac{2\nu}{x}\,J_\nu(x),
+\tag{R1}
+\]</span> <span class="math display">\[
+J_{\nu-1}(x) - J_{\nu+1}(x) = 2J_\nu'(x).
+\tag{R2}
+\]</span></p>
+<p>From these one derives the <strong>derivative formulas</strong>: <span class="math display">\[
+\frac{d}{dx}\!\left[x^\nu J_\nu(x)\right] = x^\nu J_{\nu-1}(x),
+\qquad
+\frac{d}{dx}\!\left[x^{-\nu} J_\nu(x)\right] = -x^{-\nu} J_{\nu+1}(x).
+\]</span></p>
+<p>The same recurrences hold with <span class="math inline">\(J_\nu\)</span> replaced by <span class="math inline">\(Y_\nu\)</span>.</p>
+<p>Let us verify (R1) and (R2) symbolically with SymPy:</p>
+<div id="3ad4cf07" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nu_val <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">2</span>, sym.Rational(<span class="dv">3</span>, <span class="dv">2</span>)]:</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    Jnm1 <span class="op">=</span> sym.besselj(nu_val <span class="op">-</span> <span class="dv">1</span>, x)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    Jn   <span class="op">=</span> sym.besselj(nu_val,     x)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    Jnp1 <span class="op">=</span> sym.besselj(nu_val <span class="op">+</span> <span class="dv">1</span>, x)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    lhs_R1 <span class="op">=</span> sym.simplify(Jnm1 <span class="op">+</span> Jnp1 <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>nu_val<span class="op">/</span>x <span class="op">*</span> Jn)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    lhs_R2 <span class="op">=</span> sym.simplify(Jnm1 <span class="op">-</span> Jnp1 <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>sym.diff(Jn, x))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"nu = </span><span class="sc">{</span>nu_val<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    display(Math(<span class="vs">r"J_{</span><span class="ch">\n</span><span class="vs">u-1}</span><span class="op">+</span><span class="vs">J_{</span><span class="ch">\n</span><span class="vs">u</span><span class="op">+</span><span class="vs">1}-</span><span class="ch">\t</span><span class="vs">frac{2</span><span class="ch">\n</span><span class="vs">u}{x}J_</span><span class="ch">\n</span><span class="vs">u = "</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                 <span class="op">+</span> sym.latex(lhs_R1)))</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    display(Math(<span class="vs">r"J_{</span><span class="ch">\n</span><span class="vs">u-1}-J_{</span><span class="ch">\n</span><span class="vs">u</span><span class="op">+</span><span class="vs">1}-2J_</span><span class="ch">\n</span><span class="vs">u' = "</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                 <span class="op">+</span> sym.latex(lhs_R2)))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>nu = 1:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_{\nu-1}+J_{\nu+1}-\tfrac{2\nu}{x}J_\nu = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_{\nu-1}-J_{\nu+1}-2J_\nu' = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+nu = 2:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_{\nu-1}+J_{\nu+1}-\tfrac{2\nu}{x}J_\nu = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_{\nu-1}-J_{\nu+1}-2J_\nu' = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+nu = 3/2:</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_{\nu-1}+J_{\nu+1}-\tfrac{2\nu}{x}J_\nu = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J_{\nu-1}-J_{\nu+1}-2J_\nu' = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+</section>
+<section id="zeros-of-j_nu" class="level3">
+<h3 class="anchored" data-anchor-id="zeros-of-j_nu">Zeros of <span class="math inline">\(J_\nu\)</span></h3>
+<p>A fundamental fact — crucial for the drum problem — is that each <span class="math inline">\(J_\nu\)</span> has <strong>infinitely many positive real zeros</strong>. We denote the <span class="math inline">\(m\)</span>-th positive zero of <span class="math inline">\(J_\nu\)</span> by <span class="math inline">\(j_{\nu,m}\)</span>: <span class="math display">\[
+J_\nu(j_{\nu,m}) = 0, \qquad 0 &lt; j_{\nu,1} &lt; j_{\nu,2} &lt; \cdots \to \infty.
+\]</span></p>
+<p>SciPy computes these via <code>scipy.special.jn_zeros(n, k)</code>, which returns the first <span class="math inline">\(k\)</span> positive zeros of <span class="math inline">\(J_n\)</span>.</p>
+<div id="2f8b24e3" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First five positive zeros of J_nu:</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'nu'</span><span class="sc">:&gt;4}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'j(nu,1)'</span><span class="sc">:&gt;10}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'j(nu,2)'</span><span class="sc">:&gt;10}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'j(nu,3)'</span><span class="sc">:&gt;10}</span><span class="ss">  "</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span><span class="st">'j(nu,4)'</span><span class="sc">:&gt;10}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'j(nu,5)'</span><span class="sc">:&gt;10}</span><span class="ss">"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]:</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> jn_zeros(n, <span class="dv">5</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>n<span class="sc">:&gt;2}</span><span class="ss">  "</span> <span class="op">+</span> <span class="st">"  "</span>.join(<span class="ss">f"</span><span class="sc">{</span>zi<span class="sc">:10.6f}</span><span class="ss">"</span> <span class="cf">for</span> zi <span class="kw">in</span> z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>First five positive zeros of J_nu:
+
+  nu     j(nu,1)     j(nu,2)     j(nu,3)     j(nu,4)     j(nu,5)
+------------------------------------------------------------
+   0    2.404826    5.520078    8.653728   11.791534   14.930918
+   1    3.831706    7.015587   10.173468   13.323692   16.470630
+   2    5.135622    8.417244   11.619841   14.795952   17.959819
+   3    6.380162    9.761023   13.015201   16.223466   19.409415</code></pre>
+</div>
+</div>
+<div id="cell-fig-bessel-zeros" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x_vals <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">20</span>, <span class="dv">2000</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>J_sym_funcs <span class="op">=</span> [sym.lambdify(x_sym, sym.besselj(n, x_sym), bessel_modules)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>               <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>)]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n, color, Jf <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">4</span>), plt.cm.tab10(np.arange(<span class="dv">4</span>)), J_sym_funcs):</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(x_vals, Jf(x_vals), color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$J_</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">(x)$'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    zeros <span class="op">=</span> jn_zeros(n, <span class="dv">5</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    ax.scatter(zeros, np.zeros_like(zeros), color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">55</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>               zorder<span class="op">=</span><span class="dv">5</span>, edgecolors<span class="op">=</span><span class="st">'black'</span>, linewidths<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.9</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$x$'</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$J_</span><span class="ch">\\</span><span class="st">nu(x)$'</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Zeros of Bessel functions $J_0, J_1, J_2, J_3$ (first five each)'</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">0.55</span>, <span class="fl">1.1</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-bessel-zeros" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bessel-zeros-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_09_files/figure-html/fig-bessel-zeros-output-1.png" width="1632" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bessel-zeros-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The first five positive zeros of <span class="math inline">\(J_0\)</span>, <span class="math inline">\(J_1\)</span>, <span class="math inline">\(J_2\)</span>, and <span class="math inline">\(J_3\)</span> (marked by colored dots on the respective curves). The zeros interlace between adjacent orders: between any two consecutive zeros of <span class="math inline">\(J_\nu\)</span> there is exactly one zero of <span class="math inline">\(J_{\nu+1}\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="asymptotic-behavior" class="level3">
+<h3 class="anchored" data-anchor-id="asymptotic-behavior">Asymptotic Behavior</h3>
+<p>For <strong>large <span class="math inline">\(x\)</span></strong>, Bessel functions oscillate like damped cosines: <span class="math display">\[
+J_\nu(x) \approx \sqrt{\frac{2}{\pi x}}\cos\!\left(x - \frac{\nu\pi}{2} - \frac{\pi}{4}\right),
+\qquad x \to \infty.
+\]</span> <span class="math display">\[
+Y_\nu(x) \approx \sqrt{\frac{2}{\pi x}}\sin\!\left(x - \frac{\nu\pi}{2} - \frac{\pi}{4}\right),
+\qquad x \to \infty.
+\]</span> This shows that the amplitude decays like <span class="math inline">\(x^{-1/2}\)</span> — Bessel functions are damped oscillations. The zeros of <span class="math inline">\(J_\nu\)</span> are asymptotically spaced <span class="math inline">\(\pi\)</span> apart, just like the zeros of <span class="math inline">\(\cos\)</span>.</p>
+<p>For <strong>small <span class="math inline">\(x\)</span></strong> (near the origin): <span class="math display">\[
+J_\nu(x) \approx \frac{1}{\Gamma(\nu+1)}\!\left(\frac{x}{2}\right)^\nu, \qquad
+Y_0(x) \approx \frac{2}{\pi}\ln x, \qquad
+Y_\nu(x) \approx -\frac{\Gamma(\nu)}{\pi}\!\left(\frac{2}{x}\right)^\nu \quad (\nu &gt; 0).
+\]</span></p>
+<div id="cell-fig-bessel-asymp" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x_a <span class="op">=</span> np.linspace(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">1000</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>J0_exact <span class="op">=</span> jv(<span class="dv">0</span>, x_a)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>J0_asymp <span class="op">=</span> np.sqrt(<span class="dv">2</span> <span class="op">/</span> (np.pi <span class="op">*</span> x_a)) <span class="op">*</span> np.cos(x_a <span class="op">-</span> np.pi <span class="op">/</span> <span class="dv">4</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(x_a, J0_exact, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.2</span>, label<span class="op">=</span><span class="st">'$J_0(x)$ (exact)'</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(x_a, J0_asymp, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="vs">r'</span><span class="dv">$\s</span><span class="vs">qrt{2/</span><span class="er">\</span><span class="vs">pi x}</span><span class="er">\</span><span class="vs">cos</span><span class="kw">(</span><span class="vs">x-</span><span class="er">\</span><span class="vs">pi/4</span><span class="kw">)</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">asymptotic</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.7</span>, ls<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$J_0(x)$'</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'$J_0(x)$ vs large-$x$ asymptotic approximation'</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>rel_err <span class="op">=</span> np.<span class="bu">abs</span>(J0_exact <span class="op">-</span> J0_asymp) <span class="op">/</span> (np.<span class="bu">abs</span>(J0_exact) <span class="op">+</span> <span class="fl">1e-12</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].semilogy(x_a, rel_err, color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Relative error'</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Relative error of asymptotic approximation for $J_0$'</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-bessel-asymp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bessel-asymp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_09_files/figure-html/fig-bessel-asymp-output-1.png" width="1782" height="584" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bessel-asymp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Left: <span class="math inline">\(J_0(x)\)</span> (blue) and its large-<span class="math inline">\(x\)</span> asymptotic approximation <span class="math inline">\(\sqrt{2/\pi x}\cos(x - \pi/4)\)</span> (dashed orange). The approximation is excellent for <span class="math inline">\(x \gtrsim 5\)</span>. Right: the relative error <span class="math inline">\(|J_0 - \text{asymptotic}|/|J_0|\)</span> on a log scale, confirming convergence of the approximation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="orthogonality" class="level3">
+<h3 class="anchored" data-anchor-id="orthogonality">Orthogonality</h3>
+<p>One of the deepest properties of Bessel functions, and the one that makes them useful for solving boundary value problems, is their <strong>orthogonality</strong>. Let <span class="math inline">\(j_{\nu,m}\)</span> denote the <span class="math inline">\(m\)</span>-th positive zero of <span class="math inline">\(J_\nu\)</span>. Then:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Orthogonality of Bessel Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\int_0^1 x\, J_\nu\!\left(j_{\nu,m}\,x\right) J_\nu\!\left(j_{\nu,n}\,x\right)\,dx
+= \frac{\delta_{mn}}{2}\,\bigl[J_{\nu+1}(j_{\nu,m})\bigr]^2,
+\]</span> where <span class="math inline">\(\delta_{mn}\)</span> is the Kronecker delta.</p>
+</div>
+</div>
+<p>The weight function <span class="math inline">\(x\)</span> (rather than <span class="math inline">\(1\)</span>) reflects the geometry of polar coordinates — integration in polar coordinates carries a factor of <span class="math inline">\(r\)</span>. This orthogonality underlies the <strong>Fourier–Bessel series</strong>, the cylindrical analog of a Fourier sine series.</p>
+<div id="13f91e15" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical verification of orthogonality for J_0</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>nu_orth <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Numerical verification of orthogonality for J_</span><span class="sc">{</span>nu_orth<span class="sc">}</span><span class="ss">:</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  (m, n)     integral        expected"</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  "</span> <span class="op">+</span> <span class="st">"-"</span><span class="op">*</span><span class="dv">45</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>):</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>):</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        zm <span class="op">=</span> jn_zeros(nu_orth, m)[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        zn <span class="op">=</span> jn_zeros(nu_orth, n)[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        integrand <span class="op">=</span> <span class="kw">lambda</span> t: t <span class="op">*</span> jv(nu_orth, zm <span class="op">*</span> t) <span class="op">*</span> jv(nu_orth, zn <span class="op">*</span> t)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        result, _ <span class="op">=</span> quad(integrand, <span class="dv">0</span>, <span class="dv">1</span>, limit<span class="op">=</span><span class="dv">200</span>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> m <span class="op">==</span> n:</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            expected <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> jv(nu_orth <span class="op">+</span> <span class="dv">1</span>, zm)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>            expected <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  (</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">)       </span><span class="sc">{</span>result<span class="sc">:+.6f}</span><span class="ss">       </span><span class="sc">{</span>expected<span class="sc">:+.6f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Numerical verification of orthogonality for J_0:
+
+  (m, n)     integral        expected
+  ---------------------------------------------
+  (1, 1)       +0.134757       +0.134757
+  (1, 2)       +0.000000       +0.000000
+  (1, 3)       +0.000000       +0.000000
+  (2, 1)       +0.000000       +0.000000
+  (2, 2)       +0.057890       +0.057890
+  (2, 3)       +0.000000       +0.000000
+  (3, 1)       +0.000000       +0.000000
+  (3, 2)       +0.000000       +0.000000
+  (3, 3)       +0.036843       +0.036843</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="application-normal-modes-of-a-circular-drumhead" class="level2">
+<h2 class="anchored" data-anchor-id="application-normal-modes-of-a-circular-drumhead">Application: Normal Modes of a Circular Drumhead</h2>
+<p>We now return to the vibrating drum that motivated Bessel’s equation. The drum occupies the disk <span class="math inline">\(0 \leq r \leq R\)</span> and is clamped at its boundary: <span class="math inline">\(u(R, \theta, t) = 0\)</span>.</p>
+<p>For <strong>radially symmetric modes</strong> (no <span class="math inline">\(\theta\)</span> dependence), the spatial factor satisfies Bessel’s equation of order <span class="math inline">\(0\)</span>, and the boundary condition <span class="math inline">\(u(R) = 0\)</span> requires <span class="math inline">\(J_0(\lambda R) = 0\)</span>, i.e., <span class="math inline">\(\lambda R = j_{0,m}\)</span> for <span class="math inline">\(m = 1, 2, 3, \ldots\)</span> The normal mode frequencies are <span class="math display">\[
+\omega_{0,m} = \frac{c\, j_{0,m}}{R},
+\]</span> where <span class="math inline">\(c\)</span> is the wave speed. The first three radially symmetric mode shapes are <span class="math inline">\(J_0(j_{0,1}\,r/R)\)</span>, <span class="math inline">\(J_0(j_{0,2}\,r/R)\)</span>, <span class="math inline">\(J_0(j_{0,3}\,r/R)\)</span>, each with <span class="math inline">\(m-1\)</span> nodal circles in the interior.</p>
+<p>For <strong>non-radially-symmetric modes</strong> of azimuthal order <span class="math inline">\(\nu\)</span>, the boundary condition <span class="math inline">\(J_\nu(\lambda R) = 0\)</span> gives frequencies <span class="math inline">\(\omega_{\nu,m} = c\,j_{\nu,m}/R\)</span>.</p>
+<div id="cell-fig-drum-modes" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> <span class="fl">1.0</span>   <span class="co"># drum radius</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>zeros_J0 <span class="op">=</span> jn_zeros(<span class="dv">0</span>, <span class="dv">3</span>)   <span class="co"># j_{0,1}, j_{0,2}, j_{0,3}</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>r_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, R, <span class="dv">500</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>))</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>colors_mode <span class="op">=</span> [<span class="st">'steelblue'</span>, <span class="st">'darkorange'</span>, <span class="st">'seagreen'</span>]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Left panel: radial profiles</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>ax0 <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m, (zm, color) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(zeros_J0, colors_mode), start<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    ax0.plot(r_vals, jv(<span class="dv">0</span>, zm <span class="op">*</span> r_vals <span class="op">/</span> R), color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="ss">f'$m=</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">$, $j_</span><span class="ch">{{</span><span class="ss">0,</span><span class="sc">{</span>m<span class="sc">}</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>zm<span class="sc">:.3f}</span><span class="ss">$'</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>ax0.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.7</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>ax0.set_xlabel(<span class="st">'$r/R$'</span>)<span class="op">;</span> ax0.set_ylabel(<span class="st">'$J_0(j_{0,m}</span><span class="ch">\\</span><span class="st">,r/R)$'</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>ax0.set_title(<span class="st">'Radial profiles'</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>ax0.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 2D mode shape plots</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">300</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>r_2d  <span class="op">=</span> np.linspace(<span class="dv">0</span>, R, <span class="dv">300</span>)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>R_grid, T_grid <span class="op">=</span> np.meshgrid(r_2d, theta)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> R_grid <span class="op">*</span> np.cos(T_grid)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> R_grid <span class="op">*</span> np.sin(T_grid)</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (zm, color, m) <span class="kw">in</span> <span class="bu">zip</span>(axes[<span class="dv">1</span>:], <span class="bu">zip</span>(zeros_J0, colors_mode, <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>))):</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> jv(<span class="dv">0</span>, zm <span class="op">*</span> R_grid <span class="op">/</span> R)</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>    cp <span class="op">=</span> ax.contourf(X, Y, Z, levels<span class="op">=</span><span class="dv">40</span>, cmap<span class="op">=</span><span class="st">'RdBu_r'</span>)</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Draw nodal circles (zero-crossings of J_0 inside the drum)</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>    inner_zeros <span class="op">=</span> zeros_J0[:m<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> iz <span class="kw">in</span> inner_zeros:</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>        r_node <span class="op">=</span> iz <span class="op">/</span> zm <span class="op">*</span> R</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> plt.Circle((<span class="dv">0</span>, <span class="dv">0</span>), r_node, color<span class="op">=</span><span class="st">'black'</span>, fill<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>                             lw<span class="op">=</span><span class="fl">1.2</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>        ax.add_patch(circle)</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>    ax.set_aspect(<span class="st">'equal'</span>)<span class="op">;</span> ax.set_axis_off()</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'Mode $m=</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">$</span><span class="ch">\n</span><span class="ss">$</span><span class="ch">\\</span><span class="ss">omega_</span><span class="ch">{{</span><span class="ss">0,</span><span class="sc">{</span>m<span class="sc">}</span><span class="ch">}}</span><span class="ss"> = c</span><span class="ch">\\</span><span class="ss">cdot</span><span class="sc">{</span>zm<span class="sc">:.3f}</span><span class="ss">/R$'</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-drum-modes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-drum-modes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_09_files/figure-html/fig-drum-modes-output-1.png" width="2077" height="601" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-drum-modes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Radial profiles (left) and two-dimensional mode shapes (right) of the first three radially symmetric normal modes of a circular drum. Each mode <span class="math inline">\(J_0(j_{0,m}\,r/R)\)</span> has <span class="math inline">\(m-1\)</span> interior nodal circles (locations where the membrane does not move). The natural frequencies are proportional to the zeros <span class="math inline">\(j_{0,1} \approx 2.405\)</span>, <span class="math inline">\(j_{0,2} \approx 5.520\)</span>, and <span class="math inline">\(j_{0,3} \approx 8.654\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why are drums not perfectly harmonic?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a <strong>string</strong>, the natural frequencies are integer multiples of the fundamental: <span class="math inline">\(\omega_n = n\omega_1\)</span> — the overtones are harmonics. For a <strong>circular drum</strong>, the frequencies are proportional to <span class="math inline">\(j_{0,1}, j_{0,2}, j_{0,3}, \ldots \approx 2.405,\,5.520,\,8.654,\ldots\)</span> These are <em>not</em> in a simple integer ratio, which is why a drum does not produce a clear musical pitch the way a string does. This is directly a consequence of the zeros of Bessel functions being irrational and non-uniformly spaced.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="symbolic-differentiation-and-the-derivative-formula" class="level2">
+<h2 class="anchored" data-anchor-id="symbolic-differentiation-and-the-derivative-formula">Symbolic Differentiation and the Derivative Formula</h2>
+<p>We conclude with a SymPy demonstration of the derivative formula <span class="math inline">\(\frac{d}{dx}[x^{-\nu}J_\nu(x)] = -x^{-\nu}J_{\nu+1}(x)\)</span>, which encodes an elegant downward-shift property.</p>
+<div id="01305a0e" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Verifying derivative formulas for Bessel functions:</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nu_val <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>]:</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    Jnu  <span class="op">=</span> sym.besselj(nu_val, x)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    Jnup1 <span class="op">=</span> sym.besselj(nu_val <span class="op">+</span> <span class="dv">1</span>, x)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    Jnum1 <span class="op">=</span> sym.besselj(nu_val <span class="op">-</span> <span class="dv">1</span>, x)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># d/dx [x^nu J_nu] = x^nu J_{nu-1}</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    lhs1 <span class="op">=</span> sym.diff(x<span class="op">**</span>nu_val <span class="op">*</span> Jnu, x)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    rhs1 <span class="op">=</span> x<span class="op">**</span>nu_val <span class="op">*</span> Jnum1</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    res1 <span class="op">=</span> sym.simplify(lhs1 <span class="op">-</span> rhs1)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    display(Math(</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        <span class="vs">rf"</span><span class="ch">\f</span><span class="vs">rac</span><span class="ch">{{</span><span class="vs">d</span><span class="ch">}}{{</span><span class="vs">dx</span><span class="ch">}}</span><span class="er">\</span><span class="vs">left</span><span class="pp">[x^</span><span class="sc">{</span>nu_val<span class="sc">}</span><span class="pp"> J_</span><span class="sc">{</span>nu_val<span class="sc">}</span><span class="pp">(x)</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> - "</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        <span class="vs">rf"x</span><span class="dv">^</span><span class="sc">{</span>nu_val<span class="sc">}</span><span class="vs"> J_</span><span class="ch">{{</span><span class="sc">{</span>nu_val<span class="op">-</span><span class="dv">1</span><span class="sc">}</span><span class="ch">}}</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(res1)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># d/dx [x^{-nu} J_nu] = -x^{-nu} J_{nu+1}</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    lhs2 <span class="op">=</span> sym.diff(x<span class="op">**</span>(<span class="op">-</span>nu_val) <span class="op">*</span> Jnu, x)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    rhs2 <span class="op">=</span> <span class="op">-</span>x<span class="op">**</span>(<span class="op">-</span>nu_val) <span class="op">*</span> Jnup1</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    res2 <span class="op">=</span> sym.simplify(lhs2 <span class="op">-</span> rhs2)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    display(Math(</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        <span class="vs">rf"</span><span class="ch">\f</span><span class="vs">rac</span><span class="ch">{{</span><span class="vs">d</span><span class="ch">}}{{</span><span class="vs">dx</span><span class="ch">}}</span><span class="er">\</span><span class="vs">left</span><span class="pp">[x^</span><span class="ch">{{</span><span class="pp">-</span><span class="sc">{</span>nu_val<span class="sc">}</span><span class="ch">}}</span><span class="pp"> J_</span><span class="sc">{</span>nu_val<span class="sc">}</span><span class="pp">(x)</span><span class="ch">\r</span><span class="pp">ight]</span><span class="vs"> </span><span class="op">+</span><span class="vs"> "</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        <span class="vs">rf"x</span><span class="dv">^</span><span class="ch">{{</span><span class="vs">-</span><span class="sc">{</span>nu_val<span class="sc">}</span><span class="ch">}}</span><span class="vs"> J_</span><span class="ch">{{</span><span class="sc">{</span>nu_val<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">}}</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = "</span> <span class="op">+</span> sym.latex(res2)</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Verifying derivative formulas for Bessel functions:
+</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \frac{d}{dx}\left[x^0 J_0(x)\right] - x^0 J_{-1}(x) = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \frac{d}{dx}\left[x^{-0} J_0(x)\right] + x^{-0} J_{1}(x) = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \frac{d}{dx}\left[x^1 J_1(x)\right] - x^1 J_{0}(x) = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \frac{d}{dx}\left[x^{-1} J_1(x)\right] + x^{-1} J_{2}(x) = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \frac{d}{dx}\left[x^2 J_2(x)\right] - x^2 J_{1}(x) = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \frac{d}{dx}\left[x^{-2} J_2(x)\right] + x^{-2} J_{3}(x) = 0\)</span></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Definition / Key fact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Bessel’s equation</strong></td>
+<td><span class="math inline">\(x^2 y'' + xy' + (x^2 - \nu^2)y = 0\)</span>; regular singular point at <span class="math inline">\(x=0\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Indicial roots</strong></td>
+<td><span class="math inline">\(r = \pm\nu\)</span>; larger root <span class="math inline">\(r=\nu\)</span> gives the well-behaved solution</td>
+</tr>
+<tr class="odd">
+<td><strong><span class="math inline">\(J_\nu(x)\)</span></strong></td>
+<td><span class="math inline">\(\displaystyle\sum_{k=0}^\infty \frac{(-1)^k}{k!\,\Gamma(\nu+k+1)}\!\left(\frac{x}{2}\right)^{2k+\nu}\)</span>; finite at <span class="math inline">\(x=0\)</span></td>
+</tr>
+<tr class="even">
+<td><strong><span class="math inline">\(Y_\nu(x)\)</span></strong></td>
+<td>Second independent solution; <span class="math inline">\(Y_\nu(x)\to-\infty\)</span> as <span class="math inline">\(x\to 0^+\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>General solution</strong></td>
+<td><span class="math inline">\(y = c_1 J_\nu(x) + c_2 Y_\nu(x)\)</span>, <span class="math inline">\(x &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Recurrences</strong></td>
+<td><span class="math inline">\(J_{\nu-1}+J_{\nu+1} = \tfrac{2\nu}{x}J_\nu\)</span>; <span class="math inline">\(J_{\nu-1}-J_{\nu+1}=2J_\nu'\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Zeros</strong></td>
+<td>Infinitely many: <span class="math inline">\(0 &lt; j_{\nu,1} &lt; j_{\nu,2} &lt; \cdots\)</span>; spacing <span class="math inline">\(\to\pi\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Asymptotics</strong></td>
+<td><span class="math inline">\(J_\nu(x)\approx\sqrt{2/\pi x}\cos(x-\nu\pi/2-\pi/4)\)</span> for large <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Orthogonality</strong></td>
+<td><span class="math inline">\(\int_0^1 x J_\nu(j_{\nu,m}x)J_\nu(j_{\nu,n}x)\,dx = \tfrac{1}{2}[J_{\nu+1}(j_{\nu,m})]^2\delta_{mn}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>SymPy</strong></td>
+<td><code>sym.besselj(nu, x)</code>, <code>sym.bessely(nu, x)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>SciPy</strong></td>
+<td><code>scipy.special.jv(nu, x)</code>, <code>yv(nu, x)</code>, <code>jn_zeros(n, k)</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Key Takeaways
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Bessel’s equation has a <strong>regular singular point</strong> at <span class="math inline">\(x = 0\)</span>; the Frobenius method with root <span class="math inline">\(r = \nu\)</span> produces the series for <span class="math inline">\(J_\nu\)</span>.</li>
+<li><strong><span class="math inline">\(J_\nu(x)\)</span></strong> is bounded at the origin; <strong><span class="math inline">\(Y_\nu(x)\)</span></strong> is singular there. In problems where the domain includes <span class="math inline">\(r = 0\)</span>, only <span class="math inline">\(J_\nu\)</span> appears.</li>
+<li>The positive zeros <span class="math inline">\(j_{\nu,m}\)</span> of <span class="math inline">\(J_\nu\)</span> are the <strong>eigenvalues</strong> of the Bessel boundary value problem; they determine the natural frequencies of circular drums, cylinders, and waveguides.</li>
+<li>Bessel functions satisfy elegant <strong>recurrence relations</strong> connecting adjacent orders, verifiable symbolically in SymPy.</li>
+<li>For large <span class="math inline">\(x\)</span>, Bessel functions behave like <strong>damped sinusoids</strong> with amplitude <span class="math inline">\(\sim x^{-1/2}\)</span>.</li>
+<li>The <strong>orthogonality</strong> of <span class="math inline">\(\{J_\nu(j_{\nu,m}x)\}\)</span> with weight <span class="math inline">\(x\)</span> on <span class="math inline">\([0,1]\)</span> underlies Fourier–Bessel series, the cylindrical analog of Fourier sine series.</li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+<section id="relevant-videos" class="level2">
+<h2 class="anchored" data-anchor-id="relevant-videos">Relevant Videos</h2>
+<section id="introduction-to-bessel-functions" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-to-bessel-functions">Introduction to Bessel functions:</h3>
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/S7F6YiNvgVc?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+  </iframe>
+</div>
+</section>
+<section id="solving-bessel-equations" class="level3">
+<h3 class="anchored" data-anchor-id="solving-bessel-equations">Solving Bessel equations:</h3>
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/lw4okHO94-E?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+  </iframe>
+</div>
+<hr>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="f02a915a" class="cell" data-execution_count="14">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

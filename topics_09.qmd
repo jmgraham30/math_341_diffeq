@@ -1,0 +1,857 @@
+---
+title: "Bessel's Equation and Bessel Functions"
+subtitle: "Series Solutions at a Singular Point, and a Remarkable Family of Functions"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import numpy as np
+import sympy as sym
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from scipy.special import jv, yv, jn_zeros
+from IPython.display import Math, display
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+Among all second-order linear ODEs, **Bessel's equation** is perhaps the one whose solutions
+appear most frequently in the physical world.  Vibrations of a circular drumhead, heat flow
+in a cylinder, the quantum mechanics of the hydrogen atom, the propagation of electromagnetic
+waves in a coaxial cable — all of these lead, after an appropriate change of variables, to
+Bessel's equation.  The solutions, called **Bessel functions**, are as fundamental to
+mathematical physics as the trigonometric functions are to the theory of constant-coefficient
+ODEs.
+
+This section develops Bessel's equation as a natural application of the **Frobenius method**
+(power series solutions at a regular singular point), derives the Bessel functions of the
+first and second kind, studies their most important properties, and demonstrates how to work
+with them in SymPy and SciPy.
+
+---
+
+## Historical Background
+
+### The Origins: Bernoulli, Euler, and Bessel
+
+The functions now named after Friedrich Wilhelm Bessel were encountered long before Bessel
+himself.  [Daniel Bernoulli](https://en.wikipedia.org/wiki/Daniel_Bernoulli) (1700–1782)
+used them in 1732 when studying the oscillations of a hanging chain — one of the first
+vibration problems in mathematical physics.  [Leonhard Euler](https://en.wikipedia.org/wiki/Leonhard_Euler)
+(1707–1783) encountered similar series in his work on circular membrane vibrations and on
+the motion of a solid body.
+
+**[Friedrich Wilhelm Bessel](https://en.wikipedia.org/wiki/Friedrich_Wilhelm_Bessel)**
+(1784–1846) was an astronomer, not a mathematician by trade.  In 1817, while studying the
+perturbations of planetary orbits, he carried out the first systematic investigation of the
+functions that now bear his name, including deriving their integral representation and
+establishing the recurrence relations.  Bessel's equation itself was studied even earlier
+by [Joseph Fourier](https://en.wikipedia.org/wiki/Joseph_Fourier), in his 1807 treatise on
+the theory of heat, where it arises naturally when solving the heat equation in cylindrical
+coordinates.
+
+The rigorous theory of Bessel functions was built up throughout the 19th century by
+[Carl Neumann](https://en.wikipedia.org/wiki/Carl_Neumann) (who introduced the Bessel
+functions of the second kind, sometimes called **Neumann functions**),
+[Hermann Hankel](https://en.wikipedia.org/wiki/Hermann_Hankel) (Hankel functions),
+and many others.  The definitive reference remains the 1922 treatise *A Treatise on the
+Theory of Bessel Functions* by
+[G. N. Watson](https://en.wikipedia.org/wiki/G._N._Watson), which runs to over 800 pages.
+
+::: {.callout-note}
+## Timeline
+| Year | Person | Contribution |
+|---|---|---|
+| 1732 | Bernoulli | Series solutions for the oscillating chain — first Bessel functions |
+| 1764 | Euler | Bessel functions in circular membrane vibrations |
+| 1807 | Fourier | Heat equation in cylinders — Bessel's equation in cylindrical coordinates |
+| 1817 | Bessel | Systematic study: recurrences, integrals, orthogonality |
+| 1867 | Neumann | Bessel functions of the second kind (Neumann functions $Y_\nu$) |
+| 1922 | Watson | Definitive treatise on Bessel functions |
+:::
+
+---
+
+## The Vibrating Circular Drum: Motivation
+
+To see where Bessel's equation comes from naturally, consider the **vibrating circular
+drumhead** — a thin elastic membrane clamped at a circular boundary of radius $R$.  If
+$u(r, \theta, t)$ denotes the transverse displacement, the wave equation in polar coordinates
+is
+$$
+u_{tt} = c^2\!\left(u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta}\right).
+$$
+Looking for normal modes of the form $u = R(r)\,\Theta(\theta)\,T(t)$, separating variables,
+and focusing on the radially symmetric modes ($\Theta = $ constant), one finds that the
+radial factor $R(r)$ satisfies
+$$
+r^2 R'' + r R' + \lambda^2 r^2 R = 0,
+$$
+where $\lambda$ is related to the frequency of vibration.  Setting $x = \lambda r$ converts
+this to **Bessel's equation of order zero**:
+$$
+x^2 y'' + x y' + x^2 y = 0.
+$$
+For non-radially-symmetric modes one obtains **Bessel's equation of order $\nu$**:
+$$
+\boxed{x^2 y'' + x y' + (x^2 - \nu^2)y = 0.}
+\tag{BE}
+$$
+The natural frequencies of the drum are determined by the zeros of the solutions — a fact
+we will return to at the end of this section.
+
+::: {.callout-note}
+## Other applications of Bessel's equation
+Bessel's equation (BE) also arises in:
+
+- **Heat conduction** in a solid cylinder: $u_t = \kappa(u_{rr} + r^{-1}u_r)$, separating variables.
+- **Electromagnetic waves** in cylindrical waveguides and coaxial cables.
+- **Quantum mechanics**: the radial Schrödinger equation for the hydrogen atom leads (after substitutions) to related equations whose solutions are expressed in terms of Bessel functions.
+- **Acoustics**: sound radiation from a circular piston or the resonance modes of a circular room.
+:::
+
+---
+
+## Regular Singular Points and the Frobenius Method
+
+### Singular Points
+
+Bessel's equation (BE), in standard form $y'' + P(x)y' + Q(x)y = 0$, has
+$$
+P(x) = \frac{1}{x}, \qquad Q(x) = 1 - \frac{\nu^2}{x^2}.
+$$
+Both $P$ and $Q$ are **singular at $x = 0$**: ordinary power series solutions $y = \sum a_n x^n$
+cannot be expected to work there.
+
+The point $x = 0$ is, however, a **regular singular point** because the limits
+$$
+\lim_{x\to 0} x P(x) = 1, \qquad \lim_{x\to 0} x^2 Q(x) = -\nu^2
+$$
+both exist and are finite.  At a regular singular point, the **Frobenius method** guarantees
+at least one solution of the form
+$$
+y = x^r \sum_{n=0}^{\infty} a_n x^n = \sum_{n=0}^{\infty} a_n x^{n+r}, \quad a_0 \neq 0,
+$$
+where $r$ is determined by the **indicial equation**.
+
+### The Indicial Equation for Bessel's Equation
+
+Substituting $y = \sum_{n=0}^\infty a_n x^{n+r}$ into (BE) and collecting the lowest-order
+term (the $x^r$ coefficient) gives the indicial equation:
+$$
+r(r-1) + r - \nu^2 = 0 \quad\Longrightarrow\quad r^2 - \nu^2 = 0
+\quad\Longrightarrow\quad r = \pm \nu.
+$$
+The two roots are $r_1 = \nu$ and $r_2 = -\nu$.  When $\nu \geq 0$, the larger root is
+$r_1 = \nu$, and the Frobenius method with this root yields the first, better-behaved solution.
+
+::: {.callout-important}
+## The Indicial Equation
+For Bessel's equation of order $\nu$, the indicial equation is $r^2 = \nu^2$, giving
+roots $r = \pm\nu$.  The structure of the general solution depends on whether $2\nu$ is
+a non-negative integer:
+
+- **$2\nu \notin \mathbb{Z}_{\geq 0}$**: two independent Frobenius series $J_\nu$ and $J_{-\nu}$.
+- **$\nu = 0$**: the two roots coincide ($r = 0$); the second solution involves a logarithm.
+- **$\nu \in \mathbb{Z}^+$**: roots differ by a positive integer $2\nu$; the second solution again involves a logarithm.
+
+In every case the general solution is written $y = c_1 J_\nu(x) + c_2 Y_\nu(x)$.
+:::
+
+---
+
+## Deriving the Bessel Function $J_\nu(x)$
+
+We derive the series for $J_\nu(x)$ using the Frobenius root $r = \nu \geq 0$.  Substituting
+$y = \sum_{n=0}^\infty a_n x^{n+\nu}$ into (BE):
+
+$$
+\sum_{n=0}^\infty (n+\nu)(n+\nu-1)a_n x^{n+\nu}
++ \sum_{n=0}^\infty (n+\nu)a_n x^{n+\nu}
++ \sum_{n=0}^\infty a_n x^{n+\nu+2}
+- \nu^2 \sum_{n=0}^\infty a_n x^{n+\nu} = 0.
+$$
+
+Combining the first, second, and fourth sums:
+$$
+\sum_{n=0}^\infty \bigl[(n+\nu)^2 - \nu^2\bigr] a_n x^{n+\nu}
++ \sum_{n=0}^\infty a_n x^{n+\nu+2} = 0,
+$$
+which simplifies to
+$$
+\sum_{n=0}^\infty n(n + 2\nu)\, a_n x^{n+\nu}
++ \sum_{n=2}^\infty a_{n-2} x^{n+\nu} = 0.
+$$
+
+Matching coefficients of $x^{n+\nu}$:
+
+- $n=0$: $0 \cdot a_0 = 0$ — $a_0$ is free (set it by convention).
+- $n=1$: $1 \cdot (1+2\nu)\, a_1 = 0$, so $a_1 = 0$ (since $1 + 2\nu \neq 0$ for $\nu \geq 0$).
+- $n \geq 2$: the **recurrence relation**
+$$
+a_n = -\frac{a_{n-2}}{n(n + 2\nu)}.
+$$
+
+Since $a_1 = 0$, all odd-indexed coefficients vanish: $a_{2k+1} = 0$.  For the even
+coefficients, writing $n = 2k$:
+$$
+a_{2k} = -\frac{a_{2k-2}}{2k(2k + 2\nu)} = -\frac{a_{2k-2}}{4k(k+\nu)}.
+$$
+
+Unrolling the recurrence from $a_0$ gives
+$$
+a_{2k} = \frac{(-1)^k\, a_0}{4^k\, k!\, (\nu+1)(\nu+2)\cdots(\nu+k)}.
+$$
+
+The standard normalization convention is $a_0 = \dfrac{1}{2^\nu\,\Gamma(\nu+1)}$, which
+leads to the elegant closed form
+
+::: {.callout-important}
+## Definition: Bessel Function of the First Kind $J_\nu(x)$
+$$
+J_\nu(x) = \sum_{k=0}^{\infty} \frac{(-1)^k}{k!\,\Gamma(\nu+k+1)}
+\left(\frac{x}{2}\right)^{2k+\nu}, \qquad x > 0.
+$$
+:::
+
+The Gamma function $\Gamma$ generalizes the factorial: $\Gamma(n+1) = n!$ for non-negative
+integers.  This normalization is the universal convention and is what SymPy and SciPy
+implement.
+
+### Computing $J_\nu$ with SymPy
+
+SymPy provides Bessel functions via `sym.besselj(nu, x)`.  We can verify the series
+definition, compute values, and differentiate symbolically.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x', positive=True)
+nu = sym.Symbol('nu', nonnegative=True)
+
+# ---- Symbolic Bessel functions ----
+J0_sym = sym.besselj(0, x)
+J1_sym = sym.besselj(1, x)
+J2_sym = sym.besselj(2, x)
+
+print("Bessel functions of the first kind (SymPy):")
+display(Math(r'J_0(x) = ' + sym.latex(J0_sym)))
+display(Math(r'J_1(x) = ' + sym.latex(J1_sym)))
+
+# Series expansion of J_0 about x=0
+J0_series = sym.series(J0_sym, x, 0, n=10)
+print("\nPower series for J_0(x) about x = 0 (first 5 terms):")
+display(Math(r'J_0(x) = ' + sym.latex(J0_series)))
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# ---- Verify the ODE: x^2 y'' + x y' + (x^2 - nu^2) y = 0 ----
+print("Verifying that J_0 satisfies Bessel's equation of order 0:")
+y = J0_sym
+ode_lhs = x**2 * sym.diff(y, x, 2) + x * sym.diff(y, x) + x**2 * y
+residual = sym.simplify(ode_lhs)
+display(Math(r"x^2 J_0'' + x J_0' + x^2 J_0 = " + sym.latex(residual)))
+
+print("\nVerifying that J_1 satisfies Bessel's equation of order 1:")
+y1 = J1_sym
+ode_lhs1 = x**2 * sym.diff(y1, x, 2) + x * sym.diff(y1, x) + (x**2 - 1) * y1
+residual1 = sym.simplify(ode_lhs1)
+display(Math(r"x^2 J_1'' + x J_1' + (x^2-1) J_1 = " + sym.latex(residual1)))
+```
+
+::: {.callout-tip}
+## SymPy confirms the definition
+The `sym.simplify` calls above return $0$, confirming that SymPy's `besselj` satisfies
+Bessel's equation exactly — a reassuring sanity check before numerical work.
+:::
+
+---
+
+## The Bessel Function of the Second Kind $Y_\nu(x)$
+
+The series $J_\nu(x)$ is a perfectly good solution, but for $\nu \geq 0$ it satisfies
+$J_\nu(0) = 0$ (for $\nu > 0$) or $J_0(0) = 1$.  To form the general solution we need a
+**linearly independent** second solution.
+
+When $\nu$ is not an integer, $J_{-\nu}(x)$ is that second solution.  When $\nu$ is an
+integer $n$, however, $J_{-n}(x) = (-1)^n J_n(x)$ and the two are proportional — a new
+construction is needed.
+
+The standard second solution, valid for all $\nu$, is the
+**Bessel function of the second kind** (also called the **Neumann function** or **Weber
+function**):
+
+$$
+Y_\nu(x) = \frac{J_\nu(x)\cos(\nu\pi) - J_{-\nu}(x)}{\sin(\nu\pi)},
+$$
+with the integer-order cases defined by the limit $\nu \to n$.  For integer $\nu = n$,
+this limit produces a solution involving $\ln(x/2)$:
+$$
+Y_0(x) = \frac{2}{\pi}\!\left[J_0(x)\ln\!\left(\tfrac{x}{2}\right) + \gamma
++ \sum_{k=1}^{\infty}\frac{(-1)^{k+1}H_k}{(k!)^2}\!\left(\tfrac{x}{2}\right)^{\!2k}\right],
+$$
+where $\gamma \approx 0.5772$ is the Euler–Mascheroni constant and $H_k = 1 + \tfrac{1}{2}
++ \cdots + \tfrac{1}{k}$ are the harmonic numbers.
+
+The key behavior is: **$Y_\nu(x) \to -\infty$ as $x \to 0^+$**.  In any physical problem
+where the domain includes $x = 0$ (e.g., the center of a drum), the condition that the
+solution remain finite forces $c_2 = 0$, leaving only $J_\nu$.  $Y_\nu$ is needed only when
+the origin is excluded from the domain.
+
+::: {.callout-important}
+## General Solution of Bessel's Equation
+For any order $\nu \geq 0$ and $x > 0$:
+$$
+y(x) = c_1 J_\nu(x) + c_2 Y_\nu(x).
+$$
+Both $J_\nu$ and $Y_\nu$ are oscillatory and decay like $x^{-1/2}$ for large $x$.
+$J_\nu(0)$ is finite; $Y_\nu(x) \to -\infty$ as $x \to 0^+$.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+Y0_sym = sym.bessely(0, x)
+Y1_sym = sym.bessely(1, x)
+
+print("Bessel functions of the second kind (SymPy):")
+display(Math(r'Y_0(x) = ' + sym.latex(Y0_sym)))
+display(Math(r'Y_1(x) = ' + sym.latex(Y1_sym)))
+
+# Verify Y_0 satisfies Bessel's equation of order 0
+y_Y0 = Y0_sym
+ode_Y0 = x**2 * sym.diff(y_Y0, x, 2) + x * sym.diff(y_Y0, x) + x**2 * y_Y0
+display(Math(r"x^2 Y_0'' + x Y_0' + x^2 Y_0 = "
+             + sym.latex(sym.simplify(ode_Y0))))
+```
+
+---
+
+## Plotting Bessel Functions
+
+### $J_\nu$ and $Y_\nu$ for Small Orders
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-bessel-jy
+#| fig-cap: "Bessel functions of the first kind $J_\\nu$ (left) and second kind $Y_\\nu$ (right) for $\\nu = 0, 1, 2, 3$. All $J_\\nu$ are finite at the origin; all $Y_\\nu$ diverge to $-\\infty$ as $x \\to 0^+$. Both families are oscillatory and decay in amplitude for large $x$."
+
+# Use SymPy lambdify to convert symbolic Bessel functions to fast numerical callables.
+# We supply a custom module dictionary so that lambdify maps SymPy's besselj/bessely
+# to scipy.special.jv/yv, which numpy alone does not provide.
+x_sym = sym.Symbol('x', positive=True)
+
+from scipy.special import jv as _jv, yv as _yv
+bessel_modules = [{'besselj': _jv, 'bessely': _yv}, 'numpy']
+
+orders = [0, 1, 2, 3]
+colors = plt.cm.tab10(np.arange(len(orders)))
+
+x_vals = np.linspace(0.01, 20, 1000)
+
+# Build lambdified functions from SymPy
+J_funcs = [sym.lambdify(x_sym, sym.besselj(n, x_sym), bessel_modules) for n in orders]
+Y_funcs = [sym.lambdify(x_sym, sym.bessely(n, x_sym), bessel_modules) for n in orders]
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
+
+for n, color, Jf, Yf in zip(orders, colors, J_funcs, Y_funcs):
+    axes[0].plot(x_vals, Jf(x_vals), color=color, lw=2, label=f'$J_{n}(x)$')
+    y_vals = Yf(x_vals)
+    # Mask values below display range to keep the plot clean near x=0
+    y_vals_masked = np.where(y_vals < -1.5, np.nan, y_vals)
+    axes[1].plot(x_vals, y_vals_masked, color=color, lw=2, label=f'$Y_{n}(x)$')
+
+for ax in axes:
+    ax.axhline(0, color='gray', lw=0.8, ls='--')
+    ax.set_xlabel('$x$')
+    ax.legend(fontsize=9)
+    ax.set_ylim(-1.5, 1.2)
+
+axes[0].set_title('Bessel functions of the first kind $J_\\nu(x)$')
+axes[0].set_ylabel('$J_\\nu(x)$')
+axes[1].set_title('Bessel functions of the second kind $Y_\\nu(x)$')
+axes[1].set_ylabel('$Y_\\nu(x)$')
+
+plt.tight_layout()
+plt.show()
+```
+
+### Comparing SymPy and SciPy
+
+It is instructive to verify that SymPy's symbolic Bessel functions agree numerically with
+SciPy's highly optimized implementations.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-bessel-compare
+#| fig-cap: "Comparison of SymPy (lambdified) and SciPy implementations of $J_0$ and $J_1$.  The two implementations agree to machine precision; the difference (bottom panels, plotted on a log scale) is at the level of floating-point rounding error, around $10^{-15}$."
+
+x_check = np.linspace(0.5, 15, 500)
+
+J0_sp = sym.lambdify(x_sym, sym.besselj(0, x_sym), bessel_modules)
+J1_sp = sym.lambdify(x_sym, sym.besselj(1, x_sym), bessel_modules)
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 7))
+
+for col, (order, Jf_sym, label) in enumerate([
+        (0, J0_sp, '$J_0$'),
+        (1, J1_sp, '$J_1$')]):
+
+    y_sym   = Jf_sym(x_check)
+    y_scipy = jv(order, x_check)
+
+    axes[0, col].plot(x_check, y_sym,   lw=2.5, color='steelblue',
+                      label='SymPy (lambdified)')
+    axes[0, col].plot(x_check, y_scipy, lw=1.2, color='crimson',
+                      ls='--', label='SciPy `jv`')
+    axes[0, col].set_title(f'{label}(x): SymPy vs SciPy')
+    axes[0, col].set_ylabel(f'{label}(x)')
+    axes[0, col].legend(fontsize=9)
+    axes[0, col].axhline(0, color='gray', lw=0.7, ls=':')
+
+    diff = np.abs(y_sym - y_scipy)
+    axes[1, col].semilogy(x_check, diff + 1e-18, color='seagreen', lw=1.8)
+    axes[1, col].set_title(f'Absolute difference |SymPy $-$ SciPy| for {label}')
+    axes[1, col].set_xlabel('$x$')
+    axes[1, col].set_ylabel('Absolute error')
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-tip}
+## SymPy vs SciPy: when to use each
+**SymPy** is ideal for symbolic manipulation: verifying that a function satisfies an ODE,
+computing derivatives and series, applying recurrence relations, and producing exact
+expressions.  **SciPy** (`scipy.special.jv`, `yv`, `jn_zeros`) is the right tool for
+numerical work requiring speed or high precision over arrays.  The two are complementary:
+use SymPy to understand the structure, SciPy to compute.
+:::
+
+---
+
+## Key Properties of Bessel Functions
+
+### Recurrence Relations
+
+One of the most useful features of Bessel functions is the web of recurrence relations
+connecting functions of adjacent orders.  The two fundamental recurrences are:
+
+$$
+J_{\nu-1}(x) + J_{\nu+1}(x) = \frac{2\nu}{x}\,J_\nu(x),
+\tag{R1}
+$$
+$$
+J_{\nu-1}(x) - J_{\nu+1}(x) = 2J_\nu'(x).
+\tag{R2}
+$$
+
+From these one derives the **derivative formulas**:
+$$
+\frac{d}{dx}\!\left[x^\nu J_\nu(x)\right] = x^\nu J_{\nu-1}(x),
+\qquad
+\frac{d}{dx}\!\left[x^{-\nu} J_\nu(x)\right] = -x^{-\nu} J_{\nu+1}(x).
+$$
+
+The same recurrences hold with $J_\nu$ replaced by $Y_\nu$.
+
+Let us verify (R1) and (R2) symbolically with SymPy:
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x', positive=True)
+
+for nu_val in [1, 2, sym.Rational(3, 2)]:
+    Jnm1 = sym.besselj(nu_val - 1, x)
+    Jn   = sym.besselj(nu_val,     x)
+    Jnp1 = sym.besselj(nu_val + 1, x)
+
+    lhs_R1 = sym.simplify(Jnm1 + Jnp1 - 2*nu_val/x * Jn)
+    lhs_R2 = sym.simplify(Jnm1 - Jnp1 - 2*sym.diff(Jn, x))
+
+    print(f"nu = {nu_val}:")
+    display(Math(r"J_{\nu-1}+J_{\nu+1}-\tfrac{2\nu}{x}J_\nu = "
+                 + sym.latex(lhs_R1)))
+    display(Math(r"J_{\nu-1}-J_{\nu+1}-2J_\nu' = "
+                 + sym.latex(lhs_R2)))
+    print()
+```
+
+### Zeros of $J_\nu$
+
+A fundamental fact — crucial for the drum problem — is that each $J_\nu$ has **infinitely
+many positive real zeros**.  We denote the $m$-th positive zero of $J_\nu$ by $j_{\nu,m}$:
+$$
+J_\nu(j_{\nu,m}) = 0, \qquad 0 < j_{\nu,1} < j_{\nu,2} < \cdots \to \infty.
+$$
+
+SciPy computes these via `scipy.special.jn_zeros(n, k)`, which returns the first $k$
+positive zeros of $J_n$.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+print("First five positive zeros of J_nu:\n")
+print(f"{'nu':>4}  {'j(nu,1)':>10}  {'j(nu,2)':>10}  {'j(nu,3)':>10}  "
+      f"{'j(nu,4)':>10}  {'j(nu,5)':>10}")
+print("-" * 60)
+for n in [0, 1, 2, 3]:
+    z = jn_zeros(n, 5)
+    print(f"  {n:>2}  " + "  ".join(f"{zi:10.6f}" for zi in z))
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-bessel-zeros
+#| fig-cap: "The first five positive zeros of $J_0$, $J_1$, $J_2$, and $J_3$ (marked by colored dots on the respective curves).  The zeros interlace between adjacent orders: between any two consecutive zeros of $J_\\nu$ there is exactly one zero of $J_{\\nu+1}$."
+
+x_vals = np.linspace(0.01, 20, 2000)
+J_sym_funcs = [sym.lambdify(x_sym, sym.besselj(n, x_sym), bessel_modules)
+               for n in range(4)]
+
+fig, ax = plt.subplots(figsize=(11, 4.5))
+
+for n, color, Jf in zip(range(4), plt.cm.tab10(np.arange(4)), J_sym_funcs):
+    ax.plot(x_vals, Jf(x_vals), color=color, lw=2, label=f'$J_{n}(x)$')
+    zeros = jn_zeros(n, 5)
+    ax.scatter(zeros, np.zeros_like(zeros), color=color, s=55,
+               zorder=5, edgecolors='black', linewidths=0.6)
+
+ax.axhline(0, color='gray', lw=0.9, ls='--')
+ax.set_xlabel('$x$')
+ax.set_ylabel('$J_\\nu(x)$')
+ax.set_title('Zeros of Bessel functions $J_0, J_1, J_2, J_3$ (first five each)')
+ax.set_ylim(-0.55, 1.1)
+ax.legend(fontsize=10, loc='upper right')
+plt.tight_layout()
+plt.show()
+```
+
+### Asymptotic Behavior
+
+For **large $x$**, Bessel functions oscillate like damped cosines:
+$$
+J_\nu(x) \approx \sqrt{\frac{2}{\pi x}}\cos\!\left(x - \frac{\nu\pi}{2} - \frac{\pi}{4}\right),
+\qquad x \to \infty.
+$$
+$$
+Y_\nu(x) \approx \sqrt{\frac{2}{\pi x}}\sin\!\left(x - \frac{\nu\pi}{2} - \frac{\pi}{4}\right),
+\qquad x \to \infty.
+$$
+This shows that the amplitude decays like $x^{-1/2}$ — Bessel functions are damped
+oscillations.  The zeros of $J_\nu$ are asymptotically spaced $\pi$ apart, just like the
+zeros of $\cos$.
+
+For **small $x$** (near the origin):
+$$
+J_\nu(x) \approx \frac{1}{\Gamma(\nu+1)}\!\left(\frac{x}{2}\right)^\nu, \qquad
+Y_0(x) \approx \frac{2}{\pi}\ln x, \qquad
+Y_\nu(x) \approx -\frac{\Gamma(\nu)}{\pi}\!\left(\frac{2}{x}\right)^\nu \quad (\nu > 0).
+$$
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-bessel-asymp
+#| fig-cap: "Left: $J_0(x)$ (blue) and its large-$x$ asymptotic approximation $\\sqrt{2/\\pi x}\\cos(x - \\pi/4)$ (dashed orange). The approximation is excellent for $x \\gtrsim 5$. Right: the relative error $|J_0 - \\text{asymptotic}|/|J_0|$ on a log scale, confirming convergence of the approximation."
+
+x_a = np.linspace(1, 30, 1000)
+J0_exact = jv(0, x_a)
+J0_asymp = np.sqrt(2 / (np.pi * x_a)) * np.cos(x_a - np.pi / 4)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+axes[0].plot(x_a, J0_exact, color='steelblue', lw=2.2, label='$J_0(x)$ (exact)')
+axes[0].plot(x_a, J0_asymp, color='darkorange', lw=1.5, ls='--',
+             label=r'$\sqrt{2/\pi x}\cos(x-\pi/4)$ (asymptotic)')
+axes[0].axhline(0, color='gray', lw=0.7, ls=':')
+axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$J_0(x)$')
+axes[0].set_title('$J_0(x)$ vs large-$x$ asymptotic approximation')
+axes[0].legend(fontsize=9)
+
+rel_err = np.abs(J0_exact - J0_asymp) / (np.abs(J0_exact) + 1e-12)
+axes[1].semilogy(x_a, rel_err, color='seagreen', lw=2)
+axes[1].set_xlabel('$x$'); axes[1].set_ylabel('Relative error')
+axes[1].set_title('Relative error of asymptotic approximation for $J_0$')
+
+plt.tight_layout()
+plt.show()
+```
+
+### Orthogonality
+
+One of the deepest properties of Bessel functions, and the one that makes them useful for
+solving boundary value problems, is their **orthogonality**.  Let $j_{\nu,m}$ denote the
+$m$-th positive zero of $J_\nu$.  Then:
+
+::: {.callout-important}
+## Orthogonality of Bessel Functions
+$$
+\int_0^1 x\, J_\nu\!\left(j_{\nu,m}\,x\right) J_\nu\!\left(j_{\nu,n}\,x\right)\,dx
+= \frac{\delta_{mn}}{2}\,\bigl[J_{\nu+1}(j_{\nu,m})\bigr]^2,
+$$
+where $\delta_{mn}$ is the Kronecker delta.
+:::
+
+The weight function $x$ (rather than $1$) reflects the geometry of polar coordinates —
+integration in polar coordinates carries a factor of $r$.  This orthogonality underlies the
+**Fourier–Bessel series**, the cylindrical analog of a Fourier sine series.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Numerical verification of orthogonality for J_0
+from scipy.integrate import quad
+
+nu_orth = 0
+print(f"Numerical verification of orthogonality for J_{nu_orth}:\n")
+print(f"  (m, n)     integral        expected")
+print("  " + "-"*45)
+
+for m in range(1, 4):
+    for n in range(1, 4):
+        zm = jn_zeros(nu_orth, m)[-1]
+        zn = jn_zeros(nu_orth, n)[-1]
+
+        integrand = lambda t: t * jv(nu_orth, zm * t) * jv(nu_orth, zn * t)
+        result, _ = quad(integrand, 0, 1, limit=200)
+
+        if m == n:
+            expected = 0.5 * jv(nu_orth + 1, zm)**2
+        else:
+            expected = 0.0
+
+        print(f"  ({m}, {n})       {result:+.6f}       {expected:+.6f}")
+```
+
+---
+
+## Application: Normal Modes of a Circular Drumhead
+
+We now return to the vibrating drum that motivated Bessel's equation.  The drum occupies
+the disk $0 \leq r \leq R$ and is clamped at its boundary: $u(R, \theta, t) = 0$.
+
+For **radially symmetric modes** (no $\theta$ dependence), the spatial factor satisfies
+Bessel's equation of order $0$, and the boundary condition $u(R) = 0$ requires $J_0(\lambda R) = 0$,
+i.e., $\lambda R = j_{0,m}$ for $m = 1, 2, 3, \ldots$ The normal mode frequencies are
+$$
+\omega_{0,m} = \frac{c\, j_{0,m}}{R},
+$$
+where $c$ is the wave speed.  The first three radially symmetric mode shapes are
+$J_0(j_{0,1}\,r/R)$, $J_0(j_{0,2}\,r/R)$, $J_0(j_{0,3}\,r/R)$, each with $m-1$ nodal
+circles in the interior.
+
+For **non-radially-symmetric modes** of azimuthal order $\nu$, the boundary condition
+$J_\nu(\lambda R) = 0$ gives frequencies $\omega_{\nu,m} = c\,j_{\nu,m}/R$.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-drum-modes
+#| fig-cap: "Radial profiles (left) and two-dimensional mode shapes (right) of the first three radially symmetric normal modes of a circular drum. Each mode $J_0(j_{0,m}\\,r/R)$ has $m-1$ interior nodal circles (locations where the membrane does not move). The natural frequencies are proportional to the zeros $j_{0,1} \\approx 2.405$, $j_{0,2} \\approx 5.520$, and $j_{0,3} \\approx 8.654$."
+
+R = 1.0   # drum radius
+zeros_J0 = jn_zeros(0, 3)   # j_{0,1}, j_{0,2}, j_{0,3}
+
+r_vals = np.linspace(0, R, 500)
+
+fig, axes = plt.subplots(1, 4, figsize=(14, 4))
+colors_mode = ['steelblue', 'darkorange', 'seagreen']
+
+# Left panel: radial profiles
+ax0 = axes[0]
+for m, (zm, color) in enumerate(zip(zeros_J0, colors_mode), start=1):
+    ax0.plot(r_vals, jv(0, zm * r_vals / R), color=color, lw=2.2,
+             label=f'$m={m}$, $j_{{0,{m}}}={zm:.3f}$')
+ax0.axhline(0, color='gray', lw=0.7, ls='--')
+ax0.set_xlabel('$r/R$'); ax0.set_ylabel('$J_0(j_{0,m}\\,r/R)$')
+ax0.set_title('Radial profiles')
+ax0.legend(fontsize=8)
+
+# 2D mode shape plots
+theta = np.linspace(0, 2*np.pi, 300)
+r_2d  = np.linspace(0, R, 300)
+R_grid, T_grid = np.meshgrid(r_2d, theta)
+X = R_grid * np.cos(T_grid)
+Y = R_grid * np.sin(T_grid)
+
+for ax, (zm, color, m) in zip(axes[1:], zip(zeros_J0, colors_mode, range(1, 4))):
+    Z = jv(0, zm * R_grid / R)
+    cp = ax.contourf(X, Y, Z, levels=40, cmap='RdBu_r')
+    # Draw nodal circles (zero-crossings of J_0 inside the drum)
+    inner_zeros = zeros_J0[:m-1]
+    for iz in inner_zeros:
+        r_node = iz / zm * R
+        circle = plt.Circle((0, 0), r_node, color='black', fill=False,
+                             lw=1.2, ls='--')
+        ax.add_patch(circle)
+    ax.set_aspect('equal'); ax.set_axis_off()
+    ax.set_title(f'Mode $m={m}$\n$\\omega_{{0,{m}}} = c\\cdot{zm:.3f}/R$', fontsize=9)
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+## Why are drums not perfectly harmonic?
+For a **string**, the natural frequencies are integer multiples of the fundamental:
+$\omega_n = n\omega_1$ — the overtones are harmonics.  For a **circular drum**, the
+frequencies are proportional to $j_{0,1}, j_{0,2}, j_{0,3}, \ldots \approx 2.405,\,5.520,\,8.654,\ldots$
+These are *not* in a simple integer ratio, which is why a drum does not produce a
+clear musical pitch the way a string does.  This is directly a consequence of the
+zeros of Bessel functions being irrational and non-uniformly spaced.
+:::
+
+---
+
+## Symbolic Differentiation and the Derivative Formula
+
+We conclude with a SymPy demonstration of the derivative formula
+$\frac{d}{dx}[x^{-\nu}J_\nu(x)] = -x^{-\nu}J_{\nu+1}(x)$, which encodes an elegant
+downward-shift property.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x', positive=True)
+
+print("Verifying derivative formulas for Bessel functions:\n")
+for nu_val in [0, 1, 2]:
+    Jnu  = sym.besselj(nu_val, x)
+    Jnup1 = sym.besselj(nu_val + 1, x)
+    Jnum1 = sym.besselj(nu_val - 1, x)
+
+    # d/dx [x^nu J_nu] = x^nu J_{nu-1}
+    lhs1 = sym.diff(x**nu_val * Jnu, x)
+    rhs1 = x**nu_val * Jnum1
+    res1 = sym.simplify(lhs1 - rhs1)
+    display(Math(
+        rf"\frac{{d}}{{dx}}\left[x^{nu_val} J_{nu_val}(x)\right] - "
+        rf"x^{nu_val} J_{{{nu_val-1}}}(x) = " + sym.latex(res1)
+    ))
+
+    # d/dx [x^{-nu} J_nu] = -x^{-nu} J_{nu+1}
+    lhs2 = sym.diff(x**(-nu_val) * Jnu, x)
+    rhs2 = -x**(-nu_val) * Jnup1
+    res2 = sym.simplify(lhs2 - rhs2)
+    display(Math(
+        rf"\frac{{d}}{{dx}}\left[x^{{-{nu_val}}} J_{nu_val}(x)\right] + "
+        rf"x^{{-{nu_val}}} J_{{{nu_val+1}}}(x) = " + sym.latex(res2)
+    ))
+    print()
+```
+
+---
+
+## Summary
+
+| Object | Definition / Key fact |
+|---|---|
+| **Bessel's equation** | $x^2 y'' + xy' + (x^2 - \nu^2)y = 0$; regular singular point at $x=0$ |
+| **Indicial roots** | $r = \pm\nu$; larger root $r=\nu$ gives the well-behaved solution |
+| **$J_\nu(x)$** | $\displaystyle\sum_{k=0}^\infty \frac{(-1)^k}{k!\,\Gamma(\nu+k+1)}\!\left(\frac{x}{2}\right)^{2k+\nu}$; finite at $x=0$ |
+| **$Y_\nu(x)$** | Second independent solution; $Y_\nu(x)\to-\infty$ as $x\to 0^+$ |
+| **General solution** | $y = c_1 J_\nu(x) + c_2 Y_\nu(x)$, $x > 0$ |
+| **Recurrences** | $J_{\nu-1}+J_{\nu+1} = \tfrac{2\nu}{x}J_\nu$; $J_{\nu-1}-J_{\nu+1}=2J_\nu'$ |
+| **Zeros** | Infinitely many: $0 < j_{\nu,1} < j_{\nu,2} < \cdots$; spacing $\to\pi$ |
+| **Asymptotics** | $J_\nu(x)\approx\sqrt{2/\pi x}\cos(x-\nu\pi/2-\pi/4)$ for large $x$ |
+| **Orthogonality** | $\int_0^1 x J_\nu(j_{\nu,m}x)J_\nu(j_{\nu,n}x)\,dx = \tfrac{1}{2}[J_{\nu+1}(j_{\nu,m})]^2\delta_{mn}$ |
+| **SymPy** | `sym.besselj(nu, x)`, `sym.bessely(nu, x)` |
+| **SciPy** | `scipy.special.jv(nu, x)`, `yv(nu, x)`, `jn_zeros(n, k)` |
+
+::: {.callout-important}
+## Key Takeaways
+1. Bessel's equation has a **regular singular point** at $x = 0$; the Frobenius method with
+   root $r = \nu$ produces the series for $J_\nu$.
+2. **$J_\nu(x)$** is bounded at the origin; **$Y_\nu(x)$** is singular there.  In problems
+   where the domain includes $r = 0$, only $J_\nu$ appears.
+3. The positive zeros $j_{\nu,m}$ of $J_\nu$ are the **eigenvalues** of the Bessel boundary
+   value problem; they determine the natural frequencies of circular drums, cylinders, and
+   waveguides.
+4. Bessel functions satisfy elegant **recurrence relations** connecting adjacent orders,
+   verifiable symbolically in SymPy.
+5. For large $x$, Bessel functions behave like **damped sinusoids** with amplitude $\sim x^{-1/2}$.
+6. The **orthogonality** of $\{J_\nu(j_{\nu,m}x)\}$ with weight $x$ on $[0,1]$ underlies
+   Fourier–Bessel series, the cylindrical analog of Fourier sine series.
+:::
+
+---
+
+## Relevant Videos
+
+### Introduction to Bessel functions:
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/S7F6YiNvgVc?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+### Solving Bessel equations:
+
+```{=html}
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          src="https://www.youtube.com/embed/lw4okHO94-E?rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+  </iframe>
+</div>
+```
+
+---
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+## Reuse
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
+
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
