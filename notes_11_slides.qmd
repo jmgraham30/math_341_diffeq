@@ -408,6 +408,13 @@ $$\mathbf{x}'(t)=\Phi(t)\mathbf{c}'(t)+\Phi'(t)\mathbf{c}(t)=\Phi(t)\mathbf{c}'(
 **Set equal to** $A\mathbf{x}+\mathbf{f}(t)$:
 $$\Phi(t)\mathbf{c}'(t)=\mathbf{f}(t)\implies \mathbf{c}'(t)=\Phi(t)^{-1}\mathbf{f}(t).$$
 
+::: {.callout-important}
+## $\Phi(t)^{-1}$ Is Time-Varying
+$\Phi(t)^{-1}$ is **not** a constant matrix — it is the matrix inverse evaluated at each $t$ separately, using the time-varying entries of $\Phi(t)$.  For a $2\times 2$ fundamental matrix this means applying the inverse formula
+$$\Phi(t)^{-1} = \frac{1}{\det\Phi(t)}\begin{pmatrix}d(t)&-b(t)\\-c(t)&a(t)\end{pmatrix}$$
+at every $t$, where $\det\Phi(t)$ is the Wronskian $W(t)$.  This is **distinct** from the constant-matrix inverse $A^{-1}$ from Section 4.2.
+:::
+
 **Integrate:**
 
 ::: {.callout-important}
@@ -424,6 +431,10 @@ $$\mathbf{x}'=\begin{pmatrix}4&3\\-1&0\end{pmatrix}\mathbf{x}+\begin{pmatrix}0\\
 
 $$\Phi(t)=\begin{pmatrix}e^t&-3e^{3t}\\-e^t&e^{3t}\end{pmatrix},\qquad
 \Phi^{-1}(t)=-\frac{1}{2}\begin{pmatrix}e^{-t}&3e^{-t}\\e^{-3t}&e^{-3t}\end{pmatrix}.$$
+
+::: {.callout-note}
+$\Phi^{-1}(t)$ is computed by applying the $2\times 2$ inverse formula to $\Phi(t)$ at each $t$: $\det\Phi(t) = e^t\cdot e^{3t} - (-3e^{3t})(-e^t) = e^{4t}-3e^{4t} = -2e^{4t}$, so $\Phi^{-1}(t) = \tfrac{1}{-2e^{4t}}\bigl[\begin{smallmatrix}e^{3t}&3e^{3t}\\e^t&e^t\end{smallmatrix}\bigr]$, which simplifies to the expression above.
+:::
 
 . . .
 
