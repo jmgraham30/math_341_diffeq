@@ -501,7 +501,86 @@ As $r$ increases through zero, the origin **loses stability** and **two new symm
 :::
 
 
-## Pitchfork: Diagrams
+## Pitchfork: Subcritical $x'=rx+x^3$
+
+The **subcritical** normal form reverses the cubic sign.
+
+**Equilibria:** $x^*=0$ always; $x^*=\pm\sqrt{-r}$ when $r<0$.
+
+**Linearization:** $f'(x)=r+3x^2$
+
+| $r$ | $x^*=0$ | $x^*=\pm\sqrt{-r}$ |
+|:---:|:---:|:---:|
+| $r<0$ | **Stable** | Unstable (exist for $r<0$) |
+| $r=0$ | Non-hyperbolic | Disappear |
+| $r>0$ | **Unstable** | None |
+
+. . .
+
+::: {.callout-important}
+## Why "Hard" or "Dangerous"?
+For $r$ slightly below 0 there are **three equilibria**: one stable ($x^*=0$) flanked by two unstable ones ($\pm\sqrt{-r}$).  As $r$ increases through 0, the two unstable equilibria **collide with the origin and destroy it** — the only remaining behavior is divergence.
+
+There is **no gradual escape**: the system jumps catastrophically.  This is why the subcritical pitchfork appears in engineering contexts such as buckling, where a structure that seems stable can suddenly fail without warning.
+:::
+
+```{python}
+#| label: fig-pf-sub-slides
+#| fig-height: 3.6
+#| echo: false
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.4))
+
+# --- Left: bifurcation diagram ---
+r_neg = np.linspace(-2.0, 0.0, 300)
+r_all = np.linspace(-2.0, 1.5, 400)
+
+# x*=0: stable for r<0 (solid), unstable for r>0 (dashed)
+axes[0].plot(r_all[r_all <= 0], np.zeros(np.sum(r_all <= 0)),
+             color='steelblue', lw=2.5, label='$x^*=0$ stable')
+axes[0].plot(r_all[r_all >= 0], np.zeros(np.sum(r_all >= 0)),
+             color='steelblue', lw=2.5, ls='--', label='$x^*=0$ unstable')
+# x*=±√(-r): exist for r<0, unstable
+axes[0].plot(r_neg,  np.sqrt(-r_neg), color='crimson', lw=2.5, ls='--',
+             label=r'$x^*=\pm\sqrt{-r}$ unstable')
+axes[0].plot(r_neg, -np.sqrt(-r_neg), color='crimson', lw=2.5, ls='--')
+axes[0].plot(0, 0, 'ko', markersize=9, zorder=5, label='Bifurcation $r=0$')
+axes[0].axvline(0, color='k', lw=0.5, ls=':')
+axes[0].axhline(0, color='k', lw=0.5)
+axes[0].set_xlabel('$r$'); axes[0].set_ylabel('$x^*$')
+axes[0].set_title('Subcritical bifurcation diagram\n'
+                  r"$x'=rx+x^3$  — Solid: stable, Dashed: unstable")
+axes[0].legend(fontsize=7.5)
+
+# --- Right: solutions for r = -0.5 (three equilibria) and r = +0.3 (all diverge) ---
+t_ev = np.linspace(0, 4, 500)
+
+# r = -0.5: basin of attraction of x*=0 is |x0| < sqrt(0.5) ≈ 0.707
+r_sub = -0.5
+xe_u  = np.sqrt(-r_sub)          # ≈ 0.707  (unstable eq)
+f_sub = lambda t, x: [r_sub*x[0] + x[0]**3]
+for x0, color in zip([-0.5, -0.3, 0.0, 0.3, 0.5, 0.75, -0.75],
+                     plt.cm.coolwarm(np.linspace(0.05, 0.95, 7))):
+    sol = solve_ivp(f_sub, (0, 4), [x0], t_eval=t_ev, max_step=0.01,
+                    events=lambda t, y: abs(y[0]) - 6)
+    axes[1].plot(sol.t, np.clip(sol.y[0], -5, 5), color=color, lw=1.8)
+
+axes[1].axhline( xe_u, color='crimson', ls='--', lw=1.8,
+                 label=f'$x^*=+{xe_u:.2f}$ (unstable)')
+axes[1].axhline(-xe_u, color='crimson', ls='--', lw=1.8,
+                 label=f'$x^*=-{xe_u:.2f}$ (unstable)')
+axes[1].axhline(0, color='steelblue', ls='--', lw=1.5, label='$x^*=0$ (stable)')
+axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
+axes[1].set_title(f'Solutions ($r={r_sub}$): initial conditions inside $|x_0|<{xe_u:.2f}$\n'
+                  'converge to 0; outside diverge — a "hard" boundary')
+axes[1].legend(fontsize=7); axes[1].set_ylim(-4, 4)
+
+plt.suptitle(r"Subcritical Pitchfork: $x'=rx+x^3$", fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+
+## Pitchfork: Diagrams (Supercritical)
 
 ```{python}
 #| label: fig-pf-slides
@@ -583,7 +662,7 @@ plt.tight_layout(); plt.show()
 |---|---|
 | **Saddle-node** | Stable + unstable pair created/destroyed |
 | **Transcritical** | Two equilibria exchange stability |
-| **Pitchfork** | Origin loses stability; symmetric pair born (super) or disappears (sub) |
+| **Pitchfork** | Origin loses stability; symmetric pair born **(supercritical)** or unstable pair annihilates origin **(subcritical — dangerous)** |
 
 
 # Application: Spruce Budworm {background-color="#1a5276"}
@@ -654,7 +733,7 @@ The two stable states are clearly visible: initial populations below the unstabl
 
 - When $f'(x^*)=0$ (non-hyperbolic), higher-order terms decide — the linearization is **inconclusive**.
 
-- A **bifurcation** is a qualitative change in equilibrium structure. The three normal forms are **saddle-node**, **transcritical**, and **pitchfork**.
+- A **bifurcation** is a qualitative change in equilibrium structure. The three normal forms are **saddle-node**, **transcritical**, and **pitchfork**. The pitchfork comes in two flavors: **supercritical** (soft, gradual transition) and **subcritical** (hard, catastrophic transition — important in engineering applications such as buckling).
 
 - Real applications like the spruce budworm exhibit **bistability** and **hysteresis** — phenomena impossible to see from a single solution curve, but immediately apparent from the bifurcation diagram.
 :::
