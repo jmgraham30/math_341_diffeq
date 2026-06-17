@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Nonlinear Systems — Worked Examples – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#linearization-of-nonlinear-systems" id="toc-linearization-of-nonlinear-systems" class="nav-link active" data-scroll-target="#linearization-of-nonlinear-systems">§5.1 Linearization of Nonlinear Systems</a>
+  <ul class="collapse">
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example 1 — Full Nonlinear Analysis: Two Equilibria</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example 2 — Nonlinear System with a Parameter</a></li>
+  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example 3 — Orbit Equation via <span class="math inline">\(dy/dx\)</span></a></li>
+  </ul></li>
+  <li><a href="#nonlinear-mechanics" id="toc-nonlinear-mechanics" class="nav-link" data-scroll-target="#nonlinear-mechanics">§5.2 Nonlinear Mechanics</a>
+  <ul class="collapse">
+  <li><a href="#example-4" id="toc-example-4" class="nav-link" data-scroll-target="#example-4">Example 4 — Conservative System: Potential Energy and Energy Orbits</a></li>
+  <li><a href="#example-5" id="toc-example-5" class="nav-link" data-scroll-target="#example-5">Example 5 — Nonlinear Spring: Energy Orbits and Period</a></li>
+  <li><a href="#example-6" id="toc-example-6" class="nav-link" data-scroll-target="#example-6">Example 6 — Nonlinear Mechanics IVP with Linearization Check</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="examples_10.ipynb" download="examples_10.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Nonlinear Systems — Worked Examples</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="setup" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np                        <span class="co"># NumPy for numerical computations</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym                       <span class="co"># SymPy for symbolic mathematics</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl                  <span class="co"># Matplotlib for plotting</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt           <span class="co"># Matplotlib pyplot interface</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp     <span class="co"># SciPy ODE solver</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>In this document we work through fully solved examples for the topics covered in Sections 5.1 and 5.2 of the text <span class="citation" data-cites="logan2015first">(<a href="#ref-logan2015first" role="doc-biblioref">Logan 2015</a>)</span>:</p>
+<ul>
+<li><strong>§5.1</strong> — <strong>Linearization of nonlinear systems</strong>: finding equilibria of <span class="math inline">\(\mathbf{x}' = \mathbf{F}(\mathbf{x})\)</span>, classifying them via the <strong>Jacobian matrix</strong> <span class="math inline">\(J = D\mathbf{F}\)</span>, sketching nullclines and phase portraits, and analyzing systems with a parameter. We also illustrate finding exact orbit equations via <span class="math inline">\(dy/dx\)</span>.</li>
+<li><strong>§5.2</strong> — <strong>Nonlinear mechanics</strong>: converting second-order equations to first-order systems, finding <strong>potential energy</strong> functions, writing conservation-of-energy laws, plotting constant-energy orbits in the phase plane, and the nonlinear pendulum.</li>
+</ul>
+<p>Each example is worked “by hand” first and then verified or illustrated using <a href="https://numpy.org/">NumPy</a>, <a href="https://www.sympy.org/">SymPy</a>, and <a href="https://scipy.org/">SciPy</a>.</p>
+<hr>
+<section id="linearization-of-nonlinear-systems" class="level2">
+<h2 class="anchored" data-anchor-id="linearization-of-nonlinear-systems">§5.1 Linearization of Nonlinear Systems</h2>
+<p>Given a nonlinear autonomous system <span class="math inline">\(x' = F(x,y)\)</span>, <span class="math inline">\(y' = G(x,y)\)</span>, an <strong>equilibrium</strong> (critical point) is a point <span class="math inline">\((x^*, y^*)\)</span> where <span class="math inline">\(F = G = 0\)</span>. Near each isolated equilibrium the behavior is approximated by the <strong>linearized system</strong></p>
+<p><span class="math display">\[
+\mathbf{u}' = J(x^*, y^*)\,\mathbf{u}, \qquad
+J = \begin{pmatrix} F_x &amp; F_y \\ G_x &amp; G_y \end{pmatrix},
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{u} = \mathbf{x} - \mathbf{x}^*\)</span> and <span class="math inline">\(J(x^*,y^*)\)</span> is the <strong>Jacobian</strong> evaluated at the equilibrium. The eigenvalues of <span class="math inline">\(J\)</span> classify the equilibrium type and stability, provided the equilibrium is <strong>hyperbolic</strong> (no eigenvalue has zero real part).</p>
+<hr>
+<section id="example-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-1">Example 1 — Full Nonlinear Analysis: Two Equilibria</h3>
+<blockquote class="blockquote">
+<p>For the nonlinear system <span class="math display">\[
+x' = x - xy, \qquad y' = -y + x^2,
+\]</span> <strong>(a)</strong> find all equilibria, <strong>(b)</strong> classify each via the Jacobian, <strong>(c)</strong> find and sketch the nullclines, and <strong>(d)</strong> sketch the phase portrait.</p>
+</blockquote>
+<section id="ex1-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex1-by-hand">By Hand</h4>
+<p><strong>Step 1 — Find the equilibria.</strong></p>
+<p>Set <span class="math inline">\(F = x - xy = x(1-y) = 0\)</span> and <span class="math inline">\(G = -y + x^2 = 0\)</span> simultaneously.</p>
+<p>From <span class="math inline">\(F = 0\)</span>: either <span class="math inline">\(x = 0\)</span> or <span class="math inline">\(y = 1\)</span>.</p>
+<ul>
+<li><strong>Case <span class="math inline">\(x = 0\)</span>:</strong> <span class="math inline">\(G = -y + 0 = 0 \Rightarrow y = 0\)</span>. Equilibrium: <span class="math inline">\((0, 0)\)</span>.</li>
+<li><strong>Case <span class="math inline">\(y = 1\)</span>:</strong> <span class="math inline">\(G = -1 + x^2 = 0 \Rightarrow x = \pm 1\)</span>. Equilibria: <span class="math inline">\((1, 1)\)</span> and <span class="math inline">\((-1, 1)\)</span>.</li>
+</ul>
+<p>There are <strong>three equilibria</strong>: <span class="math inline">\((0,0)\)</span>, <span class="math inline">\((1,1)\)</span>, <span class="math inline">\((-1,1)\)</span>.</p>
+<p><strong>Step 2 — Compute the Jacobian.</strong></p>
+<p><span class="math display">\[
+J = \begin{pmatrix} \partial F/\partial x &amp; \partial F/\partial y \\
+                    \partial G/\partial x &amp; \partial G/\partial y \end{pmatrix}
+  = \begin{pmatrix} 1 - y &amp; -x \\ 2x &amp; -1 \end{pmatrix}.
+\]</span></p>
+<p><strong>Step 3 — Classify each equilibrium.</strong></p>
+<p><em>At <span class="math inline">\((0, 0)\)</span>:</em></p>
+<p><span class="math display">\[
+J(0,0) = \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; -1 \end{pmatrix}.
+\]</span></p>
+<p>Eigenvalues: <span class="math inline">\(\lambda_1 = 1\)</span>, <span class="math inline">\(\lambda_2 = -1\)</span> (read directly from the diagonal). Since the eigenvalues are real with opposite signs, <span class="math inline">\((0,0)\)</span> is an <strong>unstable saddle point</strong>.</p>
+<p><em>At <span class="math inline">\((1, 1)\)</span>:</em></p>
+<p><span class="math display">\[
+J(1,1) = \begin{pmatrix} 1-1 &amp; -1 \\ 2 &amp; -1 \end{pmatrix}
+        = \begin{pmatrix} 0 &amp; -1 \\ 2 &amp; -1 \end{pmatrix}.
+\]</span></p>
+<p>Characteristic equation: <span class="math display">\[
+\det(J - \lambda I) = \lambda(\lambda+1) + 2 = \lambda^2 + \lambda + 2 = 0.
+\]</span> <span class="math display">\[
+\lambda = \frac{-1 \pm \sqrt{1 - 8}}{2} = \frac{-1 \pm i\sqrt{7}}{2}.
+\]</span></p>
+<p>Real part <span class="math inline">\(\alpha = -\tfrac{1}{2} &lt; 0\)</span>, so <span class="math inline">\((1,1)\)</span> is an <strong>asymptotically stable spiral sink</strong>.</p>
+<p><em>At <span class="math inline">\((-1, 1)\)</span>:</em></p>
+<p><span class="math display">\[
+J(-1,1) = \begin{pmatrix} 0 &amp; 1 \\ -2 &amp; -1 \end{pmatrix}.
+\]</span></p>
+<p>Characteristic equation: <span class="math display">\[
+\lambda^2 + \lambda + 2 = 0 \quad\Longrightarrow\quad
+\lambda = \frac{-1 \pm i\sqrt{7}}{2}.
+\]</span></p>
+<p>Same eigenvalues as <span class="math inline">\((1,1)\)</span>, so <span class="math inline">\((-1,1)\)</span> is also an <strong>asymptotically stable spiral sink</strong>.</p>
+<p><strong>Step 4 — Nullclines.</strong></p>
+<ul>
+<li><span class="math inline">\(x\)</span>-nullcline (<span class="math inline">\(x' = 0\)</span>): <span class="math inline">\(x(1 - y) = 0\)</span>, i.e.&nbsp;<span class="math inline">\(x = 0\)</span> or <span class="math inline">\(y = 1\)</span>.</li>
+<li><span class="math inline">\(y\)</span>-nullcline (<span class="math inline">\(y' = 0\)</span>): <span class="math inline">\(-y + x^2 = 0\)</span>, i.e.&nbsp;<span class="math inline">\(y = x^2\)</span> (a parabola).</li>
+</ul>
+<p><span class="math display">\[
+\boxed{\text{Equilibria: } (0,0) \text{ saddle};\quad (1,1),(-1,1) \text{ stable spiral sinks.}}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Reading stability from <span class="math inline">\(\tau\)</span> and <span class="math inline">\(\delta\)</span>.</strong> For the Jacobian at <span class="math inline">\((1,1)\)</span>: <span class="math inline">\(\tau = \operatorname{tr}(J) = 0 + (-1) = -1 &lt; 0\)</span> and <span class="math inline">\(\delta = \det(J) = (0)(-1) - (-1)(2) = 2 &gt; 0\)</span>. The discriminant <span class="math inline">\(\tau^2 - 4\delta = 1 - 8 = -7 &lt; 0\)</span>, confirming complex eigenvalues with negative real part — a spiral sink. This trace-determinant check is often faster than computing eigenvalues explicitly.</p>
+</div>
+</div>
+</section>
+<section id="ex1-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex1-sympy">Using SymPy</h4>
+<div id="ex1-sympy" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> sym.symbols(<span class="st">'x y'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>F1 <span class="op">=</span> x<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> y)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>G1 <span class="op">=</span> <span class="op">-</span>y <span class="op">+</span> x<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Jacobian</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>J1 <span class="op">=</span> sym.Matrix([[sym.diff(F1,x), sym.diff(F1,y)],</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 [sym.diff(G1,x), sym.diff(G1,y)]])</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'J = '</span> <span class="op">+</span> sym.latex(J1)))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibria</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>equil1 <span class="op">=</span> sym.solve([F1, G1], [x, y])</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Equilibria: }'</span> <span class="op">+</span> sym.latex(equil1)))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Classify each</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pt <span class="kw">in</span> equil1:</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    Jpt <span class="op">=</span> J1.subs([(x, pt[<span class="dv">0</span>]), (y, pt[<span class="dv">1</span>])])</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    eigs <span class="op">=</span> Jpt.eigenvals()</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    tau  <span class="op">=</span> Jpt.trace()</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    delta <span class="op">=</span> Jpt.det()</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    display(Math(<span class="vs">r'</span><span class="kw">(</span><span class="vs">'</span> <span class="op">+</span> sym.latex(pt[<span class="dv">0</span>]) <span class="op">+</span> <span class="vs">r','</span> <span class="op">+</span> sym.latex(pt[<span class="dv">1</span>]) <span class="op">+</span> <span class="vs">r'</span><span class="er">)</span><span class="vs">:</span><span class="er">\</span><span class="vs">quad'</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                 <span class="op">+</span> <span class="vs">r'</span><span class="ch">\t</span><span class="vs">au='</span> <span class="op">+</span> sym.latex(tau)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                 <span class="op">+</span> <span class="vs">r',</span><span class="ch">\;</span><span class="dv">\d</span><span class="vs">elta='</span> <span class="op">+</span> sym.latex(delta)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                 <span class="op">+</span> <span class="vs">r',</span><span class="ch">\;</span><span class="er">\</span><span class="vs">lambda='</span> <span class="op">+</span> sym.latex(<span class="bu">list</span>(eigs.keys()))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex1-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J = \left[\begin{matrix}1 - y &amp; - x\\2 x &amp; -1\end{matrix}\right]\)</span></p>
+</div>
+<div id="ex1-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Equilibria: }\left[ \left( -1, \  1\right), \  \left( 0, \  0\right), \  \left( 1, \  1\right)\right]\)</span></p>
+</div>
+<div id="ex1-sympy-3" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle (-1,1):\quad\tau=-1,\;\delta=2,\;\lambda=\left[ - \frac{1}{2} - \frac{\sqrt{7} i}{2}, \  - \frac{1}{2} + \frac{\sqrt{7} i}{2}\right]\)</span></p>
+</div>
+<div id="ex1-sympy-4" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle (0,0):\quad\tau=0,\;\delta=-1,\;\lambda=\left[ 1, \  -1\right]\)</span></p>
+</div>
+<div id="ex1-sympy-5" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle (1,1):\quad\tau=-1,\;\delta=2,\;\lambda=\left[ - \frac{1}{2} - \frac{\sqrt{7} i}{2}, \  - \frac{1}{2} + \frac{\sqrt{7} i}{2}\right]\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex1" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sys1(t, state):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    xv, yv <span class="op">=</span> state</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [xv<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> yv), <span class="op">-</span>yv <span class="op">+</span> xv<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Nullclines</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>xr <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">400</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>,   color<span class="op">=</span><span class="st">'steelblue'</span>,  lw<span class="op">=</span><span class="fl">1.6</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">x'=0</span><span class="dv">$</span><span class="vs">: </span><span class="dv">$</span><span class="vs">x=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">1</span>,   color<span class="op">=</span><span class="st">'steelblue'</span>,  lw<span class="op">=</span><span class="fl">1.6</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">x'=0</span><span class="dv">$</span><span class="vs">: </span><span class="dv">$</span><span class="vs">y=1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ax.plot(xr, xr<span class="op">**</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.6</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">y'=0</span><span class="dv">$</span><span class="vs">: </span><span class="dv">$</span><span class="vs">y=x</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Direction field</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">20</span>), np.linspace(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3.0</span>, <span class="dv">20</span>))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>U <span class="op">=</span> X<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> Y)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> <span class="op">-</span>Y <span class="op">+</span> X<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>spd <span class="op">=</span> np.sqrt(U<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> V<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>spd[spd <span class="op">==</span> <span class="dv">0</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>ax.quiver(X, Y, U<span class="op">/</span>spd, V<span class="op">/</span>spd, alpha<span class="op">=</span><span class="fl">0.3</span>, color<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>          scale<span class="op">=</span><span class="dv">25</span>, width<span class="op">=</span><span class="fl">0.003</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Trajectories from several initial conditions</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>ic_list <span class="op">=</span> [</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.1</span>, <span class="fl">0.1</span>), (<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>), (<span class="fl">0.5</span>, <span class="fl">2.5</span>), (<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>),</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">1.8</span>, <span class="fl">0.2</span>), (<span class="op">-</span><span class="fl">1.8</span>, <span class="fl">0.2</span>), (<span class="fl">0.3</span>, <span class="fl">2.8</span>), (<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">2.8</span>),</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">1.5</span>, <span class="fl">2.5</span>), (<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">2.5</span>), (<span class="fl">2.0</span>, <span class="fl">1.5</span>), (<span class="op">-</span><span class="fl">2.0</span>, <span class="fl">1.5</span>),</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.8</span>, <span class="fl">0.1</span>), (<span class="op">-</span><span class="fl">0.8</span>, <span class="fl">0.1</span>),</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0 <span class="kw">in</span> ic_list:</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(sys1, [<span class="dv">0</span>, <span class="dv">12</span>], [x0, y0], max_step<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                    dense_output<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    ts <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">1200</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    xs, ys <span class="op">=</span> sol.sol(ts)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> (np.<span class="bu">abs</span>(xs) <span class="op">&lt;</span> <span class="fl">2.6</span>) <span class="op">&amp;</span> (np.<span class="bu">abs</span>(ys) <span class="op">&lt;</span> <span class="fl">3.1</span>) <span class="op">&amp;</span> (ys <span class="op">&gt;</span> <span class="op">-</span><span class="fl">0.6</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    ax.plot(xs[mask], ys[mask], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.0</span>, alpha<span class="op">=</span><span class="fl">0.55</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibria</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>,  <span class="dv">0</span>, <span class="st">'s'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,    ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Saddle $(0,0)$'</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">1</span>,  <span class="dv">1</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>,  ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Sink $(1,1)$'</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>,  ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Sink $(-1,1)$'</span>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">3.0</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Phase portrait: </span><span class="dv">$</span><span class="vs">x'=x</span><span class="kw">(</span><span class="vs">1-y</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">y'=-y</span><span class="op">+</span><span class="vs">x</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_10_files/figure-html/fig-ex1-output-1.png" width="1034" height="883" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Phase portrait for Example 1. The <span class="math inline">\(x\)</span>-nullclines <span class="math inline">\(x=0\)</span> and <span class="math inline">\(y=1\)</span> (blue dashed) and the <span class="math inline">\(y\)</span>-nullcline <span class="math inline">\(y=x^2\)</span> (orange dashed) are shown. Equilibria are marked: saddle at <span class="math inline">\((0,0)\)</span> (square), stable spiral sinks at <span class="math inline">\((\pm1,1)\)</span> (circles). Trajectories are integrated numerically.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-2" class="level3">
+<h3 class="anchored" data-anchor-id="example-2">Example 2 — Nonlinear System with a Parameter</h3>
+<blockquote class="blockquote">
+<p>Consider the system <span class="math display">\[
+x' = x(2 - x - ky), \qquad y' = y(3 - 2y - x),
+\]</span> where <span class="math inline">\(k\)</span> is a parameter. Find all equilibria in the first quadrant (<span class="math inline">\(x \geq 0\)</span>, <span class="math inline">\(y \geq 0\)</span>) and classify them for the three cases <span class="math inline">\(k = 1\)</span>, <span class="math inline">\(k = 2\)</span>, and <span class="math inline">\(k = 3\)</span>.</p>
+</blockquote>
+<section id="ex2-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex2-by-hand">By Hand</h4>
+<p><strong>Step 1 — Find equilibria (general <span class="math inline">\(k\)</span>).</strong></p>
+<p>Set <span class="math inline">\(F = x(2 - x - ky) = 0\)</span> and <span class="math inline">\(G = y(3 - 2y - x) = 0\)</span>.</p>
+<p>From <span class="math inline">\(F = 0\)</span>: <span class="math inline">\(x = 0\)</span> or <span class="math inline">\(2 - x - ky = 0\)</span>.<br>
+From <span class="math inline">\(G = 0\)</span>: <span class="math inline">\(y = 0\)</span> or <span class="math inline">\(3 - 2y - x = 0\)</span>.</p>
+<p>This gives four combinations in the first quadrant:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(F=0\)</span> branch</th>
+<th style="text-align: center;"><span class="math inline">\(G=0\)</span> branch</th>
+<th style="text-align: left;">Equilibrium</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(x = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(y = 0\)</span></td>
+<td style="text-align: left;"><span class="math inline">\((0, 0)\)</span> always</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x = 0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(3 - 2y = 0\)</span></td>
+<td style="text-align: left;"><span class="math inline">\((0, 3/2)\)</span> always</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(2-x-ky=0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(y = 0\)</span></td>
+<td style="text-align: left;"><span class="math inline">\((2, 0)\)</span> always</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(2-x-ky=0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(3-2y-x=0\)</span></td>
+<td style="text-align: left;">Interior equilibrium (depends on <span class="math inline">\(k\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interior equilibrium</strong> — solve simultaneously:</p>
+<p><span class="math display">\[
+x + ky = 2, \qquad x + 2y = 3.
+\]</span></p>
+<p>Subtract: <span class="math inline">\((2 - k)y = 1\)</span>, so <span class="math inline">\(y^* = \dfrac{1}{2-k}\)</span> (defined when <span class="math inline">\(k \neq 2\)</span>), and <span class="math inline">\(x^* = 2 - ky^* = 2 - \dfrac{k}{2-k} = \dfrac{4 - 2k - k}{2-k} = \dfrac{4-3k}{2-k}\)</span>.</p>
+<p>For the equilibrium to lie in the first quadrant we need <span class="math inline">\(x^* &gt; 0\)</span> and <span class="math inline">\(y^* &gt; 0\)</span>.</p>
+<p><strong>Step 2 — Jacobian.</strong></p>
+<p><span class="math display">\[
+J = \begin{pmatrix} 2 - 2x - ky &amp; -kx \\ -y &amp; 3 - x - 4y \end{pmatrix}.
+\]</span></p>
+<p><strong>Step 3 — Classify the three cases.</strong></p>
+<p><em>Case <span class="math inline">\(k = 1\)</span>:</em> Interior equilibrium: <span class="math inline">\(y^* = 1/(2-1) = 1\)</span>, <span class="math inline">\(x^* = (4-3)/1 = 1\)</span>. Point: <span class="math inline">\((1, 1)\)</span>.</p>
+<p><span class="math display">\[
+J(1,1) = \begin{pmatrix} 2-2-1 &amp; -1 \\ -1 &amp; 3-1-4 \end{pmatrix}
+        = \begin{pmatrix} -1 &amp; -1 \\ -1 &amp; -2 \end{pmatrix}.
+\]</span></p>
+<p><span class="math inline">\(\tau = -3\)</span>, <span class="math inline">\(\delta = 2 - 1 = 1\)</span>, <span class="math inline">\(\Delta = 9 - 4 = 5 &gt; 0\)</span>. <span class="math inline">\(\lambda = (-3 \pm \sqrt{5})/2\)</span>. Both negative. <span class="math inline">\((1,1)\)</span> is an <strong>asymptotically stable node</strong>.</p>
+<p><em>Case <span class="math inline">\(k = 2\)</span>:</em> <span class="math inline">\(y^* = 1/(2-2)\)</span> — undefined. The two linear equations <span class="math inline">\(x + 2y = 2\)</span> and <span class="math inline">\(x + 2y = 3\)</span> are <strong>parallel</strong> (inconsistent). There is <strong>no interior equilibrium</strong>; the only first-quadrant equilibria are <span class="math inline">\((0,0)\)</span>, <span class="math inline">\((0, 3/2)\)</span>, <span class="math inline">\((2, 0)\)</span>.</p>
+<p><em>Case <span class="math inline">\(k = 3\)</span>:</em> <span class="math inline">\(y^* = 1/(2-3) = -1 &lt; 0\)</span>. The interior equilibrium lies outside the first quadrant. No interior equilibrium in the biologically relevant region.</p>
+<p><span class="math display">\[
+\boxed{
+k=1: \text{ interior equilibrium }(1,1)\text{ is a stable node.}\quad
+k=2: \text{ no interior equilibrium.}\quad
+k=3: \text{ no first-quadrant interior equilibrium.}
+}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ecological interpretation.</strong> This system models two competing species with populations <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. The parameter <span class="math inline">\(k\)</span> controls how strongly species <span class="math inline">\(y\)</span> suppresses species <span class="math inline">\(x\)</span>. When <span class="math inline">\(k=1\)</span> (moderate competition) both species coexist at <span class="math inline">\((1,1)\)</span>. For <span class="math inline">\(k \geq 2\)</span> the competition is strong enough that coexistence is impossible and one species excludes the other — a phenomenon known as the <strong>competitive exclusion principle</strong>.</p>
+</div>
+</div>
+</section>
+<section id="ex2-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex2-sympy">Using SymPy</h4>
+<div id="ex2-sympy" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> sym.Symbol(<span class="st">'k'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>F2 <span class="op">=</span> x<span class="op">*</span>(<span class="dv">2</span> <span class="op">-</span> x <span class="op">-</span> k<span class="op">*</span>y)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>G2 <span class="op">=</span> y<span class="op">*</span>(<span class="dv">3</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>y <span class="op">-</span> x)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>J2 <span class="op">=</span> sym.Matrix([[sym.diff(F2,x), sym.diff(F2,y)],</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                 [sym.diff(G2,x), sym.diff(G2,y)]])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'J = '</span> <span class="op">+</span> sym.latex(J2)))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Interior equilibrium (general k)</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>interior <span class="op">=</span> sym.solve([<span class="dv">2</span> <span class="op">-</span> x <span class="op">-</span> k<span class="op">*</span>y, <span class="dv">3</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>y <span class="op">-</span> x], [x, y])</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Interior equilibrium </span><span class="kw">(</span><span class="vs">general }k</span><span class="ch">\t</span><span class="vs">ext{</span><span class="kw">)</span><span class="vs">: }'</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> sym.latex(interior)))</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Classify for each k value</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> kval <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    display(Math(<span class="vs">r'--- k = '</span> <span class="op">+</span> <span class="bu">str</span>(kval) <span class="op">+</span> <span class="vs">r' ---'</span>))</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    eqs_k <span class="op">=</span> sym.solve([F2.subs(k, kval), G2.subs(k, kval)], [x, y])</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pt <span class="kw">in</span> eqs_k:</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> pt[<span class="dv">0</span>] <span class="op">&gt;=</span> <span class="dv">0</span> <span class="kw">and</span> pt[<span class="dv">1</span>] <span class="op">&gt;=</span> <span class="dv">0</span>:</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            Jpt <span class="op">=</span> J2.subs([(k, kval), (x, pt[<span class="dv">0</span>]), (y, pt[<span class="dv">1</span>])])</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            tau_  <span class="op">=</span> Jpt.trace()</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>            delta_ <span class="op">=</span> Jpt.det()</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>            display(Math(<span class="vs">r'</span><span class="er">\</span><span class="vs">quad</span><span class="kw">(</span><span class="vs">'</span> <span class="op">+</span> sym.latex(pt[<span class="dv">0</span>]) <span class="op">+</span> <span class="vs">r','</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                        <span class="op">+</span> sym.latex(pt[<span class="dv">1</span>]) <span class="op">+</span> <span class="vs">r'</span><span class="er">)</span><span class="vs">:</span><span class="er">\</span><span class="vs">quad'</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                        <span class="op">+</span> <span class="vs">r'</span><span class="ch">\t</span><span class="vs">au='</span> <span class="op">+</span> sym.latex(tau_)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                        <span class="op">+</span> <span class="vs">r',</span><span class="ch">\;</span><span class="dv">\d</span><span class="vs">elta='</span> <span class="op">+</span> sym.latex(delta_)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex2-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J = \left[\begin{matrix}- k y - 2 x + 2 &amp; - k x\\- y &amp; - x - 4 y + 3\end{matrix}\right]\)</span></p>
+</div>
+<div id="ex2-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Interior equilibrium (general }k\text{): }\left\{ x : \frac{3 k - 4}{k - 2}, \  y : - \frac{1}{k - 2}\right\}\)</span></p>
+</div>
+<div id="ex2-sympy-3" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle --- k = 1 ---\)</span></p>
+</div>
+<div id="ex2-sympy-4" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(0,0):\quad\tau=5,\;\delta=6\)</span></p>
+</div>
+<div id="ex2-sympy-5" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(0,\frac{3}{2}):\quad\tau=- \frac{5}{2},\;\delta=- \frac{3}{2}\)</span></p>
+</div>
+<div id="ex2-sympy-6" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(1,1):\quad\tau=-3,\;\delta=1\)</span></p>
+</div>
+<div id="ex2-sympy-7" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(2,0):\quad\tau=-1,\;\delta=-2\)</span></p>
+</div>
+<div id="ex2-sympy-8" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle --- k = 2 ---\)</span></p>
+</div>
+<div id="ex2-sympy-9" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(0,0):\quad\tau=5,\;\delta=6\)</span></p>
+</div>
+<div id="ex2-sympy-10" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(0,\frac{3}{2}):\quad\tau=-4,\;\delta=3\)</span></p>
+</div>
+<div id="ex2-sympy-11" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(2,0):\quad\tau=-1,\;\delta=-2\)</span></p>
+</div>
+<div id="ex2-sympy-12" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle --- k = 3 ---\)</span></p>
+</div>
+<div id="ex2-sympy-13" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(0,0):\quad\tau=5,\;\delta=6\)</span></p>
+</div>
+<div id="ex2-sympy-14" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(0,\frac{3}{2}):\quad\tau=- \frac{11}{2},\;\delta=\frac{15}{2}\)</span></p>
+</div>
+<div id="ex2-sympy-15" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \quad(2,0):\quad\tau=-1,\;\delta=-2\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex2" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">5</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, kval, title <span class="kw">in</span> [</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    (axes[<span class="dv">0</span>], <span class="dv">1</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">k=1</span><span class="dv">$</span><span class="vs">: coexistence node at </span><span class="dv">$</span><span class="kw">(</span><span class="vs">1,1</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    (axes[<span class="dv">1</span>], <span class="dv">3</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">k=3</span><span class="dv">$</span><span class="vs">: no interior equilibrium'</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> sys2(t, s, kv<span class="op">=</span>kval):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        xv, yv <span class="op">=</span> s</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [xv<span class="op">*</span>(<span class="dv">2</span> <span class="op">-</span> xv <span class="op">-</span> kv<span class="op">*</span>yv), yv<span class="op">*</span>(<span class="dv">3</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>yv <span class="op">-</span> xv)]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nullclines</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    xr <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">300</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># x-nullclines: x=0 and y=(2-x)/k</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    ync <span class="op">=</span> (<span class="dv">2</span> <span class="op">-</span> xr)<span class="op">/</span>kval</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    mask_nc <span class="op">=</span> ync <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr[mask_nc], ync[mask_nc], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">x'=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># y-nullclines: y=0 and y=(3-x)/2</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    ync2 <span class="op">=</span> (<span class="dv">3</span> <span class="op">-</span> xr)<span class="op">/</span><span class="dv">2</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    mask_nc2 <span class="op">=</span> ync2 <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr[mask_nc2], ync2[mask_nc2], color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, ls<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="vs">r"</span><span class="dv">$</span><span class="vs">y'=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Trajectories</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    ic_list2 <span class="op">=</span> [(<span class="fl">0.2</span>,<span class="fl">0.2</span>),(<span class="fl">0.5</span>,<span class="fl">1.5</span>),(<span class="fl">1.5</span>,<span class="fl">0.5</span>),(<span class="fl">0.2</span>,<span class="fl">1.2</span>),(<span class="fl">1.2</span>,<span class="fl">0.2</span>),</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                (<span class="fl">0.1</span>,<span class="fl">0.8</span>),(<span class="fl">0.8</span>,<span class="fl">0.1</span>),(<span class="fl">1.8</span>,<span class="fl">0.8</span>),(<span class="fl">0.8</span>,<span class="fl">1.8</span>),(<span class="fl">1.5</span>,<span class="fl">1.5</span>)]</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x0, y0 <span class="kw">in</span> ic_list2:</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>            sol <span class="op">=</span> solve_ivp(sys2, [<span class="dv">0</span>, <span class="dv">20</span>], [x0, y0], max_step<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>                            dense_output<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>            ts <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">1000</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>            xs, ys <span class="op">=</span> sol.sol(ts)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>            msk <span class="op">=</span> (xs <span class="op">&gt;=</span> <span class="dv">0</span>) <span class="op">&amp;</span> (ys <span class="op">&gt;=</span> <span class="dv">0</span>) <span class="op">&amp;</span> (xs <span class="op">&lt;</span> <span class="fl">3.5</span>) <span class="op">&amp;</span> (ys <span class="op">&lt;</span> <span class="fl">2.5</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            ax.plot(xs[msk], ys[msk], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.0</span>, alpha<span class="op">=</span><span class="fl">0.55</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Equilibria</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    ax.plot(<span class="dv">0</span>, <span class="dv">0</span>,   <span class="st">'s'</span>, color<span class="op">=</span><span class="st">'gray'</span>,    ms<span class="op">=</span><span class="dv">8</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    ax.plot(<span class="dv">2</span>, <span class="dv">0</span>,   <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,  ms<span class="op">=</span><span class="dv">8</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    ax.plot(<span class="dv">0</span>, <span class="fl">1.5</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,  ms<span class="op">=</span><span class="dv">8</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> kval <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        ax.plot(<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, ms<span class="op">=</span><span class="dv">10</span>, zorder<span class="op">=</span><span class="dv">6</span>,</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">'Stable node $(1,1)$'</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    ax.set_xlim(<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">3.0</span>)</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">2.5</span>)</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Example 2: competing species for two values of $k$'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_10_files/figure-html/fig-ex2-output-1.png" width="1635" height="742" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Phase portraits for Example 2 with <span class="math inline">\(k=1\)</span> (left) and <span class="math inline">\(k=3\)</span> (right). When <span class="math inline">\(k=1\)</span> there is a stable interior coexistence equilibrium at <span class="math inline">\((1,1)\)</span>. When <span class="math inline">\(k=3\)</span> the interior equilibrium leaves the first quadrant and all orbits approach a boundary equilibrium.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-3" class="level3">
+<h3 class="anchored" data-anchor-id="example-3">Example 3 — Orbit Equation via <span class="math inline">\(dy/dx\)</span></h3>
+<blockquote class="blockquote">
+<p>For the nonlinear system <span class="math display">\[
+x' = y, \qquad y' = x - x^3,
+\]</span> <strong>(a)</strong> find all equilibria, <strong>(b)</strong> derive an equation for the orbits in the phase plane, and <strong>(c)</strong> plot the orbits and classify the equilibria.</p>
+</blockquote>
+<section id="ex3-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex3-by-hand">By Hand</h4>
+<p><strong>Step 1 — Equilibria.</strong></p>
+<p>Set <span class="math inline">\(F = y = 0\)</span> and <span class="math inline">\(G = x - x^3 = x(1 - x^2) = 0\)</span>:</p>
+<p><span class="math display">\[
+y = 0 \quad\text{and}\quad x \in \{0, 1, -1\}.
+\]</span></p>
+<p>Three equilibria: <span class="math inline">\((0, 0)\)</span>, <span class="math inline">\((1, 0)\)</span>, <span class="math inline">\((-1, 0)\)</span>.</p>
+<p><strong>Step 2 — Jacobian and classification.</strong></p>
+<p><span class="math display">\[
+J = \begin{pmatrix} 0 &amp; 1 \\ 1 - 3x^2 &amp; 0 \end{pmatrix}.
+\]</span></p>
+<p><em>At <span class="math inline">\((0, 0)\)</span>:</em> <span class="math inline">\(J = \begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}\)</span>. <span class="math inline">\(\tau = 0\)</span>, <span class="math inline">\(\delta = -1 &lt; 0\)</span>: <strong>unstable saddle</strong>.</p>
+<p><em>At <span class="math inline">\((\pm 1, 0)\)</span>:</em> <span class="math inline">\(J = \begin{pmatrix}0&amp;1\\-2&amp;0\end{pmatrix}\)</span>. <span class="math inline">\(\tau = 0\)</span>, <span class="math inline">\(\delta = 2 &gt; 0\)</span>, <span class="math inline">\(\Delta = -8 &lt; 0\)</span>: eigenvalues <span class="math inline">\(\lambda = \pm i\sqrt{2}\)</span> (purely imaginary). The linearization predicts a <strong>center</strong>, but the nonlinear system must be analyzed more carefully (the nonlinear terms could produce a spiral or a true center). For this system, which is conservative (see below), the nonlinear equilibria are also true centers.</p>
+<p><strong>Step 3 — Orbit equation.</strong></p>
+<p>On orbits, <span class="math inline">\(\dfrac{dy}{dx} = \dfrac{y'}{x'} = \dfrac{x - x^3}{y}\)</span>.</p>
+<p>Separate variables: <span class="math inline">\(y\,dy = (x - x^3)\,dx\)</span>.</p>
+<p>Integrate both sides:</p>
+<p><span class="math display">\[
+\frac{y^2}{2} = \frac{x^2}{2} - \frac{x^4}{4} + C_0.
+\]</span></p>
+<p>Multiply through by <span class="math inline">\(2\)</span>:</p>
+<p><span class="math display">\[
+\boxed{y^2 = x^2 - \frac{x^4}{2} + C,}
+\]</span></p>
+<p>where <span class="math inline">\(C\)</span> is a constant. Each value of <span class="math inline">\(C\)</span> gives one orbit.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Conservation of energy.</strong> This system comes from Newton’s law for a particle with <span class="math inline">\(x'' = x - x^3\)</span>, corresponding to a potential energy <span class="math inline">\(V(x) = -x^2/2 + x^4/4\)</span>. The orbit equation <span class="math inline">\(\frac{1}{2}y^2 + V(x) = E\)</span> (with <span class="math inline">\(E = C/2 + \text{const}\)</span>) is the conservation of energy law, and the orbits are level curves of the total energy <span class="math inline">\(H(x,y) = \frac{1}{2}y^2 - \frac{1}{2}x^2 + \frac{1}{4}x^4\)</span>. This is why the equilibria at <span class="math inline">\((\pm 1, 0)\)</span> are true centers: they are energy minima and the system is conservative (no dissipation), so no energy is lost and orbits must be closed.</p>
+</div>
+</div>
+</section>
+<section id="ex3-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex3-sympy">Using SymPy</h4>
+<div id="ex3-sympy" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>F3 <span class="op">=</span> y</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>G3 <span class="op">=</span> x <span class="op">-</span> x<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>J3 <span class="op">=</span> sym.Matrix([[sym.diff(F3,x), sym.diff(F3,y)],</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                 [sym.diff(G3,x), sym.diff(G3,y)]])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'J = '</span> <span class="op">+</span> sym.latex(J3)))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>equil3 <span class="op">=</span> sym.solve([F3, G3], [x, y])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Equilibria: }'</span> <span class="op">+</span> sym.latex(equil3)))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pt <span class="kw">in</span> equil3:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    Jpt <span class="op">=</span> J3.subs([(x, pt[<span class="dv">0</span>]), (y, pt[<span class="dv">1</span>])])</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    display(Math(<span class="vs">r'</span><span class="kw">(</span><span class="vs">'</span> <span class="op">+</span> sym.latex(pt[<span class="dv">0</span>]) <span class="op">+</span> <span class="vs">r','</span> <span class="op">+</span> sym.latex(pt[<span class="dv">1</span>])</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                <span class="op">+</span> <span class="vs">r'</span><span class="er">)</span><span class="vs">:</span><span class="ch">\;\t</span><span class="vs">au='</span> <span class="op">+</span> sym.latex(Jpt.trace())</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                <span class="op">+</span> <span class="vs">r',</span><span class="ch">\;</span><span class="dv">\d</span><span class="vs">elta='</span> <span class="op">+</span> sym.latex(Jpt.det())))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Orbit equation via separation</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>C_sym <span class="op">=</span> sym.Symbol(<span class="st">'C'</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>orbit_eq <span class="op">=</span> sym.Eq(y<span class="op">**</span><span class="dv">2</span>, x<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> sym.Rational(<span class="dv">1</span>,<span class="dv">2</span>)<span class="op">*</span>x<span class="op">**</span><span class="dv">4</span> <span class="op">+</span> C_sym)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Orbit equation: }'</span> <span class="op">+</span> sym.latex(orbit_eq)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex3-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J = \left[\begin{matrix}0 &amp; 1\\1 - 3 x^{2} &amp; 0\end{matrix}\right]\)</span></p>
+</div>
+<div id="ex3-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Equilibria: }\left[ \left( -1, \  0\right), \  \left( 0, \  0\right), \  \left( 1, \  0\right)\right]\)</span></p>
+</div>
+<div id="ex3-sympy-3" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle (-1,0):\;\tau=0,\;\delta=2\)</span></p>
+</div>
+<div id="ex3-sympy-4" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle (0,0):\;\tau=0,\;\delta=-1\)</span></p>
+</div>
+<div id="ex3-sympy-5" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle (1,0):\;\tau=0,\;\delta=2\)</span></p>
+</div>
+<div id="ex3-sympy-6" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Orbit equation: }y^{2} = C - \frac{x^{4}}{2} + x^{2}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex3" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>xr <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">1.8</span>, <span class="fl">1.8</span>, <span class="dv">1200</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># H(x,y) = y^2/2 - x^2/2 + x^4/4; orbit: y^2 = x^2 - x^4/2 + C</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># At saddle (0,0): H = 0 =&gt; C_saddle = 0 (separatrix)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> C_val, col, lw, alpha <span class="kw">in</span> [</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">0.00</span>, <span class="st">'tomato'</span>,    <span class="fl">2.2</span>, <span class="fl">0.9</span>),   <span class="co"># separatrix</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    (<span class="op">-</span><span class="fl">0.10</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>),   <span class="co"># inner closed orbits around (±1,0)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    (<span class="op">-</span><span class="fl">0.20</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    (<span class="op">-</span><span class="fl">0.35</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    (<span class="op">-</span><span class="fl">0.45</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">0.20</span>, <span class="st">'seagreen'</span>,  <span class="fl">1.4</span>, <span class="fl">0.7</span>),   <span class="co"># outer orbits</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">0.50</span>, <span class="st">'seagreen'</span>,  <span class="fl">1.4</span>, <span class="fl">0.7</span>),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">0.80</span>, <span class="st">'seagreen'</span>,  <span class="fl">1.4</span>, <span class="fl">0.7</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    rhs <span class="op">=</span> xr<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">*</span>xr<span class="op">**</span><span class="dv">4</span> <span class="op">+</span> C_val</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    valid <span class="op">=</span> rhs <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    y_pos <span class="op">=</span>  np.where(valid, np.sqrt(np.maximum(rhs, <span class="dv">0</span>)), np.nan)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    y_neg <span class="op">=</span> <span class="op">-</span>y_pos</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_pos, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span>alpha)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_neg, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span>alpha)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibria</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>ax.plot( <span class="dv">0</span>, <span class="dv">0</span>, <span class="st">'s'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,   ms<span class="op">=</span><span class="dv">10</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Saddle $(0,0)$'</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>ax.plot( <span class="dv">1</span>, <span class="dv">0</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, ms<span class="op">=</span><span class="dv">10</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Centers $(</span><span class="ch">\\</span><span class="st">pm1,0)$'</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, ms<span class="op">=</span><span class="dv">10</span>, zorder<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">1.8</span>, <span class="fl">1.8</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1.2</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">y</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Orbits: </span><span class="dv">$</span><span class="vs">y</span><span class="dv">^</span><span class="vs">2 = x</span><span class="dv">^</span><span class="vs">2 - x</span><span class="dv">^</span><span class="vs">4/2 </span><span class="op">+</span><span class="vs"> C</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_10_files/figure-html/fig-ex3-output-1.png" width="1034" height="737" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Orbits of Example 3 defined by <span class="math inline">\(y^2 = x^2 - x^4/2 + C\)</span> for several values of <span class="math inline">\(C\)</span>. The three equilibria are marked: saddle at <span class="math inline">\((0,0)\)</span> (square) and centers at <span class="math inline">\((\pm 1,0)\)</span> (circles). The separatrix through the saddle (tomato) bounds the two families of closed orbits.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="nonlinear-mechanics" class="level2">
+<h2 class="anchored" data-anchor-id="nonlinear-mechanics">§5.2 Nonlinear Mechanics</h2>
+<p>A second-order autonomous equation <span class="math inline">\(mx'' = F(x)\)</span> (force depends only on position) is converted to a first-order system by setting <span class="math inline">\(y = x'\)</span> (velocity):</p>
+<p><span class="math display">\[
+x' = y, \qquad y' = \frac{F(x)}{m}.
+\]</span></p>
+<p>The <strong>potential energy</strong> is <span class="math inline">\(V(x) = -\displaystyle\int F(x)\,dx\)</span> (with <span class="math inline">\(V(x_0) = 0\)</span> for some reference point). Since <span class="math inline">\(F = -V'(x)\)</span>, the equation of motion is <span class="math inline">\(mx'' = -V'(x)\)</span>. The <strong>total energy</strong> is</p>
+<p><span class="math display">\[
+E = \frac{1}{2}m(x')^2 + V(x) = \frac{1}{2}my^2 + V(x) = \text{const.}
+\]</span></p>
+<p>This <strong>conservation of energy</strong> means orbits in the <span class="math inline">\(xy\)</span> phase plane are level curves of <span class="math inline">\(E\)</span>:</p>
+<p><span class="math display">\[
+y^2 = \frac{2}{m}\bigl[E - V(x)\bigr].
+\]</span></p>
+<hr>
+<section id="example-4" class="level3">
+<h3 class="anchored" data-anchor-id="example-4">Example 4 — Conservative System: Potential Energy and Energy Orbits</h3>
+<blockquote class="blockquote">
+<p>A particle of mass <span class="math inline">\(m = 1\)</span> moves along the <span class="math inline">\(x\)</span>-axis under the force <span class="math inline">\(F(x) = 3x^2 - 3\)</span>.</p>
+<p><strong>(a)</strong> Find <span class="math inline">\(V(x)\)</span> with <span class="math inline">\(V(0) = 0\)</span>. <strong>(b)</strong> Write the conservation of energy law and find the equilibria of the system <span class="math inline">\(x' = y\)</span>, <span class="math inline">\(y' = F(x)\)</span>. <strong>(c)</strong> If the particle starts at <span class="math inline">\(x(0) = 0\)</span> with <span class="math inline">\(x'(0) = 2\)</span>, find the total energy <span class="math inline">\(E\)</span> and plot the orbit.</p>
+</blockquote>
+<section id="ex4-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex4-by-hand">By Hand</h4>
+<p><strong>Step 1 — Potential energy.</strong></p>
+<p><span class="math display">\[
+V(x) = -\int F(x)\,dx = -\int(3x^2 - 3)\,dx = -(x^3 - 3x) + C_0 = -x^3 + 3x + C_0.
+\]</span></p>
+<p>Applying <span class="math inline">\(V(0) = 0\)</span>: <span class="math inline">\(C_0 = 0\)</span>.</p>
+<p><span class="math display">\[
+\boxed{V(x) = -x^3 + 3x.}
+\]</span></p>
+<p><strong>Step 2 — Energy conservation law.</strong></p>
+<p>With <span class="math inline">\(m = 1\)</span> and <span class="math inline">\(y = x'\)</span>:</p>
+<p><span class="math display">\[
+E = \frac{1}{2}y^2 + V(x) = \frac{1}{2}y^2 - x^3 + 3x = \text{const.}
+\]</span></p>
+<p>Equivalently, the orbit equation is <span class="math inline">\(y^2 = 2(E + x^3 - 3x)\)</span>.</p>
+<p><strong>Step 3 — Equilibria.</strong></p>
+<p>Set <span class="math inline">\(x' = y = 0\)</span> and <span class="math inline">\(y' = F(x) = 3x^2 - 3 = 3(x^2 - 1) = 0\)</span>:</p>
+<p><span class="math display">\[
+x = \pm 1, \quad y = 0.
+\]</span></p>
+<p><em>At <span class="math inline">\((1, 0)\)</span>:</em> <span class="math inline">\(J = \begin{pmatrix}0&amp;1\\F'(1)&amp;0\end{pmatrix}
+= \begin{pmatrix}0&amp;1\\6&amp;0\end{pmatrix}\)</span>. <span class="math inline">\(\delta = -6 &lt; 0\)</span>: <strong>saddle</strong> (unstable).</p>
+<p><em>At <span class="math inline">\((-1, 0)\)</span>:</em> <span class="math inline">\(J = \begin{pmatrix}0&amp;1\\-6&amp;0\end{pmatrix}\)</span>. <span class="math inline">\(\delta = 6 &gt; 0\)</span>, <span class="math inline">\(\tau = 0\)</span>, <span class="math inline">\(\Delta = -24 &lt; 0\)</span>: eigenvalues <span class="math inline">\(\pm i\sqrt{6}\)</span>. Linearization predicts a <strong>center</strong>; since the system is conservative, <span class="math inline">\((-1,0)\)</span> is a true center (energy minimum).</p>
+<p>Note: <span class="math inline">\(V(-1) = -(-1)^3 + 3(-1) = 1 - 3 = -2\)</span> (local minimum of <span class="math inline">\(V\)</span>) confirms <span class="math inline">\((-1,0)\)</span> is a center. <span class="math inline">\(V(1) = -1 + 3 = 2\)</span> is a local maximum, confirming <span class="math inline">\((1,0)\)</span> is a saddle.</p>
+<p><strong>Step 4 — Total energy for the given initial condition.</strong></p>
+<p>At <span class="math inline">\(x(0) = 0\)</span>, <span class="math inline">\(y(0) = x'(0) = 2\)</span>:</p>
+<p><span class="math display">\[
+E = \frac{1}{2}(2)^2 + V(0) = 2 + 0 = 2.
+\]</span></p>
+<p>The orbit satisfies <span class="math inline">\(y^2 = 2(2 + x^3 - 3x) = 4 + 2x^3 - 6x\)</span>.</p>
+<p><span class="math display">\[
+\boxed{E = 2, \qquad y^2 = 4 + 2x^3 - 6x.}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Identifying orbit type from energy.</strong> The saddle at <span class="math inline">\((1,0)\)</span> has energy <span class="math inline">\(E_{\text{saddle}} = \frac{1}{2}(0)^2 + V(1) = 2\)</span>. The initial condition also has <span class="math inline">\(E = 2\)</span>, so the orbit passes through (or asymptotes to) the saddle point. This orbit is called a <strong>separatrix</strong> — it separates qualitatively different orbit families (closed orbits inside from unbounded orbits outside).</p>
+</div>
+</div>
+</section>
+<section id="ex4-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex4-sympy">Using SymPy</h4>
+<div id="ex4-sympy" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x_s <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>F4 <span class="op">=</span> <span class="dv">3</span><span class="op">*</span>x_s<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">3</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>V4 <span class="op">=</span> <span class="op">-</span>sym.integrate(F4, x_s)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>V4_const <span class="op">=</span> V4 <span class="op">-</span> V4.subs(x_s, <span class="dv">0</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'V</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(V4_const)))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibria</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>equil4 <span class="op">=</span> sym.solve(F4, x_s)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Critical points of }V: x = '</span> <span class="op">+</span> sym.latex(equil4)))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'V</span><span class="kw">(</span><span class="vs">-1</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(V4_const.subs(x_s, <span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> <span class="vs">r',</span><span class="er">\</span><span class="vs">quad V</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(V4_const.subs(x_s, <span class="dv">1</span>))))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>E_val <span class="op">=</span> sym.Rational(<span class="dv">1</span>,<span class="dv">2</span>)<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> V4_const.subs(x_s, <span class="dv">0</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'E = </span><span class="ch">\t</span><span class="vs">frac</span><span class="op">{1}{2}</span><span class="kw">(</span><span class="vs">2</span><span class="kw">)</span><span class="dv">^</span><span class="vs">2 </span><span class="op">+</span><span class="vs"> V</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(E_val)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex4-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle V(x) = - x^{3} + 3 x\)</span></p>
+</div>
+<div id="ex4-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Critical points of }V: x = \left[ -1, \  1\right]\)</span></p>
+</div>
+<div id="ex4-sympy-3" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle V(-1) = -2,\quad V(1) = 2\)</span></p>
+</div>
+<div id="ex4-sympy-4" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle E = \tfrac{1}{2}(2)^2 + V(0) = 2\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex4" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">5</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>xr <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>, <span class="dv">600</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>V_np <span class="op">=</span> <span class="op">-</span>xr<span class="op">**</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>xr</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Left: potential energy</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ax.plot(xr, V_np, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.2</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">2</span>, color<span class="op">=</span><span class="st">'tomato'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">E=2</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">saddle energy</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ax.plot( <span class="dv">1</span>,  <span class="dv">2</span>, <span class="st">'s'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,   ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Saddle $(1,0)$'</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Center $(-1,0)$'</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">V</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r'Potential energy </span><span class="dv">$</span><span class="vs">V</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = -x</span><span class="dv">^</span><span class="vs">3</span><span class="op">+</span><span class="vs">3x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Right: phase portrait</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> E_val_np, col, lw, alpha <span class="kw">in</span> [</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">2.0</span>, <span class="st">'tomato'</span>,    <span class="fl">2.2</span>, <span class="fl">0.95</span>),   <span class="co"># separatrix E = V(saddle) = 2</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    (<span class="op">-</span><span class="fl">1.5</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>),   <span class="co"># closed orbits near center</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    (<span class="op">-</span><span class="fl">1.0</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.8</span>),</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">0.0</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.7</span>),</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">1.0</span>, <span class="st">'steelblue'</span>, <span class="fl">1.4</span>, <span class="fl">0.7</span>),</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    ( <span class="fl">3.5</span>, <span class="st">'seagreen'</span>,  <span class="fl">1.4</span>, <span class="fl">0.7</span>),   <span class="co"># unbounded orbit above separatrix</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    rhs <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>(E_val_np <span class="op">-</span> V_np)   <span class="co"># y^2 = 2(E - V(x))</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    valid <span class="op">=</span> rhs <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    y_pos <span class="op">=</span>  np.where(valid, np.sqrt(np.maximum(rhs, <span class="dv">0</span>)), np.nan)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    y_neg <span class="op">=</span> <span class="op">-</span>y_pos</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_pos, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span>alpha)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_neg, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span>alpha)</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>ax.plot( <span class="dv">1</span>, <span class="dv">0</span>, <span class="st">'s'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,   ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Saddle $(1,0)$'</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'Center $(-1,0)$'</span>)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>ax.plot( <span class="dv">0</span>, <span class="dv">2</span>, <span class="st">'D'</span>, color<span class="op">=</span><span class="st">'black'</span>,    ms<span class="op">=</span><span class="dv">7</span>, zorder<span class="op">=</span><span class="dv">6</span>, label<span class="op">=</span><span class="st">'IC $(0,2)$'</span>)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"$y = x'$"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r'Energy orbits: </span><span class="dv">$</span><span class="vs">y</span><span class="dv">^</span><span class="vs">2 = 2</span><span class="kw">(</span><span class="vs">E </span><span class="op">+</span><span class="vs"> x</span><span class="dv">^</span><span class="vs">3 - 3x</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="vs">r"Example 4: </span><span class="dv">$</span><span class="vs">x'' = 3x</span><span class="dv">^</span><span class="vs">2-3</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">m=1</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_10_files/figure-html/fig-ex4-output-1.png" width="1632" height="742" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Example 4. Left: potential energy <span class="math inline">\(V(x) = -x^3+3x\)</span> with the two equilibria marked. Right: phase portrait showing energy-level orbits; the particular orbit with <span class="math inline">\(E=2\)</span> (tomato, the separatrix through the saddle at <span class="math inline">\((1,0)\)</span>) and the orbit through <span class="math inline">\((0,2)\)</span> are highlighted.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-5" class="level3">
+<h3 class="anchored" data-anchor-id="example-5">Example 5 — Nonlinear Spring: Energy Orbits and Period</h3>
+<blockquote class="blockquote">
+<p>A nonlinear spring-mass system (mass <span class="math inline">\(m=1\)</span>) obeys <span class="math inline">\(x'' = -4x - 2x^3\)</span>.</p>
+<p><strong>(a)</strong> Write the system as two first-order equations and find all equilibria. <strong>(b)</strong> Find <span class="math inline">\(V(x)\)</span> with <span class="math inline">\(V(0) = 0\)</span> and write the conservation of energy law. <strong>(c)</strong> Plot the orbits for several energy levels and describe the motion.</p>
+</blockquote>
+<section id="ex5-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex5-by-hand">By Hand</h4>
+<p><strong>Step 1 — First-order system and equilibria.</strong></p>
+<p>Let <span class="math inline">\(y = x'\)</span>:</p>
+<p><span class="math display">\[
+x' = y, \qquad y' = -4x - 2x^3.
+\]</span></p>
+<p>Equilibria: <span class="math inline">\(y = 0\)</span> and <span class="math inline">\(-4x - 2x^3 = -2x(2 + x^2) = 0\)</span>. Since <span class="math inline">\(2 + x^2 &gt; 0\)</span> for all real <span class="math inline">\(x\)</span>, the only solution is <span class="math inline">\(x = 0\)</span>.</p>
+<p>There is a <strong>single equilibrium at <span class="math inline">\((0, 0)\)</span></strong>.</p>
+<p><strong>Step 2 — Classify <span class="math inline">\((0,0)\)</span>.</strong></p>
+<p><span class="math display">\[
+J(0,0) = \begin{pmatrix}0 &amp; 1 \\ -4 &amp; 0\end{pmatrix}.
+\]</span></p>
+<p><span class="math inline">\(\tau = 0\)</span>, <span class="math inline">\(\delta = 4 &gt; 0\)</span>, <span class="math inline">\(\Delta = -16 &lt; 0\)</span>: eigenvalues <span class="math inline">\(\lambda = \pm 2i\)</span>. The linearization predicts a <strong>center</strong>; since this is a conservative system (force depends only on <span class="math inline">\(x\)</span>), <span class="math inline">\((0,0)\)</span> is a true nonlinear center as well.</p>
+<p><strong>Step 3 — Potential energy.</strong></p>
+<p><span class="math display">\[
+V(x) = -\int(-4x - 2x^3)\,dx = \int(4x + 2x^3)\,dx = 2x^2 + \frac{x^4}{2}.
+\]</span></p>
+<p><span class="math inline">\(V(0) = 0\)</span> <span class="math inline">\(\checkmark\)</span>. Note <span class="math inline">\(V(x) &gt; 0\)</span> for all <span class="math inline">\(x \neq 0\)</span>, confirming that <span class="math inline">\((0,0)\)</span> is a global energy minimum — all orbits are closed.</p>
+<p><strong>Step 4 — Conservation of energy.</strong></p>
+<p><span class="math display">\[
+\boxed{E = \frac{1}{2}y^2 + 2x^2 + \frac{x^4}{2} = \text{const.}}
+\]</span></p>
+<p>The orbits are <span class="math inline">\(y^2 = 2E - 4x^2 - x^4\)</span>. The maximum displacement <span class="math inline">\(x_{\max}\)</span> for a given <span class="math inline">\(E\)</span> satisfies <span class="math inline">\(2E - 4x_{\max}^2 - x_{\max}^4 = 0\)</span>.</p>
+<p><strong>Step 5 — Nature of the orbits.</strong></p>
+<p>Since <span class="math inline">\(V(x) \to +\infty\)</span> as <span class="math inline">\(|x| \to \infty\)</span>, every orbit is <strong>closed</strong> (bounded). The restoring force <span class="math inline">\(-4x - 2x^3\)</span> grows stronger than linear for large <span class="math inline">\(|x|\)</span>, so the nonlinear spring is <em>stiffer</em> than a linear spring — oscillations become faster (period decreases) as amplitude increases. This is opposite to the behavior of the softer nonlinear spring <span class="math inline">\(x'' = -x + x^3\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Hardening vs.&nbsp;softening springs.</strong> A spring is called <strong>hardening</strong> if the restoring force grows faster than linear (here <span class="math inline">\(|F| = 4|x| + 2|x|^3 &gt; 4|x|\)</span>) and <strong>softening</strong> if it grows slower. For a hardening spring the period <em>decreases</em> with amplitude; for a softening spring the period <em>increases</em>. The energy-orbit plot makes this visible: hardening springs have orbits that become more elongated in <span class="math inline">\(x\)</span> but compressed in <span class="math inline">\(y\)</span> relative to the linear case.</p>
+</div>
+</div>
+</section>
+<section id="ex5-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex5-sympy">Using SymPy</h4>
+<div id="ex5-sympy" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>F5 <span class="op">=</span> <span class="op">-</span><span class="dv">4</span><span class="op">*</span>x_s <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>x_s<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>V5 <span class="op">=</span> <span class="op">-</span>sym.integrate(F5, x_s)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'V</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(V5)))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'V</span><span class="kw">(</span><span class="vs">0</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(V5.subs(x_s, <span class="dv">0</span>))))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibria</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>equil5 <span class="op">=</span> sym.solve(F5, x_s)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'</span><span class="ch">\t</span><span class="vs">ext{Equilibria </span><span class="kw">(</span><span class="vs">}y=0</span><span class="ch">\t</span><span class="vs">ext{</span><span class="kw">)</span><span class="vs">}: x = '</span> <span class="op">+</span> sym.latex(equil5)))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Jacobian at origin</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>J5 <span class="op">=</span> sym.Matrix([[<span class="dv">0</span>, <span class="dv">1</span>],[sym.diff(F5, x_s), <span class="dv">0</span>]])</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>J5_0 <span class="op">=</span> J5.subs(x_s, <span class="dv">0</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'J</span><span class="kw">(</span><span class="vs">0,0</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(J5_0)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> <span class="vs">r',</span><span class="er">\</span><span class="vs">quad </span><span class="er">\</span><span class="vs">lambda = '</span> <span class="op">+</span> sym.latex(J5_0.eigenvals())))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex5-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle V(x) = \frac{x^{4}}{2} + 2 x^{2}\)</span></p>
+</div>
+<div id="ex5-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle V(0) = 0\)</span></p>
+</div>
+<div id="ex5-sympy-3" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle \text{Equilibria (}y=0\text{)}: x = \left[ 0, \  - \sqrt{2} i, \  \sqrt{2} i\right]\)</span></p>
+</div>
+<div id="ex5-sympy-4" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle J(0,0) = \left[\begin{matrix}0 &amp; 1\\-4 &amp; 0\end{matrix}\right],\quad \lambda = \left\{ - 2 i : 1, \  2 i : 1\right\}\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex5" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">5</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>xr <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">800</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>V5_np <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>xr<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">*</span>xr<span class="op">**</span><span class="dv">4</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Left: potential energy</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ax.plot(xr, V5_np, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.2</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">0</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Center $(0,0)$'</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> E_lev <span class="kw">in</span> [<span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">4.0</span>]:</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    ax.axhline(E_lev, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    ax.text(<span class="fl">2.1</span>, E_lev, <span class="ss">f'E=</span><span class="sc">{</span>E_lev<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">7</span>, va<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">0.3</span>, <span class="dv">6</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">V</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r'Potential: </span><span class="dv">$</span><span class="vs">V</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs">=2x</span><span class="dv">^</span><span class="vs">2</span><span class="op">+</span><span class="vs">x</span><span class="dv">^</span><span class="vs">4/2</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Right: phase orbits</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>colors_e <span class="op">=</span> [<span class="st">'steelblue'</span>, <span class="st">'steelblue'</span>, <span class="st">'tomato'</span>, <span class="st">'seagreen'</span>]</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> E_val_np, col <span class="kw">in</span> <span class="bu">zip</span>([<span class="fl">0.5</span>, <span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">4.0</span>], colors_e):</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    rhs <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>(E_val_np <span class="op">-</span> V5_np)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    valid <span class="op">=</span> rhs <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    y_pos <span class="op">=</span>  np.where(valid, np.sqrt(np.maximum(rhs, <span class="dv">0</span>)), np.nan)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    y_neg <span class="op">=</span> <span class="op">-</span>y_pos</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    lw <span class="op">=</span> <span class="fl">2.2</span> <span class="cf">if</span> col <span class="op">==</span> <span class="st">'tomato'</span> <span class="cf">else</span> <span class="fl">1.4</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_pos, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span><span class="fl">0.85</span>, label<span class="op">=</span><span class="ss">f'E=</span><span class="sc">{</span>E_val_np<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_neg, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">0</span>, <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>, ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">3.5</span>, <span class="fl">3.5</span>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"$y = x'$"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Energy orbits (hardening spring)'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="vs">r"Example 5: </span><span class="dv">$</span><span class="vs">x'' = -4x-2x</span><span class="dv">^</span><span class="vs">3</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_10_files/figure-html/fig-ex5-output-1.png" width="1433" height="742" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Phase portrait for Example 5 (hardening spring <span class="math inline">\(x''=-4x-2x^3\)</span>). All orbits are closed, encircling the single equilibrium at the origin. The tomato orbit corresponds to <span class="math inline">\(E=2\)</span>; steelblue orbits show smaller energies. Orbits become more tightly packed as amplitude grows, reflecting the increasing oscillation frequency.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="example-6" class="level3">
+<h3 class="anchored" data-anchor-id="example-6">Example 6 — Nonlinear Mechanics IVP with Linearization Check</h3>
+<blockquote class="blockquote">
+<p>A mass <span class="math inline">\(m = 1\)</span> is governed by <span class="math inline">\(x'' = -\sin x\)</span>.</p>
+<p><strong>(a)</strong> Convert to a system, find all equilibria in <span class="math inline">\([-\pi, 2\pi]\)</span>, and classify them. <strong>(b)</strong> Write the conservation of energy law and plot several orbits. <strong>(c)</strong> Show that for <strong>small</strong> oscillations near <span class="math inline">\(x = 0\)</span> the nonlinear system behaves like the simple harmonic oscillator <span class="math inline">\(x'' + x = 0\)</span>, and estimate the period. <strong>(d)</strong> If <span class="math inline">\(x(0) = \pi/3\)</span> and <span class="math inline">\(x'(0) = 0\)</span>, find the total energy and determine whether the orbit is bounded.</p>
+</blockquote>
+<section id="ex6-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="ex6-by-hand">By Hand</h4>
+<p><strong>Step 1 — First-order system and equilibria.</strong></p>
+<p>Let <span class="math inline">\(y = x'\)</span>:</p>
+<p><span class="math display">\[
+x' = y, \qquad y' = -\sin x.
+\]</span></p>
+<p>Equilibria: <span class="math inline">\(y = 0\)</span> and <span class="math inline">\(\sin x = 0\)</span>, so <span class="math inline">\(x = n\pi\)</span> for any integer <span class="math inline">\(n\)</span>.</p>
+<p>In <span class="math inline">\([-\pi, 2\pi]\)</span>: equilibria at <span class="math inline">\((x,y) = (-\pi, 0)\)</span>, <span class="math inline">\((0, 0)\)</span>, <span class="math inline">\((\pi, 0)\)</span>, <span class="math inline">\((2\pi, 0)\)</span>.</p>
+<p><strong>Step 2 — Jacobian.</strong></p>
+<p><span class="math display">\[
+J = \begin{pmatrix}0 &amp; 1 \\ -\cos x &amp; 0\end{pmatrix}.
+\]</span></p>
+<p><em>At <span class="math inline">\(x = 2n\pi\)</span> (even multiples of <span class="math inline">\(\pi\)</span>, i.e.&nbsp;<span class="math inline">\(x = 0, 2\pi\)</span>):</em> <span class="math inline">\(J = \begin{pmatrix}0&amp;1\\-1&amp;0\end{pmatrix}\)</span>. <span class="math inline">\(\delta = 1\)</span>, <span class="math inline">\(\tau = 0\)</span>, <span class="math inline">\(\Delta = -4 &lt; 0\)</span>: eigenvalues <span class="math inline">\(\pm i\)</span>. Linearization gives a <strong>center</strong>; since the system is conservative, these are true <strong>stable centers</strong> (the pendulum oscillates).</p>
+<p><em>At <span class="math inline">\(x = (2n+1)\pi\)</span> (odd multiples of <span class="math inline">\(\pi\)</span>, i.e.&nbsp;<span class="math inline">\(x = -\pi, \pi\)</span>):</em> <span class="math inline">\(J = \begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}\)</span>. <span class="math inline">\(\delta = -1 &lt; 0\)</span>: eigenvalues <span class="math inline">\(\pm 1\)</span>. These are <strong>unstable saddle points</strong> (the pendulum balanced upright — unstable equilibrium).</p>
+<p><strong>Step 3 — Conservation of energy.</strong></p>
+<p><span class="math display">\[
+V(x) = -\int(-\sin x)\,dx = -\cos x + C_0.
+\]</span></p>
+<p>With <span class="math inline">\(V(0) = 0\)</span>: <span class="math inline">\(C_0 = 1\)</span>, so <span class="math inline">\(V(x) = 1 - \cos x\)</span>.</p>
+<p><span class="math display">\[
+\boxed{E = \frac{1}{2}y^2 + 1 - \cos x = \text{const.}}
+\]</span></p>
+<p>Orbit equation: <span class="math inline">\(y^2 = 2(E - 1 + \cos x) = 2(E + \cos x - 1)\)</span>.</p>
+<p><em>Energy at saddle <span class="math inline">\((\pi, 0)\)</span>:</em> <span class="math inline">\(E_{\text{saddle}} = 0 + 1 - \cos\pi = 1 + 1 = 2\)</span>. Orbits with <span class="math inline">\(E &lt; 2\)</span> are closed (oscillations); orbits with <span class="math inline">\(E &gt; 2\)</span> are unbounded (the pendulum spins continuously).</p>
+<p><strong>Step 4 — Linearization near <span class="math inline">\(x = 0\)</span> (small oscillations).</strong></p>
+<p>For small <span class="math inline">\(x\)</span>: <span class="math inline">\(\sin x \approx x\)</span>. The linearized system near <span class="math inline">\((0,0)\)</span> is</p>
+<p><span class="math display">\[
+x'' = -x,
+\]</span></p>
+<p>which is simple harmonic motion with <span class="math inline">\(\omega = 1\)</span> and period</p>
+<p><span class="math display">\[
+T = \frac{2\pi}{\omega} = 2\pi \approx 6.28.
+\]</span></p>
+<p>This is the small-angle period of a pendulum of length <span class="math inline">\(l = g/\omega^2 = g\)</span>.</p>
+<p><strong>Step 5 — IVP energy.</strong></p>
+<p>At <span class="math inline">\(x(0) = \pi/3\)</span>, <span class="math inline">\(y(0) = 0\)</span>:</p>
+<p><span class="math display">\[
+E = \frac{1}{2}(0)^2 + 1 - \cos(\pi/3) = 1 - \frac{1}{2} = \frac{1}{2}.
+\]</span></p>
+<p>Since <span class="math inline">\(E = 1/2 &lt; 2 = E_{\text{saddle}}\)</span>, the orbit is <strong>closed</strong> — the pendulum oscillates. The maximum displacement satisfies <span class="math inline">\(\cos x_{\max} = 1 - E = 1/2\)</span>, so <span class="math inline">\(x_{\max} = \pi/3\)</span>. (The pendulum returns to its release angle, as expected.)</p>
+<p><span class="math display">\[
+\boxed{E = \frac{1}{2}, \quad \text{bounded oscillatory orbit.}}
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>This is the nonlinear pendulum.</strong> The equation <span class="math inline">\(x'' = -\sin x\)</span> (with appropriate units) is exactly the undamped pendulum equation, where <span class="math inline">\(x = \theta\)</span> is the angle from vertical. The <strong>separatrix</strong> at <span class="math inline">\(E = 2\)</span> (the curve through the saddle points <span class="math inline">\((\pm\pi, 0)\)</span>) is the boundary between oscillatory motion (pendulum swings back and forth) and rotational motion (pendulum spins continuously). The separatrices are called <strong>homoclinic orbits</strong> because they connect the saddle to itself.</p>
+</div>
+</div>
+</section>
+<section id="ex6-sympy" class="level4">
+<h4 class="anchored" data-anchor-id="ex6-sympy">Using SymPy</h4>
+<div id="ex6-sympy" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>F6 <span class="op">=</span> <span class="op">-</span>sym.sin(x_s)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>V6 <span class="op">=</span> <span class="op">-</span>sym.integrate(F6, x_s) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># V(0) = 0 =&gt; constant = 1</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'V</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(V6)))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Energy of IVP</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>E_ivp <span class="op">=</span> sym.Rational(<span class="dv">1</span>,<span class="dv">2</span>)<span class="op">*</span><span class="dv">0</span> <span class="op">+</span> V6.subs(x_s, sym.pi<span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'E</span><span class="dv">\b</span><span class="vs">ig</span><span class="cf">|</span><span class="vs">_{x_0=</span><span class="er">\</span><span class="vs">pi/3,</span><span class="ch">\,</span><span class="vs">y_0=0} = '</span> <span class="op">+</span> sym.latex(sym.simplify(E_ivp))))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Saddle energy</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>E_saddle <span class="op">=</span> V6.subs(x_s, sym.pi)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="vs">r'E_{</span><span class="ch">\r</span><span class="vs">m saddle} = V</span><span class="kw">(</span><span class="er">\</span><span class="vs">pi</span><span class="kw">)</span><span class="vs"> = '</span> <span class="op">+</span> sym.latex(E_saddle)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ex6-sympy-1" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle V(x) = 1 - \cos{\left(x \right)}\)</span></p>
+</div>
+<div id="ex6-sympy-2" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle E\big|_{x_0=\pi/3,\,y_0=0} = \frac{1}{2}\)</span></p>
+</div>
+<div id="ex6-sympy-3" class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle E_{\rm saddle} = V(\pi) = 2\)</span></p>
+</div>
+</div>
+<div id="cell-fig-ex6" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>xr <span class="op">=</span> np.linspace(<span class="op">-</span>np.pi <span class="op">-</span> <span class="fl">0.05</span>, <span class="dv">2</span><span class="op">*</span>np.pi <span class="op">+</span> <span class="fl">0.05</span>, <span class="dv">1200</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>V6_np <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> np.cos(xr)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> E_val_np, col, lw, alpha <span class="kw">in</span> [</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">2.0</span>,  <span class="st">'tomato'</span>,    <span class="fl">2.2</span>, <span class="fl">0.95</span>),   <span class="co"># separatrix</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.3</span>,  <span class="st">'steelblue'</span>, <span class="fl">1.3</span>, <span class="fl">0.8</span>),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.5</span>,  <span class="st">'seagreen'</span>,  <span class="fl">2.0</span>, <span class="fl">0.95</span>),   <span class="co"># IVP orbit</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">1.0</span>,  <span class="st">'steelblue'</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">1.6</span>,  <span class="st">'steelblue'</span>, <span class="fl">1.3</span>, <span class="fl">0.7</span>),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">2.8</span>,  <span class="st">'steelblue'</span>, <span class="fl">1.3</span>, <span class="fl">0.65</span>),   <span class="co"># rotational orbits</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">4.0</span>,  <span class="st">'steelblue'</span>, <span class="fl">1.3</span>, <span class="fl">0.55</span>),</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    rhs <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>(E_val_np <span class="op">-</span> V6_np)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    valid <span class="op">=</span> rhs <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    y_pos <span class="op">=</span>  np.where(valid, np.sqrt(np.maximum(rhs, <span class="dv">0</span>)), np.nan)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    y_neg <span class="op">=</span> <span class="op">-</span>y_pos</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_pos, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span>alpha)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    ax.plot(xr, y_neg, color<span class="op">=</span>col, lw<span class="op">=</span>lw, alpha<span class="op">=</span>alpha)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibria</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> xeq, marker, col, label <span class="kw">in</span> [</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    (<span class="op">-</span>np.pi, <span class="st">'s'</span>, <span class="st">'tomato'</span>,   <span class="st">'Saddle'</span>),</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    ( <span class="dv">0</span>,     <span class="st">'o'</span>, <span class="st">'seagreen'</span>, <span class="st">'Center'</span>),</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    ( np.pi, <span class="st">'s'</span>, <span class="st">'tomato'</span>,   <span class="va">None</span>),</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">2</span><span class="op">*</span>np.pi,<span class="st">'o'</span>, <span class="st">'seagreen'</span>, <span class="va">None</span>),</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    ax.plot(xeq, <span class="dv">0</span>, marker, color<span class="op">=</span>col, ms<span class="op">=</span><span class="dv">9</span>, zorder<span class="op">=</span><span class="dv">6</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span>label <span class="cf">if</span> label <span class="cf">else</span> <span class="st">''</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="co"># IVP initial condition</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>ax.plot(np.pi<span class="op">/</span><span class="dv">3</span>, <span class="dv">0</span>, <span class="st">'D'</span>, color<span class="op">=</span><span class="st">'black'</span>, ms<span class="op">=</span><span class="dv">8</span>, zorder<span class="op">=</span><span class="dv">7</span>,</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="vs">r'IC </span><span class="dv">$</span><span class="kw">(</span><span class="er">\</span><span class="vs">pi/3, 0</span><span class="kw">)</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">E=1/2</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span>np.pi <span class="op">-</span> <span class="fl">0.1</span>, <span class="dv">2</span><span class="op">*</span>np.pi <span class="op">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">3.2</span>, <span class="fl">3.2</span>)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">x</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">angle</span><span class="kw">)</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">y = x'</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">angular velocity</span><span class="kw">)</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Nonlinear pendulum: separatrix (tomato) at $E=2$'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="co"># x-axis tick labels at multiples of pi</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>ax.set_xticks([<span class="op">-</span>np.pi, <span class="dv">0</span>, np.pi, <span class="dv">2</span><span class="op">*</span>np.pi])</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels([<span class="vs">r'</span><span class="dv">$</span><span class="vs">-</span><span class="er">\</span><span class="vs">pi</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">0</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">pi</span><span class="dv">$</span><span class="vs">'</span>, <span class="vs">r'</span><span class="dv">$</span><span class="vs">2</span><span class="er">\</span><span class="vs">pi</span><span class="dv">$</span><span class="vs">'</span>])</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>handles <span class="op">=</span> [</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>],[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'tomato'</span>,    lw<span class="op">=</span><span class="fl">2.2</span>, label<span class="op">=</span><span class="st">'Separatrix ($E=2$)'</span>),</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>],[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'seagreen'</span>,  lw<span class="op">=</span><span class="fl">2.0</span>, label<span class="op">=</span><span class="vs">r'IVP orbit </span><span class="kw">(</span><span class="dv">$</span><span class="vs">E=1/2</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>),</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>],[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.3</span>, label<span class="op">=</span><span class="st">'Other orbits'</span>),</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>],[<span class="dv">0</span>], marker<span class="op">=</span><span class="st">'s'</span>, color<span class="op">=</span><span class="st">'tomato'</span>,  lw<span class="op">=</span><span class="dv">0</span>, ms<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span><span class="st">'Saddle'</span>),</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>],[<span class="dv">0</span>], marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'seagreen'</span>,lw<span class="op">=</span><span class="dv">0</span>, ms<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span><span class="st">'Center'</span>),</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>],[<span class="dv">0</span>], marker<span class="op">=</span><span class="st">'D'</span>, color<span class="op">=</span><span class="st">'black'</span>,   lw<span class="op">=</span><span class="dv">0</span>, ms<span class="op">=</span><span class="dv">7</span>,</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="vs">r'IC </span><span class="dv">$</span><span class="kw">(</span><span class="er">\</span><span class="vs">pi/3,0</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>),</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>handles, fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="examples_10_files/figure-html/fig-ex6-output-1.png" width="1481" height="731" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Phase portrait for Example 6 (nonlinear pendulum <span class="math inline">\(x''=-\sin x\)</span>). Closed orbits inside the separatrix (tomato) correspond to oscillatory motion; open orbits outside correspond to continuous rotation. The IVP orbit with <span class="math inline">\(E=1/2\)</span> is highlighted in seagreen, starting at <span class="math inline">\((\pi/3, 0)\)</span>. Saddle points at <span class="math inline">\(x=\pm\pi\)</span> and centers at <span class="math inline">\(x=0, 2\pi\)</span> are marked.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-logan2015first" class="csl-entry" role="listitem">
+Logan, J David. 2015. <em>A First Course in Differential Equations, Third Edition</em>.
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="session-info" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
