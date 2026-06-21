@@ -709,6 +709,467 @@ F_final = sym.integrate(M, x) + g_y
 print(" F(x,y) =", sym.expand(F_final))
 ```
 
+## Optimization
+
+Optimization is the problem of finding the input values that minimize or maximize a given function. In a first course on ODEs the topic arises naturally in several places: equilibrium analysis (where we ask whether a steady state is stable), parameter estimation (fitting a model to data by minimizing a residual), and certain boundary-value problems derived from variational principles. This section reviews the essential ideas for both single- and multi-variable settings and shows how to carry out computations with SymPy and SciPy.
+
+### Single-Variable Optimization
+
+Given a differentiable function $f : \mathbb{R} \to \mathbb{R}$, a point $x^*$ is a **critical point** if $f'(x^*) = 0$ or $f'$ does not exist there. The **second derivative test** then classifies the critical point:
+
+$$
+f''(x^*) > 0 \implies \text{local minimum}, \qquad f''(x^*) < 0 \implies \text{local maximum}, \qquad f''(x^*) = 0 \implies \text{inconclusive}.
+$$
+
+A **global** (absolute) extremum on a closed interval $[a, b]$ is found by evaluating $f$ at every critical point in $(a,b)$ and at the endpoints $a$, $b$, then comparing.
+
+::: {.callout-note}
+## Example
+Find and classify the critical points of $f(x) = x^3 - 3x^2 - 9x + 5$.
+
+Setting $f'(x) = 3x^2 - 6x - 9 = 3(x-3)(x+1) = 0$ gives $x^* = -1$ and $x^* = 3$.
+
+$f''(x) = 6x - 6$, so $f''(-1) = -12 < 0$ (local max) and $f''(3) = 12 > 0$ (local min).
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x = sym.Symbol('x')
+
+f = x**3 - 3*x**2 - 9*x + 5
+
+# Symbolic critical points and classification
+fp  = sym.diff(f, x)
+fpp = sym.diff(f, x, 2)
+crits = sym.solve(fp, x)
+
+print("f(x)   =", f)
+print("f'(x)  =", fp)
+print("f''(x) =", fpp)
+print()
+for c in crits:
+    second = fpp.subs(x, c)
+    kind = "local min" if second > 0 else "local max" if second < 0 else "inconclusive"
+    print(f"  x* = {int(c):>3}:  f(x*) = {int(f.subs(x,c)):>4},  f''(x*) = {int(second):>4}  →  {kind}")
+
+# Plot
+xv = np.linspace(-3, 5, 400)
+fv = xv**3 - 3*xv**2 - 9*xv + 5
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(xv, fv, color='steelblue', linewidth=2)
+for c in crits:
+    cv = float(c)
+    fval = float(f.subs(x, c))
+    ax.plot(cv, fval, 'o', color='tomato', markersize=8, zorder=5)
+    ax.annotate(f'$x^*={c}$', xy=(cv, fval),
+                xytext=(cv + 0.3, fval + 4), fontsize=9)
+ax.axhline(0, color='k', linewidth=0.8)
+ax.set_xlabel('$x$')
+ax.set_ylabel('$f(x)$')
+ax.set_title(r'$f(x) = x^3 - 3x^2 - 9x + 5$ with critical points')
+plt.tight_layout()
+plt.savefig('opt_1d.png', bbox_inches='tight')
+plt.show()
+```
+
+For optimization problems where a closed-form solution is unavailable, `scipy.optimize.minimize_scalar` finds a local minimum numerically over an interval.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+from scipy.optimize import minimize_scalar
+
+# Minimize f(x) = x^3 - 3x^2 - 9x + 5 on [-2, 5]
+def f_num(xv):
+    return xv**3 - 3*xv**2 - 9*xv + 5
+
+result = minimize_scalar(f_num, bounds=(-2, 5), method='bounded')
+print("scipy.optimize.minimize_scalar result:")
+print(f"  x* ≈ {result.x:.6f}")
+print(f"  f(x*) ≈ {result.fun:.6f}")
+print(f"  Success: {result.success}")
+```
+
+### Multi-Variable Optimization
+
+For a function $f : \mathbb{R}^n \to \mathbb{R}$, a necessary condition for an interior local extremum is that the **gradient** vanishes:
+
+$$
+\nabla f(\mathbf{x}^*) = \mathbf{0}, \qquad
+\nabla f = \left(\frac{\partial f}{\partial x_1},\, \frac{\partial f}{\partial x_2},\, \ldots,\, \frac{\partial f}{\partial x_n}\right)^{\!\top}.
+$$
+
+The nature of a critical point in $\mathbb{R}^2$ is determined by the **Hessian matrix**
+
+$$
+H(f) = \begin{pmatrix} f_{xx} & f_{xy} \\ f_{xy} & f_{yy} \end{pmatrix},
+$$
+
+evaluated at the critical point. The **second-order test** uses the determinant $D = f_{xx}f_{yy} - f_{xy}^2$:
+
+| Condition | Conclusion |
+|---|---|
+| $D > 0$ and $f_{xx} > 0$ | local minimum |
+| $D > 0$ and $f_{xx} < 0$ | local maximum |
+| $D < 0$ | saddle point |
+| $D = 0$ | inconclusive |
+
+: Second-order test for functions of two variables {.striped}
+
+::: {.callout-note}
+## Example
+Classify the critical points of $f(x,y) = x^3 + y^3 - 3xy$.
+
+Setting $f_x = 3x^2 - 3y = 0$ and $f_y = 3y^2 - 3x = 0$ gives $y = x^2$ and $x = y^2$, yielding critical points $(0,0)$ and $(1,1)$.
+
+At $(1,1)$: $f_{xx} = 6$, $f_{yy} = 6$, $f_{xy} = -3$, so $D = 36 - 9 = 27 > 0$ and $f_{xx} > 0$ — a local minimum.
+
+At $(0,0)$: $f_{xx} = 0$, $f_{yy} = 0$, $f_{xy} = -3$, so $D = -9 < 0$ — a saddle point.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+x, y = sym.symbols('x y')
+
+f2 = x**3 + y**3 - 3*x*y
+
+# Gradient and Hessian
+grad = [sym.diff(f2, v) for v in (x, y)]
+H = sym.hessian(f2, (x, y))
+
+print("f(x,y) =", f2)
+print("∇f =", grad)
+print()
+
+# Critical points — keep only real solutions
+crits2_all = sym.solve(grad, [x, y])
+crits2 = [pt for pt in crits2_all if all(v.is_real for v in pt)]
+print("All critical points:", crits2_all)
+print("Real critical points:", crits2)
+print()
+
+for pt in crits2:
+    H_val = H.subs([(x, pt[0]), (y, pt[1])])
+    D = float(H_val.det())       # cast to Python float for boolean comparisons
+    fxx = float(H_val[0, 0])
+    fval = f2.subs([(x, pt[0]), (y, pt[1])])
+    if D > 0 and fxx > 0:
+        kind = "local min"
+    elif D > 0 and fxx < 0:
+        kind = "local max"
+    elif D < 0:
+        kind = "saddle point"
+    else:
+        kind = "inconclusive"
+    print(f"  ({pt[0]}, {pt[1]}):  f = {fval},  D = {D},  f_xx = {fxx}  ->  {kind}")
+
+# Surface and contour plot
+from mpl_toolkits.mplot3d import Axes3D   # noqa: F401
+
+xv = np.linspace(-1.5, 2, 200)
+yv = np.linspace(-1.5, 2, 200)
+Xg, Yg = np.meshgrid(xv, yv)
+Zg = Xg**3 + Yg**3 - 3*Xg*Yg
+
+fig = plt.figure(figsize=(10, 4))
+
+ax1 = fig.add_subplot(1, 2, 1, projection='3d')
+ax1.plot_surface(Xg, Yg, Zg, cmap='RdBu_r', alpha=0.85, linewidth=0)
+ax1.set_xlabel('$x$'); ax1.set_ylabel('$y$'); ax1.set_zlabel('$f$')
+ax1.set_title(r'$f(x,y)=x^3+y^3-3xy$')
+
+ax2 = fig.add_subplot(1, 2, 2)
+cs = ax2.contourf(Xg, Yg, Zg, levels=30, cmap='RdBu_r')
+plt.colorbar(cs, ax=ax2)
+ax2.plot(0, 0, 'k^', markersize=9, label='saddle $(0,0)$')
+ax2.plot(1, 1, 'ko', markersize=9, label='min $(1,1)$')
+ax2.set_xlabel('$x$'); ax2.set_ylabel('$y$')
+ax2.set_title('Contour plot')
+ax2.legend(fontsize=8)
+
+plt.tight_layout()
+plt.savefig('opt_2d.png', bbox_inches='tight')
+plt.show()
+```
+
+For numerical multi-variable optimization, `scipy.optimize.minimize` provides a range of gradient-based methods. The default **BFGS** method is a quasi-Newton scheme that builds up an approximation to the Hessian iteratively and is well-suited to smooth unconstrained problems.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+from scipy.optimize import minimize
+
+def f2_num(v):
+    return v[0]**3 + v[1]**3 - 3*v[0]*v[1]
+
+# Start near the known local min at (1, 1)
+x0 = np.array([0.5, 0.5])
+res = minimize(f2_num, x0, method='BFGS')
+print("scipy.optimize.minimize (BFGS) near (0.5, 0.5):")
+print(f"  x* ≈ {res.x}")
+print(f"  f(x*) ≈ {res.fun:.6f}")
+print(f"  Success: {res.success}")
+print(f"  Message: {res.message}")
+```
+
+::: {.callout-tip}
+## Gradient and Hessian in SciPy
+Many SciPy minimizers accept analytic `jac` (Jacobian/gradient) and `hess` (Hessian) arguments, which can dramatically improve both speed and accuracy. SymPy's `lambdify` is a convenient way to convert a symbolic expression to a fast numerical function suitable for these arguments.
+:::
+
+## Root Finding
+
+**Root finding** means solving the equation $f(x) = 0$ (or a system $\mathbf{F}(\mathbf{x}) = \mathbf{0}$) when no closed-form solution exists. In the ODE context this arises when locating equilibrium points of autonomous systems, finding eigenvalues numerically, or solving implicit algebraic equations that appear as boundary conditions.
+
+### Newton's Method (Single Variable)
+
+Given a smooth function $f$ and a starting guess $x_0$, **Newton's method** generates the sequence
+
+$$
+x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}, \qquad n = 0, 1, 2, \ldots
+$$
+
+Geometrically, each step replaces the curve $y = f(x)$ by its tangent line at $(x_n, f(x_n))$ and takes the tangent's zero as the next iterate. When $x_0$ is close to a simple root $x^*$ and $f'(x^*) \neq 0$, the method converges **quadratically**: the number of correct decimal places roughly doubles each iteration.
+
+::: {.callout-note}
+## Example
+Find the positive root of $f(x) = x^3 - 2$ (i.e.\ $\sqrt[3]{2}$) starting from $x_0 = 1$.
+
+$f'(x) = 3x^2$, so the iteration is $x_{n+1} = x_n - (x_n^3 - 2)/(3x_n^2)$.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Manual Newton's method implementation
+def newton(f_func, df_func, x0, tol=1e-10, max_iter=50):
+    """Return (root, iterations, history)."""
+    x = x0
+    history = [x]
+    for i in range(max_iter):
+        fx  = f_func(x)
+        dfx = df_func(x)
+        if abs(dfx) < 1e-15:
+            raise ValueError("Derivative too small; Newton's method failed.")
+        x_new = x - fx / dfx
+        history.append(x_new)
+        if abs(x_new - x) < tol:
+            return x_new, i + 1, history
+        x = x_new
+    raise ValueError(f"Did not converge in {max_iter} iterations.")
+
+f_cube  = lambda xv: xv**3 - 2
+df_cube = lambda xv: 3 * xv**2
+
+root, iters, hist = newton(f_cube, df_cube, x0=1.0)
+print(f"Root ≈ {root:.15f}")
+print(f"2^(1/3) = {2**(1/3):.15f}")
+print(f"Converged in {iters} iterations")
+print()
+print(f"{'Iter':>5}  {'x_n':>20}  {'|f(x_n)|':>15}  {'error':>15}")
+print("-" * 60)
+true_root = 2**(1/3)
+for k, xk in enumerate(hist):
+    print(f"{k:>5}  {xk:>20.12f}  {abs(f_cube(xk)):>15.3e}  {abs(xk - true_root):>15.3e}")
+```
+
+The quadratic convergence is visible in the `error` column: the number of significant digits approximately doubles each step. SciPy's `newton` function in `scipy.optimize` provides a robust, production-quality implementation that also handles the **secant method** (when no derivative is supplied) and **Halley's method** (when the second derivative is supplied).
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+from scipy.optimize import newton as sp_newton
+
+# Using scipy's newton (with analytic derivative → true Newton's method)
+root_scipy = sp_newton(f_cube, x0=1.0, fprime=df_cube, full_output=True)
+print("scipy newton result:", root_scipy[0])
+
+# Without fprime → secant method
+root_secant = sp_newton(f_cube, x0=1.0, full_output=True)
+print("scipy secant result:", root_secant[0])
+
+# Visualize the first few Newton iterates
+xv = np.linspace(0.5, 2.2, 400)
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.plot(xv, f_cube(xv), color='steelblue', linewidth=2, label=r'$f(x)=x^3-2$')
+ax.axhline(0, color='k', linewidth=0.8)
+
+colors_n = plt.cm.autumn(np.linspace(0.1, 0.9, len(hist) - 1))
+for k in range(min(4, len(hist) - 1)):
+    xk = hist[k]
+    fxk = f_cube(xk)
+    dfxk = df_cube(xk)
+    x_tang = np.linspace(xk - 0.6, xk + 0.6, 50)
+    ax.plot(x_tang, fxk + dfxk * (x_tang - xk),
+            color=colors_n[k], linewidth=1.4, linestyle='--',
+            label=f'tangent at $x_{k}={xk:.3f}$')
+    ax.plot(xk, fxk, 'o', color=colors_n[k], markersize=7)
+
+ax.plot(root, 0, 'k*', markersize=12, zorder=6, label=f'root $\\approx {root:.4f}$')
+ax.set_xlabel('$x$')
+ax.set_ylabel('$f(x)$')
+ax.set_title("Newton's Method Iterates for $x^3 - 2 = 0$")
+ax.legend(fontsize=8)
+plt.tight_layout()
+plt.savefig('newton_1d.png', bbox_inches='tight')
+plt.show()
+```
+
+#### Convergence and Limitations
+
+Newton's method can fail when:
+
+- The starting guess is far from a root, causing the iterates to diverge or cycle.
+- $f'(x_n) \approx 0$ near an iterate (near a local extremum), making the step size enormous.
+- The root has **multiplicity** greater than one (convergence degrades from quadratic to linear).
+
+The **secant method** avoids computing $f'$ by approximating it with a finite difference:
+
+$$
+x_{n+1} = x_n - f(x_n)\,\frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}.
+$$
+
+It converges super-linearly (order $\approx 1.618$, the golden ratio), slightly slower than Newton but requiring only function evaluations. For bracketing problems — where a sign change is known — **Brent's method** (`scipy.optimize.brentq`) combines bisection, secant, and inverse quadratic interpolation to guarantee convergence and is often the safest general-purpose choice.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+from scipy.optimize import brentq
+
+# brentq requires a bracket [a, b] with f(a) and f(b) of opposite sign
+root_brent = brentq(f_cube, 1.0, 2.0, full_output=True)
+print(f"brentq result: root ≈ {root_brent[0]:.15f}")
+print(f"Function evaluations: {root_brent[1].function_calls}")
+```
+
+### Newton's Method for Systems (Multi-Variable)
+
+For a system $\mathbf{F}(\mathbf{x}) = \mathbf{0}$ with $\mathbf{F} : \mathbb{R}^n \to \mathbb{R}^n$, Newton's method generalises to
+
+$$
+\mathbf{x}_{k+1} = \mathbf{x}_k - J_F(\mathbf{x}_k)^{-1}\,\mathbf{F}(\mathbf{x}_k),
+$$
+
+where $J_F$ is the **Jacobian matrix** with $(i,j)$ entry $\partial F_i / \partial x_j$. In practice we never invert $J_F$ explicitly; instead we solve the linear system
+
+$$
+J_F(\mathbf{x}_k)\,\boldsymbol{\delta} = -\mathbf{F}(\mathbf{x}_k), \qquad \mathbf{x}_{k+1} = \mathbf{x}_k + \boldsymbol{\delta},
+$$
+
+at each step. This requires one LU factorisation per iteration (cost $O(n^3)$), and the method again converges quadratically when started sufficiently close to a simple root.
+
+::: {.callout-note}
+## Example
+Find the intersection of the circle $x^2 + y^2 = 4$ and the hyperbola $xy = 1$ in the first quadrant.
+
+Define $F_1(x,y) = x^2 + y^2 - 4$ and $F_2(x,y) = xy - 1$. The Jacobian is
+
+$$
+J_F = \begin{pmatrix} 2x & 2y \\ y & x \end{pmatrix}.
+$$
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Multi-variable Newton's method (manual)
+def newton_system(F_func, J_func, x0, tol=1e-10, max_iter=50):
+    """Return (root, iterations, history)."""
+    xk = np.array(x0, dtype=float)
+    history = [xk.copy()]
+    for i in range(max_iter):
+        Fk = F_func(xk)
+        Jk = J_func(xk)
+        delta = np.linalg.solve(Jk, -Fk)
+        xk = xk + delta
+        history.append(xk.copy())
+        if np.linalg.norm(delta) < tol:
+            return xk, i + 1, history
+    raise ValueError("Did not converge.")
+
+def F_sys(v):
+    xv, yv = v
+    return np.array([xv**2 + yv**2 - 4, xv*yv - 1])
+
+def J_sys(v):
+    xv, yv = v
+    return np.array([[2*xv, 2*yv],
+                     [  yv,   xv]])
+
+root_sys, iters_sys, hist_sys = newton_system(F_sys, J_sys, x0=[1.5, 0.5])
+print(f"Root ≈ ({root_sys[0]:.10f}, {root_sys[1]:.10f})")
+print(f"Residual ||F(x*)|| = {np.linalg.norm(F_sys(root_sys)):.3e}")
+print(f"Converged in {iters_sys} iterations")
+
+# Plot the curves and iterates
+theta = np.linspace(0, 2*np.pi, 400)
+xv_circ = 2 * np.cos(theta)
+yv_circ = 2 * np.sin(theta)
+xv_hyp  = np.linspace(0.3, 3.5, 400)
+yv_hyp  = 1 / xv_hyp
+
+fig, ax = plt.subplots(figsize=(5.5, 5.5))
+ax.plot(xv_circ, yv_circ, color='steelblue', linewidth=2, label=r'$x^2+y^2=4$')
+ax.plot(xv_hyp, yv_hyp, color='tomato', linewidth=2, label=r'$xy=1$')
+
+iterates = np.array(hist_sys)
+ax.plot(iterates[:, 0], iterates[:, 1], 'k--o', markersize=6,
+        linewidth=1, label='Newton iterates')
+for k, pt in enumerate(iterates):
+    ax.annotate(f'$x_{k}$', xy=pt, xytext=pt + np.array([0.05, 0.07]), fontsize=9)
+
+ax.plot(*root_sys, 'k*', markersize=14, zorder=6, label='root')
+ax.set_xlim(0, 3); ax.set_ylim(0, 3)
+ax.set_aspect('equal')
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title("Newton's Method for a 2-D System")
+ax.legend(fontsize=8)
+plt.tight_layout()
+plt.savefig('newton_sys.png', bbox_inches='tight')
+plt.show()
+```
+
+For production use, `scipy.optimize.fsolve` (a wrapper around MINPACK's hybrd) and `scipy.optimize.root` implement Newton-like and Krylov-based methods for nonlinear systems and handle many edge cases automatically.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+from scipy.optimize import fsolve, root
+
+# fsolve with analytic Jacobian
+sol_fsolve = fsolve(F_sys, x0=[1.5, 0.5], fprime=J_sys, full_output=True)
+print("fsolve result:")
+print(f"  root ≈ {sol_fsolve[0]}")
+print(f"  residual = {np.linalg.norm(F_sys(sol_fsolve[0])):.3e}")
+print(f"  function evaluations: {sol_fsolve[1]['nfev']}")
+
+print()
+
+# scipy.optimize.root with method='hybr' (default)
+sol_root = root(F_sys, x0=[1.5, 0.5], jac=J_sys, method='hybr')
+print("scipy.optimize.root result:")
+print(f"  root ≈ {sol_root.x}")
+print(f"  success: {sol_root.success}")
+print(f"  message: {sol_root.message}")
+```
+
+::: {.callout-tip}
+## Choosing a Method
+For a **single equation** with a known bracket use `brentq` — it is guaranteed to converge. When no bracket is available and a derivative is cheap to evaluate, `newton` with `fprime` is fastest. For **systems**, `fsolve` or `root` with an analytic Jacobian is preferred; if the Jacobian is expensive, finite-difference approximations (the default when `fprime` / `jac` is omitted) are acceptable but less accurate.
+:::
+
 ## Relevant Videos
 
 
