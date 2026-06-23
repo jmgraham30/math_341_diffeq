@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,10 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
 
 x = sym.Symbol('x', positive=True)
 nu = sym.Symbol('nu', nonnegative=True)
@@ -32,10 +25,6 @@ J0_series = sym.series(J0_sym, x, 0, n=10)
 print("\nPower series for J_0(x) about x = 0 (first 5 terms):")
 display(Math(r'J_0(x) = ' + sym.latex(J0_series)))
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # ---- Verify the ODE: x^2 y'' + x y' + (x^2 - nu^2) y = 0 ----
 print("Verifying that J_0 satisfies Bessel's equation of order 0:")
 y = J0_sym
@@ -49,10 +38,6 @@ ode_lhs1 = x**2 * sym.diff(y1, x, 2) + x * sym.diff(y1, x) + (x**2 - 1) * y1
 residual1 = sym.simplify(ode_lhs1)
 display(Math(r"x^2 J_1'' + x J_1' + (x^2-1) J_1 = " + sym.latex(residual1)))
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 Y0_sym = sym.bessely(0, x)
 Y1_sym = sym.bessely(1, x)
 
@@ -65,12 +50,6 @@ y_Y0 = Y0_sym
 ode_Y0 = x**2 * sym.diff(y_Y0, x, 2) + x * sym.diff(y_Y0, x) + x**2 * y_Y0
 display(Math(r"x^2 Y_0'' + x Y_0' + x^2 Y_0 = "
              + sym.latex(sym.simplify(ode_Y0))))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-bessel-jy
-#| fig-cap: "Bessel functions of the first kind $J_\\nu$ (left) and second kind $Y_\\nu$ (right) for $\\nu = 0, 1, 2, 3$. All $J_\\nu$ are finite at the origin; all $Y_\\nu$ diverge to $-\\infty$ as $x \\to 0^+$. Both families are oscillatory and decay in amplitude for large $x$."
 
 # Use SymPy lambdify to convert symbolic Bessel functions to fast numerical callables.
 # We supply a custom module dictionary so that lambdify maps SymPy's besselj/bessely
@@ -112,12 +91,6 @@ axes[1].set_ylabel('$Y_\\nu(x)$')
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-bessel-compare
-#| fig-cap: "Comparison of SymPy (lambdified) and SciPy implementations of $J_0$ and $J_1$.  The two implementations agree to machine precision; the difference (bottom panels, plotted on a log scale) is at the level of floating-point rounding error, around $10^{-15}$."
-
 x_check = np.linspace(0.5, 15, 500)
 
 J0_sp = sym.lambdify(x_sym, sym.besselj(0, x_sym), bessel_modules)
@@ -150,10 +123,6 @@ for col, (order, Jf_sym, label) in enumerate([
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 x = sym.Symbol('x', positive=True)
 
 for nu_val in [1, 2, sym.Rational(3, 2)]:
@@ -171,10 +140,6 @@ for nu_val in [1, 2, sym.Rational(3, 2)]:
                  + sym.latex(lhs_R2)))
     print()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 print("First five positive zeros of J_nu:\n")
 print(f"{'nu':>4}  {'j(nu,1)':>10}  {'j(nu,2)':>10}  {'j(nu,3)':>10}  "
       f"{'j(nu,4)':>10}  {'j(nu,5)':>10}")
@@ -182,12 +147,6 @@ print("-" * 60)
 for n in [0, 1, 2, 3]:
     z = jn_zeros(n, 5)
     print(f"  {n:>2}  " + "  ".join(f"{zi:10.6f}" for zi in z))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-bessel-zeros
-#| fig-cap: "The first five positive zeros of $J_0$, $J_1$, $J_2$, and $J_3$ (marked by colored dots on the respective curves).  The zeros interlace between adjacent orders: between any two consecutive zeros of $J_\\nu$ there is exactly one zero of $J_{\\nu+1}$."
 
 x_vals = np.linspace(0.01, 20, 2000)
 J_sym_funcs = [sym.lambdify(x_sym, sym.besselj(n, x_sym), bessel_modules)
@@ -209,12 +168,6 @@ ax.set_ylim(-0.55, 1.1)
 ax.legend(fontsize=10, loc='upper right')
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-bessel-asymp
-#| fig-cap: "Left: $J_0(x)$ (blue) and its large-$x$ asymptotic approximation $\\sqrt{2/\\pi x}\\cos(x - \\pi/4)$ (dashed orange). The approximation is excellent for $x \\gtrsim 5$. Right: the relative error $|J_0 - \\text{asymptotic}|/|J_0|$ on a log scale, confirming convergence of the approximation."
 
 x_a = np.linspace(1, 30, 1000)
 J0_exact = jv(0, x_a)
@@ -238,10 +191,6 @@ axes[1].set_title('Relative error of asymptotic approximation for $J_0$')
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # Numerical verification of orthogonality for J_0
 from scipy.integrate import quad
 
@@ -264,12 +213,6 @@ for m in range(1, 4):
             expected = 0.0
 
         print(f"  ({m}, {n})       {result:+.6f}       {expected:+.6f}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-drum-modes
-#| fig-cap: "Radial profiles (left) and two-dimensional mode shapes (right) of the first three radially symmetric normal modes of a circular drum. Each mode $J_0(j_{0,m}\\,r/R)$ has $m-1$ interior nodal circles (locations where the membrane does not move). The natural frequencies are proportional to the zeros $j_{0,1} \\approx 2.405$, $j_{0,2} \\approx 5.520$, and $j_{0,3} \\approx 8.654$."
 
 R = 1.0   # drum radius
 zeros_J0 = jn_zeros(0, 3)   # j_{0,1}, j_{0,2}, j_{0,3}
@@ -312,10 +255,6 @@ for ax, (zm, color, m) in zip(axes[1:], zip(zeros_J0, colors_mode, range(1, 4)))
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 x = sym.Symbol('x', positive=True)
 
 print("Verifying derivative formulas for Bessel functions:\n")
@@ -342,11 +281,3 @@ for nu_val in [0, 1, 2]:
         rf"x^{{-{nu_val}}} J_{{{nu_val+1}}}(x) = " + sym.latex(res2)
     ))
     print()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

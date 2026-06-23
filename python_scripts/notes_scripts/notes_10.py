@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-eigenpair-verify
-#| fig-cap: "SymPy verification of the eigenvalues and eigenvectors for Example 4.27. The characteristic polynomial, eigenvalues, and eigenvectors all match the hand calculations."
 
 s = sym.Symbol('lam')
 A427 = sym.Matrix([[1, 1], [4, 1]])
@@ -27,20 +18,10 @@ for val, mult, vecs in A427.eigenvects():
     for v in vecs:
         display(Math(rf"\lambda = {val},\quad \mathbf{{v}} = {sym.latex(v)}"))
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 A428 = sym.Matrix([[-2, -3], [3, -2]])
 print("Eigenvalues of Example 4.28:")
 for val, mult, vecs in A428.eigenvects():
     display(Math(rf"\lambda = {sym.latex(val)},\quad \mathbf{{v}} = {sym.latex(vecs[0])}"))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-saddle
-#| fig-cap: "Phase plane portraits for two saddle-point systems. Left: Example 4.29 — the decoupled system with eigenvectors along the coordinate axes; orbits are hyperbolas. Right: Example 4.30 — eigenvectors along $y=-2x$ and $y=2x$; separatrices (linear orbits) are shown in red and blue."
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
@@ -85,12 +66,6 @@ plot_phase(axes[1], A430, "Example 4.30: Saddle ($\\lambda=-1,3$)")
 plt.suptitle("Saddle Points — Opposite-Sign Eigenvalues", fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-nodes
-#| fig-cap: "Phase plane portraits for nodal and degenerate cases. Left: asymptotically stable node (Example 4.33, $\\lambda=-1,-6$) — all orbits enter the origin tangent to the slow eigenvector $\\mathbf{v}_1=(2,1)^T$. Right: $\\det A=0$ case (Example 4.36) — line of equilibria along $x+2y=0$ with orbits exiting along parallel lines."
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
@@ -162,12 +137,6 @@ plt.suptitle("Real Unequal Eigenvalues — Nodes and Degenerate Cases", fontsize
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-complex-eigs
-#| fig-cap: "Phase plane portraits for complex eigenvalue cases. Left: Example 4.37 — asymptotically stable spiral with $\\lambda=-2\\pm 3i$; orbits spiral into the origin counterclockwise. Right: purely imaginary case $\\lambda=\\pm 2i$ — closed elliptical orbits (stable center)."
-
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
 def phase_complex(ax, A, title, lim=2.5, t_span=(-0.1, 5)):
@@ -204,12 +173,6 @@ phase_complex(axes[1], A_center, "Stable Center ($\\lambda=\\pm 2i$)",
 plt.suptitle("Complex Eigenvalues — Spirals and Centers", fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-equal-eigs
-#| fig-cap: "Phase plane portraits for equal eigenvalue cases. Left: Example 4.38 — non-deficient stable star node ($\\lambda=-2,-2$); every ray through the origin is a linear orbit. Right: Example 4.39 — deficient unstable node ($\\lambda=3,3$); the single linear orbit is along $y=x$, and all other orbits curve away."
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
@@ -256,12 +219,6 @@ plt.suptitle("Real Equal Eigenvalues — Star and Degenerate Nodes", fontsize=12
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex439-ivp
-#| fig-cap: "Solution of the IVP from Example 4.39 with $\\mathbf{x}(0)=(1,0)^T$. Both components grow without bound as $t\\to+\\infty$, confirming the unstable node. The numerical `solve_ivp` solution (dashed) exactly matches the analytical formula $x(t)=(1-t)e^{3t}$, $y(t)=-te^{3t}$."
-
 t_plot = np.linspace(-0.8, 0.4, 400)
 x_anal = (1 - t_plot) * np.exp(3*t_plot)
 y_anal = -t_plot * np.exp(3*t_plot)
@@ -282,11 +239,3 @@ ax.set_title(r"Example 4.39: IVP solution $\mathbf{x}(0)=(1,0)^T$, $\lambda=3$ (
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import scipy as sp                        # SciPy for scientific computing
@@ -12,14 +9,12 @@ mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
 
-
 t, A, x0 = sym.symbols('t A x_0', real=True)
 
 x = sym.S(1) / (1 + A * sym.exp(-t))
 
 from IPython.display import Math, display
 display(Math(r'x(t) = ' + sym.latex(x)))
-
 
 lhs = sym.diff(x, t)
 rhs = x * (1 - x)
@@ -30,30 +25,21 @@ print("LHS  (dx/dt)  =", sym.simplify(lhs))
 print("RHS  (x(1-x)) =", sym.simplify(rhs))
 print("LHS - RHS     =", residual)
 
-
 ic_eq = sym.Eq(x.subs(t, 0), x0)
 print("Initial condition equation:", ic_eq)
 
 A_val = sym.solve(ic_eq, A)[0]
 print("A =", A_val)
 
-
 x_particular = sym.simplify(x.subs(A, A_val))
 print("Particular solution: x(t) =", x_particular)
 
 display(Math(r'x(t) = ' + sym.latex(x_particular)))
 
-
 lhs_p = sym.diff(x_particular, t)
 rhs_p = x_particular * (1 - x_particular)
 residual_p = sym.simplify(lhs_p - rhs_p)
 print("Residual for particular solution:", residual_p)
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-logistic-ivp
-#| fig-cap: "Solutions of $dx/dt = x(1-x)$ for various initial conditions $x_0$. All solutions with $x_0 \\in (0,1)$ increase toward the stable equilibrium $x=1$ (upper dashed line), while solutions with $x_0 > 1$ decrease toward it. The unstable equilibrium $x=0$ (lower dashed line) repels nearby solutions."
 
 t_vals = np.linspace(-3, 6, 500)
 
@@ -85,11 +71,3 @@ ax.set_title(r'Solutions of $\dfrac{dx}{dt} = x(1-x)$ for various $x_0$', fontsi
 ax.legend(fontsize=8, ncol=2, loc='upper left')
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys # sys for system-specific parameters and functions
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

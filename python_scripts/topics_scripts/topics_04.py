@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-picard
-#| fig-cap: "Picard iteration for $x'=tx$, $x(0)=1$. Left: successive approximations $x_0,\\ldots,x_4$ (colored) converging to the exact solution $e^{t^2/2}$ (dashed black) on $[0,1.5]$. Right: maximum error of each iterate on $[0,1.5]$ — the error decreases rapidly, confirming convergence."
 
 t_plot = np.linspace(0, 1.5, 400)
 x_exact = np.exp(t_plot**2 / 2)
@@ -54,12 +45,6 @@ axes[1].set_xticks(range(len(errors)))
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-nonunique
-#| fig-cap: "Non-uniqueness for $x' = x^{2/3}$, $x(0)=0$. All colored curves are valid solutions of the same IVP — the Lipschitz condition fails at the origin and uniqueness is lost. Each solution stays at zero until time $a$, then follows the cubic branch $(t-a)^3/27$."
-
 t_plot = np.linspace(-0.3, 2.5, 500)
 
 fig, ax = plt.subplots(figsize=(8, 5))
@@ -84,12 +69,6 @@ ax.set_ylim(-0.2, 1.5)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-blowup
-#| fig-cap: "Finite-time blow-up for $x'=x^p$ with $x(0)=1$. Each solution exists only up to a finite blow-up time $t^* = 1/(p-1)$ (marked with dashed vertical lines). Solutions blow up faster for larger $p$."
-
 fig, ax = plt.subplots(figsize=(8, 5))
 p_vals = [2, 3, 4, 5]
 colors = plt.cm.Reds(np.linspace(0.4, 0.9, len(p_vals)))
@@ -108,12 +87,6 @@ ax.set_title(r"Finite-time blow-up: $x' = x^p$, $x(0)=1$")
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-cont-dep
-#| fig-cap: "Continuous dependence for $x'=x$, $x(0)=x_0$. Left: solutions from three nearby initial conditions — small initial separation grows but remains controlled on any bounded interval. Right: the difference between each perturbed solution and the base solution $x_0=1$ matches the Gronwall bound $\\delta e^t$ exactly (as expected since $L=1$ for this linear ODE)."
 
 L_val = 1.0   # Lipschitz constant for f(t,x) = x
 t_plot = np.linspace(0, 3, 400)
@@ -153,12 +126,6 @@ axes[1].legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sensitive
-#| fig-cap: "Sensitive dependence: logistic ODE $x'=3x(1-x)$ from two initial conditions differing by $\\varepsilon = 10^{-4}$. On a short interval both solutions track each other closely; on a longer interval they diverge noticeably, illustrating how even well-posed, unique solutions can be sensitive to tiny perturbations in a nonlinear setting."
-
 r_val = 3.0
 f_log = lambda t, x: [r_val * x[0] * (1 - x[0])]
 
@@ -187,11 +154,3 @@ axes[1].set_title('Separation between solutions (log scale)')
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

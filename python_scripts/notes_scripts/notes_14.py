@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -9,12 +6,6 @@ from IPython.display import display, Math, Image
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top']   = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-euler-ex63
-#| fig-cap: "Example 6.3 — Euler method applied to $x'=t-x$, $x(0)=1$ with step sizes $h=0.5, 0.25, 0.125$ (red, orange, green), compared to the exact solution $x(t)=t-1+2e^{-t}$ (blue). Each approximation lags behind the exact solution (which is concave up). Error at $t=2$ is approximately halved each time $h$ is halved, confirming $O(h)$ convergence."
 
 def f_ex(t, x):
     return t - x
@@ -60,12 +51,6 @@ for N, h in zip(Nvals, hvals):
     err = exact_ex(T) - X_e[-1]
     print(f"{h:8.4f}  {X_e[-1]:8.4f}  {err:8.4f}")
 print(f"{'exact':>8}  {exact_ex(T):8.4f}  {'0':>8}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-rk4-compare
-#| fig-cap: "Comparison of Euler (red), Modified Euler/RK2 (orange), and RK4 (green) with $h=0.5$ on $x'=t-x$, $x(0)=1$. Even with this large step size, RK4 is almost indistinguishable from the exact solution. The right panel shows convergence: log–log plot of global error at $t=2$ vs. $h$ confirms slopes of 1, 2, and 4 for Euler, RK2, and RK4."
 
 def modified_euler(f, t0, T, x0, N):
     h = (T - t0) / N
@@ -132,10 +117,6 @@ plt.suptitle(r"Method comparison: $x'=t-x$, $x(0)=1$", fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # Verify the concrete error table values above (all method functions now defined)
 _methods = [('Euler', euler), ('Modified Euler (RK2)', modified_euler), ('RK4', rk4)]
 print(f"{'Method':<24} {'h=0.5 error':>12} {'h=0.25 error':>13} {'Ratio':>7}")
@@ -145,11 +126,6 @@ for name, method in _methods:
     err_quarter = abs(exact_ex(2) - method(f_ex, 0, 2, 1,  8)[-1][-1])
     ratio = err_half / err_quarter
     print(f"{name:<24} {err_half:>12.7f} {err_quarter:>13.7f} {ratio:>7.2f}")
-
-
-#| code-fold: false
-#| label: fig-scipy-basic
-#| fig-cap: "Solving $x'=t-x$, $x(0)=1$ with `solve_ivp` using default RK45 (green circles) and a fixed fine grid (`dense_output=True`). The result is essentially indistinguishable from the exact solution (blue)."
 
 from scipy.integrate import solve_ivp
 
@@ -186,11 +162,6 @@ ax.set_title(r"$x'=t-x$, $x(0)=1$ via `solve_ivp`")
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: false
-#| label: fig-scipy-system
-#| fig-cap: "Lotka–Volterra predator–prey system solved with `solve_ivp`. Left: time series of prey $x(t)$ (steelblue) and predator $y(t)$ (crimson) showing the classic antiphase oscillations. Right: phase portrait showing the closed orbit around the non-trivial equilibrium, confirming the periodic nature of the solution."
 
 # Lotka-Volterra: x' = ax - bxy,  y' = -cy + dxy
 a, b, c, d = 0.6, 0.5, 0.3, 0.4
@@ -234,11 +205,3 @@ axes[1].legend(fontsize=9)
 plt.suptitle(f'Lotka–Volterra ($a={a}$, $b={b}$, $c={c}$, $d={d}$)', fontsize=11)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

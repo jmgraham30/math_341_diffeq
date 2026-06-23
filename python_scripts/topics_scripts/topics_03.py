@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-nonlinear-fail
-#| fig-cap: "Superposition fails for the nonlinear ODE $x'=x^2$. The solution $x_1(t)=1/(1-t)$ (blue) blows up at $t=1$; $2x_1$ (orange dashed) is not a solution — it does not satisfy the ODE, as confirmed by the large residual shown in the right panel."
 
 t_plot = np.linspace(-2, 0.85, 400)
 x1 = 1.0/(1 - t_plot)
@@ -43,12 +34,6 @@ axes[1].set_ylim(-5, 1)
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sho-super
-#| fig-cap: "Simple harmonic oscillator $x'' + 4x = 0$ ($\\omega = 2$). Left: the two basis solutions $x_1 = \\cos(2t)$ (blue) and $x_2 = \\sin(2t)$ (orange). Right: several linear combinations $C_1\\cos(2t)+C_2\\sin(2t)$ — all are solutions by superposition, and each corresponds to a different initial condition."
 
 omega = 2.0
 t_plot = np.linspace(0, 2*np.pi, 400)
@@ -80,12 +65,6 @@ axes[1].legend(fontsize=8)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sho-ivp
-#| fig-cap: "IVP for $x''+4x=0$ with $x(0)=3$, $x'(0)=-2$. The superposition formula $x=3\\cos(2t)-\\sin(2t)$ (solid blue) is confirmed by a numerical solve (red dots)."
-
 t_plot = np.linspace(0, 2*np.pi, 400)
 x_exact = 3*np.cos(2*t_plot) - np.sin(2*t_plot)
 
@@ -102,12 +81,6 @@ ax.set_title(r"IVP: $x''+4x=0$, $x(0)=3$, $x'(0)=-2$")
 ax.legend()
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-driven-super
-#| fig-cap: "Driven oscillator $x''+4x=\\cos(t)+3\\sin(5t)$, zero initial conditions. The particular solution (green dashed) is built by superposing the responses to each forcing term separately. The full solution (blue) adds the transient homogeneous part."
 
 t_plot = np.linspace(0, 4*np.pi, 600)
 
@@ -147,10 +120,6 @@ axes[1].legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_s = sym.Symbol('t')
 x_s = sym.Function('x')
 
@@ -174,12 +143,6 @@ print(f"  L[cos(t)/3]       = {sym.simplify(L(xp1_s))}")
 print(f"  L[-sin(5t)/7]     = {sym.simplify(L(xp2_s))}")
 print(f"  L[xp1 + xp2]      = {sym.simplify(L(xp1_s + xp2_s))}")
 print(f"  Forcing cos(t)+3sin(5t) = cos(t) + 3sin(5t)")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-circuit-super
-#| fig-cap: "Superposition theorem for an RC circuit ($R=1$, $C=1$) driven by two sources: $E_1(t) = \\sin(t)$ and $E_2(t) = 0.5\\cos(3t)$. The total response $Q$ (blue) equals the sum of the individual responses $Q_1$ (orange) and $Q_2$ (green) — numerically verified (red dots)."
 
 R_val, C_val = 1.0, 1.0   # tau = RC = 1
 
@@ -218,12 +181,6 @@ ax.set_title('RC Circuit: Superposition Theorem ($R=C=1$)')
 ax.legend(fontsize=8, ncol=2)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-beam
-#| fig-cap: "Deflection of a simply supported beam of length $L=1$ under three loading cases, computed by superposition. Each load produces a deflection (dashed lines); the total deflection (solid blue) is their sum. The beam equation is $EI\\,y''''=w(x)$ with $EI=1$."
 
 from numpy.polynomial import polynomial as P
 
@@ -266,12 +223,6 @@ ax.set_title(r"Simply Supported Beam: $EI\,y^{(4)}=w(x)$, deflection by superpos
 ax.legend(fontsize=8); ax.invert_yaxis()
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-fourier-heat
-#| fig-cap: "Fourier series solution to the heat equation $u_t = 0.1\\,u_{xx}$ on $[0,1]$ with $u(x,0)=x(1-x)$ and zero boundary conditions. Left: Fourier sine series approximation to the initial condition using $N=1,3,5,15$ terms — superposition of simple sine modes converges to the parabola. Right: evolution of the solution at several times; each mode decays exponentially at its own rate."
 
 from scipy.integrate import quad
 
@@ -319,11 +270,3 @@ axes[1].legend(fontsize=8)
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

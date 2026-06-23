@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-logistic-phase
-#| fig-cap: "Logistic equation $x' = x(1-x/4)$ ($r=1$, $K=4$). Top: graph of $f(x)$ with sign regions shaded. Bottom: phase line with equilibria and flow arrows. Right: solution curves $x(t)$ from several initial conditions all converging to $K=4$."
 
 r_val, K_val = 1.0, 4.0
 f_log = lambda x: r_val * x * (1 - x / K_val)
@@ -75,12 +66,6 @@ plt.suptitle(r"Logistic: $x' = x(1-x/4)$", fontsize=12, y=1.01)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-cubic-phase
-#| fig-cap: "Phase line analysis for $x'=x^3-x$. Left: graph of $f(x)=x(x-1)(x+1)$ with sign regions. Middle: phase line. Right: solution curves — those starting between $-1$ and $1$ converge to $x^*=0$; those outside blow up in finite time."
-
 f_cub  = lambda x: x**3 - x
 x_arr2 = np.linspace(-1.6, 1.6, 400)
 f_arr2 = f_cub(x_arr2)
@@ -139,10 +124,6 @@ plt.suptitle(r"$x' = x^3 - x$", fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_sym, x_sym, r_sym, K_sym = sym.symbols('t x r K', real=True, positive=True)
 
 for label, f_expr in [
@@ -161,12 +142,6 @@ for label, f_expr in [
             print(f"  f'({xe}) = {val_s}")
         except Exception:
             pass
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-nonhyp
-#| fig-cap: "Non-hyperbolic equilibrium $x'=x^2$ at $x^*=0$. The linearization $f'(0)=0$ is inconclusive. The full phase line reveals semi-stability: solutions starting below $x^*=0$ increase toward zero; solutions starting above increase away from zero and blow up in finite time."
 
 f_nh  = lambda x: x**2
 x_arr = np.linspace(-1.5, 1.5, 400)
@@ -195,12 +170,6 @@ axes[1].legend(fontsize=7, ncol=2); axes[1].set_ylim(-4, 4)
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-saddle-node
-#| fig-cap: "Saddle-node bifurcation $x'=r-x^2$. Left: $f(x)$ for three values of $r$. Middle: phase lines for each case. Right: bifurcation diagram — stable branch (solid blue) and unstable branch (dashed red) emerge from the bifurcation point $r=0$."
 
 fig, axes = plt.subplots(1, 3, figsize=(13, 4.5))
 
@@ -265,12 +234,6 @@ plt.suptitle('Saddle-Node Bifurcation: $x\'=r-x^2$', fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-transcritical
-#| fig-cap: "Transcritical bifurcation $x'=rx-x^2$. The two equilibria $x^*=0$ and $x^*=r$ exist for all $r$ and exchange stability at $r=0$."
-
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
 
 # f(x) plots
@@ -305,12 +268,6 @@ axes[1].axvline(0, color='k', lw=0.5, ls=':')
 plt.suptitle(r"Transcritical Bifurcation: $x'=rx-x^2$", fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-pitchfork
-#| fig-cap: "Supercritical pitchfork bifurcation $x'=rx-x^3$. Left: bifurcation diagram — the stable origin loses stability at $r=0$ and two symmetric stable branches emerge. Right: solution curves for $r=1.5$ showing all trajectories converging to one of the two stable equilibria $\\pm\\sqrt{r}$."
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
 
@@ -350,12 +307,6 @@ axes[1].legend(fontsize=7, ncol=2); axes[1].set_ylim(-3, 3)
 plt.suptitle(r"Supercritical Pitchfork: $x'=rx-x^3$", fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-bif-summary
-#| fig-cap: "Bifurcation diagrams for all three classical one-dimensional bifurcations. Solid curves are stable equilibria; dashed curves are unstable. The bifurcation point in each case is at $r=0$."
 
 fig, axes = plt.subplots(1, 3, figsize=(13, 4))
 
@@ -400,12 +351,6 @@ for ax in axes:
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-budworm
-#| fig-cap: "Spruce budworm model with $K=10$. Left: $f(x)$ for three values of $r$, showing how the number of positive equilibria changes. Right: solutions from multiple initial conditions for the bistable case ($r=0.55$) — the population converges to either the low refuge state or the high outbreak state depending on whether the initial condition lies below or above the unstable equilibrium that acts as a **separator** between the two basins of attraction."
-
 K_bw = 10.0
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
@@ -438,11 +383,3 @@ axes[1].legend(fontsize=7, ncol=2)
 plt.suptitle("Spruce Budworm Model", fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

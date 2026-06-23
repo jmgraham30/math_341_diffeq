@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-rc-filter
-#| fig-cap: "RC low-pass filter ($R=1\\,\\text{k}\\Omega$, $C=1\\,\\mu\\text{F}$, $\\tau=1\\,\\text{ms}$, $f_c=159\\,\\text{Hz}$). Left: step response — the capacitor charges toward $E_0=5\\,\\text{V}$ with time constant $\\tau$. Right: Bode magnitude plot — the filter passes low frequencies and attenuates high frequencies, rolling off at $-20\\,\\text{dB/decade}$ above $f_c$."
 
 R_val  = 1e3     # 1 kΩ
 C_val  = 1e-6    # 1 μF
@@ -63,12 +54,6 @@ plt.suptitle(f'RC Low-Pass Filter ($R={R_val/1e3:.0f}\\,\\mathrm{{k}}\\Omega$, '
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-rlc-free
-#| fig-cap: "RLC free response ($L=0.1\\,\\text{H}$, $C=100\\,\\mu\\text{F}$, $V_0=10\\,\\text{V}$). Left: capacitor voltage $V_C=Q/C$ for three damping regimes. The underdamped circuit oscillates like a decaying spring. Right: phase portrait $(Q, I)$ — the underdamped case spirals inward; the overdamped case decays without orbiting."
-
 L_val = 0.1     # H
 C_val = 1e-4    # 100 μF
 V0    = 10.0    # initial voltage
@@ -109,12 +94,6 @@ axes[1].legend(fontsize=8)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-rlc-impedance
-#| fig-cap: "Series RLC driven response ($L=10\\,\\text{mH}$, $C=10\\,\\mu\\text{F}$, $\\omega_0\\approx 3162\\,\\text{rad/s}$, $f_0\\approx 503\\,\\text{Hz}$). Left: impedance $|Z(\\omega)|$ vs. frequency for four values of $R$. The minimum impedance at resonance equals $R$. Right: normalized amplitude response $|H(\\omega)| = R/|Z(\\omega)|$ — the curves are labeled by their $Q$ factor. Higher $Q$ gives a sharper, taller peak."
-
 L_v  = 10e-3   # 10 mH
 C_v  = 10e-6   # 10 μF
 omega0_v = 1/np.sqrt(L_v*C_v)
@@ -151,12 +130,6 @@ axes[1].legend(fontsize=7.5)
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-am-radio
-#| fig-cap: "AM radio tuning circuit ($L=100\\,\\mu\\text{H}$, $R=6.28\\,\\Omega$, $Q=100$, $f_0=1\\,\\text{MHz}$). Left: amplitude response centered at $f_0=1\\,\\text{MHz}$ with bandwidth $\\Delta f = 10\\,\\text{kHz}$ — the circuit passes the desired station (shaded blue) and rejects neighboring stations (shaded red). Right: how varying $C$ shifts the resonant frequency to tune across the AM band (540–1700 kHz)."
 
 L_am  = 100e-6   # 100 μH
 R_am  = 6.28     # Ω  => Q = omega0*L/R = 100 at 1 MHz
@@ -211,12 +184,6 @@ axes[1].legend(fontsize=7.5); axes[1].set_ylim(0, 1.1)
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-dc-motor
-#| fig-cap: "DC motor step response to $V=12$ V applied at $t=0$ (all initial conditions zero). Left: angular velocity $\\omega(t)$ and armature current $I(t)$ — the current spikes immediately (electrical time constant $\\tau_e=5\\,\\text{ms}$) while speed builds more slowly (mechanical time constant $\\tau_m=100\\,\\text{ms}$). Right: phase portrait $(\\omega, I)$ showing the trajectory from rest to steady state. Both quantities approach their analytically computed steady-state values (dashed lines)."
 
 # Motor parameters
 La  = 0.01   # H   (armature inductance)
@@ -280,12 +247,6 @@ axes[1].legend(fontsize=8.5)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-motor-control
-#| fig-cap: "DC motor speed control by varying applied voltage. Left: step responses for four voltage levels — the steady-state speed scales linearly with $V$ (the motor is a linear system). Right: effect of friction coefficient $b$ on transient response with $V=12$ V — higher friction gives faster settling but lower steady-state speed."
-
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 t_plot = np.linspace(0, 0.5, 1000)
 
@@ -324,11 +285,3 @@ axes[1].legend(fontsize=7.5)
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

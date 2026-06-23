@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-three-cases
-#| fig-cap: "Representative solutions for each of the three cases of the characteristic equation. All equations have the form $x''+px'+qx=0$ with initial conditions $x(0)=1$, $x'(0)=0$. **Left:** distinct real eigenvalues (exponential behavior). **Middle:** repeated eigenvalue (critical damping). **Right:** complex eigenvalues (oscillatory decay — underdamped)."
 
 t_plot = np.linspace(0, 5, 400)
 fig, axes = plt.subplots(1, 3, figsize=(12, 4))
@@ -76,12 +67,6 @@ plt.suptitle('Three Cases of the Characteristic Equation', fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-damped-osc
-#| fig-cap: "Damped harmonic oscillator $x''+2\\gamma x'+x=0$ ($\\omega_0=1$) from initial conditions $x(0)=1$, $x'(0)=0$. The three damping regimes show qualitatively different behavior. In the underdamped case the dotted curve shows the decaying amplitude envelope $\\pm e^{-\\gamma t}$."
-
 omega0 = 1.0
 t_plot = np.linspace(0, 12, 600)
 
@@ -120,10 +105,6 @@ axes[1].set_aspect('equal')
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # Verify with SymPy
 t_sym = sym.Symbol('t')
 x_sym = sym.Function('x')
@@ -132,12 +113,6 @@ sol_ex4 = sym.dsolve(ode_ex4, x_sym(t_sym),
                      ics={x_sym(0): 1, x_sym(t_sym).diff(t_sym).subs(t_sym,0): 2})
 print("IVP solution:")
 display(Math(sym.latex(sol_ex4)))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ivp-ex4
-#| fig-cap: "Solution to the IVP $x''+2x'+5x=0$, $x(0)=1$, $x'(0)=2$ (Example 4). The solution oscillates with frequency $\\beta=2$ while the amplitude decays like $e^{-t}$ (dotted envelope). Red dots are a numerical check via `solve_ivp`."
 
 t_plot = np.linspace(0, 5, 400)
 x_sol = np.exp(-t_plot)*(np.cos(2*t_plot) + 1.5*np.sin(2*t_plot))
@@ -159,10 +134,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_sym = sym.Symbol('t')
 x_sym = sym.Function('x')
 
@@ -183,10 +154,6 @@ for label, expr in cases.items():
     display(Math(r"x(t) = " + sym.latex(expanded)))
     print()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_sym = sym.Symbol('t')
 x_sym = sym.Function('x')
 
@@ -205,10 +172,6 @@ sol6 = sym.dsolve(ode6, x_sym(t_sym))
 print("Example 6 (polynomial forcing):")
 display(Math(r"x(t) = " + sym.latex(sol6.rhs)))
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # SymPy verification for Example 8b
 t_sym = sym.Symbol('t')
 x_sym = sym.Function('x')
@@ -217,12 +180,6 @@ ode8b = sym.Eq(x_sym(t_sym).diff(t_sym,2) + 4*x_sym(t_sym).diff(t_sym) + 4*x_sym
 sol8b = sym.dsolve(ode8b, x_sym(t_sym))
 print("Example 8b (repeated eigenvalue, exponential forcing):")
 display(Math(r"x(t) = " + sym.latex(sol8b.rhs)))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-resonance
-#| fig-cap: "Resonance vs. non-resonance for $x''+4x=\\cos(\\Omega t)$ with $x(0)=x'(0)=0$. Left: non-resonant ($\\Omega=1$) — bounded steady-state oscillation. Right: resonant ($\\Omega=2=\\omega_0$) — amplitude grows linearly without bound. The dashed line shows the linear growth envelope $\\pm t/4$."
 
 t_plot = np.linspace(0, 20, 1000)
 
@@ -252,11 +209,3 @@ axes[1].legend(fontsize=9)
 plt.suptitle(r"$x'' + 4x = \cos(\Omega t)$, $x(0)=x'(0)=0$", fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

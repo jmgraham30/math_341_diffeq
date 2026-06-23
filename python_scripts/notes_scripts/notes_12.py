@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex51
-#| fig-cap: "Phase diagram for Example 5.1: $x'=-x+xy$, $y'=-4y+8xy$. The $x$-nullclines (steelblue dashed: $x=0$ and $y=1$) and $y$-nullclines (crimson dashed: $y=0$ and $x=1/2$) divide the plane into eight regions. The origin is an asymptotically stable node ($\\lambda=-1,-4$); the point $(1/2,1)$ is a saddle ($\\lambda=\\pm 2$). Orbits were computed using `solve_ivp`."
 
 def f51(x, y): return -x + x*y
 def g51(x, y): return -4*y + 8*x*y
@@ -57,12 +48,6 @@ ax.legend(fontsize=8, loc='lower right')
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex52
-#| fig-cap: "Phase diagram for Example 5.2: $x'=x-x^3$, $y'=2y$. Vertical nullclines at $x=0,\\pm 1$ (steelblue dashed) and horizontal nullcline $y=0$ (crimson dashed). The origin is an unstable node; $(\\pm 1, 0)$ are saddle points. In the upper half-plane orbits move upward; in the lower half-plane downward."
-
 def f52(x, y): return x - x**3
 def g52(x, y): return 2*y
 
@@ -103,12 +88,6 @@ ax.legend(fontsize=8, loc='lower right')
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex53
-#| fig-cap: "Phase diagram for Example 5.3: $x'=y^2$, $y'=-\\frac{2}{3}x$. Orbits are the curves $y=(C-x^2)^{1/3}$ for various values of $C$ (colored curves). The critical point at the origin has $\\det J=0$, so linearization fails. Since $x'=y^2\\geq 0$, all orbits move to the right (arrows shown). Numerical `solve_ivp` orbits (black) confirm the analytical family."
-
 fig, ax = plt.subplots(figsize=(8, 6.5))
 
 # Analytical orbit family
@@ -145,11 +124,3 @@ ax.set_title(r"Example 5.3: $x'=y^2$, $y'=-\frac{2}{3}x$ — degenerate critical
 ax.legend(fontsize=8, loc='upper right')
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

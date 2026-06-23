@@ -1,7 +1,3 @@
-#| label: setup
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import sympy as sym                       # SymPy for symbolic mathematics
@@ -11,9 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| label: ex1-sympy
 
 t = sym.Symbol('t')
 c1, c2 = sym.symbols('c1 c2')
@@ -28,12 +21,6 @@ display(Math(r'\mathbf{x}(t) = c_1 '
             + sym.latex(v2) + r'e^{-4t}'))
 display(Math(r'x(t) = ' + sym.latex(sym.simplify(x_gen[0]))))
 display(Math(r'y(t) = ' + sym.latex(sym.simplify(x_gen[1]))))
-
-
-#| label: fig-ex1
-#| fig-cap: "Phase portrait for Example 1: asymptotically stable node with eigenvalues $\\lambda_1=-1$ and $\\lambda_2=-4$. The linear orbits along $\\mathbf{v}_1=(1,3)^T$ (tomato) and $\\mathbf{v}_2=(2,1)^T$ (steelblue) are highlighted; all other orbits approach the origin tangent to $\\mathbf{v}_1$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 v1_np = np.array([1, 3], dtype=float)
 v2_np = np.array([2, 1], dtype=float)
@@ -88,9 +75,6 @@ ax.legend(handles=legend_handles, fontsize=9, loc='upper right')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex2-sympy
-
 A2 = sym.Matrix([[2, 3], [1, 4]])
 lam = sym.Symbol('lambda')
 
@@ -109,12 +93,6 @@ x_gen2 = c1*ev_list[0][1]*sym.exp(ev_list[0][0]*t) \
         + c2*ev_list[1][1]*sym.exp(ev_list[1][0]*t)
 display(Math(r'x(t) = ' + sym.latex(sym.simplify(x_gen2[0]))))
 display(Math(r'y(t) = ' + sym.latex(sym.simplify(x_gen2[1]))))
-
-
-#| label: fig-ex2
-#| fig-cap: "Phase portrait for Example 2: unstable node with $\\lambda_1=1$ and $\\lambda_2=5$. Orbits along the eigenvector directions are highlighted; all trajectories move away from the origin."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 v1_np = np.array([-3, 1], dtype=float)
 v2_np = np.array([1,  1], dtype=float)
@@ -157,9 +135,6 @@ ax.legend(handles=legend_handles, fontsize=9, loc='upper right')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex3-sympy
-
 A3 = sym.Matrix([[-1, 4], [1, -4]])
 x0 = sym.Matrix([2, 1])
 
@@ -179,12 +154,6 @@ sol_ivp = sym.dsolve([sym.Eq(x_vec[0].diff(t), (A3*x_vec)[0]),
 display(Math(r'\text{IVP solution:}'))
 for eq in sol_ivp:
     display(Math(sym.latex(eq)))
-
-
-#| label: fig-ex3
-#| fig-cap: "Solution of the IVP in Example 3. The particular solution (tomato) starts at $(2,1)$ and converges to $\\frac{3}{5}(4,1)^T \\approx (2.4, 0.6)$ on the line of equilibria $y = \\frac{1}{4}x$ (dashed)."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 2, 500)
 
@@ -238,9 +207,6 @@ plt.suptitle(r"Example 3: zero eigenvalue ($\lambda_1=0$, $\lambda_2=-5$)",
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex4-sympy
-
 A4 = sym.Matrix([[-1, -3], [3, -1]])
 
 char4 = A4.charpoly(lam)
@@ -256,12 +222,6 @@ sol4 = sym.dsolve([sym.Eq(x4.diff(t), -x4 - 3*y4),
                    sym.Eq(y4.diff(t),  3*x4 - y4)])
 for eq in sol4:
     display(Math(sym.latex(eq)))
-
-
-#| label: fig-ex4
-#| fig-cap: "Phase portrait for Example 4: asymptotically stable spiral sink with $\\lambda = -1 \\pm 3i$. Trajectories spiral inward toward the origin. The tomato orbit starts at $(2,0)$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 5, 2000)
 fig, ax = plt.subplots(figsize=(6, 6))
@@ -295,9 +255,6 @@ ax.set_title(r'Spiral sink: $\lambda = -1 \pm 3i$', fontsize=11)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex5-sympy
-
 A5 = sym.Matrix([[0, -4], [1, 0]])
 
 roots5 = sym.solve(A5.charpoly(lam).as_expr(), lam)
@@ -309,12 +266,6 @@ sol5 = sym.dsolve([sym.Eq(x5.diff(t), -4*y5),
                    sym.Eq(y5.diff(t),   x5)])
 for eq in sol5:
     display(Math(sym.latex(eq)))
-
-
-#| label: fig-ex5
-#| fig-cap: "Phase portrait for Example 5: stable center with $\\lambda = \\pm 2i$. Orbits are concentric ellipses satisfying $x^2/4 + y^2 = $ const. The tomato ellipse corresponds to $c_1=0$, $c_2=1$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 2*np.pi, 1000)
 fig, ax = plt.subplots(figsize=(6, 6))
@@ -343,9 +294,6 @@ ax.set_title(r'Stable center: $\lambda = \pm 2i$', fontsize=11)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex6-sympy
-
 A6 = sym.Matrix([[2, -5], [1, -2]])
 
 roots6 = sym.solve(A6.charpoly(lam).as_expr(), lam)
@@ -361,12 +309,6 @@ sol6_ivp = sym.dsolve(
 display(Math(r'\text{IVP solution:}'))
 for eq in sol6_ivp:
     display(Math(sym.latex(eq)))
-
-
-#| label: fig-ex6
-#| fig-cap: "Solution of the IVP in Example 6. Left: time series showing $x(t) = 2\\sin t + \\cos t$ (steelblue) and $y(t)=\\sin t$ (tomato), both periodic with period $2\\pi$. Right: phase portrait showing the closed elliptical orbit through $(1,0)$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 4*np.pi, 1000)
 x_sol6 = 2*np.sin(t_vals) + np.cos(t_vals)
@@ -417,12 +359,3 @@ plt.suptitle(r'Example 6: $\lambda = \pm i$, IVP with $\mathbf{x}(0)=(1,0)^T$',
              fontsize=11)
 plt.tight_layout()
 plt.show()
-
-
-#| label: session-info
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}'
-                for m in globals().values()
-                if getattr(m, '__version__', None)))

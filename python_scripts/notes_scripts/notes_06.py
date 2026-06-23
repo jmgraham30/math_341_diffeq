@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-transform-intuition
-#| fig-cap: "Geometric picture of the Laplace transform. The integrand $x(t)e^{-st}$ is the original function multiplied by the exponential damping factor $e^{-st}$ (gray dashed). The integral of the damped product (shaded area) gives the value of $X(s)$ at that particular $s$. Left: $x(t)=\\sin(2t)$ at two values of $s$ — larger $s$ damps the function more aggressively, reducing the area. Right: $X(s) = 2/(s^2+4)$ as a function of $s$, showing how the transform encodes the entire function in one curve."
 
 t_plot = np.linspace(0, 5, 400)
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
@@ -51,10 +42,6 @@ plt.suptitle('How the Laplace transform works', fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 s_v = sym.Symbol('s')
 t_v = sym.Symbol('t', positive=True)
 
@@ -74,12 +61,6 @@ for label, expr in examples_inv:
     display(Math(r"x(t) = " + sym.latex(sym.simplify(inv))))
     print()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ode-example1
-#| fig-cap: "Solution of $x''+4x'+3x=0$, $x(0)=2$, $x'(0)=1$ via Laplace transform (solid blue) confirmed by `solve_ivp` (red dots). The overdamped solution decays monotonically to zero — both eigenvalues $\\lambda=-1,-3$ are negative real."
-
 t_plot = np.linspace(0, 4, 300)
 x_exact = 3.5*np.exp(-t_plot) - 1.5*np.exp(-3*t_plot)
 
@@ -96,12 +77,6 @@ ax.set_title(r"$x''+4x'+3x=0$, $x(0)=2$, $x'(0)=1$")
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-heaviside
-#| fig-cap: "Top: the piecewise function $f(t)$ decomposed as a sum of Heaviside steps (each colored step is one term). Bottom: its Laplace transform $F(s)$ as a function of $s$, showing how the exponential factors $e^{-as}$ create oscillatory decay."
 
 t_plot = np.linspace(-0.3, 8, 600)
 fig, axes = plt.subplots(2, 1, figsize=(10, 7))
@@ -148,10 +123,6 @@ axes[1].set_title(r'Laplace transform $F(s) = \frac{1}{s}(3+e^{-2s}-2e^{-3s}-2e^
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 s_v = sym.Symbol('s')
 t_v = sym.Symbol('t', positive=True)
 
@@ -161,12 +132,6 @@ for f_t, lbl in [(t_v*sym.exp(-2*t_v), 'te^{-2t}'),
                   (sym.exp(2*t_v)*sym.cos(3*t_v), 'e^{2t}cos(3t)')]:
     F = sym.laplace_transform(f_t, t_v, s_v, noconds=True)
     display(Math(r"\mathcal{L}[" + lbl + r"] = " + sym.latex(sym.simplify(F))))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-discontinuous
-#| fig-cap: "RC circuit $x'+2x=f(t)$, $x(0)=0$ with a voltage pulse $f(t)=H(t)-H(t-3)$. The solution charges toward the steady state $x=1/2$ while the forcing is on, then decays back to zero after the switch-off at $t=3$. The solution $x(t)$ is **continuous** even though the forcing is discontinuous — $x(t)$ is an integral of a bounded forcing, so no jump can appear. However, $x'(t)$ has a jump discontinuity at $t=3$ (visible as a kink in the slope), since $x' = f(t) - 2x(t)$ inherits the jump from $f$."
 
 t_plot = np.linspace(0, 8, 600)
 H = lambda tv, a: np.where(tv >= a, 1.0, 0.0)
@@ -196,10 +161,6 @@ axes[1].legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # Verify a selection of table entries with SymPy
 s_v = sym.Symbol('s', positive=True)
 t_v = sym.Symbol('t', positive=True)
@@ -221,11 +182,3 @@ for f_t, name, F_expected in entries:
     F_diff = sym.simplify(F_computed - F_expected)
     status = "✓" if F_diff == 0 else f"Diff={F_diff}"
     print(f"  {name}: {status}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m,'__version__',None)))

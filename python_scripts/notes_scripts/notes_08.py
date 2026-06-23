@@ -1,7 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -13,12 +9,6 @@ mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
 
 H = lambda tv, a: np.where(np.asarray(tv, dtype=float) >= a, 1.0, 0.0)
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-convolution-check
-#| fig-cap: "Verification of Example 3.24. The inverse Laplace transform of $3/[s(s^2+9)]$ computed symbolically by SymPy matches $\\frac{1}{3}(1 - \\cos 3t)$ from the convolution calculation."
 
 s_v = sym.Symbol('s', positive=True)
 t_v = sym.Symbol('t', positive=True)
@@ -43,12 +33,6 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-impulse-approx
-#| fig-cap: "The rectangular impulse $f_\\varepsilon(t)$ centered at $a=2$ for three values of $\\varepsilon$. Each rectangle has area 1. As $\\varepsilon \\to 0$, the function becomes taller and narrower, converging to the idealized delta function $\\delta_2(t)$."
-
 t_plot = np.linspace(0, 4, 2000)
 a = 2.0
 
@@ -69,12 +53,6 @@ ax.legend(fontsize=9); ax.set_ylim(-0.2, 6)
 ax.set_xlim(0, 4)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex326
-#| fig-cap: "Solution of Example 3.26: $x(t) = H(t-2)(1 - e^{-(t-2)})$. The system is at rest until the impulse fires at $t=2$, after which the solution rises and approaches $1$ as $t \\to \\infty$. Red dots confirm the Laplace result against a numerical integration."
 
 t_plot = np.linspace(0, 10, 600)
 x_anal = H(t_plot, 2) * (1 - np.exp(-(t_plot - 2)))
@@ -103,12 +81,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex328
-#| fig-cap: "Impulse response from Example 3.28 with $t_0 = 2$: $x(t) = \\frac{1}{2}H(t-2)e^{-(t-2)}\\sin 2(t-2)$. The system is at rest until the impulse at $t=2$, then responds with a decaying oscillation. Red dots confirm against numerical integration."
-
 t0 = 2.0
 t_plot = np.linspace(0, 10, 600)
 x_anal = H(t_plot, t0) * 0.5 * np.exp(-(t_plot - t0)) * np.sin(2*(t_plot - t0))
@@ -134,11 +106,3 @@ ax.set_title(r"Example 3.28: $x''+2x'+5x=\delta_2(t)$, $x(0)=x'(0)=0$")
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m,'__version__',None)))

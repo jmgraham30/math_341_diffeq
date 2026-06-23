@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex1
-#| fig-cap: "Example 1: $x''+x=\\sec t$, $x(0)=1$, $x'(0)=0$ (solved on $[0,\\pi/2)$ before the singularity). The full solution (blue) is the sum of the homogeneous part (orange dashed) and the particular solution $x_p=\\cos t\\ln|\\cos t|+t\\sin t$ (green). Red dots confirm the analytical formula via numerical ODE solve."
 
 t_plot = np.linspace(0, 1.4, 400)
 
@@ -45,10 +36,6 @@ ax.set_title(r"$x''+x=\sec t$, $x(0)=1$, $x'(0)=0$")
 ax.legend(fontsize=8.5); ax.set_ylim(-0.5, 2.5)
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # SymPy verification
 t_sym = sym.Symbol('t', positive=True)
 x_sym = sym.Function('x')
@@ -57,12 +44,6 @@ ode2_sym = sym.Eq(x_sym(t_sym).diff(t_sym,2) - 2*x_sym(t_sym).diff(t_sym) + x_sy
 sol2_sym = sym.dsolve(ode2_sym, x_sym(t_sym))
 print("SymPy solution:")
 display(Math(sym.latex(sol2_sym)))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex2
-#| fig-cap: "Example 2: $x''-2x'+x=e^t/t$ with $x(1)=0$, $x'(1)=0$. The constants $C_1=2$, $C_2=-1$ are determined by the IVP. The particular solution $te^t(\\ln t-1)$ (green) grows rapidly for large $t$ since it inherits the $e^t$ factor of the homogeneous solutions. Red dots confirm the analytical formula via numerical solve."
 
 t_plot2 = np.linspace(1.0, 2.8, 400)
 
@@ -89,10 +70,6 @@ ax.set_title(r"$x''-2x'+x=e^t/t$, $x(1)=0$, $x'(1)=0$")
 ax.legend(fontsize=8.5)
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # SymPy verification
 t_sym = sym.Symbol('t', positive=True)
 x_sym = sym.Function('x')
@@ -103,12 +80,6 @@ ode3_sym = sym.Eq(t_sym**2*x_sym(t_sym).diff(t_sym,2)
 sol3_sym = sym.dsolve(ode3_sym, x_sym(t_sym))
 print("SymPy solution:")
 display(Math(sym.latex(sol3_sym)))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex3
-#| fig-cap: "Example 3: Euler equation $t^2 x''-2tx'+2x=t^3\\sin t$ with $x(\\pi)=\\pi^2$, $x'(\\pi)=2\\pi$. The variable-coefficient homogeneous part has power-law solutions $t$ and $t^2$ rather than exponentials. The particular solution $x_p=-t\\sin t$ (green) oscillates with linearly growing envelope. Red dots are the numerical check."
 
 t_plot3 = np.linspace(np.pi, 3*np.pi, 500)
 
@@ -141,12 +112,6 @@ ax.set_xlabel('$t$'); ax.set_ylabel('$x(t)$')
 ax.set_title(r"Euler eq: $t^2x''-2tx'+2x=t^3\sin t$, $x(\pi)=\pi^2$, $x'(\pi)=2\pi$")
 ax.legend(fontsize=8.5)
 plt.tight_layout(); plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex4
-#| fig-cap: "Example 4: $x''+x=\\csc t$, $x(\\pi/2)=\\pi/2$, $x'(\\pi/2)=0$. The particular solution $x_p=-t\\cos t+\\sin t\\ln|\\sin t|$ (green) combines the linear-growth feature $-t\\cos t$ of a near-resonant response with the logarithmic term $\\sin t\\ln|\\sin t|$ that vanishes at $t=0,\\pi,\\ldots$ (where $\\csc t$ is singular). Red dots confirm numerically."
 
 t_plot4 = np.linspace(0.1, np.pi - 0.05, 400)  # between singularities
 
@@ -185,10 +150,6 @@ ax.set_title(r"$x''+x=\csc t$, $x(\pi/2)=\pi/2$, $x'(\pi/2)=0$, on $(0,\pi)$")
 ax.legend(fontsize=8); ax.set_ylim(-1.5, 3)
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_sym = sym.Symbol('t', positive=True)
 x_sym = sym.Function('x')
 
@@ -210,11 +171,3 @@ for label, ode in examples.items():
     sol = sym.dsolve(ode, x_sym(t_sym))
     display(Math(r"x(t)=" + sym.latex(sol.rhs)))
     print()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-hamiltonian
-#| fig-cap: "Hamiltonian view of the SHO $x'=y$, $y'=-4x$ ($m=1$, $k=4$). Left: phase-plane orbits are level curves of $H = y^2/2 + 2x^2$ (ellipses). The vector field $(y,-4x)$ is tangent to every orbit — confirming $H$ is conserved. Right: component plots $x(t)=\\cos 2t$ and $y(t)=-2\\sin 2t$ for the initial condition $(x_0,y_0)=(1,0)$."
 
 t_plot = np.linspace(0, 2*np.pi, 400)
 x_sol  = np.cos(2*t_plot)
@@ -56,12 +47,6 @@ axes[1].set_xticklabels(['$0$',r'$\pi/2$',r'$\pi$',r'$3\pi/2$',r'$2\pi$'])
 
 plt.suptitle(r"Simple Harmonic Oscillator as a Hamiltonian System: $H=y^2/2+2x^2$", fontsize=11)
 plt.tight_layout(); plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-two-systems
-#| fig-cap: "Phase-plane portraits and component plots for two systems solved by elimination. Left: $x'=y$, $y'=-4x$ — elliptic orbits (pure imaginary eigenvalues, neutral oscillation). Right: $x'=y$, $y'=4x$ — hyperbolic orbits (real eigenvalues, saddle point), with the IVP solution $c_1=1/4$, $c_2=-1/4$ highlighted."
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 t_long = np.linspace(0, 2*np.pi, 400)
@@ -122,10 +107,6 @@ axes[1].legend(fontsize=7.5)
 
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 print("2nd-order companion: x'' + (b/a)x' + (c/a)x = 0, y = x'")
 a_v, b_v, c_v = 1, 3, 2  # x'' + 3x' + 2x = 0
 A_2nd = sym.Matrix([[0,1],[-c_v/a_v, -b_v/a_v]])
@@ -139,12 +120,6 @@ print("\n3rd-order companion: x''' + 2x'' - x' + 3x = 0")
 A_3rd = sym.Matrix([[0,1,0],[0,0,1],[-3,1,-2]])
 char3 = (lam*sym.eye(3) - A_3rd).det()
 print(f"  char poly = {sym.expand(char3)}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-compartment
-#| fig-cap: "Compartmental pesticide model with $\\alpha=0.3$, $\\beta=0.5$, $\\gamma=0.1$, initial conditions $x(0)=0$, $y(0)=10$ (pesticide initially only in soil). The pesticide gradually transfers into the crop, reaches a peak, and both compartments eventually decay to zero as the pesticide degrades."
 
 alpha_v, beta_v, gamma_v = 0.3, 0.5, 0.1
 
@@ -172,10 +147,6 @@ axes[1].legend(fontsize=9)
 plt.suptitle(r'Compartmental Model: $dx/dt=-\beta x+\alpha y$, $dy/dt=\beta x-(\alpha+\gamma)y$', fontsize=11)
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 print("=== Examples 4.16 and 4.17 (Logan) ===")
 A = sym.Matrix([[1,2],[3,-4]]); B = sym.Matrix([[0,-2],[7,-4]])
 x_v = sym.Matrix([-4,6]);      y_v = sym.Matrix([5,1])
@@ -200,10 +171,6 @@ A18 = sym.Matrix([[1,2],[4,3]])
 print(f"det(A) = {A18.det()},  A^(-1) =\n{A18.inv()}")
 print(f"A*A^(-1) = {A18*A18.inv()}")
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 print("=== Example 4.20 (Logan): singular matrix ===")
 A20 = sym.Matrix([[4,1],[8,2]])
 print(f"det(A) = {A20.det()} (singular)")
@@ -217,12 +184,6 @@ A_x = sym.Matrix([[4,-3],[-1,-1]]); A_y = sym.Matrix([[2,4],[4,-1]])
 x_cr = A_x.det()/A22.det(); y_cr = A_y.det()/A22.det()
 print(f"x = {x_cr}, y = {y_cr}")
 print(f"Verify: 2x-3y = {2*x_cr - 3*y_cr}, 4x-y = {4*x_cr - y_cr}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-equilibria
-#| fig-cap: "Equilibria of two systems. Left: $\\mathbf{x}'=A\\mathbf{x}$ with $A=\\bigl[\\begin{smallmatrix}0&1\\\\-4&0\\end{smallmatrix}\\bigr]$, $\\det A=4\\neq 0$ — unique isolated equilibrium at origin (stable center). Right: $\\mathbf{x}'=A\\mathbf{x}+\\mathbf{b}$ with $\\mathbf{b}=(-2,3)^T$ — the equilibrium shifts to $\\mathbf{x}^*=-A^{-1}\\mathbf{b}$."
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
 
@@ -262,11 +223,3 @@ axes[1].set_title(r"$\mathbf{x}'=A\mathbf{x}+\mathbf{b}$: eq shifted to $\mathbf
 axes[1].legend(fontsize=9)
 
 plt.tight_layout(); plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m,'__version__',None)))

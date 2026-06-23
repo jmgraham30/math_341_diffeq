@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import scipy as sp                        # SciPy for scientific computing
@@ -12,10 +9,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
 
 def slope_field(f, t_range, x_range, n=20, ax=None, color='steelblue', alpha=0.7):
     """
@@ -47,12 +40,6 @@ def slope_field(f, t_range, x_range, n=20, ax=None, color='steelblue', alpha=0.7
     ax.set_xlabel('$t$'); ax.set_ylabel('$x$')
     return ax
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sf-linear
-#| fig-cap: "Slope field for $x' = -x + 2t$ with several solution curves (blue) and the nullcline $x = 2t$ (red dashed). Solutions appear to converge toward the line $x = 2t - 2$ — the particular solution satisfying the ODE for all $t$ (verification: if $x = 2t-2$ then $x' = 2$ and $-x+2t = -(2t-2)+2t = 2$ ✓)."
-
 f1 = lambda t, x: -x + 2*t
 
 fig, ax = plt.subplots(figsize=(7, 5))
@@ -74,12 +61,6 @@ ax.legend()
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sf-auto
-#| fig-cap: "Slope field for the autonomous ODE $x' = x(1-x/4)$ (logistic-type). Horizontal dashed lines mark the nullclines/equilibria $x=0$ and $x=4$. All solutions starting with $x_0 > 0$ converge to $x=4$."
-
 f2 = lambda t, x: x * (1 - x / 4)
 
 fig, ax = plt.subplots(figsize=(7, 5))
@@ -98,12 +79,6 @@ ax.set_title(r"Slope field: $x' = x(1 - x/4)$")
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sf-nonlinear
-#| fig-cap: "Slope field for $x' = x(x-t)$ with nullclines $x=0$ (red) and $x=t$ (orange). Signs of $x'$ in the four regions are annotated. Four solution curves are attempted (initial conditions at $t=-1$: $x_0 \\in \\{-1.5, 0.5, 2.0, 3.5\\}$); some may exit the plot window due to finite-time blowup."
 
 f3 = lambda t, x: x * (x - t)
 
@@ -134,10 +109,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t, r, C, x0 = sym.symbols('t r C x_0', real=True, positive=True)
 x = sym.Function('x')
 
@@ -148,10 +119,6 @@ print("General solution:", sol)
 sol_ivp = sym.dsolve(ode, x(t), ics={x(0): x0})
 print("IVP solution (x(0)=x0):", sol_ivp)
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_s, r_s, K_s, x0_s = sym.symbols('t r K x_0', positive=True)
 x_s = sym.Function('x')
 
@@ -159,23 +126,6 @@ logistic_ode = sym.Eq(x_s(t_s).diff(t_s), r_s * x_s(t_s) * (1 - x_s(t_s) / K_s))
 sol_logistic = sym.dsolve(logistic_ode, x_s(t_s), ics={x_s(0): x0_s})
 print("Logistic IVP solution:")
 display(Math(sym.latex(sol_logistic)))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-# Simplify the SymPy result and compare with the standard form
-sol_simplified = sym.simplify(sol_logistic.rhs)
-standard_form = K_s / (1 + (K_s/x0_s - 1)*sym.exp(-r_s*t_s))
-print("SymPy simplified rhs equals standard form:",
-      sym.simplify(sol_simplified - standard_form) == 0)
-display(Math(r"x(t) = " + sym.latex(sym.simplify(sol_simplified))))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-nonclosed
-#| fig-cap: "Solution to the IVP $x' = 2\\sqrt{x}\\,e^{-t}/t$, $x(1)=4$, expressed via a non-elementary integral. The solid blue curve shows the formula; the red dots confirm it by comparing with a direct numerical ODE solve."
 
 from scipy.integrate import quad
 
@@ -200,12 +150,6 @@ ax.legend()
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-linear1
-#| fig-cap: "General solution $x(t) = t/2 + C/t$ of $x' + x/t = 1$ for several values of $C$ (gray), with the particular solution satisfying $x(1)=3$ highlighted (blue). The initial condition is marked in red."
-
 t_plot = np.linspace(0.2, 5, 400)
 fig, ax = plt.subplots(figsize=(7, 4))
 for C_val in np.linspace(-6, 6, 13):
@@ -218,12 +162,6 @@ ax.set_title(r"$x' + x/t = 1$: general solution family")
 ax.legend()
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-linear2
-#| fig-cap: "Solutions of $x' + 2x = \\sin t$ for various initial conditions. The transient $Ce^{-2t}$ decays quickly and all solutions converge to the same steady-state oscillation $x_p = \\frac{2}{5}\\sin t - \\frac{1}{5}\\cos t$ (dashed black)."
 
 t_s = sym.Symbol('t')
 x_s = sym.Function('x')
@@ -247,12 +185,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-cooling
-#| fig-cap: "Newton's law of cooling: temperature $T(t) = T_e + (T_0 - T_e)e^{-ht}$ for $T_e = 20^\\circ$C and $h=0.5$ hr$^{-1}$, starting from several initial temperatures. All curves converge to the equilibrium $T_e = 20^\\circ$C (dashed)."
-
 h_val = 0.5
 Te = 20.0
 t_plot = np.linspace(0, 10, 300)
@@ -269,12 +201,6 @@ ax.set_title(r"Newton's Law of Cooling, $h=0.5$")
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-rc
-#| fig-cap: "RC circuit ($R=1$, $C=1/2$) with the voltage source switched on for $0 \\le t < 2$ then switched off. Top: charge $Q(t)$. Bottom: current $I(t) = Q'(t)$. Both confirm the matching condition at $t=2$ and the characteristic exponential transient with time constant $\\tau = RC = 1/2$."
 
 R_val, C_val = 1.0, 0.5
 tau = R_val * C_val     # = 0.5
@@ -311,12 +237,6 @@ axes[1].legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-chemostat
-#| fig-cap: "Chemical concentration in a well-mixed tank ($V=100$ m$^3$, $q=0.5$ m$^3$/min, $C_{\\text{in}} = 0.2$ kg/m$^3$) for several initial concentrations $C_0$. All solutions converge to the equilibrium $C_{\\text{in}} = 0.2$ (dashed)."
-
 V_val = 100.0     # m^3
 q_v   = 0.5       # m^3/min  (volumetric flow rate; written q_v to distinguish from the forcing term q(t) in the linear ODE)
 C_in  = 0.2       # kg/m^3
@@ -334,11 +254,3 @@ ax.set_title('Chemical Reactor (Chemostat)')
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys # sys for system-specific parameters and functions
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

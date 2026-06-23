@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex1
-#| fig-cap: "Solutions of $x' = x + x^2 e^t$ from several initial conditions $x_0 > 0$. Each solution blows up at $t^* = \\frac{1}{2}\\ln(2/x_0+1)$ (marked with a vertical dashed line). The closed-form solution (solid) agrees perfectly with the numerical ODE solve (dots)."
 
 def x_ex1_closed(t, x0):
     C = 1.0/x0 + 0.5
@@ -53,12 +44,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex2
-#| fig-cap: "Solutions of $x' = x - 0.5x^3$ ($a=1$, $b=-0.5$) from several initial conditions. The non-zero equilibrium $x_{\\rm eq} = \\sqrt{2} \\approx 1.414$ (dashed green) is stable: all solutions with $x_0>0$ converge to it. The trivial equilibrium $x=0$ (dashed red) is unstable."
-
 a_val, b_val = 1.0, -0.5
 x_eq = np.sqrt(-a_val / b_val)   # = sqrt(2)
 
@@ -88,12 +73,6 @@ ax.legend(fontsize=9, ncol=2)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-logistic-bernoulli
-#| fig-cap: "Logistic growth ($r=1$, $K=5$) solved via the Bernoulli substitution. The closed-form solution (solid) is compared to a direct numerical solve (dots) for four initial conditions. All solutions converge to the carrying capacity $K=5$ (dashed)."
-
 r_val, K_val = 1.0, 5.0
 
 def logistic_closed(t, x0, r, K):
@@ -121,10 +100,6 @@ ax.legend(fontsize=9, ncol=2)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_sym = sym.Symbol('t')
 x_sym = sym.Function('x')
 
@@ -151,12 +126,6 @@ for label, ode in cases.items():
     else:
         display(Math(r"x(t) = " + sym.latex(sol.rhs)))
     print()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-harvest
-#| fig-cap: "Logistic growth with harvesting ($r=1$, $K=8$). Sub-critical harvesting ($h < h_c = 2$, blue shades) leads to a stable positive equilibrium; super-critical harvesting ($h > h_c$, red shades) drives the population to extinction. The critical case $h=h_c=2$ is shown in green."
 
 r_val, K_val = 1.0, 8.0
 h_c = r_val * K_val / 4   # = 2.0
@@ -194,12 +163,6 @@ ax.set_ylim(-0.3, K_val + 0.5)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-torricelli
-#| fig-cap: "Torricelli's law: water height $h(t)$ in a draining cylindrical tank ($A=0.5$ m², $a=0.01$ m², $h_0=2$ m). The closed-form parabolic solution (solid blue) agrees with the numerical solve (red dots). The tank empties at $t^* \\approx 201$ s."
-
 g_val = 9.81
 A_tank = 0.5    # m^2  (tank cross-section)
 a_drain = 0.01  # m^2  (drain area)
@@ -231,12 +194,6 @@ ax.legend(fontsize=9)
 ax.set_ylim(0, h0 + 0.1)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| label: fig-lanternfly-results
-#| fig-cap: "Solutions of the social-learning ODE (2.4) for three ecological regimes. **Top:** $A > 0$ ($r_o = 0.8$, $q = 0.3$): all solutions with $p_0 > 0$ converge to the stable equilibrium $p^* = A/B$ (dashed green) — collective biological control emerges. **Middle:** $A = 0$ ($r_o = 0.5$, $q = 1/3$): the borderline case; $p(t) \\to 0$ algebraically as $1/(1+Bt)$. **Bottom:** $A < 0$ ($r_o = 0.2$, $q = 0.3$): all solutions decay to zero — collective control does not emerge. Closed-form solutions (solid) are verified against a direct numerical ODE solve (dots)."
-#| fig-height: 10
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -306,11 +263,3 @@ for ax, sc in zip(axes, scenarios):
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

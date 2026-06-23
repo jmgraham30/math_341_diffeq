@@ -1,7 +1,3 @@
-#| label: setup
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import sympy as sym                       # SymPy for symbolic mathematics
@@ -12,9 +8,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| label: ex1-sympy
 
 x, y = sym.symbols('x y')
 
@@ -40,12 +33,6 @@ for pt in equil1:
                  + r'\tau=' + sym.latex(tau)
                  + r',\;\delta=' + sym.latex(delta)
                  + r',\;\lambda=' + sym.latex(list(eigs.keys()))))
-
-
-#| label: fig-ex1
-#| fig-cap: "Phase portrait for Example 1. The $x$-nullclines $x=0$ and $y=1$ (blue dashed) and the $y$-nullcline $y=x^2$ (orange dashed) are shown. Equilibria are marked: saddle at $(0,0)$ (square), stable spiral sinks at $(\\pm1,1)$ (circles). Trajectories are integrated numerically."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 def sys1(t, state):
     xv, yv = state
@@ -97,9 +84,6 @@ ax.legend(fontsize=8, loc='upper right')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex2-sympy
-
 k = sym.Symbol('k')
 
 F2 = x*(2 - x - k*y)
@@ -127,12 +111,6 @@ for kval in [1, 2, 3]:
                         + sym.latex(pt[1]) + r'):\quad'
                         + r'\tau=' + sym.latex(tau_)
                         + r',\;\delta=' + sym.latex(delta_)))
-
-
-#| label: fig-ex2
-#| fig-cap: "Phase portraits for Example 2 with $k=1$ (left) and $k=3$ (right). When $k=1$ there is a stable interior coexistence equilibrium at $(1,1)$. When $k=3$ the interior equilibrium leaves the first quadrant and all orbits approach a boundary equilibrium."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
@@ -192,9 +170,6 @@ plt.suptitle('Example 2: competing species for two values of $k$', fontsize=11)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex3-sympy
-
 F3 = y
 G3 = x - x**3
 
@@ -215,12 +190,6 @@ for pt in equil3:
 C_sym = sym.Symbol('C')
 orbit_eq = sym.Eq(y**2, x**2 - sym.Rational(1,2)*x**4 + C_sym)
 display(Math(r'\text{Orbit equation: }' + sym.latex(orbit_eq)))
-
-
-#| label: fig-ex3
-#| fig-cap: "Orbits of Example 3 defined by $y^2 = x^2 - x^4/2 + C$ for several values of $C$. The three equilibria are marked: saddle at $(0,0)$ (square) and centers at $(\\pm 1,0)$ (circles). The separatrix through the saddle (tomato) bounds the two families of closed orbits."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 fig, ax = plt.subplots(figsize=(7, 6))
 ax.axhline(0, color='gray', lw=0.6)
@@ -261,9 +230,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex4-sympy
-
 x_s = sym.Symbol('x')
 
 F4 = 3*x_s**2 - 3
@@ -279,12 +245,6 @@ display(Math(r'V(-1) = ' + sym.latex(V4_const.subs(x_s, -1))
 
 E_val = sym.Rational(1,2)*4 + V4_const.subs(x_s, 0)
 display(Math(r'E = \tfrac{1}{2}(2)^2 + V(0) = ' + sym.latex(E_val)))
-
-
-#| label: fig-ex4
-#| fig-cap: "Example 4. Left: potential energy $V(x) = -x^3+3x$ with the two equilibria marked. Right: phase portrait showing energy-level orbits; the particular orbit with $E=2$ (tomato, the separatrix through the saddle at $(1,0)$) and the orbit through $(0,2)$ are highlighted."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
@@ -338,9 +298,6 @@ plt.suptitle(r"Example 4: $x'' = 3x^2-3$, $m=1$", fontsize=11)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex5-sympy
-
 F5 = -4*x_s - 2*x_s**3
 V5 = -sym.integrate(F5, x_s)
 display(Math(r'V(x) = ' + sym.latex(V5)))
@@ -355,12 +312,6 @@ J5 = sym.Matrix([[0, 1],[sym.diff(F5, x_s), 0]])
 J5_0 = J5.subs(x_s, 0)
 display(Math(r'J(0,0) = ' + sym.latex(J5_0)
             + r',\quad \lambda = ' + sym.latex(J5_0.eigenvals())))
-
-
-#| label: fig-ex5
-#| fig-cap: "Phase portrait for Example 5 (hardening spring $x''=-4x-2x^3$). All orbits are closed, encircling the single equilibrium at the origin. The tomato orbit corresponds to $E=2$; steelblue orbits show smaller energies. Orbits become more tightly packed as amplitude grows, reflecting the increasing oscillation frequency."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
@@ -406,9 +357,6 @@ plt.suptitle(r"Example 5: $x'' = -4x-2x^3$", fontsize=11)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex6-sympy
-
 F6 = -sym.sin(x_s)
 V6 = -sym.integrate(F6, x_s) + 1   # V(0) = 0 => constant = 1
 display(Math(r'V(x) = ' + sym.latex(V6)))
@@ -420,12 +368,6 @@ display(Math(r'E\big|_{x_0=\pi/3,\,y_0=0} = ' + sym.latex(sym.simplify(E_ivp))))
 # Saddle energy
 E_saddle = V6.subs(x_s, sym.pi)
 display(Math(r'E_{\rm saddle} = V(\pi) = ' + sym.latex(E_saddle)))
-
-
-#| label: fig-ex6
-#| fig-cap: "Phase portrait for Example 6 (nonlinear pendulum $x''=-\\sin x$). Closed orbits inside the separatrix (tomato) correspond to oscillatory motion; open orbits outside correspond to continuous rotation. The IVP orbit with $E=1/2$ is highlighted in seagreen, starting at $(\\pi/3, 0)$. Saddle points at $x=\\pm\\pi$ and centers at $x=0, 2\\pi$ are marked."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 fig, ax = plt.subplots(figsize=(10, 5))
 ax.axhline(0, color='gray', lw=0.6)
@@ -486,12 +428,3 @@ handles = [
 ax.legend(handles=handles, fontsize=8, loc='upper right')
 plt.tight_layout()
 plt.show()
-
-
-#| label: session-info
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}'
-                for m in globals().values()
-                if getattr(m, '__version__', None)))

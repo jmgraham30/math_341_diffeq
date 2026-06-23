@@ -1,7 +1,3 @@
-#| label: setup
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import sympy as sym                       # SymPy for symbolic mathematics
@@ -11,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| label: fig-slope-field
-#| fig-cap: "Slope field for $y' = y - x$.  The dashed line $y = x+1$ is the equilibrium (straight-line) solution $y = x+1$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 x_vals = np.linspace(-3, 3, 20)
 y_vals = np.linspace(-3, 3, 20)
@@ -56,10 +46,6 @@ ax.set_aspect('equal')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex2-sympy
-#| code-fold: false
-
 x = sym.Symbol('x')
 y = sym.Function('y')   # y must be a Function, not a Symbol, for dsolve
 
@@ -70,17 +56,9 @@ ode = sym.Eq(y(x).diff(x), x**2 / (1 - y(x)**2))
 sol = sym.dsolve(ode, y(x))
 display(Math(r'\text{General solution: }' + sym.latex(sol)))
 
-
-#| label: ex2-ivp
-#| code-fold: false
-
 # Apply the initial condition y(0) = 0
 sol_ivp = sym.dsolve(ode, y(x), ics={y(0): 0})
 display(Math(r'\text{Particular solution: }' + sym.latex(sol_ivp)))
-
-
-#| label: ex3-sympy
-#| code-fold: false
 
 x = sym.Symbol('x')
 y = sym.Function('y')
@@ -94,12 +72,6 @@ display(Math(r'\text{General solution: } ' + sym.latex(gen_sol)))
 # Particular solution with y(0) = 2
 part_sol = sym.dsolve(ode3, y(x), ics={y(0): 2})
 display(Math(r'\text{Particular solution: } ' + sym.latex(part_sol)))
-
-
-#| label: fig-ex3-sol
-#| fig-cap: "Solution curves of $y' - y = x$ for several values of $C$, with the particular solution $y = 3e^x - x - 1$ (satisfying $y(0)=2$) highlighted in red."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 x_vals = np.linspace(-2, 2, 400)
 fig, ax = plt.subplots(figsize=(7, 5))
@@ -125,10 +97,6 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex4-sympy
-#| code-fold: false
-
 t, k = sym.symbols('t k', positive=True)
 T    = sym.Function('T')
 Ta   = sym.Integer(70)
@@ -153,12 +121,6 @@ t_star = sym.solve(T_sol - 100, t)[0]
 display(Math(r't^* = ' + sym.latex(t_star) +
              r'\approx ' + str(round(float(t_star), 2)) + r'\text{ min}'))
 
-
-#| label: fig-cooling
-#| fig-cap: "Temperature of the rod over time according to Newton's Law of Cooling. The dashed horizontal lines mark the ambient temperature (70°F), the initial temperature (200°F), and the target temperature (100°F)."
-#| code-fold: true
-#| code-summary: "Show the code"
-
 k_num  = float(k_val)
 t_star_num = float(t_star)
 t_plot = np.linspace(0, 80, 500)
@@ -180,10 +142,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex5-sympy
-#| code-fold: false
-
 t  = sym.Symbol('t', nonnegative=True)
 P  = sym.Function('P')
 r, H_val = sym.Rational(2, 5), sym.Integer(500)  # r = 0.4, H = 500
@@ -192,12 +150,6 @@ ode5 = sym.Eq(P(t).diff(t), r * P(t) - H_val)
 
 sol5 = sym.dsolve(ode5, P(t), ics={P(0): 2000})
 display(Math(r'P(t) = ' + sym.latex(sol5.rhs)))
-
-
-#| label: fig-population
-#| fig-cap: "Fish population under constant harvesting.  Starting above the unstable equilibrium $P^* = 1250$, the population grows; starting below, it collapses.  The red curve uses the given initial condition $P(0) = 2000$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_plot = np.linspace(0, 6, 300)
 
@@ -225,10 +177,6 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex6-sympy
-#| code-fold: false
-
 t = sym.Symbol('t', nonnegative=True)
 I = sym.Function('I')
 R_val, L_val = sym.Integer(4), sym.Rational(1, 10)
@@ -239,12 +187,6 @@ ode6 = sym.Eq(L_val * I(t).diff(t) + R_val * I(t),
 sol6 = sym.dsolve(ode6, I(t), ics={I(0): 0})
 I_expr = sym.simplify(sol6.rhs)
 display(Math(r'I(t) = ' + sym.latex(I_expr)))
-
-
-#| label: fig-rl-circuit
-#| fig-cap: "Current in the RL circuit.  The transient decays quickly, leaving the sinusoidal steady-state response."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 I_func = sym.lambdify(t, I_expr, 'numpy')
 t_plot = np.linspace(0, 1.0, 1000)
@@ -264,13 +206,3 @@ ax.set_title('Current in a series RL circuit with sinusoidal forcing', fontsize=
 ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
-
-
-#| label: session-info
-#| code-fold: false
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}'
-                for m in globals().values()
-                if getattr(m, '__version__', None)))

@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -12,12 +9,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-partial-sums
-#| fig-cap: "Partial sums $S_N(t) = \\sum_{n=0}^N t^n$ converging to $f(t)=1/(1-t)$ (black dashed) for $|t|<1$. Each successive partial sum adds one more term and fits the true function better. Outside $|t|\\geq 1$ the partial sums diverge — the radius of convergence $r=1$ is sharp."
 
 t_plot = np.linspace(-0.95, 0.95, 400)
 f_exact = 1/(1 - t_plot)
@@ -46,12 +37,6 @@ axes[1].grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-first-order
-#| fig-cap: "Series solution of $(t-3)y'+2y=0$, $y(0)=1/9$. Left: partial sums converging to the exact solution $y=1/(3-t)^2$ (black dashed) for $|t|<3$. The series diverges outside the radius of convergence $r=3$ (dashed vertical lines). Right: partial-sum errors at $t=1.5$ decreasing toward zero, demonstrating convergence."
 
 N_terms_list = [3, 5, 8, 15, 30]
 t_plot = np.linspace(-2.8, 2.8, 500)
@@ -89,12 +74,6 @@ axes[1].grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-cos-sin-series
-#| fig-cap: "Power series partial sums recovering $\\cos t$ (left) and $\\sin t$ (right). Even-indexed terms build $\\cos t$; odd-indexed terms build $\\sin t$. More terms are needed to capture the oscillations accurately over a larger interval."
-
 t_plot = np.linspace(-2*np.pi, 2*np.pi, 500)
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
 
@@ -118,12 +97,6 @@ for ax, (a0, a1), y_exact, name in [
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-airy
-#| fig-cap: "Airy equation $y''-ty=0$: the two linearly independent series solutions $y_1(t)$ (blue) and $y_2(t)$ (orange) satisfying $y_1(0)=1$, $y_1'(0)=0$ and $y_2(0)=0$, $y_2'(0)=1$. For $t<0$ both solutions oscillate (the ODE has no dissipation and the coefficient $-t>0$); for $t>0$ they grow or decay. Red dots confirm the series against a direct numerical ODE solve."
 
 N_a = 50
 a_y1 = [0.0]*N_a; a_y1[0] = 1.0
@@ -166,12 +139,6 @@ for ax, y_ser, sol, lbl, color in [
 plt.suptitle(r"Airy equation $y'' - ty = 0$", fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-legendre
-#| fig-cap: "Left: power series partial sums for $y_1$ (even) and $y_2$ (odd) solutions of Legendre's equation with $p=2.5$ (non-integer — infinite series, $r=1$). Right: Legendre polynomials $P_0,\\ldots,P_4$ obtained when $p$ is an integer — the series terminates and gives a polynomial. The recurrence coefficient $(p-n)=0$ at $n=p$ causes early termination."
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
 
@@ -233,10 +200,6 @@ axes[1].legend(fontsize=8.5)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_sym = sym.Symbol('t')
 y_sym = sym.Function('y')
 
@@ -264,11 +227,3 @@ airy_sym = sym.airyai(t_s)
 airy_series = sym.series(airy_sym, t_s, 0, 10)
 print("Ai(t) Taylor series about t=0:")
 display(Math(sym.latex(airy_series)))
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

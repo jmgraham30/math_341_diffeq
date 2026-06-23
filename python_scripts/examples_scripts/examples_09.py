@@ -1,7 +1,3 @@
-#| label: setup
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import sympy as sym                       # SymPy for symbolic mathematics
@@ -11,9 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| label: ex1-sympy
 
 t = sym.Symbol('t')
 c1, c2 = sym.symbols('c1 c2')
@@ -46,12 +39,6 @@ x0b = sym.Matrix([-2, -5])
 coeffs_b = P.solve(x0b)
 display(Math(r'\mathbf{x}(0)=(-2,-5)^T:\quad c_1=' + sym.latex(coeffs_b[0])
             + r',\quad c_2=' + sym.latex(coeffs_b[1])))
-
-
-#| label: fig-ex1
-#| fig-cap: "Phase portrait for Example 1: stable node with $\\lambda_1=-5$, $\\lambda_2=-1$. The $x$-nullcline (blue dashed) and $y$-nullcline (orange dashed) pass through the origin. Linear orbits along $\\mathbf{v}_1$ (gray) and $\\mathbf{v}_2$ (gray) are shown, with the two IVP solution curves highlighted."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 v1n = np.array([1, 2], dtype=float)
 v2n = np.array([3, 1], dtype=float)
@@ -102,9 +89,6 @@ ax.legend(fontsize=9, loc='upper left')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex2-sympy
-
 A2 = sym.Matrix([[-3, 4], [0, -3]])
 lam = sym.Symbol('lambda')
 
@@ -122,12 +106,6 @@ w_particular, w_free = (A2 + 3*sym.eye(2)).gauss_jordan_solve(v_eig)
 # Set free parameter(s) to zero to get the simplest particular solution
 w_gen = w_particular.subs(list(zip(w_free, [0]*len(w_free))))
 display(Math(r'\text{Generalized eigenvector: }\mathbf{w}=' + sym.latex(w_gen)))
-
-
-#| label: fig-ex2
-#| fig-cap: "Phase portrait for Example 2: asymptotically stable improper node ($\\lambda=-3$ repeated, defective). The single linear orbit along $(1,0)^T$ is shown in tomato; the $x'$-nullcline $y=3x/4$ (steelblue dashed) and $y'$-nullcline $y=0$ (orange dashed) are included."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_f = np.linspace(0,  3.0, 600)
 t_b = np.linspace(0, -0.8, 200)
@@ -170,9 +148,6 @@ ax.legend(handles=handles, fontsize=9, loc='upper right')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex3-sympy
-
 alpha = sym.Symbol('alpha', real=True)
 A3 = sym.Matrix([[2, -5], [alpha, -2]])
 
@@ -188,12 +163,6 @@ display(Math(r'\lambda(\alpha) = ' + sym.latex(roots3)))
 
 bifurc = sym.solve(delta3, alpha)
 display(Math(r'\text{Bifurcation at }\alpha = ' + sym.latex(bifurc)))
-
-
-#| label: fig-ex3
-#| fig-cap: "Left: real and imaginary parts of the eigenvalues $\\lambda(\\alpha)=\\pm\\sqrt{4-5\\alpha}$ vs.\\ $\\alpha$. Right: path traced in the trace-determinant plane as $\\alpha$ increases from $-1$ to $3$; the system crosses from saddle (below the $\\tau$-axis) to center (on the vertical axis, above the parabola) at $\\alpha=4/5$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 alpha_vals = np.linspace(-1, 3, 800)
 disc = 4 - 5*alpha_vals     # = 4 - 5*alpha
@@ -255,9 +224,6 @@ plt.suptitle(r'Example 3: $\lambda(\alpha)=\pm\sqrt{4-5\alpha}$, bifurcation at 
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex4-sympy
-
 # Part (a)
 Aa = sym.Matrix([[-2, 1], [0, -3]])
 ba = sym.Matrix([4, 3])
@@ -271,12 +237,6 @@ bb = sym.Matrix([-1, 1])
 xstar_b = Ab.solve(-bb)
 display(Math(r'\text{(b) Equilibrium: }\mathbf{x}^* = ' + sym.latex(xstar_b)))
 display(Math(r'\text{(b) Eigenvalues: }' + sym.latex(list(Ab.eigenvals().keys()))))
-
-
-#| label: fig-ex4
-#| fig-cap: "Phase portraits for Example 4. Left (part a): stable node at $\\mathbf{x}^*=(5/2,1)^T$; all orbits converge to the equilibrium. Right (part b): saddle at $\\mathbf{x}^*=(1,-1)^T$; the stable manifold (tomato) and unstable manifold (steelblue) intersect at the equilibrium."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
@@ -344,9 +304,6 @@ ax.legend(handles=handles, fontsize=8)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex5-sympy
-
 t = sym.Symbol('t')
 
 A5 = sym.Matrix([[2, -1], [1, 0]])
@@ -369,9 +326,6 @@ display(Math(r'\int\Phi^{-1}\mathbf{f}\,dt = ' + sym.latex(sym.simplify(integral
 xp = sym.simplify(Phi5 * integral)
 display(Math(r'\mathbf{x}_p = ' + sym.latex(xp)))
 
-
-#| label: ex6-sympy
-
 A6 = sym.Matrix([[-5, 3], [2, -10]])
 f6 = sym.Matrix([sym.exp(-t), 2*sym.exp(-t)])
 
@@ -391,12 +345,6 @@ lhs_check = sym.diff(xp6, t) - A6*xp6 - f6
 display(Math(r'\mathbf{x}_p\prime - A\mathbf{x}_p - \mathbf{f} = '
             + sym.latex(sym.simplify(lhs_check))
             + r'\quad\checkmark'))
-
-
-#| label: fig-ex6
-#| fig-cap: "Time-series plot for Example 6 showing $x(t)$ (steelblue) and $y(t)$ (tomato) for the particular solution $\\mathbf{x}_p = (\\tfrac{1}{2}, \\tfrac{1}{3})^T e^{-t}$ (dashed) and the complete solution with $c_1=1$, $c_2=0$ (solid). Both decay to zero as $t\\to+\\infty$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 3, 500)
 
@@ -425,12 +373,3 @@ ax.set_title(r'Example 6: exponential forcing, all solutions decay to $\mathbf{0
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| label: session-info
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}'
-                for m in globals().values()
-                if getattr(m, '__version__', None)))

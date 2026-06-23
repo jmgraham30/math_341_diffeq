@@ -1,7 +1,3 @@
-#| label: setup
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import sympy as sym                       # SymPy for symbolic mathematics
@@ -11,9 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| label: ex1-sympy
 
 t, s = sym.symbols('t s', real=True)
 x = sym.Function('x')
@@ -33,12 +26,6 @@ sol_expr = part1.rhs
 lap = sym.laplace_transform(sol_expr, t, s, noconds=True)
 display(Math(r'X(s) = ' + sym.latex(sym.simplify(lap))))
 
-
-#| label: fig-ex1
-#| fig-cap: "Solution of $x'' + 4x' + 4x = 8e^t$ with $x(0)=1$, $x'(0)=0$.  The decaying homogeneous part (dashed) and the growing exponential drive the solution upward for large $t$."
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_vals = np.linspace(0, 2.5, 500)
 x_sol = (8/9)*np.exp(t_vals) + (1/9)*np.exp(-2*t_vals) - (2/3)*t_vals*np.exp(-2*t_vals)
 x_hom = (1/9)*np.exp(-2*t_vals) - (2/3)*t_vals*np.exp(-2*t_vals)
@@ -56,21 +43,12 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex2-sympy
-
 # Define Heaviside forcing
 f2 = sym.Heaviside(t - 1) - sym.Heaviside(t - 4)
 ode2 = sym.Eq(x(t).diff(t, 2) + 9*x(t), f2)
 
 part2 = sym.dsolve(ode2, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 0})
 display(Math(r'\text{Particular solution: }\quad' + sym.latex(part2)))
-
-
-#| label: fig-ex2
-#| fig-cap: "Response of $x''+9x=0$ to a rectangular pulse on $[1,4]$.  Before $t=1$ the system is at rest; the pulse drives oscillation, which continues freely after $t=4$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 10, 1000)
 
@@ -93,19 +71,10 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex3-sympy
-
 ode3 = sym.Eq(x(t).diff(t, 2) - 2*x(t).diff(t) + 5*x(t), 0)
 
 part3 = sym.dsolve(ode3, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 4})
 display(Math(r'\text{Particular solution: }\quad' + sym.latex(part3)))
-
-
-#| label: fig-ex3
-#| fig-cap: "Solution of $x''-2x'+5x=0$ with $x(0)=0$, $x'(0)=4$.  The factor $e^t$ causes the oscillation to grow without bound — the zero equilibrium is unstable."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 3, 600)
 x_sol  = 2*np.exp(t_vals)*np.sin(2*t_vals)
@@ -124,9 +93,6 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex4-sympy
-
 # Verify via inverse Laplace transform
 expr4 = s / (s**2 + 4)**2
 inv4  = sym.inverse_laplace_transform(expr4, s, t)
@@ -140,12 +106,6 @@ conv4 = sym.integrate(f4.subs(t, sym.Symbol('tau'))
                       * g4.subs(t, t - sym.Symbol('tau')),
                       (sym.Symbol('tau'), 0, t))
 display(Math(r'(f * g)(t) = ' + sym.latex(sym.simplify(conv4))))
-
-
-#| label: fig-ex4
-#| fig-cap: "The inverse transform $x(t)=\\tfrac{t}{4}\\sin(2t)$.  Like the resonance case, the amplitude envelope (dashed) grows linearly — this is the signature of a repeated pole on the imaginary axis."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 5*np.pi, 800)
 x_sol  = (t_vals/4)*np.sin(2*t_vals)
@@ -164,9 +124,6 @@ ax.set_title(r"$\mathcal{L}^{-1}\!\left[s/(s^2+4)^2\right] = (t/4)\sin 2t$",
 ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
-
-
-#| label: ex5-sympy
 
 # General case: impulse response
 H_expr = 1 / (s**2 + 6*s + 10)
@@ -187,12 +144,6 @@ conv5 = sym.integrate(
 )
 display(Math(r'\text{Via convolution: }x(t) = ' + sym.latex(sym.simplify(conv5))))
 
-
-#| label: fig-ex5
-#| fig-cap: "Solution of $x''+6x'+10x = e^{-3t}$ with zero initial conditions.  The system is stable (characteristic roots $-3\\pm i$ have negative real part), so the response decays to zero."
-#| code-fold: true
-#| code-summary: "Show the code"
-
 t_vals = np.linspace(0, 5, 600)
 x_sol  = np.exp(-3*t_vals)*(1 - np.cos(t_vals))
 h_vals = np.exp(-3*t_vals)*np.sin(t_vals)
@@ -211,9 +162,6 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex6-sympy
-
 tau = sym.Symbol('tau', positive=True)
 f6  = tau
 g6  = sym.exp(2*(t - tau))
@@ -227,20 +175,11 @@ lap_check = sym.laplace_transform(conv6, t, s, noconds=True)
 display(Math(r'\mathcal{L}[(f*g)(t)] = ' + sym.latex(sym.simplify(lap_check))
             + r' \quad \text{(should equal } 1/(s^2(s-2))\text{)}'))
 
-
-#| label: ex7-sympy
-
 f7 = sym.DiracDelta(t - 3)
 ode7 = sym.Eq(x(t).diff(t, 2) + 4*x(t).diff(t) + 5*x(t), f7)
 
 part7 = sym.dsolve(ode7, x(t), ics={x(0): 1, x(t).diff(t).subs(t, 0): -2})
 display(Math(r'\text{Particular solution: }\quad' + sym.latex(part7)))
-
-
-#| label: fig-ex7
-#| fig-cap: "Solution of $x''+4x'+5x=\\delta_3(t)$ with $x(0)=1$, $x'(0)=-2$.  The free response (dashed) decays until the impulse at $t=3$ kicks the system, adding a new damped oscillation (dotted). The full solution (solid red) is their sum."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 10, 1000)
 
@@ -268,9 +207,6 @@ ax.legend(fontsize=9, loc='upper right')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex8-sympy
-
 import sympy as sym
 
 t = sym.Symbol('t', positive=True)
@@ -281,12 +217,6 @@ ode8 = sym.Eq(x(t).diff(t, 2) + sym.pi**2 * x(t), f8)
 
 part8 = sym.dsolve(ode8, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 0})
 display(Math(r'\text{Particular solution: }\quad' + sym.latex(part8)))
-
-
-#| label: fig-ex8
-#| fig-cap: "Response to two impulses at $t=1$ and $t=2$.  The first impulse excites oscillation at the natural frequency $\\omega_0 = \\pi$.  The second impulse, arriving exactly one period later, cancels the motion completely for $t > 2$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 5, 1000)
 pi = np.pi
@@ -311,9 +241,6 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex9-sympy
-
 t = sym.Symbol('t', nonnegative=True)
 x = sym.Function('x')
 
@@ -327,12 +254,6 @@ f9 = sym.Heaviside(t - 2)
 ode9 = sym.Eq(x(t).diff(t, 2) + 2*x(t).diff(t) + 2*x(t), f9)
 part9 = sym.dsolve(ode9, x(t), ics={x(0): 0, x(t).diff(t).subs(t, 0): 0})
 display(Math(r'x(t) = ' + sym.latex(sym.simplify(part9.rhs))))
-
-
-#| label: fig-ex9
-#| fig-cap: "Response of $x''+2x'+2x = H(t-2)$ (zero ICs).  The delayed step input (dashed) switches on at $t=2$.  The response rises and settles toward the DC gain of $1/2$ (dotted)."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 t_vals = np.linspace(0, 10, 800)
 
@@ -357,12 +278,3 @@ ax.set_title(r"$x'' + 2x' + 2x = H(t-2)$, $\;x(0)=x'(0)=0$", fontsize=13)
 ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
-
-
-#| label: session-info
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}'
-                for m in globals().values()
-                if getattr(m, '__version__', None)))

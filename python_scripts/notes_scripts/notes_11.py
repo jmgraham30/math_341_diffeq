@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -11,12 +8,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-trace-det
-#| fig-cap: "The trace–determinant plane (Figure 4.13 in Logan). Each point $(\\text{tr}\\,A, \\det A)$ corresponds to a unique phase portrait type. The parabola $(\\text{tr}\\,A)^2 = 4\\det A$ separates nodes (below or on) from spirals (above). Along $\\det A = 0$ one eigenvalue is zero and there is a line of non-isolated equilibria. The shaded half-plane $\\text{tr}\\,A<0$, $\\det A>0$ is the asymptotically stable region."
 
 tr_vals = np.linspace(-3.5, 3.5, 500)
 det_parabola = tr_vals**2 / 4   # 4 det A = (tr A)^2
@@ -65,12 +56,6 @@ ax.set_ylim(-2.0, 4.0)
 ax.legend(fontsize=9, loc='upper right')
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-crop-soil
-#| fig-cap: "Crop–soil pesticide model with $\\alpha=0.5$, $\\beta=0.3$, $\\gamma=0.2$. Left: phase portrait in the first quadrant showing nullclines (dashed) and several orbits all converging to the origin — the pesticide eventually disappears. Right: time series for a sample orbit confirming that both $x(t)$ and $y(t)$ decay to zero."
 
 alpha, beta, gamma = 0.5, 0.3, 0.2
 A_cs = np.array([[-beta, alpha], [beta, -(alpha + gamma)]])
@@ -125,12 +110,6 @@ plt.suptitle("Example 4.42: Crop–Soil Pesticide Model", fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex443
-#| fig-cap: "Example 4.43: saddle point with $\\det A=-50<0$. Nullclines are dashed (steelblue: $x'=0$, crimson: $y'=0$). Separatrices along eigenvectors are shown in bold. The direction field in each of the four nullcline regions is also visible."
-
 A443 = np.array([[-7., 6.], [6., 2.]])
 A443_sym = sym.Matrix([[-7, 6], [6, 2]])
 print("Eigenvalues of Example 4.43:")
@@ -180,12 +159,6 @@ ax.set_title("Example 4.43: Saddle Point ($\\det A < 0$)")
 ax.legend(fontsize=8)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-glucose-insulin
-#| fig-cap: "Glucose–insulin dynamics (Example 4.44). Left: phase portrait with nullclines (dashed). Right: time series starting at $(x,y)=(3,0)$ — the representative parameter values give a stable spiral (complex eigenvalues with negative real part), indicating a slight hypoglycemic overshoot before returning to equilibrium."
 
 g_val, r_val, s_val, d_val = 2.9, 4.3, 0.21, 0.78
 A444 = np.array([[-g_val, -r_val], [s_val, -d_val]])
@@ -247,12 +220,6 @@ plt.suptitle("Example 4.44: Glucose–Insulin Interaction", fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-circuit
-#| fig-cap: "Example 4.45: Two-loop circuit phase portraits. Left: stable node (overdamped, $L/(R^2C)>4$, parameters $R=1,C=1,L=5$). Right: stable spiral (underdamped, $L/(R^2C)<4$, parameters $R=2,C=1,L=1$). In both cases $\\text{tr}\\,A<0$ and $\\det A>0$."
-
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
 params = [
@@ -293,12 +260,6 @@ plt.suptitle("Example 4.45: Two-Loop Electrical Circuit", fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ex447
-#| fig-cap: "Example 4.47: variation of parameters. The general solution is confirmed numerically (red dots) against the analytical formula (blue curves) for the particular solution components with $k_1=k_2=0$: $x_p(t)=t+4/3$ and $y_p(t)=-4t/3-13/9$."
-
 t_sym, s_sym = sym.symbols('t s')
 # Verify by substitution
 x_p = sym.Matrix([t_sym + sym.Rational(4,3),
@@ -338,12 +299,6 @@ plt.suptitle("Example 4.47: Variation of Parameters — Particular Solution Chec
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-undetermined
-#| fig-cap: "Example 4.49: undetermined coefficients. Both components of the particular solution found by undetermined coefficients (solid lines) agree exactly with the variation of parameters result (red dots). The calculation is considerably shorter."
-
 t_plot = np.linspace(0, 2, 300)
 xp = t_plot + 4/3
 yp = -4*t_plot/3 - 13/9
@@ -366,11 +321,3 @@ plt.suptitle("Example 4.49: Undetermined Coefficients vs. Variation of Parameter
              fontsize=11)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

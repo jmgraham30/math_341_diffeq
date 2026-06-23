@@ -1,7 +1,3 @@
-#| label: setup
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import sympy as sym                       # SymPy for symbolic mathematics
@@ -11,9 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| label: ex1-numpy
 
 A = sym.Matrix([[2, -1], [3, 4]])
 B = sym.Matrix([[0, 5], [-2, 1]])
@@ -27,9 +20,6 @@ display(Math(r'A^2 = ' + sym.latex(A**2)))
 display(Math(r'B\mathbf{x} = ' + sym.latex(B * x)))
 display(Math(r'\det A = ' + sym.latex(A.det())))
 display(Math(r'A^{-1} = ' + sym.latex(A.inv())))
-
-
-#| label: ex2-sympy
 
 b = sym.Matrix([3, -1])
 
@@ -50,12 +40,6 @@ display(Math(r"x_2 = \frac{\det A_2}{\det A} = \frac{"
             + sym.latex(A2.det()) + r"}{"
             + sym.latex(A.det()) + r"} = "
             + sym.latex(x2_cramer)))
-
-
-#| label: fig-ex2
-#| fig-cap: "Geometric interpretation of $A\\mathbf{x} = \\mathbf{b}$. Each equation defines a line; the unique solution $(1,-1)$ is their intersection (red dot)."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 x1_vals = np.linspace(-2, 4, 300)
 
@@ -83,9 +67,6 @@ ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex3-sympy
-
 A3 = sym.Matrix([[1, 2], [3, 2]])
 lam = sym.Symbol('lambda')
 
@@ -100,12 +81,6 @@ for ev in eigvals:
     evecs = (A3 - ev*sym.eye(2)).nullspace()
     display(Math(r'\lambda = ' + sym.latex(ev)
                  + r',\quad \mathbf{v} = ' + sym.latex(evecs[0])))
-
-
-#| label: fig-ex3
-#| fig-cap: "Eigenvectors of $A$ plotted from the origin (scaled for visibility). The vector $\\mathbf{v}_1 = (2,3)^T$ corresponds to $\\lambda_1 = 4$ and $\\mathbf{v}_2 = (-1,1)^T$ to $\\lambda_2 = -1$. Arrows show how $A$ maps each eigenvector to a scalar multiple of itself."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 A3_np = np.array([[1, 2], [3, 2]], dtype=float)
 v1 = np.array([2, 3], dtype=float)
@@ -152,9 +127,6 @@ ax.legend(fontsize=10, loc='upper left')
 plt.tight_layout()
 plt.show()
 
-
-#| label: ex4-sympy
-
 A4 = sym.Matrix([[-3, 1], [0, -3]])
 
 char_poly4 = A4.charpoly(lam)
@@ -167,9 +139,6 @@ for ev, mult, evecs in A4.eigenvects():
     display(Math(r'\lambda = ' + sym.latex(ev)
                  + r'\;(\text{multiplicity } ' + str(mult) + r'),\quad'
                  + r'\mathbf{v} = ' + sym.latex(evecs[0])))
-
-
-#| label: ex5-sympy
 
 A5 = sym.Matrix([[1, -5], [2, -3]])
 
@@ -184,9 +153,6 @@ for ev, mult, evecs in A5.eigenvects():
     display(Math(r'\lambda = ' + sym.latex(ev)
                  + r',\quad \mathbf{v} = ' + sym.latex(evecs[0])))
 
-
-#| label: ex6-sympy
-
 beta = sym.Symbol('beta', real=True)
 
 A6 = sym.Matrix([[-1, beta], [-1, -1]])
@@ -196,12 +162,6 @@ display(Math(r'\text{Characteristic polynomial: }\quad'
 
 roots6 = sym.solve(char_poly6.as_expr(), lam)
 display(Math(r'\lambda(\beta) = ' + sym.latex(roots6)))
-
-
-#| label: fig-ex6
-#| fig-cap: "Real part (solid) and imaginary part (dashed) of the eigenvalues $\\lambda(\\beta) = -1 \\pm \\sqrt{-\\beta}$ as functions of $\\beta$. For $\\beta < 0$ the eigenvalues are real; for $\\beta > 0$ they are complex conjugates with real part $-1$. The transition occurs at $\\beta = 0$."
-#| code-fold: true
-#| code-summary: "Show the code"
 
 beta_vals = np.linspace(-4, 4, 800)
 
@@ -253,12 +213,3 @@ ax.legend(fontsize=9)
 plt.suptitle(r'Eigenvalues of $A(\beta)$ vs.\ $\beta$', fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| label: session-info
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}'
-                for m in globals().values()
-                if getattr(m, '__version__', None)))

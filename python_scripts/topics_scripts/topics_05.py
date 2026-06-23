@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -11,22 +8,12 @@ mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 g = 9.81  # m/s^2
 for m_kg, DL_m in [(0.3, 0.05), (0.5, 0.08), (1.0, 0.12)]:
     k = m_kg * g / DL_m
     omega0 = np.sqrt(k / m_kg)
     period  = 2 * np.pi / omega0
     print(f"m={m_kg} kg, ΔL={DL_m} m: k={k:.2f} N/m, ω₀={omega0:.3f} rad/s, T={period:.3f} s")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sho
-#| fig-cap: "Simple harmonic oscillator $x''+4x=0$ ($\\omega_0=2$). Left: solution curves for three different initial conditions, all with period $T=\\pi$. Right: phase portrait — each closed ellipse is a trajectory; the amplitude $A=\\sqrt{x_0^2+v_0^2/\\omega_0^2}$ is conserved. The energy level $E=\\frac{1}{2}kA^2=2A^2$ labels each ellipse."
 
 omega0 = 2.0
 k_v, m_v = omega0**2, 1.0
@@ -76,12 +63,6 @@ axes[1].set_aspect('equal')
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-damped-regimes
-#| fig-cap: "Damped oscillator $x''+2\\gamma_m x'+4x=0$ ($\\omega_0=2$, $x(0)=1$, $x'(0)=0$). Left: position vs. time for all three regimes. The underdamped case shows decaying oscillations; the dotted envelope $\\pm e^{-\\gamma_m t}$ bounds the oscillation amplitude. Right: phase portrait. The underdamped spiral converges to the origin; the overdamped and critically damped cases arrive along the positive-$x$ axis without orbiting."
-
 omega0 = 2.0
 t_plot = np.linspace(0, 8, 600)
 x0, v0 = 1.0, 0.0
@@ -119,12 +100,6 @@ axes[1].legend(fontsize=8); axes[1].set_aspect('equal')
 
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-energy
-#| fig-cap: "Energy in the spring–mass system ($m=1$, $k=4$, $x(0)=1.5$, $x'(0)=0$). Left: undamped ($\\gamma=0$) — total energy $E$ (black dashed) is constant; kinetic $T$ and potential $V$ oscillate out of phase, trading energy back and forth. Right: damped ($\\gamma=1$) — total energy decays exponentially; the shaded area represents energy dissipated."
 
 m_v, k_v = 1.0, 4.0
 omega0 = np.sqrt(k_v/m_v)
@@ -172,12 +147,6 @@ axes[1].legend(fontsize=8.5)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-analogy
-#| fig-cap: "The mechanical–electrical analogy. Spring–mass (left) and RLC circuit (right) obey identical ODEs. The simulation shows $x(t)$ for the mechanical system (blue) and $Q(t)$ for the circuit (orange dashed) with matching dimensionless parameters $\\omega_0=2$, $\\gamma_m=0.4$, both starting from the same initial conditions. The curves are identical — up to the choice of units."
-
 omega0 = 2.0
 gamma_m = 0.4
 t_plot = np.linspace(0, 6, 400)
@@ -206,12 +175,6 @@ plt.suptitle(f'Mechanical–Electrical Analogy ($\\omega_0={omega0}$, '
              f'$\\gamma_m={gamma_m}$, identical ODEs)', fontsize=11)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-frequency-response
-#| fig-cap: "Frequency response of the forced damped oscillator ($\\omega_0=2$, $F_0/m=1$). Left: amplitude $G(\\Omega)$ vs. driving frequency for several damping ratios. The peak shifts below $\\omega_0=2$ (vertical dashed line) and broadens as damping increases. Right: time-domain steady-state solutions for three driving frequencies with $\\gamma_m=0.3$, illustrating below-resonance, at-resonance, and above-resonance behavior."
 
 omega0 = 2.0; gamma_m_vals = [0.1, 0.3, 0.5, 1.0, 1.5]
 Omega_arr = np.linspace(0.01, 5, 600)
@@ -252,12 +215,6 @@ axes[1].legend(fontsize=8)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-resonance-buildup
-#| fig-cap: "Resonance amplitude buildup ($\\omega_0=2$, $\\gamma=0$, zero ICs). Without damping, the resonant particular solution $x_p = (t/4)\\sin(2t)$ grows linearly without bound (dashed line shows the envelope $\\pm t/4$). In practice, material nonlinearities or structural failure occur before infinite amplitude is reached."
-
 omega0 = 2.0
 t_plot = np.linspace(0, 20, 800)
 
@@ -274,11 +231,3 @@ ax.set_title(r"Resonance: $x''+4x=\cos(2t)$, $x(0)=x'(0)=0$ (undamped)")
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

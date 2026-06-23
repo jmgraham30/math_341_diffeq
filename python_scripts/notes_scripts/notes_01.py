@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 # This is a code cell that imports the necessary libraries for our session.
 import numpy as np                        # NumPy for numerical computations
 import scipy as sp                        # SciPy for scientific computing
@@ -11,12 +8,6 @@ from scipy.integrate import solve_ivp     # ODE solver
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-family
-#| fig-cap: "Family of solutions $y(t) = Ce^{2t}$ to the ODE $y' - 2y = 0$. Each curve corresponds to a different value of $C$. The highlighted trajectory (dashed black) is the particular solution $C=1$ corresponding to the initial condition $y(0)=1$. Specifying an initial condition singles out exactly one curve from the family."
 
 t = np.linspace(-1, 1.2, 300)
 fig, ax = plt.subplots()
@@ -37,12 +28,6 @@ ax.legend(fontsize=8, ncol=2)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-ivp
-#| fig-cap: "The IVP $y'=-3y$, $y(0)=5$ selects a unique solution curve (bold black) from the family $y(t)=Ce^{-3t}$ (gray). The initial condition is marked with a red dot."
-
 t = np.linspace(-0.5, 2, 400)
 fig, ax = plt.subplots()
 for C in np.linspace(-8, 8, 17):
@@ -56,12 +41,6 @@ ax.set_title(r"IVP: $y' = -3y$, $y(0)=5$")
 ax.legend()
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sho
-#| fig-cap: "Simple harmonic oscillator with $\\omega = 1$, $x(0)=1$, $v(0)=0$. Left: position $x(t)$ over time. Right: phase portrait — trajectories in the $(x,\\dot{x})$ plane. Each closed ellipse is a solution for a different initial condition; the highlighted trajectory corresponds to the given IVP."
 
 omega = 1.0
 t_span = (0, 4 * np.pi)
@@ -106,12 +85,6 @@ plt.suptitle(r'Simple Harmonic Oscillator: $\ddot{x}+\omega^2 x=0$, $\omega=1$',
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-rc
-#| fig-cap: "Discharge of an RC circuit: $Q(t)=Q_0 e^{-t/\\tau}$ where $\\tau=RC$ is the time constant. The charge decays to $1/e \\approx 36.8\\%$ of its initial value after one time constant."
-
 tau_vals = [0.5, 1.0, 2.0]
 t = np.linspace(0, 5, 300)
 fig, ax = plt.subplots()
@@ -124,12 +97,6 @@ ax.set_title('RC Circuit Discharge: $Q(t) = Q_0 e^{-t/RC}$')
 ax.legend()
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-logistic
-#| fig-cap: "Logistic growth ($r=1$, $K=100$) from several initial conditions. All trajectories converge to the carrying capacity $K=100$ (dashed line), illustrating the stability of the equilibrium."
 
 r, K = 1.0, 100.0
 t = np.linspace(0, 8, 400)
@@ -144,11 +111,3 @@ ax.set_title('Logistic Growth')
 ax.legend(fontsize=8)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys # sys for system-specific parameters and functions
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

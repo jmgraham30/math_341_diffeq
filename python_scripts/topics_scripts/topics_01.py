@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-logistic-nondim
-#| fig-cap: "Logistic growth: dimensional form (left) for three different parameter sets, and the corresponding dimensionless form (right). In dimensionless variables all three collapse onto a single curve determined solely by $u_0 = P_0/K$, illustrating the power of non-dimensionalization."
 
 # Three different (r, K, P0) sets that share the same u0 = P0/K = 0.1
 configs = [
@@ -55,12 +46,6 @@ plt.suptitle('Logistic Growth: Dimensional vs. Dimensionless', fontsize=13)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-resonance
-#| fig-cap: "Steady-state amplitude response $R(\\nu, \\zeta)$ of the dimensionless forced oscillator as a function of the frequency ratio $\\nu = \\Omega/\\omega_0$ for several values of the damping ratio $\\zeta$. The peak shifts toward $\\nu=1$ as damping decreases, and the response diverges as $\\zeta \\to 0$."
-
 nu_vals = np.linspace(0, 2.5, 800)
 zeta_list = [0.05, 0.1, 0.2, 0.5, 1.0]
 colors = plt.cm.plasma(np.linspace(0.1, 0.85, len(zeta_list)))
@@ -78,12 +63,6 @@ ax.set_ylim(0, 7)
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-oscillator-nondim
-#| fig-cap: "Solutions of the dimensionless forced oscillator $u'' + 2\\zeta u' + u = \\cos(\\tau)$ (resonant driving, $\\nu=1$) for several damping ratios $\\zeta$. Initial conditions $u(0)=0$, $u'(0)=0$. As $\\zeta$ decreases the transient grows larger and decays more slowly."
 
 def forced_osc(tau, y, zeta, nu):
     u, v = y
@@ -107,11 +86,3 @@ ax.set_title(r'Dimensionless Forced Oscillator at Resonance ($\nu=1$)', fontsize
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

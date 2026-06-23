@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-lotka-volterra
-#| fig-cap: "Lotka–Volterra predator–prey model with $a=0.6$, $b=0.5$, $c=0.3$, $d=0.4$. Left: phase portrait showing closed orbits encircling the non-trivial equilibrium $(c/d, a/b) = (0.75, 1.2)$ (blue dot). The origin is an unstable saddle. Right: time series for a representative orbit showing the characteristic out-of-phase oscillations between prey $x(t)$ (steelblue) and predator $y(t)$ (crimson)."
 
 a, b, c, d = 0.6, 0.5, 0.3, 0.4
 xe, ye = c/d, a/b   # non-trivial equilibrium
@@ -82,12 +73,6 @@ plt.suptitle(f'Lotka–Volterra: $a={a}$, $b={b}$, $c={c}$, $d={d}$', fontsize=1
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-competing
-#| fig-cap: "Competing species phase portraits with $a_1=a_2=1$, $b_1=b_2=1$. Left: weak competition ($c_1=0.3$, $c_2=0.5$) — coexistence; the interior equilibrium is a stable node and both species survive. Right: strong competition ($c_1=1.4$, $c_2=1.2$) — competitive exclusion; the interior equilibrium is a saddle, and the outcome depends on initial conditions (species $x$ wins above the separatrix, species $y$ wins below)."
-
 fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
 def competing(a1, b1, c1, a2, b2, c2):
@@ -153,12 +138,6 @@ plt.suptitle("Competing Species Model", fontsize=12)
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-sir
-#| fig-cap: "SIR epidemic model. Left: $(S,I)$ phase portrait with $\\beta=0.3$, $\\gamma=0.1$, $N=1$ (so $R_0=3>1$). Orbits start at $S\\approx 1$ with a small initial infected fraction and sweep through an epidemic arc before settling on the $S$-axis (disease-free). The threshold $S^*=\\gamma/\\beta=1/3$ is shown dashed. Right: time series for one orbit showing the classic epidemic curve — $I(t)$ rises to a peak then falls as $S$ is depleted."
-
 beta, gamma_sir = 0.3, 0.1
 N = 1.0
 R0 = beta * N / gamma_sir
@@ -215,12 +194,6 @@ plt.suptitle(rf'SIR Epidemic Model: $\beta={beta}$, $\gamma={gamma_sir}$, $R_0={
 plt.tight_layout()
 plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-chem-kinetics
-#| fig-cap: "Consecutive reactions $A\\to B\\to C$ with $k_1=0.5$, $k_2=0.2$. Left: $(x,y)$ phase portrait — all orbits approach the origin (stable node) as all material converts to $C$. Right: time series starting at $[A]_0=1$, $[B]_0=0$ showing $[A]$ decays exponentially, $[B]$ rises then falls (the classic intermediate peak), and $[C]=1-x-y$ (dashed) approaches 1."
-
 k1, k2 = 0.5, 0.2
 
 def f_ck(x, y): return -k1 * x
@@ -266,12 +239,6 @@ axes[1].legend(fontsize=9)
 plt.suptitle('Chemical Kinetics: $A \\to B \\to C$', fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-pendulum
-#| fig-cap: "Nonlinear pendulum phase portrait ($\\omega_0=1$). Centers at $x=0,\\pm 2\\pi,\\ldots$ (steelblue, stable oscillation) and saddle points at $x=\\pm\\pi,\\ldots$ (crimson, unstable inverted position). The thick black curves are the separatrices connecting the saddle points, bounding oscillatory (closed) orbits from rotational (open) orbits."
 
 omega0 = 1.0
 
@@ -330,12 +297,6 @@ ax.set_xticklabels([r'$-2\pi$', r'$-\pi$', '$0$', r'$\pi$', r'$2\pi$'])
 ax.legend(fontsize=8, loc='upper right')
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-vanderpol
-#| fig-cap: "Van der Pol oscillator with $\\varepsilon=1$. Left: phase portrait — orbits starting near the unstable origin spiral outward (crimson) and orbits starting far from the origin spiral inward (steelblue), both converging to the same attracting limit cycle (thick black). Right: time series showing the characteristic relaxation oscillation waveform that develops from a small initial condition."
 
 eps = 1.0
 
@@ -398,11 +359,3 @@ axes[1].legend(fontsize=9)
 plt.suptitle(f'Van der Pol Oscillator ($\\varepsilon={eps}$)', fontsize=12)
 plt.tight_layout()
 plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python version:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))

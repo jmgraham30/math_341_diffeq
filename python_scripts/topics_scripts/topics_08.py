@@ -1,6 +1,3 @@
-#| code-fold: true
-#| code-summary: "Show the code"
-
 import numpy as np
 import sympy as sym
 import matplotlib as mpl
@@ -10,12 +7,6 @@ from IPython.display import Math, display
 mpl.rcParams['figure.dpi'] = 150
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-vectors
-#| fig-cap: "Geometric view of vectors in $\\mathbb{R}^2$: the sum $\\mathbf{u}+\\mathbf{v}$ (parallelogram law), and the projection of $\\mathbf{u}$ onto $\\mathbf{v}$."
 
 u = np.array([3.0, 1.0])
 v = np.array([1.0, 3.0])
@@ -49,10 +40,6 @@ ax.set_xlabel('$x_1$'); ax.set_ylabel('$x_2$')
 ax.set_title('Vector operations in $\\mathbb{R}^2$')
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 u = np.array([1.0, 2.0, 3.0]); v = np.array([4.0, -1.0, 2.0])
 print("Vector operations in R^3:")
 print(f"  u = {u},  v = {v}")
@@ -63,10 +50,6 @@ print(f"  angle(u,v) = {angle_deg:.2f}°")
 print(f"  u×v = {np.cross(u,v)}  (cross product in R^3)")
 proj_u_onto_v = (np.dot(u,v)/np.dot(v,v))*v
 print(f"  proj_v(u) = {proj_u_onto_v}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
 
 A = np.array([[2,1,-1],[1,3,2],[3,-1,1]], dtype=float)
 print(f"A =\n{A}\n")
@@ -80,10 +63,6 @@ print(f"A*A^(-1) ≈ I:\n{np.round(A @ np.linalg.inv(A), 6)}")
 v1 = A[:,0]; v2 = A[:,1]; v3 = A[:,2]
 print(f"\nColumns are vectors v1={v1}, v2={v2}, v3={v3}")
 print(f"Parallelepiped volume = |det(A)| = {abs(np.linalg.det(A)):.4f}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
 
 print("=== Example: 3×3 system ===")
 # 2x1 + x2 - x3 = 8
@@ -107,10 +86,6 @@ print(f"Pivot columns: {piv_B}")
 print("Free variables: x2 and x4 (columns 1,3 are non-pivot)")
 print("Solution: x1=3-2*x2-x4, x3=2+x4, with x2,x4 free")
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 A_num = np.array([[2,1,-1],[1,3,2],[3,-1,1]], dtype=float)
 b_num = np.array([8.0, 14.0, 2.0])
 
@@ -118,10 +93,6 @@ x_sol = solve(A_num, b_num)
 print(f"scipy.linalg.solve: x = {np.round(x_sol, 6)}")
 print(f"Residual ||Ax-b|| = {norm(A_num @ x_sol - b_num):.2e}")
 print(f"Condition number = {np.linalg.cond(A_num):.4f}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
 
 print("=== Example 1: 2×2 matrix ===")
 A1 = np.array([[4,1],[2,3]], dtype=float)
@@ -147,10 +118,6 @@ P, D = A1_sym2.diagonalize()
 display(Math(r"P = " + sym.latex(P) + r",\quad D = " + sym.latex(D)))
 print(f"Verify PDP^(-1) == A: {sym.simplify(P*D*P.inv()) == A1_sym2}")
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 S = np.array([[4,2,0],[2,3,1],[0,1,5]], dtype=float)
 vals_S, vecs_S = np.linalg.eigh(S)  # eigh guarantees real evals for symmetric
 print(f"Symmetric matrix S =\n{S}\n")
@@ -159,12 +126,6 @@ print(f"Orthogonality of eigenvectors (Q^T Q should be I):")
 print(np.round(vecs_S.T @ vecs_S, 8))
 Lambda = np.diag(vals_S)
 print(f"Reconstruction S = Q*Lambda*Q^T error: {norm(vecs_S@Lambda@vecs_S.T - S):.2e}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-eigengeom
-#| fig-cap: "Geometric effect of matrix $A=\\begin{pmatrix}4&1\\\\2&3\\end{pmatrix}$ on the unit circle (blue). The matrix stretches the circle into an ellipse (orange). The eigenvectors (red arrows) point in the directions that are merely scaled, not rotated. The scaling factors are the eigenvalues $\\lambda_1=5$, $\\lambda_2=2$."
 
 A_vis = np.array([[4,1],[2,3]], dtype=float)
 vals_v, vecs_v = np.linalg.eig(A_vis)
@@ -189,10 +150,6 @@ ax.set_title('Eigenvalues/vectors as scaling directions')
 ax.legend(fontsize=9)
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 A_lu = np.array([[2,1,-1],[4,5,-3],[2,3,1]], dtype=float)
 P_lu, L_lu, U_lu = lu(A_lu)
 print(f"A =\n{A_lu}\n")
@@ -201,10 +158,6 @@ print(f"U =\n{np.round(U_lu,4)}\n")
 print(f"PLU = A: {np.allclose(P_lu@L_lu@U_lu, A_lu)}")
 print(f"Solving multiple right-hand sides with LU: fast for large systems")
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 A_qr = np.array([[1,1,0],[1,0,1],[0,1,1],[1,1,1]], dtype=float)
 Q_qr, R_qr = qr(A_qr, mode='economic')
 print(f"A (4×3):\n{A_qr}\n")
@@ -212,10 +165,6 @@ print(f"Q (4×3, orthonormal columns):\n{np.round(Q_qr,4)}\n")
 print(f"R (3×3, upper triangular):\n{np.round(R_qr,4)}\n")
 print(f"Q^T Q = I: {np.allclose(Q_qr.T@Q_qr, np.eye(3))}")
 print(f"QR = A: {np.allclose(Q_qr@R_qr, A_qr)}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
 
 A_svd = np.array([[3,2,2],[2,3,-2]], dtype=float)
 U_s, sigma, VT_s = svd(A_svd)
@@ -227,10 +176,6 @@ Sigma_full = np.zeros_like(A_svd)          # shape (2,3), matches A
 np.fill_diagonal(Sigma_full, sigma)        # place singular values on diagonal
 print(f"Reconstruction error ||U*Σ*V^T - A|| = {norm(U_s@Sigma_full@VT_s - A_svd):.2e}")
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
 B_sym = sym.Matrix([[1,2,3],[4,5,6],[7,8,9]])
 print(f"Matrix A (rank-deficient):\n{B_sym}\n")
 print(f"rank = {B_sym.rank()}")
@@ -238,42 +183,6 @@ print(f"Null space basis: {B_sym.nullspace()}")
 print(f"Column space basis: {B_sym.columnspace()}")
 print(f"Left null space: {B_sym.T.nullspace()}")
 print(f"\nRank-Nullity: rank({B_sym.rank()}) + nullity({3-B_sym.rank()}) = {3}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-circuit
-#| fig-cap: "Resistor network: three nodes (node 3 grounded), four resistors. Nodal analysis yields the $2\\times 2$ system $Y\\mathbf{V}=\\mathbf{I}$ whose solution gives all node voltages directly."
-
-# Network: 4 nodes (node 4 = ground = 0 V)
-# Resistors: R12=2Ω, R13=4Ω, R23=3Ω, R24=1Ω, R34=5Ω
-# Source: I1=5 A injected at node 1, I2=2 A injected at node 2, I3=0
-G12, G13, G23, G24, G34 = 1/2, 1/4, 1/3, 1.0, 1/5
-
-Y = np.array([
-    [G12+G13,   -G12,    -G13],
-    [-G12,   G12+G23+G24, -G23],
-    [-G13,   -G23,    G13+G23+G34]
-])
-I_inj = np.array([5.0, 2.0, 0.0])  # injected currents
-V_sol = solve(Y, I_inj)
-print("Nodal admittance matrix Y:")
-print(np.round(Y,4))
-print(f"\nInjected currents I = {I_inj} A")
-print(f"Node voltages: V1={V_sol[0]:.4f} V, V2={V_sol[1]:.4f} V, V3={V_sol[2]:.4f} V")
-print(f"Residual ||YV - I|| = {norm(Y@V_sol - I_inj):.2e}")
-
-# Verify by KCL at node 1: sum of outgoing currents = 5 A
-I_12 = G12*(V_sol[0]-V_sol[1])
-I_13 = G13*(V_sol[0]-V_sol[2])
-I_14 = G13*V_sol[0]  # no direct to ground in this simplified model
-print(f"\nKCL check at node 1: outgoing currents sum = {Y[0]@V_sol:.4f} A (should be 5.0)")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-truss
-#| fig-cap: "Simple 3-bar planar truss. Each bar contributes a stiffness component in the direction of its axis. The global stiffness matrix is assembled by summing contributions, and $K\\mathbf{u}=\\mathbf{f}$ gives the nodal displacements."
 
 # Three bars meeting at a free node; all other nodes pinned.
 # Bar 1: horizontal (angle 0°), AE=1, L=1
@@ -326,12 +235,6 @@ ax.set_title('3-bar pin-jointed truss: $K\\mathbf{u}=\\mathbf{f}$')
 ax.axis('off')
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-lsq
-#| fig-cap: "Least-squares quadratic fit to noisy temperature vs. time data. The design matrix $A$ has columns $[1, t, t^2]$. The normal equations $(A^TA)\\mathbf{c}=A^T\\mathbf{b}$ are solved for the coefficients $\\mathbf{c}=(c_0,c_1,c_2)^T$."
-
 np.random.seed(42)
 t_data = np.linspace(0, 5, 25)
 T_true = 20 + 8*t_data - 1.2*t_data**2  # true: parabolic heating then cooling
@@ -361,12 +264,6 @@ print(f"True  coefficients: c0=20, c1=8, c2=-1.2")
 print(f"Fitted coefficients: c0={c_ls[0]:.4f}, c1={c_ls[1]:.4f}, c2={c_ls[2]:.4f}")
 print(f"RMS residual: {norm(A_ls@c_ls-T_meas)/np.sqrt(len(t_data)):.4f} °C")
 plt.tight_layout(); plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-markov
-#| fig-cap: "Markov chain: four states (equipment conditions: New, Good, Fair, Failed) with maintenance-driven transitions. Left: the $4\\times 4$ transition matrix visualized as a heatmap. Right: convergence of the state distribution to the stationary vector $\\boldsymbol{\\pi}$ regardless of starting state."
 
 # Equipment degradation model (4 states: New, Good, Fair, Failed)
 P_mc = np.array([
@@ -420,12 +317,6 @@ print(f"Verify P^T π = π: {np.allclose(P_mc.T @ pi_st, pi_st)}")
 
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-pca
-#| fig-cap: "PCA on 2D correlated sensor data. Left: raw data cloud with two principal component directions (red arrows), scaled by their singular values. PC1 points along the main axis of variation; PC2 is orthogonal. Right: data projected onto the first two PCs — the scatter is maximized along PC1."
-
 np.random.seed(7)
 n_obs = 150
 # Two correlated sensors
@@ -465,12 +356,6 @@ print(f"Variance explained: PC1={explained[0]*100:.1f}%, PC2={explained[1]*100:.
 print(f"PC1 direction: {np.round(VT_p[0],4)}")
 
 plt.tight_layout(); plt.show()
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-#| label: fig-svd-approx
-#| fig-cap: "Low-rank SVD approximation of a $30\\times 40$ test matrix (simulating a grayscale image). As the rank $k$ increases, the reconstruction quality improves. The singular value spectrum (right) shows how rapidly the information concentrates in the first few singular values."
 
 np.random.seed(3)
 m_img, n_img = 30, 40
@@ -513,9 +398,6 @@ axes[1,3].axis('off')
 plt.suptitle('Low-rank SVD approximation (Eckart–Young theorem)', fontsize=11)
 plt.tight_layout(); plt.show()
 
-
-#| code-fold: false
-
 import numpy as np
 from scipy.linalg import solve, lu, qr, svd, norm, lstsq
 
@@ -540,9 +422,6 @@ print(f"det={np.linalg.det(A):.2f}, rank={np.linalg.matrix_rank(A)}")
 print(f"cond={np.linalg.cond(A):.4f}, trace={np.trace(A):.2f}")
 print(f"norm (Frobenius)={norm(A,'fro'):.4f}, norm (2)={norm(A,2):.4f}")
 
-
-#| code-fold: false
-
 import sympy as sym
 
 A_s = sym.Matrix([[4,1],[2,3]])
@@ -560,11 +439,3 @@ P_d, D_d = A_s.diagonalize()
 print(f"Diagonalization: P={P_d}, D={D_d}")
 null_A = sym.Matrix([[1,2,3],[4,5,6],[7,8,9]]).nullspace()
 print(f"Null space: {null_A}")
-
-
-#| code-fold: true
-#| code-summary: "Show the code"
-
-import sys
-print("Python:", sys.version)
-print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m,'__version__',None)))
