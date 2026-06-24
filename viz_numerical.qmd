@@ -1,0 +1,372 @@
+---
+title: "Numerical Methods Explorer"
+format:
+  html:
+    page-layout: full
+    embed-resources: true
+    toc: false
+    html-table-processing: none
+---
+
+```{=html}
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{padding:1rem 0 2rem;font-family:system-ui,sans-serif;color:#1a1a1a}
+.top-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.card{background:#fff;border:0.5px solid #ddd;border-radius:12px;padding:1rem 1.25rem}
+.ctrl-label{font-size:12px;color:#666;margin-bottom:6px;display:block}
+.ctrl-row{display:flex;align-items:center;gap:10px}
+.ctrl-row input[type=range]{flex:1}
+.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.method-btn{background:transparent;border:0.5px solid #ccc;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;color:#555;transition:all .15s;text-align:center}
+.method-btn.active{background:#185FA5;border-color:#185FA5;color:#fff}
+.eq-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.eq-btn{background:transparent;border:0.5px solid #ccc;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;color:#555}
+.eq-btn.active{border-color:#185FA5;color:#185FA5;font-weight:500}
+.tab-bar{display:flex;gap:2px;margin-bottom:1rem;background:#f0f0f0;border-radius:8px;padding:3px}
+.tab{flex:1;background:transparent;border:none;border-radius:6px;padding:7px 12px;font-size:13px;cursor:pointer;color:#666}
+.tab.active{background:#fff;color:#1a1a1a;font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.panel{display:none}.panel.active{display:block}
+.chart-wrap{position:relative;width:100%;height:320px}
+.error-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:.75rem}
+.error-table th{text-align:left;padding:6px 10px;font-weight:500;font-size:12px;color:#666;border-bottom:0.5px solid #e0e0e0}
+.error-table td{padding:6px 10px;border-bottom:0.5px solid #e0e0e0}
+.badge{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;font-weight:500}
+.badge-euler{background:#FAECE7;color:#993C1D}
+.badge-rk2{background:#faeeda;color:#854F0B}
+.badge-rk4{background:#EAF3DE;color:#3B6D11}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1rem}
+.metric{background:#f7f7f7;border-radius:8px;padding:.75rem 1rem}
+.metric-label{font-size:11px;color:#666;margin-bottom:4px}
+.metric-val{font-size:18px;font-weight:500}
+.metric-val.euler-color{color:#D85A30}
+.metric-val.rk2-color{color:#BA7517}
+.metric-val.rk4-color{color:#639922}
+.formula-box{background:#f7f7f7;border-radius:8px;padding:.75rem 1rem;font-size:13px;font-family:monospace;line-height:1.8;margin-bottom:.75rem}
+.formula-title{font-size:11px;font-weight:500;color:#666;font-family:system-ui,sans-serif;margin-bottom:6px}
+.step-table{width:100%;border-collapse:collapse;font-size:12px}
+.step-table th{text-align:right;padding:4px 8px;font-size:11px;color:#666;border-bottom:0.5px solid #e0e0e0}
+.step-table th:first-child,.step-table td:first-child{text-align:left}
+.step-table td{padding:4px 8px;border-bottom:0.5px solid #e0e0e0;text-align:right}
+.step-table tr:last-child td{font-weight:500}
+</style>
+
+<div class="app">
+<div class="top-bar">
+  <div class="card">
+    <span class="ctrl-label">Equation x' = f(t, x)</span>
+    <div class="eq-row" id="eq-btns">
+      <button class="eq-btn active" data-eq="0">t &minus; x</button>
+      <button class="eq-btn" data-eq="1">x(1 &minus; x)</button>
+      <button class="eq-btn" data-eq="2">&minus;2x</button>
+      <button class="eq-btn" data-eq="3">sin(t) &minus; x</button>
+    </div>
+  </div>
+  <div class="card">
+    <span class="ctrl-label">Step size h = <span id="h-label">0.50</span></span>
+    <div class="ctrl-row">
+      <span style="font-size:12px;color:#888">0.05</span>
+      <input type="range" id="h-slider" min="1" max="19" step="1" value="10">
+      <span style="font-size:12px;color:#888">1.0</span>
+    </div>
+    <div style="margin-top:8px">
+      <span class="ctrl-label">Initial condition x(t&#8320;) = <span id="x0-label">1.00</span></span>
+      <div class="ctrl-row">
+        <span style="font-size:12px;color:#888">0.1</span>
+        <input type="range" id="x0-slider" min="1" max="30" step="1" value="10">
+        <span style="font-size:12px;color:#888">3.0</span>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="ctrl-label">Methods shown</span>
+    <div class="method-grid">
+      <button class="method-btn active" data-m="euler">Euler</button>
+      <button class="method-btn active" data-m="rk2">Mod. Euler</button>
+      <button class="method-btn active" data-m="rk4">RK4</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab active" data-tab="solution">Solution curves</button>
+  <button class="tab" data-tab="convergence">Convergence (log-log)</button>
+  <button class="tab" data-tab="steps">Step-by-step table</button>
+  <button class="tab" data-tab="formulas">Formulas &amp; error</button>
+</div>
+
+<div class="panel active" id="tab-solution">
+  <div class="metric-grid" id="error-metrics"></div>
+  <div class="chart-wrap"><canvas id="sol-chart" role="img" aria-label="Solution curves chart comparing numerical methods to exact solution"></canvas></div>
+</div>
+
+<div class="panel" id="tab-convergence">
+  <div class="chart-wrap" style="height:360px"><canvas id="conv-chart" role="img" aria-label="Log-log convergence chart showing global error vs step size for each method"></canvas></div>
+  <table class="error-table" id="conv-table" style="margin-top:1rem">
+    <thead><tr><th>Method</th><th>h = 0.5</th><th>h = 0.25</th><th>h = 0.125</th><th>Ratio (0.5/0.25)</th><th>Order</th></tr></thead>
+    <tbody id="conv-tbody"></tbody>
+  </table>
+</div>
+
+<div class="panel" id="tab-steps">
+  <div style="overflow-x:auto">
+    <table class="step-table" id="step-tbl">
+      <thead id="step-head"></thead>
+      <tbody id="step-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel" id="tab-formulas">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+    <div class="card">
+      <div class="formula-title"><span class="badge badge-euler">Euler &mdash; O(h)</span></div>
+      <div class="formula-box">X_{n+1} = X_n<br>+ h&middot;f(t_n, X_n)</div>
+      <div style="font-size:12px;color:#666">1 function evaluation per step. Local error O(h&sup2;), global O(h). Halving h &approx; halves the error.</div>
+    </div>
+    <div class="card">
+      <div class="formula-title"><span class="badge badge-rk2">Modified Euler (RK2) &mdash; O(h&sup2;)</span></div>
+      <div class="formula-box">X&#771; = X_n + h&middot;f(t_n, X_n)<br>X_{n+1} = X_n + h/2&middot;[f(t_n, X_n)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ f(t_{n+1}, X&#771;)]</div>
+      <div style="font-size:12px;color:#666">Predictor&ndash;corrector. 2 evaluations per step. Halving h &approx; quarters the error.</div>
+    </div>
+    <div class="card">
+      <div class="formula-title"><span class="badge badge-rk4">RK4 &mdash; O(h&#8308;)</span></div>
+      <div class="formula-box">k&#8321;=f(t&#8345;,X&#8345;)<br>k&#8322;=f(t&#8345;+h/2, X&#8345;+h/2&middot;k&#8321;)<br>k&#8323;=f(t&#8345;+h/2, X&#8345;+h/2&middot;k&#8322;)<br>k&#8324;=f(t&#8345;+h, X&#8345;+h&middot;k&#8323;)<br>X_{n+1}=X&#8345;+h/6&middot;(k&#8321;+2k&#8322;+2k&#8323;+k&#8324;)</div>
+      <div style="font-size:12px;color:#666">4 evaluations per step. Halving h reduces error by factor &approx; 16.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="formula-title">Error at t = T for current h</div>
+    <div id="formula-error-content"></div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const EQUATIONS = [
+  {
+    label: "t - x",
+    f: (t,x) => t - x,
+    exact: (t,x0,t0) => t - 1 + (x0 - t0 + 1) * Math.exp(-(t-t0)),
+    t0: 0, T: 2
+  },
+  {
+    label: "x(1-x)",
+    f: (t,x) => x*(1-x),
+    exact: (t,x0,t0) => { const e=Math.exp(t-t0); return x0*e/(1-x0+x0*e); },
+    t0: 0, T: 4
+  },
+  {
+    label: "-2x",
+    f: (t,x) => -2*x,
+    exact: (t,x0,t0) => x0*Math.exp(-2*(t-t0)),
+    t0: 0, T: 2
+  },
+  {
+    label: "sin(t) - x",
+    f: (t,x) => Math.sin(t) - x,
+    exact: (t,x0,t0) => { const c=x0-(Math.sin(t0)-Math.cos(t0))/2; return (Math.sin(t)-Math.cos(t))/2+c*Math.exp(-(t-t0)); },
+    t0: 0, T: 3*Math.PI
+  }
+];
+
+const H_VALS = Array.from({length:19},(_,i)=>+(0.05+i*0.05).toFixed(2));
+const X0_VALS = Array.from({length:30},(_,i)=>+(0.1+i*0.1).toFixed(1));
+
+let eqIdx=0, hIdx=9, x0Idx=9;
+let activeMethods={euler:true,rk2:true,rk4:true};
+let activeTab='solution';
+let solChart=null, convChart=null;
+
+function euler(f,t0,T,x0,h){
+  const pts=[];let t=t0,x=x0;pts.push([t,x]);
+  while(t<T-1e-10){x=x+h*f(t,x);t=+(t+h).toFixed(10);pts.push([t,x]);}
+  return pts;
+}
+function rk2(f,t0,T,x0,h){
+  const pts=[];let t=t0,x=x0;pts.push([t,x]);
+  while(t<T-1e-10){const k1=f(t,x);const xt=x+h*k1;x=x+(h/2)*(k1+f(t+h,xt));t=+(t+h).toFixed(10);pts.push([t,x]);}
+  return pts;
+}
+function rk4(f,t0,T,x0,h){
+  const pts=[];let t=t0,x=x0;pts.push([t,x]);
+  while(t<T-1e-10){
+    const k1=f(t,x),k2=f(t+h/2,x+h/2*k1),k3=f(t+h/2,x+h/2*k2),k4=f(t+h,x+h*k3);
+    x=x+(h/6)*(k1+2*k2+2*k3+k4);t=+(t+h).toFixed(10);pts.push([t,x]);
+  }
+  return pts;
+}
+
+function linspace(a,b,n){return Array.from({length:n},(_,i)=>a+(b-a)*i/(n-1));}
+
+function render(){
+  const eq=EQUATIONS[eqIdx];
+  const h=H_VALS[hIdx];
+  const x0=X0_VALS[x0Idx];
+  document.getElementById('h-label').textContent=h.toFixed(2);
+  document.getElementById('x0-label').textContent=x0.toFixed(1);
+  if(activeTab==='solution') renderSolution(eq,h,x0);
+  else if(activeTab==='convergence') renderConvergence(eq,x0);
+  else if(activeTab==='steps') renderSteps(eq,h,x0);
+  else renderFormulas(eq,h,x0);
+}
+
+function renderSolution(eq,h,x0){
+  const {f,exact,t0,T}=eq;
+  const N=Math.max(1,Math.round((T-t0)/h));
+  const hA=(T-t0)/N;
+  const tFine=linspace(t0,T,300);
+  const exactPts=tFine.map(t=>({x:t,y:exact(t,x0,t0)}));
+  const eP=euler(f,t0,T,x0,hA);
+  const rP=rk2(f,t0,T,x0,hA);
+  const r4P=rk4(f,t0,T,x0,hA);
+  const exactAtT=exact(T,x0,t0);
+  const errE=Math.abs(exactAtT-eP[eP.length-1][1]);
+  const errR=Math.abs(exactAtT-rP[rP.length-1][1]);
+  const errR4=Math.abs(exactAtT-r4P[r4P.length-1][1]);
+  document.getElementById('error-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label"><span class="badge badge-euler">Euler</span> error at t=T</div><div class="metric-val euler-color">${errE<1e-8?'< 1e-8':errE.toFixed(6)}</div></div>
+    <div class="metric"><div class="metric-label"><span class="badge badge-rk2">Mod. Euler</span> error at t=T</div><div class="metric-val rk2-color">${errR<1e-8?'< 1e-8':errR.toFixed(6)}</div></div>
+    <div class="metric"><div class="metric-label"><span class="badge badge-rk4">RK4</span> error at t=T</div><div class="metric-val rk4-color">${errR4<1e-10?'< 1e-10':errR4.toFixed(8)}</div></div>
+  `;
+  const datasets=[
+    {label:'Exact solution',data:exactPts,borderColor:'#185FA5',backgroundColor:'transparent',borderWidth:2.5,pointRadius:0,tension:0.4}
+  ];
+  if(activeMethods.euler) datasets.push({label:'Euler',data:eP.map(([t,x])=>({x:t,y:x})),borderColor:'#D85A30',backgroundColor:'#D85A30',borderWidth:2,pointRadius:4,pointHoverRadius:6,tension:0,pointStyle:'circle'});
+  if(activeMethods.rk2) datasets.push({label:'Modified Euler (RK2)',data:rP.map(([t,x])=>({x:t,y:x})),borderColor:'#BA7517',backgroundColor:'#BA7517',borderWidth:2,pointRadius:4,pointHoverRadius:6,tension:0,pointStyle:'triangle'});
+  if(activeMethods.rk4) datasets.push({label:'RK4',data:r4P.map(([t,x])=>({x:t,y:x})),borderColor:'#639922',backgroundColor:'#639922',borderWidth:2,pointRadius:4,pointHoverRadius:6,tension:0,pointStyle:'rect'});
+  if(solChart) solChart.destroy();
+  solChart=new Chart(document.getElementById('sol-chart'),{
+    type:'line',data:{datasets},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      scales:{
+        x:{type:'linear',title:{display:true,text:'t',font:{size:13}},grid:{color:'rgba(128,128,128,0.1)'}},
+        y:{title:{display:true,text:'x(t)',font:{size:13}},grid:{color:'rgba(128,128,128,0.1)'}}
+      },
+      plugins:{legend:{display:true,position:'top',labels:{boxWidth:12,font:{size:12}}},
+        tooltip:{mode:'index',intersect:false,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toFixed(5)}`}}}
+    }
+  });
+}
+
+function renderConvergence(eq,x0){
+  const {f,exact,t0,T}=eq;
+  const hTests=[1,0.5,0.25,0.125,0.0625,0.03125,0.015625].filter(h=>h<(T-t0));
+  const exactAtT=exact(T,x0,t0);
+  const errE=[],errR=[],errR4=[];
+  hTests.forEach(h=>{
+    const N=Math.round((T-t0)/h),hA=(T-t0)/N;
+    const ep=euler(f,t0,T,x0,hA);errE.push(Math.max(1e-15,Math.abs(exactAtT-ep[ep.length-1][1])));
+    const rp=rk2(f,t0,T,x0,hA);errR.push(Math.max(1e-15,Math.abs(exactAtT-rp[rp.length-1][1])));
+    const r4p=rk4(f,t0,T,x0,hA);errR4.push(Math.max(1e-15,Math.abs(exactAtT-r4p[r4p.length-1][1])));
+  });
+  if(convChart) convChart.destroy();
+  convChart=new Chart(document.getElementById('conv-chart'),{
+    type:'line',
+    data:{datasets:[
+      {label:'Euler O(h)',data:hTests.map((h,i)=>({x:h,y:errE[i]})),borderColor:'#D85A30',backgroundColor:'#D85A30',pointRadius:5,borderWidth:2,tension:0,showLine:true},
+      {label:'RK2 O(h\u00B2)',data:hTests.map((h,i)=>({x:h,y:errR[i]})),borderColor:'#BA7517',backgroundColor:'#BA7517',pointRadius:5,borderWidth:2,tension:0,showLine:true},
+      {label:'RK4 O(h\u2074)',data:hTests.map((h,i)=>({x:h,y:errR4[i]})),borderColor:'#639922',backgroundColor:'#639922',pointRadius:5,borderWidth:2,tension:0,showLine:true},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      scales:{
+        x:{type:'logarithmic',title:{display:true,text:'Step size h (log scale)',font:{size:13}},grid:{color:'rgba(128,128,128,0.1)'}},
+        y:{type:'logarithmic',title:{display:true,text:'Global error at t = T (log scale)',font:{size:13}},grid:{color:'rgba(128,128,128,0.1)'}}
+      },
+      plugins:{legend:{display:true,position:'top',labels:{boxWidth:12,font:{size:12}}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toExponential(3)}`}}}
+    }
+  });
+  const hRef=[0.5,0.25,0.125];
+  const idxRef=hRef.map(h=>hTests.indexOf(h));
+  const rows=['Euler','Mod. Euler (RK2)','RK4'].map((name,mi)=>{
+    const src=[errE,errR,errR4][mi];
+    const errs=idxRef.map(i=>i>=0?src[i]:null);
+    const ratio=errs[0]&&errs[1]?errs[0]/errs[1]:null;
+    const badges=['badge-euler','badge-rk2','badge-rk4'];
+    const orders=['O(h)','O(h\u00B2)','O(h\u2074)'];
+    return `<tr>
+      <td><span class="badge ${badges[mi]}">${name}</span></td>
+      ${errs.map(e=>e===null?'<td>N/A</td>':`<td>${e<1e-12?'< 1e-12':e.toFixed(6)}</td>`).join('')}
+      <td>${ratio?ratio.toFixed(2)+' \u2248 2<sup>'+[1,2,4][mi]+'</sup>':'N/A'}</td>
+      <td>${orders[mi]}</td>
+    </tr>`;
+  });
+  document.getElementById('conv-tbody').innerHTML=rows.join('');
+}
+
+function renderSteps(eq,h,x0){
+  const {f,exact,t0,T}=eq;
+  const N=Math.max(1,Math.min(20,Math.round((T-t0)/h)));
+  const hA=(T-t0)/N;
+  const eP=euler(f,t0,T,x0,hA);
+  const rP=rk2(f,t0,T,x0,hA);
+  const r4P=rk4(f,t0,T,x0,hA);
+  const shown=Math.min(N+1,15);
+  let head='<tr><th>n</th><th>t_n</th><th>Exact x(t_n)</th>';
+  if(activeMethods.euler) head+='<th>Euler X_n</th><th>|error|</th>';
+  if(activeMethods.rk2) head+='<th>RK2 X_n</th><th>|error|</th>';
+  if(activeMethods.rk4) head+='<th>RK4 X_n</th><th>|error|</th>';
+  head+='</tr>';
+  document.getElementById('step-head').innerHTML=head;
+  let body='';
+  for(let i=0;i<shown;i++){
+    const t=eP[i][0],ex=exact(t,x0,t0);
+    let row=`<td>${i}</td><td>${t.toFixed(4)}</td><td>${ex.toFixed(6)}</td>`;
+    if(activeMethods.euler){const v=eP[i][1];row+=`<td>${v.toFixed(6)}</td><td>${Math.abs(ex-v).toFixed(6)}</td>`;}
+    if(activeMethods.rk2){const v=rP[i][1];row+=`<td>${v.toFixed(6)}</td><td>${Math.abs(ex-v).toFixed(6)}</td>`;}
+    if(activeMethods.rk4){const v=r4P[i][1];row+=`<td>${v.toFixed(6)}</td><td>${Math.abs(ex-v).toFixed(6)}</td>`;}
+    body+=`<tr>${row}</tr>`;
+  }
+  if(N+1>shown) body+=`<tr><td colspan="20" style="color:#888;font-size:12px;padding:8px;">&hellip;${N+1-shown} more rows (reduce h to see all)</td></tr>`;
+  document.getElementById('step-body').innerHTML=body;
+}
+
+function renderFormulas(eq,h,x0){
+  const {f,exact,t0,T}=eq;
+  const N=Math.max(1,Math.round((T-t0)/h));
+  const hA=(T-t0)/N;
+  const exactAtT=exact(T,x0,t0);
+  const ep=euler(f,t0,T,x0,hA);
+  const rp=rk2(f,t0,T,x0,hA);
+  const r4p=rk4(f,t0,T,x0,hA);
+  const errE=Math.abs(exactAtT-ep[ep.length-1][1]);
+  const errR=Math.abs(exactAtT-rp[rp.length-1][1]);
+  const errR4=Math.abs(exactAtT-r4p[r4p.length-1][1]);
+  document.getElementById('formula-error-content').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:13px">
+      <div><div style="font-size:11px;color:#666">h</div><div style="font-weight:500">${hA.toFixed(4)}</div></div>
+      <div><div style="font-size:11px;color:#666"><span class="badge badge-euler">Euler</span> error</div><div style="font-weight:500;color:#D85A30">${errE<1e-10?'< 1e-10':errE.toExponential(4)}</div></div>
+      <div><div style="font-size:11px;color:#666"><span class="badge badge-rk2">RK2</span> error</div><div style="font-weight:500;color:#BA7517">${errR<1e-10?'< 1e-10':errR.toExponential(4)}</div></div>
+      <div><div style="font-size:11px;color:#666"><span class="badge badge-rk4">RK4</span> error</div><div style="font-weight:500;color:#639922">${errR4<1e-12?'< 1e-12':errR4.toExponential(4)}</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:#666">
+      Exact value at t = ${T.toFixed(3)}: <strong>${exactAtT.toFixed(8)}</strong> &nbsp;|&nbsp; x&#8320; = ${x0} &nbsp;|&nbsp; N = ${N} steps
+    </div>
+  `;
+}
+
+document.querySelectorAll('#eq-btns .eq-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#eq-btns .eq-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');eqIdx=+b.dataset.eq;render();
+}));
+document.getElementById('h-slider').addEventListener('input',e=>{hIdx=+e.target.value-1;render();});
+document.getElementById('x0-slider').addEventListener('input',e=>{x0Idx=+e.target.value-1;render();});
+document.querySelectorAll('.method-btn').forEach(b=>b.addEventListener('click',()=>{
+  const m=b.dataset.m;activeMethods[m]=!activeMethods[m];
+  b.classList.toggle('active',activeMethods[m]);render();
+}));
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');activeTab=t.dataset.tab;
+  document.getElementById('tab-'+activeTab).classList.add('active');
+  if(solChart&&activeTab!=='solution'){solChart.destroy();solChart=null;}
+  if(convChart&&activeTab!=='convergence'){convChart.destroy();convChart=null;}
+  render();
+}));
+
+render();
+</script>
+```
