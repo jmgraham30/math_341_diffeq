@@ -6888,5 +6888,82 @@
     "title": "Numerical Methods Explorer",
     "section": "",
     "text": "Equation x' = f(t, x)\n    \n      t − x\n      x(1 − x)\n      −2x\n      sin(t) − x\n    \n  \n  \n    Step size h = 0.50\n    \n      0.05\n      \n      1.0\n    \n    \n      Initial condition x(t₀) = 1.00\n      \n        0.1\n        \n        3.0\n      \n    \n  \n  \n    Methods shown\n    \n      Euler\n      Mod. Euler\n      RK4\n    \n  \n\n\n\n  Solution curves\n  Convergence (log-log)\n  Step-by-step table\n  Formulas & error\n\n\n\n  \n  \n\n\n\n  \n  \n    Methodh = 0.5h = 0.25h = 0.125Ratio (0.5/0.25)Order\n    \n  \n\n\n\n  \n    \n      \n      \n    \n  \n\n\n\n  \n    \n      Euler — O(h)\n      X_{n+1} = X_n+ h·f(t_n, X_n)\n      1 function evaluation per step. Local error O(h²), global O(h). Halving h ≈ halves the error.\n    \n    \n      Modified Euler (RK2) — O(h²)\n      X̃ = X_n + h·f(t_n, X_n)X_{n+1} = X_n + h/2·[f(t_n, X_n)           + f(t_{n+1}, X̃)]\n      Predictor–corrector. 2 evaluations per step. Halving h ≈ quarters the error.\n    \n    \n      RK4 — O(h⁴)\n      k₁=f(tₙ,Xₙ)k₂=f(tₙ+h/2, Xₙ+h/2·k₁)k₃=f(tₙ+h/2, Xₙ+h/2·k₂)k₄=f(tₙ+h, Xₙ+h·k₃)X_{n+1}=Xₙ+h/6·(k₁+2k₂+2k₃+k₄)\n      4 evaluations per step. Halving h reduces error by factor ≈ 16.\n    \n  \n  \n    Error at t = T for current h"
+  },
+  {
+    "objectID": "vanderpol_slides.html#what-is-a-self-sustaining-oscillator",
+    "href": "vanderpol_slides.html#what-is-a-self-sustaining-oscillator",
+    "title": "The Van der Pol Oscillator",
+    "section": "What Is a Self-Sustaining Oscillator?",
+    "text": "What Is a Self-Sustaining Oscillator?\n\n\nMany physical systems oscillate on their own — without an external driving force — and settle into a repeating cycle regardless of where they started.\nExamples you have encountered:\n\nA grandfather clock pendulum (nearly linear)\nYour heartbeat (strongly nonlinear)\nEarly vacuum-tube radio circuits\n\n\nWhat differential equation governs such behaviour?\n\n\n\n\n\nBalthasar van der Pol (1889–1959), Dutch physicist and electrical engineer at Philips.\n\n\nSource: Wikimedia Commons (public domain)"
+  },
+  {
+    "objectID": "vanderpol_slides.html#van-der-pols-discovery-1920s",
+    "href": "vanderpol_slides.html#van-der-pols-discovery-1920s",
+    "title": "The Van der Pol Oscillator",
+    "section": "Van der Pol’s Discovery (1920s)",
+    "text": "Van der Pol’s Discovery (1920s)\n\n\nWorking at Philips on triode vacuum-tube circuits, Balthasar van der Pol observed that:\n\nCircuits settled into stable oscillations that were independent of initial conditions.\nThe amplitude was set by circuit parameters, not by how the circuit was started.\nHe called these relaxation oscillations — now recognized as a type of limit cycle.\n\nHe described them with a single second-order ODE, now bearing his name.\nIn 1927 he and van der Mark reported an irregular noise near certain drive frequencies — an early experimental encounter with deterministic chaos.\n\nWhy differential equations?\nThe circuit state at any instant depends on rates of change of current and voltage — precisely the language of differential equations.\nA simple spring model \\(\\ddot{x} + x = 0\\) produces eternal oscillations that neither grow nor decay. Real circuits need nonlinear damping that:\n\nadds energy when amplitude is small\nremoves energy when amplitude is large"
+  },
+  {
+    "objectID": "vanderpol_slides.html#the-van-der-pol-equation",
+    "href": "vanderpol_slides.html#the-van-der-pol-equation",
+    "title": "The Van der Pol Oscillator",
+    "section": "The Van der Pol Equation",
+    "text": "The Van der Pol Equation\nThe Van der Pol oscillator is governed by the second-order nonlinear ODE:\n\\[\\boxed{\\ddot{x} - \\mu(1 - x^2)\\dot{x} + x = 0}\\]\n\n\n\n\n\n\n\nSymbol\nMeaning\n\n\n\n\n\\(x = x(t)\\)\nDisplacement (position coordinate), a function of time \\(t\\)\n\n\n\\(\\dot{x} = \\dfrac{dx}{dt}\\)\nVelocity\n\n\n\\(\\ddot{x} = \\dfrac{d^2x}{dt^2}\\)\nAcceleration\n\n\n\\(\\mu &gt; 0\\)\nNonlinearity / damping strength parameter (dimensionless)\n\n\n\nType: Second-order, autonomous, nonlinear ODE (nonlinear because of the \\(x^2 \\dot{x}\\) term)."
+  },
+  {
+    "objectID": "vanderpol_slides.html#equivalent-first-order-system",
+    "href": "vanderpol_slides.html#equivalent-first-order-system",
+    "title": "The Van der Pol Oscillator",
+    "section": "Equivalent First-Order System",
+    "text": "Equivalent First-Order System\nFor analysis and numerical solution, rewrite as a planar autonomous system using the substitution \\(y = \\dot{x}\\):\n\\[\\begin{cases} \\dot{x} = y \\\\[6pt] \\dot{y} = \\mu(1-x^2)\\,y - x \\end{cases}\\]\nType: Autonomous, nonlinear system of two first-order ODEs.\n\nWhat makes the damping nonlinear?\nThe effective damping coefficient is \\(-\\mu(1-x^2)\\).\n\nWhen \\(|x| &lt; 1\\): \\((1-x^2) &gt; 0\\), so damping is negative → system injects energy → amplitude grows.\nWhen \\(|x| &gt; 1\\): \\((1-x^2) &lt; 0\\), so damping is positive → system dissipates energy → amplitude shrinks.\n\nThis self-regulating mechanism is the engine of the limit cycle."
+  },
+  {
+    "objectID": "vanderpol_slides.html#where-does-the-equation-come-from",
+    "href": "vanderpol_slides.html#where-does-the-equation-come-from",
+    "title": "The Van der Pol Oscillator",
+    "section": "Where Does the Equation Come From?",
+    "text": "Where Does the Equation Come From?\nConsider a series RLC electrical circuit where the resistor has a nonlinear current–voltage characteristic \\(R(x) = -\\mu(1 - x^2)\\):\n\\[L\\ddot{q} + R(q)\\dot{q} + \\frac{q}{C} = 0\\]\nRescaling so that \\(LC = 1\\) and writing \\(x\\) for charge \\(q\\) gives exactly the Van der Pol equation.\n\n\n\n\nCircuit quantity\nModel symbol\n\n\n\n\nCharge on capacitor\n\\(x\\)\n\n\nCurrent\n\\(\\dot{x}\\)\n\n\nInductance\n\\(L\\) (absorbed into rescaling)\n\n\nNonlinear resistance\n\\(-\\mu(1-x^2)\\)\n\n\n\nThe equation is not derived from first principles here, but this circuit picture shows why each term arises naturally from Kirchhoff’s voltage law."
+  },
+  {
+    "objectID": "vanderpol_slides.html#qualitative-behaviour-the-limit-cycle",
+    "href": "vanderpol_slides.html#qualitative-behaviour-the-limit-cycle",
+    "title": "The Van der Pol Oscillator",
+    "section": "Qualitative Behaviour: The Limit Cycle",
+    "text": "Qualitative Behaviour: The Limit Cycle\nThe key mathematical fact:\n\nFor any \\(\\mu &gt; 0\\), every non-zero initial condition converges to a unique, stable limit cycle.\n\nThis means:\n\nStart close to the origin → solution spirals outward until it reaches the limit cycle.\nStart far from the origin → solution spirals inward until it reaches the limit cycle.\nThe limit cycle exists and is unique (proved via Liénard’s theorem).\n\nFor small \\(\\mu\\): the limit cycle is nearly circular (nearly sinusoidal oscillation with amplitude \\(\\approx 2\\)).\nFor large \\(\\mu\\): the cycle becomes highly asymmetric — a relaxation oscillation with slow build-up followed by rapid release."
+  },
+  {
+    "objectID": "vanderpol_slides.html#numerical-solution-time-series",
+    "href": "vanderpol_slides.html#numerical-solution-time-series",
+    "title": "The Van der Pol Oscillator",
+    "section": "Numerical Solution: Time Series",
+    "text": "Numerical Solution: Time Series\n\n\nShow code\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.integrate import solve_ivp\n\ndef vdp(t, z, mu):\n    x, y = z\n    return [y, mu * (1 - x**2) * y - x]\n\nt_span = (0, 40)\nt_eval = np.linspace(*t_span, 2000)\nz0 = [0.5, 0.0]\n\nfig, axes = plt.subplots(1, 3, figsize=(11, 3.5), sharey=True)\nmus = [0.5, 1.0, 4.0]\ncolors = [\"#4ecdc4\", \"#f7b731\", \"#fc5c65\"]\n\nfor ax, mu, color in zip(axes, mus, colors):\n    sol = solve_ivp(vdp, t_span, z0, args=(mu,), t_eval=t_eval, method=\"RK45\")\n    ax.plot(sol.t, sol.y[0], color=color, lw=1.8)\n    ax.axhline(0, color=\"white\", lw=0.5, alpha=0.4)\n    ax.set_title(f\"μ = {mu}\", fontsize=13)\n    ax.set_xlabel(\"Time $t$\", fontsize=11)\n    ax.set_xlim(0, 40)\n    ax.set_ylim(-3.2, 3.2)\n\naxes[0].set_ylabel(\"$x(t)$\", fontsize=12)\nfig.suptitle(\"Van der Pol Oscillator — Time Series\", fontsize=14, y=1.02)\nplt.tight_layout()\nplt.savefig(\"vdp_timeseries.png\", dpi=150, bbox_inches=\"tight\",\n            facecolor=\"#191919\")\nplt.show()\n\n\n\n\n\n\n\n\nFigure 1: Van der Pol oscillator: x(t) for μ = 0.5, 1, and 4. Larger μ produces more pronounced relaxation oscillations."
+  },
+  {
+    "objectID": "vanderpol_slides.html#numerical-solution-phase-portraits",
+    "href": "vanderpol_slides.html#numerical-solution-phase-portraits",
+    "title": "The Van der Pol Oscillator",
+    "section": "Numerical Solution: Phase Portraits",
+    "text": "Numerical Solution: Phase Portraits\n\n\nShow code\nfig, axes = plt.subplots(1, 3, figsize=(11, 3.8))\n\nfor ax, mu, color in zip(axes, mus, colors):\n    # Multiple initial conditions\n    for x0 in [0.2, 0.5, 3.5, 4.0]:\n        for y0 in [0.0]:\n            sol = solve_ivp(vdp, (0, 60), [x0, y0], args=(mu,),\n                            t_eval=np.linspace(0, 60, 3000))\n            ax.plot(sol.y[0], sol.y[1], lw=0.8, alpha=0.5, color=\"gray\")\n\n    # Limit cycle (long integration from typical IC)\n    sol_lc = solve_ivp(vdp, (0, 80), [0.5, 0.0], args=(mu,),\n                       t_eval=np.linspace(40, 80, 2000))\n    ax.plot(sol_lc.y[0], sol_lc.y[1], lw=2.5, color=color, label=\"Limit cycle\")\n    ax.plot(0, 0, \"wo\", ms=6, zorder=5)\n\n    ax.set_title(f\"μ = {mu}\", fontsize=13)\n    ax.set_xlabel(\"$x$\", fontsize=11)\n    ax.set_xlim(-4.5, 4.5)\n    ax.set_ylim(-7, 7)\n\naxes[0].set_ylabel(\"$\\\\dot{x}$\", fontsize=12)\nfig.suptitle(\"Van der Pol Oscillator — Phase Portraits\", fontsize=14, y=1.02)\nplt.tight_layout()\nplt.savefig(\"vdp_phase.png\", dpi=150, bbox_inches=\"tight\", facecolor=\"#191919\")\nplt.show()\n\n\n\n\n\n\n\n\nFigure 2: Phase portraits for μ = 0.5, 1, and 4. Each trajectory spirals toward the limit cycle (bold). The origin is an unstable equilibrium."
+  },
+  {
+    "objectID": "vanderpol_slides.html#what-do-the-solutions-tell-us",
+    "href": "vanderpol_slides.html#what-do-the-solutions-tell-us",
+    "title": "The Van der Pol Oscillator",
+    "section": "What Do the Solutions Tell Us?",
+    "text": "What Do the Solutions Tell Us?\n\n\nMathematical features\n\nUnique unstable equilibrium at \\((x, \\dot{x}) = (0, 0)\\): the origin is a spiral source — any perturbation grows.\nGlobally stable limit cycle: a closed orbit in the phase plane that all trajectories approach.\nNo exact analytic solution exists in general (proved by Panayotounakos et al., 2003).\nPeriod for small \\(\\mu \\approx 2\\pi + O(\\mu^2)\\); for large \\(\\mu \\approx (3 - 2\\ln 2)\\mu\\).\n\n\nReal-world meaning\n\nThe heartbeat is a biological Van der Pol–type oscillator: it has a natural rhythm (limit cycle) that restores itself after disturbance.\nVocal fold vibration uses coupled Van der Pol oscillators; the limit cycle amplitude corresponds to the loudness of phonation.\nThe FitzHugh–Nagumo model of neural action potentials is a direct generalization of this equation.\nIn engineering: explains why vacuum-tube circuits lock onto a stable frequency regardless of noise or startup transients."
+  },
+  {
+    "objectID": "vanderpol_slides.html#sources",
+    "href": "vanderpol_slides.html#sources",
+    "title": "The Van der Pol Oscillator",
+    "section": "Sources",
+    "text": "Sources\n\nStrogatz, S. H. (2015). Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering (2nd ed.). Westview Press. (Primary mathematical reference; Chapter 7 covers limit cycles and the Van der Pol oscillator explicitly.)\nvan der Pol, B. (1926). On “relaxation-oscillations.” The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2(11), 978–992. https://doi.org/10.1080/14786442608564127 (The original paper introducing the model.)\nKanamaru, T. (2007). Van der Pol oscillator. Scholarpedia, 2(1), 2202. http://www.scholarpedia.org/article/Van_der_Pol_oscillator (Peer-reviewed online reference article.)\nFitzHugh, R. (1961). Impulses and physiological states in theoretical models of nerve membrane. Biophysical Journal, 1(6), 445–466. https://doi.org/10.1016/s0006-3495(61)86902-6 (Extension to neuroscience.)\nWikipedia contributors. (2025). Van der Pol oscillator. Wikipedia. https://en.wikipedia.org/wiki/Van_der_Pol_oscillator (Used as a starting reference only; all claims verified against primary sources above.)"
+  },
+  {
+    "objectID": "vanderpol_slides.html#summary",
+    "href": "vanderpol_slides.html#summary",
+    "title": "The Van der Pol Oscillator",
+    "section": "Summary",
+    "text": "Summary\n\n\n\n\n\n\n\nRubric element\nAddressed on slides\n\n\n\n\nContext & Motivation\nHistory, circuit motivation, why DEs, why nonlinear damping\n\n\nThe Differential Equation\nEquation stated, all variables/parameters defined, type identified, first-order system derived\n\n\nInterpretation & Insight\nLimit cycle, equilibria, relaxation oscillations, biological applications\n\n\nSources\n5 sources (textbook, original paper, Scholarpedia, journal article, Wikipedia as starting point)\n\n\nClarity & Presentation\nCorrect LaTeX notation, figures labelled, narrative accessible to calculus-level reader"
   }
 ]
