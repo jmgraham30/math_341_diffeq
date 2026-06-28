@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATH 341 — Differential Equations Flashcards</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']],
+    packages: {'[+]': ['ams']}
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #f8f8f6;
+    --surface:   #ffffff;
+    --surface2:  #f2f1ef;
+    --border:    #dddbd6;
+    --border-strong: #c8c5bf;
+    --text:      #1a1a18;
+    --text-sec:  #5a5a56;
+    --text-mute: #9a9892;
+    --accent:    #185fa5;
+    --accent-bg: #e6f1fb;
+    --accent-bd: #85b7eb;
+    --success:   #3b6d11;
+    --success-bg:#eaf3de;
+    --success-bd:#97c459;
+    --warn:      #854f0b;
+    --warn-bg:   #faeeda;
+    --warn-bd:   #ef9f27;
+    --radius:    8px;
+    --card-h:    310px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:        #1c1c1a;
+      --surface:   #282826;
+      --surface2:  #313130;
+      --border:    #3a3a37;
+      --border-strong: #4a4a46;
+      --text:      #f0ede8;
+      --text-sec:  #a0a09a;
+      --text-mute: #666660;
+      --accent:    #85b7eb;
+      --accent-bg: #0c3a6a;
+      --accent-bd: #185fa5;
+      --success:   #97c459;
+      --success-bg:#1a3008;
+      --success-bd:#3b6d11;
+      --warn:      #ef9f27;
+      --warn-bg:   #3a2206;
+      --warn-bd:   #854f0b;
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px 14px;
+  }
+  header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  header p {
+    font-size: 13px;
+    color: var(--text-sec);
+  }
+
+  .app { max-width: 760px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  /* Deck tabs */
+  .deck-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .deck-tab {
+    padding: 7px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text-sec);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .deck-tab:hover { background: var(--surface2); color: var(--text); }
+  .deck-tab.active {
+    background: var(--accent-bg);
+    border-color: var(--accent-bd);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Meta row */
+  .deck-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .deck-subtitle { font-size: 13px; color: var(--text-sec); }
+  .deck-progress { font-size: 13px; color: var(--text-mute); }
+
+  .flip-hint { font-size: 12px; color: var(--text-mute); margin-bottom: 12px; text-align: center; }
+
+  /* Card */
+  .card-area { perspective: 1400px; margin-bottom: 18px; }
+  .card-wrap {
+    width: 100%;
+    min-height: var(--card-h);
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.42s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+  }
+  .card-wrap.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    min-height: var(--card-h);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 32px;
+    text-align: center;
+  }
+  .card-front { background: var(--surface); }
+  .card-back  { background: var(--surface2); transform: rotateY(180deg); }
+
+  .card-face.status-know   { border-color: var(--success-bd); }
+  .card-face.status-review { border-color: var(--warn-bd); }
+
+  .card-eyebrow {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin-bottom: 14px;
+  }
+  .card-q {
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 600px;
+  }
+  .card-a {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    max-width: 600px;
+    text-align: left;
+  }
+  .card-hint {
+    font-size: 11.5px;
+    color: var(--text-mute);
+    margin-top: 18px;
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-mute);
+    margin-top: 16px;
+  }
+
+  /* Math blocks */
+  .math-block {
+    font-family: 'Courier New', monospace;
+    font-size: 13.5px;
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 8px 14px;
+    margin: 8px 0;
+    display: block;
+    text-align: left;
+    color: var(--text);
+    border: 1px solid var(--border);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .btn-row { display: flex; gap: 7px; flex-wrap: wrap; }
+
+  button.btn {
+    padding: 7px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: background 0.1s;
+  }
+  button.btn:hover { background: var(--surface2); }
+  button.btn:active { transform: scale(0.97); }
+  button.btn-know {
+    background: var(--success-bg);
+    border-color: var(--success-bd);
+    color: var(--success);
+    font-weight: 500;
+  }
+  button.btn-know:hover { opacity: 0.85; }
+  button.btn-review {
+    background: var(--warn-bg);
+    border-color: var(--warn-bd);
+    color: var(--warn);
+    font-weight: 500;
+  }
+  button.btn-review:hover { opacity: 0.85; }
+
+  .score-pills { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+  .pill {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid;
+  }
+  .pill-know   { background: var(--success-bg); border-color: var(--success-bd); color: var(--success); }
+  .pill-review { background: var(--warn-bg); border-color: var(--warn-bd); color: var(--warn); }
+
+  .action-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  /* Keyboard hint */
+  .key-hint {
+    font-size: 11.5px;
+    color: var(--text-mute);
+    margin-top: 18px;
+    text-align: center;
+  }
+  kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    font-size: 11px;
+    background: var(--surface);
+    color: var(--text-sec);
+    font-family: inherit;
+  }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    header { padding: 14px 16px; }
+    .app { padding: 16px 12px 50px; }
+    .card-face { padding: 20px 18px; }
+    .card-q { font-size: 15px; }
+    .card-a { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MATH 341 — Differential Equations</h1>
+  <p>University of Scranton &nbsp;·&nbsp; Fall 2026 &nbsp;·&nbsp; Interactive flashcard review</p>
+</header>
+
+<main class="app" role="main">
+  <div class="deck-tabs" id="deckTabs" role="tablist" aria-label="Flashcard decks"></div>
+
+  <div class="deck-meta">
+    <span class="deck-subtitle" id="deckSubtitle"></span>
+    <span class="deck-progress" id="progressLabel"></span>
+  </div>
+
+  <div class="progress-bar-wrap" aria-hidden="true">
+    <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+  </div>
+
+  <p class="flip-hint" aria-live="polite">Click the card to reveal the answer</p>
+
+  <div class="card-area" role="region" aria-label="Flashcard">
+    <div class="card-wrap" id="cardWrap" onclick="flipCard()" tabindex="0"
+         role="button" aria-label="Flashcard — click or press Enter to flip"
+         onkeydown="if(event.key==='Enter'||event.key===' ')flipCard()">
+      <div class="card-face card-front" id="cardFront"></div>
+      <div class="card-face card-back"  id="cardBack"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="btn-row">
+      <button class="btn" onclick="prev()" aria-label="Previous card">← Prev</button>
+      <button class="btn" onclick="next()" aria-label="Next card">Next →</button>
+      <button class="btn" onclick="shuffle()">Shuffle deck</button>
+    </div>
+    <div class="score-pills" aria-live="polite">
+      <span class="pill pill-know"   id="knowPill">✓ Got it: 0</span>
+      <span class="pill pill-review" id="reviewPill">↻ Review: 0</span>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn btn-know"   onclick="markKnow()">✓ Got it — next card</button>
+    <button class="btn btn-review" onclick="markReview()">↻ Need review — next card</button>
+    <button class="btn"            onclick="resetScores()">Reset scores</button>
+  </div>
+
+  <p class="key-hint">
+    Keyboard shortcuts: <kbd>Space</kbd> or <kbd>Enter</kbd> flip &nbsp;·&nbsp;
+    <kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> prev &nbsp;·&nbsp;
+    <kbd>1</kbd> got it &nbsp;·&nbsp; <kbd>2</kbd> review
+  </p>
+</main>
+
+<script>
+/* =====================================================================
+   FLASHCARD DATA — MATH 341, University of Scranton, Fall 2026
+   Aligned to J. David Logan, A First Course in Differential Equations,
+   3rd Ed. and to the course notes at https://math341diffeq.netlify.app/
+   ===================================================================== */
+const DECKS = [
+  {
+    id: 'exam1',
+    label: 'Deck 1 — First- and second-order ODEs',
+    subtitle: 'Weeks 1–5  ·  Exam 1 (October 2)',
+    cards: [
+      {
+        tag: 'Core concepts',
+        q: 'What is an ordinary differential equation (ODE)?',
+        a: 'An equation relating an unknown function of a <em>single</em> independent variable to one or more of its derivatives. Solutions are <strong>functions</strong>, not numbers.\n\nExample: \\(y\' = y\\) has solution \\(y(t) = Ce^{t}\\).'
+      },
+      {
+        tag: 'Classification',
+        q: 'How is an ODE classified by <em>order</em>?',
+        a: 'The <strong>order</strong> is the order of the highest derivative present.\n\n\\(y\' = ky\\) — 1st order\n\\(y\'\' + \\omega^2 y = 0\\) — 2nd order\n\\(y\'\'\' - y\'\' + y = \\sin t\\) — 3rd order'
+      },
+      {
+        tag: 'Classification',
+        q: 'What makes a linear ODE <em>linear</em>?',
+        a: 'It can be written in the form\n\\[a_n(t)\\,y^{(n)} + \\cdots + a_1(t)\\,y\' + a_0(t)\\,y = g(t)\\]\nwhere the coefficient functions \\(a_k(t)\\) and forcing term \\(g(t)\\) depend only on \\(t\\), <em>not</em> on \\(y\\) or its derivatives.\n\nAn ODE that cannot be written this way is <strong>nonlinear</strong>.'
+      },
+      {
+        tag: 'Classification',
+        q: 'Distinguish <em>homogeneous</em> from <em>nonhomogeneous</em> linear ODEs.',
+        a: 'A linear ODE is <strong>homogeneous</strong> when \\(g(t) \\equiv 0\\). When \\(g(t) \\not\\equiv 0\\), it is <strong>nonhomogeneous</strong> (Logan\'s term) or inhomogeneous.\n\nKey structure: the general solution of a nonhomogeneous ODE is\n\\[y = y_h + y_p\\]\nwhere \\(y_h\\) solves the homogeneous equation and \\(y_p\\) is any particular solution.'
+      },
+      {
+        tag: 'Classification',
+        q: 'What is an <em>autonomous</em> ODE?',
+        a: 'An ODE \\(y\' = f(y)\\) whose right-hand side does <em>not</em> depend explicitly on the independent variable \\(t\\).\n\nContrast: \\(y\' = f(y)\\) (autonomous) vs. \\(y\' = f(t,y)\\) (non-autonomous).\n\nThe logistic equation \\(P\' = rP(1 - P/K)\\) is a classic example.'
+      },
+      {
+        tag: 'Classification',
+        q: 'What does <em>constant-coefficient</em> mean for a linear ODE?',
+        a: 'Each coefficient function \\(a_k(t)\\) is a constant, independent of \\(t\\).\n\nConstant coeff.: \\(y\'\' - 4y\' + 4y = 0\\)\nVariable coeff.: \\(t^2 y\'\' + ty\' - y = 0\\)\n\nConstant-coefficient equations are solved by the characteristic equation method.'
+      },
+      {
+        tag: 'IVPs',
+        q: 'What is an initial value problem (IVP) for a first-order ODE?',
+        a: 'The system\n\\[y\' = f(t,y), \\qquad y(t_0) = y_0.\\]\nThe initial condition \\(y(t_0) = y_0\\) selects a <em>unique</em> solution curve from the family of general solutions.\n\nFor an \\(n\\)th-order IVP, one specifies \\(y(t_0), y\'(t_0), \\ldots, y^{(n-1)}(t_0)\\).'
+      },
+      {
+        tag: 'Theory',
+        q: 'State the Picard–Lindelöf existence and uniqueness theorem.',
+        a: 'If \\(f(t,y)\\) and \\(\\partial f/\\partial y\\) are continuous near \\((t_0, y_0)\\), then the IVP\n\\[y\' = f(t,y), \\quad y(t_0) = y_0\\]\nhas a <strong>unique solution</strong> on some interval containing \\(t_0\\).\n\nPractical upshot: well-posed physical problems almost always satisfy these conditions.'
+      },
+      {
+        tag: 'Methods',
+        q: 'What is a <em>separable</em> equation and how do you solve it?',
+        a: 'An ODE of the form \\(y\' = g(t)\\,f(y)\\). Separate variables and integrate:\n\\[\\int \\frac{dy}{f(y)} = \\int g(t)\\,dt + C.\\]\n\nIdentification tip: if you can write the right-hand side as a product of a function of \\(t\\) alone and a function of \\(y\\) alone, the equation is separable.'
+      },
+      {
+        tag: 'Methods',
+        q: 'What is the standard form of a first-order linear ODE and how is it solved?',
+        a: 'Standard form: \\(y\' + p(t)\\,y = q(t)\\).\n\nSolution steps:\n1. Compute integrating factor \\(\\mu(t) = e^{\\int p(t)\\,dt}\\).\n2. Multiply through: \\(\\bigl(\\mu(t)\\,y\\bigr)\' = \\mu(t)\\,q(t)\\).\n3. Integrate both sides and solve for \\(y\\).'
+      },
+      {
+        tag: 'Methods',
+        q: 'Why does multiplying by \\(\\mu(t) = e^{\\int p(t)\\,dt}\\) simplify a linear ODE?',
+        a: 'Because of the product rule:\n\\[\\frac{d}{dt}\\bigl[\\mu(t)\\,y\\bigr] = \\mu(t)\\,y\' + \\mu(t)\\,p(t)\\,y = \\mu(t)\\bigl[y\' + p(t)\\,y\\bigr].\\]\nSo the left side of the ODE becomes an exact derivative, which can be integrated directly.'
+      },
+      {
+        tag: 'Qualitative',
+        q: 'What is a slope field (direction field) for \\(y\' = f(t,y)\\)?',
+        a: 'A grid of short line segments whose slope at each point \\((t,y)\\) equals \\(f(t,y)\\). It gives a qualitative picture of all solution curves without solving the ODE explicitly.\n\nSlope fields are especially useful for first-order autonomous equations.'
+      },
+      {
+        tag: 'Qualitative',
+        q: 'What is an <em>equilibrium solution</em> of an autonomous ODE \\(y\' = f(y)\\)?',
+        a: 'A constant solution \\(y(t) = y^*\\) satisfying \\(f(y^*) = 0\\). The system does not change at an equilibrium.\n\nSetting \\(f(y) = 0\\) and solving for \\(y\\) finds all equilibria.'
+      },
+      {
+        tag: 'Qualitative',
+        q: 'When is an equilibrium \\(y^*\\) of \\(y\' = f(y)\\) stable? Unstable?',
+        a: '<strong>Stable (attracting)</strong>: \\(f\'(y^*) < 0\\). Nearby solutions are drawn toward \\(y^*\\) as \\(t \\to \\infty\\).\n\n<strong>Unstable (repelling)</strong>: \\(f\'(y^*) > 0\\). Nearby solutions move away from \\(y^*\\).\n\nIf \\(f\'(y^*) = 0\\), higher-order analysis is needed.'
+      },
+      {
+        tag: 'Qualitative',
+        q: 'What is a <em>phase line</em> and how is it constructed?',
+        a: 'A 1-D diagram for \\(y\' = f(y)\\):\n1. Mark equilibria where \\(f(y) = 0\\).\n2. On each interval between equilibria, determine the sign of \\(f(y)\\).\n3. Draw a rightward arrow (↑) where \\(f > 0\\) and a leftward arrow (↓) where \\(f < 0\\).\n\nThe phase line shows the long-term behavior of all solutions.'
+      },
+      {
+        tag: 'Qualitative',
+        q: 'What is a <em>bifurcation</em> in a parameter-dependent ODE?',
+        a: 'A qualitative change in the number or stability of equilibria as a parameter varies through a critical value.\n\nA <em>bifurcation diagram</em> plots equilibria (solid for stable, dashed for unstable) vs. the parameter, summarizing all qualitative changes.'
+      },
+      {
+        tag: '2nd-order',
+        q: 'What is the characteristic equation for \\(ay\'\' + by\' + cy = 0\\)?',
+        a: 'Substitute \\(y = e^{\\lambda t}\\) to obtain\n\\[a\\lambda^2 + b\\lambda + c = 0.\\]\nThe discriminant \\(\\Delta = b^2 - 4ac\\) determines which of three cases applies.'
+      },
+      {
+        tag: '2nd-order',
+        q: 'Give the general solution of \\(ay\'\' + by\' + cy = 0\\) in all three cases.',
+        a: '<strong>Case 1, \\(\\Delta > 0\\)</strong> — two distinct real roots \\(\\lambda_1, \\lambda_2\\):\n\\[y = c_1 e^{\\lambda_1 t} + c_2 e^{\\lambda_2 t}\\]\n<strong>Case 2, \\(\\Delta = 0\\)</strong> — repeated root \\(\\lambda\\):\n\\[y = (c_1 + c_2 t)\\,e^{\\lambda t}\\]\n<strong>Case 3, \\(\\Delta < 0\\)</strong> — complex roots \\(\\alpha \\pm \\beta i\\):\n\\[y = e^{\\alpha t}\\bigl(c_1 \\cos\\beta t + c_2 \\sin\\beta t\\bigr)\\]'
+      },
+      {
+        tag: '2nd-order',
+        q: 'What is the Wronskian of two solutions \\(y_1, y_2\\) and why does it matter?',
+        a: '\\[W(y_1,y_2)(t) = y_1 y_2\' - y_1\' y_2.\\]\nIf \\(W \\neq 0\\) on an interval, then \\(y_1\\) and \\(y_2\\) are <strong>linearly independent</strong> and form a <em>fundamental set</em>. The general solution is then \\(y = c_1 y_1 + c_2 y_2\\).'
+      },
+      {
+        tag: 'Methods',
+        q: 'Describe the method of <em>undetermined coefficients</em>.',
+        a: 'For \\(ay\'\' + by\' + cy = g(t)\\) with constant coefficients:\n1. Guess \\(y_p\\) in the same family as \\(g(t)\\): polynomial, exponential, \\(\\sin/\\cos\\), or products.\n2. Substitute into the ODE and equate coefficients.\n3. <strong>Modification rule</strong>: if the guess duplicates a term in \\(y_h\\), multiply by \\(t\\) (or \\(t^2\\) for a repeated overlap).'
+      },
+      {
+        tag: 'Methods',
+        q: 'State the <em>variation of parameters</em> formula for a particular solution.',
+        a: 'If \\(y_1, y_2\\) are linearly independent solutions of the homogeneous equation with Wronskian \\(W\\), then\n\\[y_p = -y_1\\int\\frac{y_2\\,g}{W}\\,dt + y_2\\int\\frac{y_1\\,g}{W}\\,dt.\\]\nAdvantage: works even when coefficients are non-constant or \\(g(t)\\) is not in the "nice" families.'
+      },
+      {
+        tag: 'Applications',
+        q: 'What is <em>resonance</em> in a driven oscillator?',
+        a: 'When the driving frequency \\(\\Omega\\) equals the natural frequency \\(\\omega\\) of an undamped oscillator\n\\[x\'\' + \\omega^2 x = F_0 \\cos(\\Omega t),\\]\nthe particular solution grows without bound — like \\(t\\sin(\\omega t)\\). This is called <strong>pure resonance</strong>.'
+      },
+      {
+        tag: 'Applications',
+        q: 'Write the ODE for a series RLC circuit driven by voltage \\(E(t)\\).',
+        a: '\\[L\\,Q\'\' + R\\,Q\' + \\frac{1}{C}\\,Q = E(t)\\]\nwhere \\(Q(t)\\) is the charge on the capacitor.\n\nThis is mathematically identical to the damped driven oscillator:\n\\(m \\leftrightarrow L,\\quad b \\leftrightarrow R,\\quad k \\leftrightarrow 1/C,\\quad F(t) \\leftrightarrow E(t)\\).'
+      }
+    ]
+  },
+
+  {
+    id: 'exam2',
+    label: 'Deck 2 — Laplace transforms & linear systems',
+    subtitle: 'Weeks 6–9  ·  Exam 2 (October 30)',
+    cards: [
+      {
+        tag: 'Laplace',
+        q: 'Define the Laplace transform.',
+        a: '\\[\\mathcal{L}\\{f(t)\\} = F(s) = \\int_0^\\infty e^{-st}\\,f(t)\\,dt\\]\nfor values of \\(s\\) where the integral converges.\n\nKey purpose: converts an ODE in \\(t\\) into an algebraic equation in \\(s\\), which is easier to solve.'
+      },
+      {
+        tag: 'Transform table',
+        q: 'What is \\(\\mathcal{L}\\{e^{at}\\}\\)?',
+        a: '\\[\\mathcal{L}\\{e^{at}\\} = \\frac{1}{s-a}, \\qquad s > a.\\]'
+      },
+      {
+        tag: 'Transform table',
+        q: 'What are \\(\\mathcal{L}\\{\\sin(bt)\\}\\) and \\(\\mathcal{L}\\{\\cos(bt)\\}\\)?',
+        a: '\\[\\mathcal{L}\\{\\sin(bt)\\} = \\frac{b}{s^2+b^2}, \\qquad \\mathcal{L}\\{\\cos(bt)\\} = \\frac{s}{s^2+b^2}, \\qquad s>0.\\]'
+      },
+      {
+        tag: 'Transform table',
+        q: 'What is \\(\\mathcal{L}\\{t^n\\}\\) for a non-negative integer \\(n\\)?',
+        a: '\\[\\mathcal{L}\\{t^n\\} = \\frac{n!}{s^{n+1}}, \\qquad s > 0.\\]'
+      },
+      {
+        tag: 'Laplace',
+        q: 'State the derivative properties of the Laplace transform.',
+        a: '\\[\\mathcal{L}\\{y\'\\} = s\\,Y(s) - y(0)\\]\n\\[\\mathcal{L}\\{y\'\'\\} = s^2 Y(s) - s\\,y(0) - y\'(0)\\]\nwhere \\(Y(s) = \\mathcal{L}\\{y(t)\\}\\). The initial conditions enter as algebraic terms.'
+      },
+      {
+        tag: 'Laplace',
+        q: 'State the first shifting (s-shift) theorem.',
+        a: '\\[\\mathcal{L}\\{e^{at}f(t)\\} = F(s-a)\\]\nMultiplying by \\(e^{at}\\) in the time domain shifts the transform argument by \\(a\\).'
+      },
+      {
+        tag: 'Laplace',
+        q: 'State the second shifting (t-shift) theorem.',
+        a: '\\[\\mathcal{L}\\{u(t-a)\\,f(t-a)\\} = e^{-as}\\,F(s)\\]\nwhere \\(u(t-a)\\) is the Heaviside unit step function (\\(0\\) for \\(t < a\\), \\(1\\) for \\(t \\geq a\\)).'
+      },
+      {
+        tag: 'Methods',
+        q: 'Outline the Laplace transform method for solving an IVP.',
+        a: '1. Apply \\(\\mathcal{L}\\) to both sides of the ODE, substituting the given initial conditions.\n2. Solve the resulting algebraic equation for \\(Y(s) = \\mathcal{L}\\{y\\}\\).\n3. Simplify \\(Y(s)\\) using partial fractions and shifting theorems.\n4. Invert: \\(y(t) = \\mathcal{L}^{-1}\\{Y(s)\\}\\).'
+      },
+      {
+        tag: 'Laplace',
+        q: 'Define the convolution of two functions \\(f\\) and \\(g\\).',
+        a: '\\[(f * g)(t) = \\int_0^t f(t-\\tau)\\,g(\\tau)\\,d\\tau = \\int_0^t f(\\tau)\\,g(t-\\tau)\\,d\\tau.\\]\nConvolution is commutative: \\(f * g = g * f\\).'
+      },
+      {
+        tag: 'Laplace',
+        q: 'State the convolution theorem.',
+        a: '\\[\\mathcal{L}\\{f * g\\} = F(s)\\cdot G(s)\\]\nEquivalently: \\(\\mathcal{L}^{-1}\\{F(s)\\,G(s)\\} = (f * g)(t)\\).\n\nThis turns a product in \\(s\\)-space into a convolution in \\(t\\)-space — useful when partial fractions are unwieldy.'
+      },
+      {
+        tag: 'Laplace',
+        q: 'What is the Dirac delta function \\(\\delta(t-a)\\) and its Laplace transform?',
+        a: 'The Dirac delta \\(\\delta(t-a)\\) models an instantaneous unit impulse at \\(t = a\\):\n\\[\\int_{-\\infty}^\\infty \\delta(t-a)\\,dt = 1.\\]\nIts Laplace transform is\n\\[\\mathcal{L}\\{\\delta(t-a)\\} = e^{-as}.\\]\nA delta forcing produces a jump discontinuity in the solution\'s derivative.'
+      },
+      {
+        tag: 'Systems',
+        q: 'What is a first-order linear system of ODEs?',
+        a: 'A system of the form \\(\\mathbf{x}\' = A(t)\\,\\mathbf{x} + \\mathbf{b}(t)\\), where \\(\\mathbf{x}\\) is an \\(n\\)-vector of unknowns and \\(A(t)\\) is an \\(n \\times n\\) matrix.\n\nWhen \\(\\mathbf{b} = \\mathbf{0}\\): <em>homogeneous</em>. When \\(A\\) is constant: <em>constant-coefficient</em>.'
+      },
+      {
+        tag: 'Systems',
+        q: 'State the superposition principle for a linear system \\(\\mathbf{x}\' = A\\mathbf{x}\\).',
+        a: 'If \\(\\mathbf{x}_1\\) and \\(\\mathbf{x}_2\\) are solutions, then \\(c_1\\mathbf{x}_1 + c_2\\mathbf{x}_2\\) is also a solution.\n\nThe general solution is a linear combination of \\(n\\) linearly independent solutions (a fundamental set).'
+      },
+      {
+        tag: 'Systems',
+        q: 'What is a <em>straight-line solution</em> of \\(\\mathbf{x}\' = A\\mathbf{x}\\)?',
+        a: 'A solution of the form \\(\\mathbf{x}(t) = e^{\\lambda t}\\,\\mathbf{v}\\), where \\(\\lambda\\) is an eigenvalue of \\(A\\) and \\(\\mathbf{v}\\) is the corresponding eigenvector.\n\nThis requires \\(A\\mathbf{v} = \\lambda\\mathbf{v}\\).'
+      },
+      {
+        tag: 'Systems',
+        q: 'How do you find the eigenvalues of a matrix \\(A\\)?',
+        a: 'Solve the <strong>characteristic equation</strong>\n\\[\\det(A - \\lambda I) = 0.\\]\nFor a \\(2 \\times 2\\) matrix this yields a quadratic in \\(\\lambda\\). Once an eigenvalue \\(\\lambda\\) is found, solve \\((A - \\lambda I)\\mathbf{v} = \\mathbf{0}\\) for the eigenvector \\(\\mathbf{v}\\).'
+      },
+      {
+        tag: 'Systems',
+        q: 'Give the general solution of \\(\\mathbf{x}\' = A\\mathbf{x}\\) when \\(A\\) has two distinct real eigenvalues.',
+        a: '\\[\\mathbf{x}(t) = c_1\\,e^{\\lambda_1 t}\\,\\mathbf{v}_1 + c_2\\,e^{\\lambda_2 t}\\,\\mathbf{v}_2\\]\nwhere \\((\\lambda_1,\\mathbf{v}_1)\\) and \\((\\lambda_2,\\mathbf{v}_2)\\) are the two eigenvalue–eigenvector pairs.'
+      },
+      {
+        tag: 'Systems',
+        q: 'Give the general solution of \\(\\mathbf{x}\' = A\\mathbf{x}\\) when \\(A\\) has complex eigenvalues \\(\\lambda = \\alpha \\pm \\beta i\\) with eigenvector \\(\\mathbf{v} = \\mathbf{p} \\pm i\\mathbf{q}\\).',
+        a: '\\[\\mathbf{x}(t) = c_1\\,e^{\\alpha t}(\\mathbf{p}\\cos\\beta t - \\mathbf{q}\\sin\\beta t) + c_2\\,e^{\\alpha t}(\\mathbf{p}\\sin\\beta t + \\mathbf{q}\\cos\\beta t).\\]\nThe real and imaginary parts of \\(e^{\\lambda t}\\mathbf{v}\\) form the two real-valued fundamental solutions.'
+      },
+      {
+        tag: 'Systems',
+        q: 'How can any \\(n\\)th-order ODE be converted into a first-order system?',
+        a: 'Introduce variables \\(x_1 = y,\\; x_2 = y\',\\; \\ldots,\\; x_n = y^{(n-1)}\\). Then:\n\\[x_1\' = x_2, \\quad x_2\' = x_3, \\quad \\ldots, \\quad x_n\' = f(t, x_1, \\ldots, x_n)\\]\nThis converts a single \\(n\\)th-order ODE into an \\(n\\)-dimensional first-order system.'
+      }
+    ]
+  },
+
+  {
+    id: 'exam3',
+    label: 'Deck 3 — Phase planes, nonlinear systems & numerics',
+    subtitle: 'Weeks 10–13  ·  Exam 3 (November 20)',
+    cards: [
+      {
+        tag: 'Phase plane',
+        q: 'What is a <em>phase portrait</em> of a 2D autonomous system?',
+        a: 'A diagram in the \\(xy\\)-plane (the <em>phase plane</em>) showing representative solution trajectories. Each point represents the full state of the system; arrows indicate the direction of motion as \\(t\\) increases.\n\nPhase portraits reveal long-term behavior without explicit solutions.'
+      },
+      {
+        tag: 'Phase plane',
+        q: 'How are equilibria of \\(\\mathbf{x}\' = A\\mathbf{x}\\) classified from the eigenvalues of \\(A\\)?',
+        a: '<strong>Both eigenvalues real:</strong>\n• Both negative → stable node (sink)\n• Both positive → unstable node (source)\n• Opposite signs → saddle point\n\n<strong>Complex eigenvalues \\(\\alpha \\pm \\beta i\\):</strong>\n• \\(\\alpha < 0\\) → stable spiral\n• \\(\\alpha > 0\\) → unstable spiral\n• \\(\\alpha = 0\\) → center (closed orbits)'
+      },
+      {
+        tag: 'Phase plane',
+        q: 'What is a <em>saddle point</em> and what do its trajectories look like?',
+        a: 'An equilibrium with one negative and one positive eigenvalue.\n\nAlone two directions (the stable/unstable manifolds), trajectories approach or leave the equilibrium. All other nearby trajectories curve away — the equilibrium is <strong>unstable</strong>.'
+      },
+      {
+        tag: 'Phase plane',
+        q: 'What is a <em>center</em> in the phase plane?',
+        a: 'An equilibrium with pure imaginary eigenvalues \\(\\pm\\beta i\\) (\\(\\alpha = 0\\)). All nearby trajectories are closed curves (ellipses) encircling the equilibrium.\n\nA center is <em>stable</em> but <em>not asymptotically stable</em> — trajectories neither approach nor recede.'
+      },
+      {
+        tag: 'Phase plane',
+        q: 'What is the trace-determinant diagram and how is it used?',
+        a: 'A plot of \\(\\mathrm{tr}(A)\\) vs. \\(\\det(A)\\) that partitions the plane into regions corresponding to the five equilibrium types.\n\nKey boundaries: \\(\\det(A) = 0\\) (saddle ↔ node), \\(\\det(A) = \\tfrac{1}{4}[\\mathrm{tr}(A)]^2\\) (spiral ↔ node, i.e. discriminant = 0).\n\nCenters lie on the vertical axis (\\(\\mathrm{tr} = 0,\\; \\det > 0\\)).'
+      },
+      {
+        tag: 'Systems',
+        q: 'What is a <em>nonhomogeneous</em> linear system and how is its general solution structured?',
+        a: '\\(\\mathbf{x}\' = A\\mathbf{x} + \\mathbf{b}(t)\\). General solution:\n\\[\\mathbf{x}(t) = \\mathbf{x}_h(t) + \\mathbf{x}_p(t)\\]\nwhere \\(\\mathbf{x}_h\\) is the general solution of the homogeneous system and \\(\\mathbf{x}_p\\) is any particular solution (found by variation of parameters or undetermined coefficients).'
+      },
+      {
+        tag: 'Nonlinear',
+        q: 'What is an <em>equilibrium point</em> of a nonlinear system \\(x\' = f(x,y),\\; y\' = g(x,y)\\)?',
+        a: 'A point \\((x^*, y^*)\\) where \\(f(x^*,y^*) = 0\\) and \\(g(x^*,y^*) = 0\\) simultaneously.\n\nAt an equilibrium the system does not evolve — it is a constant solution.'
+      },
+      {
+        tag: 'Nonlinear',
+        q: 'What are <em>nullclines</em> and how do they aid phase plane analysis?',
+        a: '<strong>\\(x\\)-nullclines</strong>: curves where \\(f(x,y) = 0\\), so \\(x\' = 0\\) (motion is purely vertical).\n<strong>\\(y\\)-nullclines</strong>: curves where \\(g(x,y) = 0\\), so \\(y\' = 0\\) (motion is purely horizontal).\n\nTheir intersections are equilibrium points. The sign of \\(x\'\\) and \\(y\'\\) in each region guides sketch of trajectories.'
+      },
+      {
+        tag: 'Nonlinear',
+        q: 'How do you <em>linearize</em> a nonlinear system near an equilibrium \\((x^*, y^*)\\)?',
+        a: 'Compute the Jacobian matrix at \\((x^*, y^*)\\):\n\\[J = \\begin{pmatrix} f_x & f_y \\\\ g_x & g_y \\end{pmatrix}_{(x^*,y^*)}.\\]\nThe linearized system \\(\\mathbf{u}\' = J\\mathbf{u}\\) (where \\(\\mathbf{u} = \\mathbf{x} - \\mathbf{x}^*\\)) approximates the local behavior.'
+      },
+      {
+        tag: 'Nonlinear',
+        q: 'When does the linearization reliably predict the behavior of the nonlinear system?',
+        a: 'When the equilibrium is <strong>hyperbolic</strong> — all eigenvalues of \\(J\\) have nonzero real part. In that case, the qualitative behavior (node, saddle, spiral) of the nonlinear system matches the linearization.\n\nWhen \\(\\mathrm{Re}(\\lambda) = 0\\) (e.g., a center), the nonlinear terms may change the behavior.'
+      },
+      {
+        tag: 'Applications',
+        q: 'What are the Lotka–Volterra equations and what do they model?',
+        a: '\\[\\frac{dx}{dt} = \\alpha x - \\beta xy, \\qquad \\frac{dy}{dt} = \\delta xy - \\gamma y.\\]\n\\(x\\): prey (grows at rate \\(\\alpha\\), killed by predators); \\(y\\): predators (die at rate \\(\\gamma\\), grow by predation).\n\nSolutions are <em>periodic orbits</em> around the unique positive equilibrium \\((\\gamma/\\delta,\\; \\alpha/\\beta)\\).'
+      },
+      {
+        tag: 'Nonlinear',
+        q: 'What is a <em>limit cycle</em>?',
+        a: 'An <em>isolated</em> closed trajectory in the phase plane. Nearby trajectories spiral toward it (stable limit cycle) or away from it (unstable limit cycle).\n\nA stable limit cycle represents a self-sustained oscillation — for example, the Van der Pol oscillator.'
+      },
+      {
+        tag: 'Numerics',
+        q: "State Euler's method for the IVP \\(y\' = f(t,y),\\; y(t_0) = y_0\\).",
+        a: 'With step size \\(h\\):\n\\[t_{n+1} = t_n + h, \\qquad y_{n+1} = y_n + h\\,f(t_n,\\,y_n).\\]\nUses the slope at the <em>left</em> endpoint of each step. It is a <strong>first-order</strong> method: global error \\(\\sim O(h)\\).'
+      },
+      {
+        tag: 'Numerics',
+        q: "What are the local and global truncation errors of Euler's method?",
+        a: '<strong>Local truncation error</strong> (one step, exact previous value): \\(O(h^2)\\).\n<strong>Global truncation error</strong> (accumulated over all steps): \\(O(h)\\).\n\nHalving the step size halves the global error — linear convergence.'
+      },
+      {
+        tag: 'Numerics',
+        q: 'Describe the classical 4th-order Runge–Kutta method (RK4).',
+        a: 'Compute four slopes:\n\\[k_1 = f(t_n, y_n)\\]\n\\[k_2 = f\\!\\left(t_n+\\tfrac{h}{2},\\, y_n+\\tfrac{h}{2}k_1\\right)\\]\n\\[k_3 = f\\!\\left(t_n+\\tfrac{h}{2},\\, y_n+\\tfrac{h}{2}k_2\\right)\\]\n\\[k_4 = f(t_n+h,\\, y_n+hk_3)\\]\nThen: \\(y_{n+1} = y_n + \\dfrac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)\\).'
+      },
+      {
+        tag: 'Numerics',
+        q: "Why is RK4 preferred over Euler's method?",
+        a: 'RK4 is a <strong>4th-order</strong> method: global error \\(\\sim O(h^4)\\). To achieve the same accuracy as Euler, RK4 can use a much larger step size, making it far more efficient.\n\nRK4 uses four function evaluations per step vs. one for Euler — a modest cost for a dramatic accuracy gain.'
+      },
+      {
+        tag: 'Numerics',
+        q: 'What does it mean for a numerical method to be <em>stable</em>?',
+        a: 'A method is <em>stable</em> if small errors (rounding or perturbations in initial data) do not grow without bound as the computation proceeds.\n\nFor many explicit methods including Euler, stability requires the step size \\(h\\) to be sufficiently small relative to the ODE\'s fastest time scale.'
+      },
+      {
+        tag: 'Numerics',
+        q: 'What is the difference between <em>local</em> and <em>global</em> truncation error?',
+        a: '<strong>Local</strong>: the error in one step, assuming the previous value is exact. For a \\(p\\)th-order method, this is \\(O(h^{p+1})\\).\n\n<strong>Global</strong>: the accumulated error after \\(N = (b-a)/h\\) steps, \\(O(h^p)\\).\n\nA method of order \\(p\\) has local error one power of \\(h\\) better than its global error.'
+      }
+    ]
+  }
+];
+
+/* =====================================================================
+   APPLICATION STATE
+   ===================================================================== */
+let currentDeck = 0;
+let currentIdx  = 0;
+let isFlipped   = false;
+let scores      = {};  /* key: deckId_cardIdx  value: 'unseen'|'know'|'review' */
+
+function initScores() {
+  DECKS.forEach(d => d.cards.forEach((_, i) => {
+    const k = d.id + '_' + i;
+    if (!(k in scores)) scores[k] = 'unseen';
+  }));
+}
+function scoreKey() { return DECKS[currentDeck].id + '_' + currentIdx; }
+
+/* =====================================================================
+   BUILD TABS
+   ===================================================================== */
+function buildTabs() {
+  const el = document.getElementById('deckTabs');
+  const labels = ['Deck 1', 'Deck 2', 'Deck 3'];
+  el.innerHTML = DECKS.map((d, i) =>
+    `<button class="deck-tab${i===0?' active':''}" role="tab"
+       aria-selected="${i===0}" onclick="selectDeck(${i})">${labels[i]}</button>`
+  ).join('');
+}
+
+function selectDeck(i) {
+  currentDeck = i; currentIdx = 0; isFlipped = false;
+  document.querySelectorAll('.deck-tab').forEach((b, j) => {
+    b.classList.toggle('active', j===i);
+    b.setAttribute('aria-selected', j===i);
+  });
+  render();
+}
+
+/* =====================================================================
+   RENDER
+   ===================================================================== */
+function renderText(text) {
+  /* Convert \n to <br> for multi-line answers */
+  return text.replace(/\n/g, '<br>');
+}
+
+function render() {
+  const deck = DECKS[currentDeck];
+  const card = deck.cards[currentIdx];
+  const wrap = document.getElementById('cardWrap');
+  const front = document.getElementById('cardFront');
+  const back  = document.getElementById('cardBack');
+
+  /* Flip state */
+  wrap.classList.toggle('flipped', isFlipped);
+
+  /* Status border */
+  const st = scores[scoreKey()];
+  ['status-know','status-review'].forEach(c => {
+    front.classList.remove(c); back.classList.remove(c);
+  });
+  if (st === 'know')   { front.classList.add('status-know');   back.classList.add('status-know'); }
+  if (st === 'review') { front.classList.add('status-review'); back.classList.add('status-review'); }
+
+  /* Exam label */
+  const examLabel = deck.id === 'exam1' ? 'Exam 1'
+                  : deck.id === 'exam2' ? 'Exam 2' : 'Exam 3';
+
+  front.innerHTML =
+    `<div class="card-eyebrow">${examLabel} &nbsp;·&nbsp; ${card.tag}</div>` +
+    `<div class="card-q">${renderText(card.q)}</div>` +
+    `<div class="card-hint">Click card to reveal answer</div>`;
+
+  back.innerHTML =
+    `<div class="card-eyebrow">Answer</div>` +
+    `<div class="card-a">${renderText(card.a)}</div>` +
+    `<span class="card-tag">${card.tag}</span>`;
+
+  /* Meta */
+  document.getElementById('deckSubtitle').textContent  = deck.subtitle;
+  document.getElementById('progressLabel').textContent = `Card ${currentIdx+1} of ${deck.cards.length}`;
+
+  /* Progress bar */
+  const pct = ((currentIdx+1) / deck.cards.length * 100).toFixed(1);
+  document.getElementById('progressBar').style.width = pct + '%';
+
+  /* Score pills */
+  updatePills();
+
+  /* Re-typeset MathJax after DOM update */
+  typesetCards(front, back);
+}
+
+function updatePills() {
+  const deck = DECKS[currentDeck];
+  let know = 0, review = 0;
+  deck.cards.forEach((_, i) => {
+    const s = scores[deck.id + '_' + i];
+    if (s === 'know')   know++;
+    if (s === 'review') review++;
+  });
+  document.getElementById('knowPill').textContent   = '✓ Got it: ' + know;
+  document.getElementById('reviewPill').textContent = '↻ Review: ' + review;
+}
+
+/* =====================================================================
+   INTERACTIONS
+   ===================================================================== */
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('cardWrap').classList.toggle('flipped', isFlipped);
+}
+
+function next() {
+  const n = DECKS[currentDeck].cards.length;
+  currentIdx = (currentIdx + 1) % n;
+  isFlipped = false;
+  render();
+}
+
+function prev() {
+  const n = DECKS[currentDeck].cards.length;
+  currentIdx = (currentIdx - 1 + n) % n;
+  isFlipped = false;
+  render();
+}
+
+function shuffle() {
+  const cards = DECKS[currentDeck].cards;
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  /* Re-key scores for new order */
+  initScores();
+  currentIdx = 0; isFlipped = false;
+  render();
+}
+
+function markKnow() {
+  scores[scoreKey()] = 'know';
+  render();
+  setTimeout(next, 320);
+}
+
+function markReview() {
+  scores[scoreKey()] = 'review';
+  render();
+  setTimeout(next, 320);
+}
+
+function resetScores() {
+  const deck = DECKS[currentDeck];
+  deck.cards.forEach((_, i) => { scores[deck.id + '_' + i] = 'unseen'; });
+  render();
+}
+
+/* Keyboard shortcuts */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'BUTTON') return;
+  if (e.key === 'ArrowRight') next();
+  else if (e.key === 'ArrowLeft') prev();
+  else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+  else if (e.key === '1') markKnow();
+  else if (e.key === '2') markReview();
+});
+
+/* =====================================================================
+   MATHJAX TYPESETTING HELPER
+   ===================================================================== */
+function typesetCards(front, back) {
+  function doTypeset() {
+    if (!window.MathJax || !MathJax.typesetPromise) return;
+    /* Clear any previous MathJax output so it re-renders cleanly */
+    MathJax.typesetClear([front, back]);
+    MathJax.typesetPromise([front, back]).catch(console.error);
+  }
+
+  if (window.MathJax && MathJax.typesetPromise) {
+    doTypeset();
+  } else {
+    /* MathJax not yet loaded — wait for it */
+    document.getElementById('MathJax-script').addEventListener('load', doTypeset, { once: true });
+  }
+}
+
+/* =====================================================================
+   INIT
+   ===================================================================== */
+initScores();
+buildTabs();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATH 341 — ODE Method Selector</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']],
+    packages: {'[+]': ['ams']}
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #f7f6f3;
+  --surface:    #ffffff;
+  --surface2:   #f0efe9;
+  --border:     #dddad3;
+  --border-strong: #c5c2ba;
+  --text:       #1a1916;
+  --text-sec:   #5c5a54;
+  --text-mute:  #9c9a93;
+
+  /* node palette — one hue per category */
+  --q-bg:       #eef3fb;  --q-border: #7aabdf;  --q-text: #0d3f70;   /* questions: blue   */
+  --m-bg:       #e8f5ee;  --m-border: #5ab87a;  --m-text: #1a5c30;   /* methods:   green  */
+  --r-bg:       #fdf3e3;  --r-border: #e0a030;  --r-text: #6b4500;   /* results:   amber  */
+  --s-bg:       #f3eef9;  --s-border: #9b72d4;  --s-text: #3d1878;   /* special:   purple */
+  --n-bg:       #fdecea;  --n-border: #e07060;  --n-text: #701c10;   /* nonlinear: coral  */
+
+  --radius: 8px;
+  --card-radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #1b1a18;
+    --surface:   #252420;
+    --surface2:  #2e2d29;
+    --border:    #3a3832;
+    --border-strong: #4e4c44;
+    --text:      #f0ede6;
+    --text-sec:  #a0a09a;
+    --text-mute: #666660;
+    --q-bg: #0d2a45; --q-border: #3a7abf; --q-text: #90c4f0;
+    --m-bg: #0d2e18; --m-border: #2e7a4a; --m-text: #72d494;
+    --r-bg: #2e1f05; --r-border: #b07820; --r-text: #f0c060;
+    --s-bg: #1e1030; --s-border: #7040b0; --s-text: #c090f0;
+    --n-bg: #2e0d08; --n-border: #b04030; --n-text: #f09080;
+  }
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0 0 60px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 28px 14px;
+}
+header h1 { font-size: 18px; font-weight: 600; margin-bottom: 2px; }
+header p  { font-size: 13px; color: var(--text-sec); }
+
+.legend {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-sec);
+}
+.legend-dot {
+  width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid;
+  flex-shrink: 0;
+}
+
+.main { max-width: 900px; margin: 0 auto; padding: 28px 20px; }
+
+/* ── SECTION HEADERS ─────────────────────────────────────── */
+.section-head {
+  font-size: 12px; font-weight: 600; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text-mute);
+  margin: 32px 0 12px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.section-head:first-child { margin-top: 0; }
+
+/* ── DECISION FLOW ───────────────────────────────────────── */
+.flow { display: flex; flex-direction: column; gap: 0; }
+
+/* a row = question node + its branches side-by-side */
+.flow-row {
+  display: grid;
+  gap: 0;
+}
+
+/* connector lines */
+.connector-v {
+  width: 2px; background: var(--border-strong);
+  margin: 0 auto; height: 20px;
+}
+.connector-h-wrap {
+  display: flex; align-items: flex-start; position: relative;
+}
+.branch-line {
+  border-top: 2px solid var(--border-strong);
+  flex: 1;
+  margin-top: 0;
+}
+
+/* ── NODE TYPES ──────────────────────────────────────────── */
+.node {
+  border-radius: var(--card-radius);
+  border: 1.5px solid;
+  padding: 12px 16px;
+  position: relative;
+}
+.node-q  { background: var(--q-bg); border-color: var(--q-border); color: var(--q-text); }
+.node-m  { background: var(--m-bg); border-color: var(--m-border); color: var(--m-text); }
+.node-r  { background: var(--r-bg); border-color: var(--r-border); color: var(--r-text); }
+.node-s  { background: var(--s-bg); border-color: var(--s-border); color: var(--s-text); }
+.node-n  { background: var(--n-bg); border-color: var(--n-border); color: var(--n-text); }
+
+.node-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; opacity: .7; margin-bottom: 4px;
+}
+.node-title { font-weight: 600; font-size: 14.5px; margin-bottom: 3px; }
+.node-body  { font-size: 13px; line-height: 1.55; opacity: .9; }
+.node-body p { margin-top: 5px; }
+.node-body ul { margin: 5px 0 0 16px; }
+.node-body li { margin-bottom: 3px; }
+.node-formula {
+  font-size: 13px; margin: 6px 0 2px;
+  padding: 5px 10px;
+  background: rgba(0,0,0,.06);
+  border-radius: 5px; display: inline-block;
+}
+
+/* branch label (Yes / No / ...) */
+.branch-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  color: var(--text-sec);
+  white-space: nowrap; padding: 0 6px;
+  align-self: flex-start; margin-top: -8px;
+}
+
+/* ── TREE LAYOUT ─────────────────────────────────────────── */
+/*  We build the tree as a series of visual blocks stacked
+    vertically, with indented branches for sub-trees.        */
+
+.tree { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+.tree-node-wrap { display: flex; flex-direction: column; align-items: center; }
+.tree-children {
+  display: flex; flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+}
+.tree-child { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.tree-child-label {
+  font-size: 11.5px; font-weight: 700; color: var(--text-mute);
+  margin-bottom: 4px; margin-top: 2px;
+  background: var(--bg); padding: 0 5px;
+  position: relative; z-index: 1;
+}
+.tree-hline {
+  position: absolute; top: 0; left: 25%; right: 25%;
+  height: 2px; background: var(--border-strong);
+}
+.tree-vline { width: 2px; height: 22px; background: var(--border-strong); }
+.node-wrap-inner { width: 100%; padding: 0 6px; }
+
+/* ── SUMMARY TABLE ───────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+thead th {
+  background: var(--surface2); color: var(--text-sec);
+  font-size: 11.5px; font-weight: 600; letter-spacing: .05em;
+  text-transform: uppercase; padding: 9px 12px; text-align: left;
+  border-bottom: 1.5px solid var(--border-strong);
+}
+tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--surface2); }
+.tbl-method { font-weight: 600; color: var(--m-text); }
+.tbl-type   { color: var(--text-sec); font-size: 12.5px; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  header { padding: 14px 16px; }
+  .main  { padding: 20px 12px; }
+  .legend { padding: 10px 14px; }
+  .node-title { font-size: 13.5px; }
+  .node-body  { font-size: 12.5px; }
+  table { font-size: 12.5px; }
+  thead th, tbody td { padding: 7px 8px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MATH 341 — ODE Method Selector</h1>
+  <p>University of Scranton &nbsp;·&nbsp; Fall 2026 &nbsp;·&nbsp;
+     A guide to classifying ODEs and choosing a solution strategy</p>
+</header>
+
+<div class="legend">
+  <span class="legend-item">
+    <span class="legend-dot" style="background:var(--q-bg);border-color:var(--q-border)"></span>
+    Classification question
+  </span>
+  <span class="legend-item">
+    <span class="legend-dot" style="background:var(--m-bg);border-color:var(--m-border)"></span>
+    Solution method
+  </span>
+  <span class="legend-item">
+    <span class="legend-dot" style="background:var(--r-bg);border-color:var(--r-border)"></span>
+    Key result / formula
+  </span>
+  <span class="legend-item">
+    <span class="legend-dot" style="background:var(--s-bg);border-color:var(--s-border)"></span>
+    Special sub-case
+  </span>
+  <span class="legend-item">
+    <span class="legend-dot" style="background:var(--n-bg);border-color:var(--n-border)"></span>
+    Nonlinear / qualitative
+  </span>
+</div>
+
+<main class="main">
+
+<!-- ══════════════════════════════════════════════════════════
+     STEP 1 — TOP-LEVEL SPLIT
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-head">Step 1 — What is the order and structure?</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+
+  <!-- ROOT question -->
+  <div class="node node-q" style="width:100%;max-width:620px;">
+    <div class="node-label">Start here</div>
+    <div class="node-title">How many independent variables does the unknown function have?</div>
+    <div class="node-body">Write the equation in standard form and look at the derivatives present.</div>
+  </div>
+
+  <div class="tree-vline"></div>
+
+  <!-- Two top-level branches -->
+  <div style="display:flex;width:100%;position:relative;align-items:flex-start;">
+    <div class="tree-hline" style="left:25%;right:25%;top:0;position:absolute;height:2px;background:var(--border-strong);"></div>
+
+    <!-- LEFT: single variable → ODE -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 6px;">
+      <div class="tree-vline"></div>
+      <div class="tree-child-label">One variable (function of <em>t</em> only)</div>
+      <div class="tree-vline"></div>
+      <div class="node node-q" style="width:100%;">
+        <div class="node-label">ODE — ordinary differential equation</div>
+        <div class="node-title">What is the order?</div>
+        <div class="node-body">The order equals the highest derivative present.</div>
+      </div>
+      <!-- 1st vs 2nd branch -->
+      <div class="tree-vline"></div>
+      <div style="display:flex;width:100%;position:relative;align-items:flex-start;">
+        <div style="position:absolute;top:0;left:25%;right:25%;height:2px;background:var(--border-strong);"></div>
+        <!-- 1st order -->
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 5px;">
+          <div class="tree-vline"></div>
+          <div class="tree-child-label">1st order</div>
+          <div class="tree-vline"></div>
+          <div class="node node-q" style="width:100%;">
+            <div class="node-label">Classification</div>
+            <div class="node-title">Is it linear?</div>
+            <div class="node-body">Can it be written as \(x' + p(t)\,x = q(t)\)?<br>If yes → linear. If \(x\) appears in a nonlinear way (e.g. \(x^2\), \(\sin x\)) → nonlinear.</div>
+          </div>
+          <div class="tree-vline"></div>
+          <!-- linear vs nonlinear -->
+          <div style="display:flex;width:100%;position:relative;align-items:flex-start;">
+            <div style="position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--border-strong);"></div>
+            <!-- LINEAR -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 4px;">
+              <div class="tree-vline"></div>
+              <div class="tree-child-label">Linear</div>
+              <div class="tree-vline"></div>
+              <div class="node node-q" style="width:100%;">
+                <div class="node-label">Sub-case</div>
+                <div class="node-title">Is it also separable?</div>
+                <div class="node-body">Can you write it as \(\frac{dx}{g(x)} = f(t)\,dt\)?</div>
+              </div>
+              <div class="tree-vline"></div>
+              <div style="display:flex;width:100%;position:relative;align-items:flex-start;">
+                <div style="position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--border-strong);"></div>
+                <!-- Yes: separable linear -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+                  <div class="tree-vline"></div>
+                  <div class="tree-child-label">Yes</div>
+                  <div class="tree-vline"></div>
+                  <div class="node node-s" style="width:100%;">
+                    <div class="node-label">Special case</div>
+                    <div class="node-title">Both methods work</div>
+                    <div class="node-body">Use whichever is easier. Separation of variables is often faster here.</div>
+                  </div>
+                </div>
+                <!-- No: integrating factor only -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+                  <div class="tree-vline"></div>
+                  <div class="tree-child-label">No</div>
+                  <div class="tree-vline"></div>
+                  <div class="node node-m" style="width:100%;">
+                    <div class="node-label">Method</div>
+                    <div class="node-title">Integrating factor</div>
+                    <div class="node-body">
+                      Write in standard form \(x' + p(t)\,x = q(t)\).<br>
+                      Compute \(\mu(t) = e^{\int p(t)\,dt}\).<br>
+                      Multiply through: \(\bigl(\mu x\bigr)' = \mu q\). Integrate both sides.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- NONLINEAR -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 4px;">
+              <div class="tree-vline"></div>
+              <div class="tree-child-label">Nonlinear</div>
+              <div class="tree-vline"></div>
+              <div class="node node-q" style="width:100%;">
+                <div class="node-label">Sub-case</div>
+                <div class="node-title">Is it separable?</div>
+                <div class="node-body">Can you factor as \(x' = g(t)\cdot f(x)\)?</div>
+              </div>
+              <div class="tree-vline"></div>
+              <div style="display:flex;width:100%;position:relative;align-items:flex-start;">
+                <div style="position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--border-strong);"></div>
+                <!-- Separable nonlinear -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+                  <div class="tree-vline"></div>
+                  <div class="tree-child-label">Yes</div>
+                  <div class="tree-vline"></div>
+                  <div class="node node-m" style="width:100%;">
+                    <div class="node-label">Method</div>
+                    <div class="node-title">Separation of variables</div>
+                    <div class="node-body">
+                      Separate: \(\displaystyle\int\frac{dx}{f(x)} = \int g(t)\,dt + C\).
+                      <br>Solve implicitly or explicitly for \(x\). Check for singular solutions where \(f(x)=0\).
+                    </div>
+                  </div>
+                </div>
+                <!-- Not separable nonlinear -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+                  <div class="tree-vline"></div>
+                  <div class="tree-child-label">No</div>
+                  <div class="tree-vline"></div>
+                  <div class="node node-n" style="width:100%;">
+                    <div class="node-label">Qualitative / Numerical</div>
+                    <div class="node-title">Qualitative or numerical approach</div>
+                    <div class="node-body">
+                      Draw a slope field. If autonomous (\(x'=f(x)\)), use phase-line analysis (§Notes 3). Use Euler or RK4 for a numerical solution (§Notes 14).
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2nd order -->
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 5px;">
+          <div class="tree-vline"></div>
+          <div class="tree-child-label">2nd order, linear, constant-coeff.</div>
+          <div class="tree-vline"></div>
+          <div class="node node-q" style="width:100%;">
+            <div class="node-label">Classification</div>
+            <div class="node-title">Is it homogeneous?</div>
+            <div class="node-body">Write as \(x'' + px' + qx = f(t)\). Homogeneous means \(f(t)\equiv 0\).</div>
+          </div>
+          <div class="tree-vline"></div>
+          <div style="display:flex;width:100%;position:relative;align-items:flex-start;">
+            <div style="position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--border-strong);"></div>
+            <!-- Homogeneous 2nd order -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+              <div class="tree-vline"></div>
+              <div class="tree-child-label">\(f(t)\equiv 0\)</div>
+              <div class="tree-vline"></div>
+              <div class="node node-m" style="width:100%;">
+                <div class="node-label">Method</div>
+                <div class="node-title">Characteristic equation</div>
+                <div class="node-body">
+                  Substitute \(x=e^{\lambda t}\) → \(\lambda^2+p\lambda+q=0\).<br>
+                  Discriminant \(\Delta = p^2-4q\):
+                  <ul>
+                    <li>\(\Delta>0\): \(x=c_1e^{\lambda_1 t}+c_2 e^{\lambda_2 t}\)</li>
+                    <li>\(\Delta=0\): \(x=(c_1+c_2 t)e^{\lambda t}\)</li>
+                    <li>\(\Delta&lt;0\): \(x=e^{\alpha t}(c_1\cos\beta t+c_2\sin\beta t)\)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- Nonhomogeneous 2nd order -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+              <div class="tree-vline"></div>
+              <div class="tree-child-label">\(f(t)\not\equiv 0\)</div>
+              <div class="tree-vline"></div>
+              <div class="node node-q" style="width:100%;">
+                <div class="node-label">Strategy</div>
+                <div class="node-title">Find \(x_h\) first, then \(x_p\)</div>
+                <div class="node-body">General solution: \(x = x_h + x_p\). Which method for \(x_p\)?</div>
+              </div>
+              <div class="tree-vline"></div>
+              <div style="display:flex;width:100%;position:relative;align-items:flex-start;">
+                <div style="position:absolute;top:0;left:18%;right:18%;height:2px;background:var(--border-strong);"></div>
+                <!-- Undetermined coefficients -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+                  <div class="tree-vline"></div>
+                  <div class="tree-child-label">\(f(t)\) is polynomial, exp, sin/cos</div>
+                  <div class="tree-vline"></div>
+                  <div class="node node-m" style="width:100%;">
+                    <div class="node-label">Method</div>
+                    <div class="node-title">Undetermined coefficients</div>
+                    <div class="node-body">
+                      Guess \(x_p\) in the same family as \(f(t)\). Substitute and match coefficients.
+                      <br><strong>Modification rule:</strong> if the guess duplicates a term in \(x_h\), multiply the guess by \(t\).
+                      <br>Watch for <strong>resonance</strong> when \(f(t)=F_0\cos(\omega t)\) and \(\omega\) is the natural frequency.
+                    </div>
+                  </div>
+                </div>
+                <!-- Variation of parameters -->
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 3px;">
+                  <div class="tree-vline"></div>
+                  <div class="tree-child-label">Any \(f(t)\) (general)</div>
+                  <div class="tree-vline"></div>
+                  <div class="node node-m" style="width:100%;">
+                    <div class="node-label">Method</div>
+                    <div class="node-title">Variation of parameters</div>
+                    <div class="node-body">
+                      With \(x_1,x_2\) a fundamental set and Wronskian \(W=x_1x_2'-x_1'x_2\):
+                      \[x_p = -x_1\!\int\!\frac{x_2 f}{W}\,dt + x_2\!\int\!\frac{x_1 f}{W}\,dt\]
+                      Works for any \(f(t)\), including non-constant coefficients (Notes 5).
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: PDE note -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 6px;">
+      <div class="tree-vline"></div>
+      <div class="tree-child-label">Several variables</div>
+      <div class="tree-vline"></div>
+      <div class="node node-s" style="width:100%;">
+        <div class="node-label">Out of scope</div>
+        <div class="node-title">Partial differential equation (PDE)</div>
+        <div class="node-body">This course focuses exclusively on ODEs. PDEs (heat equation, wave equation, Laplace equation) are covered in MATH 441.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     STEP 2 — LAPLACE TRANSFORMS
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-head" style="margin-top:44px;">Step 2 — Laplace transform method (alternative for IVPs)</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+  <div class="node node-q" style="width:100%;max-width:700px;">
+    <div class="node-label">When to use Laplace transforms</div>
+    <div class="node-title">Is the ODE a linear IVP with constant coefficients and a piecewise or impulsive forcing?</div>
+    <div class="node-body">
+      Laplace transforms are especially powerful when \(f(t)\) involves a Heaviside step function \(u(t-a)\) or a Dirac delta \(\delta(t-a)\) — cases where undetermined coefficients and variation of parameters are awkward. They also handle standard forcing (\(e^{at}\), \(\sin, \cos\), polynomials) and work for any-order constant-coefficient linear IVP.
+    </div>
+  </div>
+  <div class="tree-vline"></div>
+  <div class="node node-m" style="width:100%;max-width:700px;">
+    <div class="node-label">Method — Notes 6, 7, 8</div>
+    <div class="node-title">Four-step Laplace procedure</div>
+    <div class="node-body">
+      <ol style="margin:6px 0 0 18px;">
+        <li style="margin-bottom:5px;"><strong>Transform.</strong> Apply \(\mathcal{L}\) to both sides. Use \(\mathcal{L}\{x'\} = sX - x(0)\) and \(\mathcal{L}\{x''\} = s^2X - sx(0) - x'(0)\) to incorporate initial conditions immediately.</li>
+        <li style="margin-bottom:5px;"><strong>Solve algebraically.</strong> The transformed equation is algebraic in \(X(s)\). Solve for \(X(s)\).</li>
+        <li style="margin-bottom:5px;"><strong>Simplify.</strong> Use partial fractions, the s-shift theorem \(\mathcal{L}\{e^{at}f\}=F(s-a)\), the t-shift theorem \(\mathcal{L}\{u(t-a)f(t-a)\}=e^{-as}F(s)\), and/or the convolution theorem \(\mathcal{L}^{-1}\{F\cdot G\}=f*g\).</li>
+        <li><strong>Invert.</strong> Read \(x(t) = \mathcal{L}^{-1}\{X(s)\}\) from the table.</li>
+      </ol>
+      <p style="margin-top:8px;"><strong>Key table entries:</strong>
+        \(\mathcal{L}\{e^{at}\}=\tfrac{1}{s-a}\), \(\;\mathcal{L}\{t^n\}=\tfrac{n!}{s^{n+1}}\), \(\;\mathcal{L}\{\sin bt\}=\tfrac{b}{s^2+b^2}\), \(\;\mathcal{L}\{\cos bt\}=\tfrac{s}{s^2+b^2}\), \(\;\mathcal{L}\{\delta(t-a)\}=e^{-as}\).
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     STEP 3 — LINEAR SYSTEMS
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-head" style="margin-top:44px;">Step 3 — First-order linear systems \(\mathbf{x}' = A\mathbf{x}\)</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+  <div class="node node-q" style="width:100%;max-width:700px;">
+    <div class="node-label">Notes 9 – 11</div>
+    <div class="node-title">Is the system \(\mathbf{x}' = A\mathbf{x} + \mathbf{b}(t)\) homogeneous?</div>
+    <div class="node-body">General solution always has the form \(\mathbf{x} = \mathbf{x}_h + \mathbf{x}_p\). Find \(\mathbf{x}_h\) first via eigenvalues.</div>
+  </div>
+  <div class="tree-vline"></div>
+
+  <!-- Eigenvalue branch -->
+  <div class="node node-m" style="width:100%;max-width:700px;">
+    <div class="node-label">Method — homogeneous part</div>
+    <div class="node-title">Eigenvalue method for \(\mathbf{x}' = A\mathbf{x}\)</div>
+    <div class="node-body">
+      Solve \(\det(A-\lambda I)=0\) for eigenvalues \(\lambda\), then \((A-\lambda I)\mathbf{v}=\mathbf{0}\) for eigenvectors \(\mathbf{v}\).
+    </div>
+  </div>
+  <div class="tree-vline"></div>
+
+  <!-- Three eigenvalue cases -->
+  <div style="display:flex;width:100%;max-width:700px;position:relative;align-items:flex-start;">
+    <div style="position:absolute;top:0;left:16%;right:16%;height:2px;background:var(--border-strong);"></div>
+
+    <!-- Distinct real -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 4px;">
+      <div class="tree-vline"></div>
+      <div class="tree-child-label">Distinct real \(\lambda_1\neq\lambda_2\)</div>
+      <div class="tree-vline"></div>
+      <div class="node node-r" style="width:100%;">
+        <div class="node-label">General solution</div>
+        <div class="node-title">Two straight-line solutions</div>
+        <div class="node-body">\[\mathbf{x}=c_1e^{\lambda_1 t}\mathbf{v}_1+c_2e^{\lambda_2 t}\mathbf{v}_2\]
+          Phase portrait: node or saddle depending on signs of \(\lambda_1,\lambda_2\).
+        </div>
+      </div>
+    </div>
+
+    <!-- Complex -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 4px;">
+      <div class="tree-vline"></div>
+      <div class="tree-child-label">Complex \(\lambda=\alpha\pm\beta i\)</div>
+      <div class="tree-vline"></div>
+      <div class="node node-r" style="width:100%;">
+        <div class="node-label">General solution</div>
+        <div class="node-title">Real &amp; imaginary parts</div>
+        <div class="node-body">Use \(\mathbf{v}=\mathbf{p}+i\mathbf{q}\):
+          \[c_1 e^{\alpha t}(\mathbf{p}\cos\beta t-\mathbf{q}\sin\beta t)+c_2 e^{\alpha t}(\mathbf{p}\sin\beta t+\mathbf{q}\cos\beta t)\]
+          Phase portrait: spiral (\(\alpha\neq 0\)) or center (\(\alpha=0\)).
+        </div>
+      </div>
+    </div>
+
+    <!-- Repeated -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 4px;">
+      <div class="tree-vline"></div>
+      <div class="tree-child-label">Repeated real \(\lambda_1=\lambda_2\)</div>
+      <div class="tree-vline"></div>
+      <div class="node node-s" style="width:100%;">
+        <div class="node-label">Special case</div>
+        <div class="node-title">May need generalized eigenvector</div>
+        <div class="node-body">If \(A\) has two independent eigenvectors: proceed as distinct case. Otherwise find generalized eigenvector \(\mathbf{w}\): \((A-\lambda I)\mathbf{w}=\mathbf{v}\). See Notes 10–11.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nonhomogeneous add-on -->
+  <div style="width:100%;max-width:700px;">
+    <div class="tree-vline" style="margin:0 auto;"></div>
+    <div class="node node-q" style="width:100%;">
+      <div class="node-label">If \(\mathbf{b}(t)\neq\mathbf{0}\) — nonhomogeneous system</div>
+      <div class="node-title">Find a particular solution \(\mathbf{x}_p\)</div>
+      <div class="node-body">Use undetermined coefficients (if \(\mathbf{b}(t)\) is polynomial/exponential/sinusoidal) or variation of parameters. General solution: \(\mathbf{x}=\mathbf{x}_h+\mathbf{x}_p\). See Notes 11.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     STEP 4 — NONLINEAR SYSTEMS / PHASE PLANE
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-head" style="margin-top:44px;">Step 4 — Nonlinear systems and phase plane analysis</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+  <div class="node node-q" style="width:100%;max-width:700px;">
+    <div class="node-label">Notes 12 – 13</div>
+    <div class="node-title">Is the system nonlinear: \(x'=f(x,y),\; y'=g(x,y)\)?</div>
+    <div class="node-body">No closed-form solution in general. Use qualitative and numerical methods.</div>
+  </div>
+  <div class="tree-vline"></div>
+
+  <div class="node node-n" style="width:100%;max-width:700px;">
+    <div class="node-label">Strategy — qualitative analysis</div>
+    <div class="node-title">Phase plane procedure</div>
+    <div class="node-body">
+      <ol style="margin:6px 0 0 18px;">
+        <li style="margin-bottom:5px;"><strong>Find equilibria.</strong> Solve \(f(x,y)=0\) and \(g(x,y)=0\) simultaneously.</li>
+        <li style="margin-bottom:5px;"><strong>Nullclines.</strong> Sketch \(x\)-nullclines (\(f=0\), motion purely vertical) and \(y\)-nullclines (\(g=0\), motion purely horizontal). Intersections are equilibria.</li>
+        <li style="margin-bottom:5px;"><strong>Linearize.</strong> Compute the Jacobian \(J=\bigl(\begin{smallmatrix}f_x&f_y\\g_x&g_y\end{smallmatrix}\bigr)\) at each equilibrium and classify via eigenvalues of \(J\) (see Step 3 and the table below).</li>
+        <li><strong>Sketch trajectories.</strong> Use nullcline signs and equilibrium types to draw the global phase portrait. Confirm with a numerical solver when needed.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     STEP 5 — NUMERICAL METHODS
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-head" style="margin-top:44px;">Step 5 — Numerical methods (when exact methods fail or are impractical)</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+  <div class="node node-q" style="width:100%;max-width:700px;">
+    <div class="node-label">Notes 14</div>
+    <div class="node-title">Do you need approximate numerical values of a solution?</div>
+    <div class="node-body">Use when: the ODE is nonlinear with no closed form, or the exact solution is too complex to be practical.</div>
+  </div>
+  <div class="tree-vline"></div>
+  <div style="display:flex;width:100%;max-width:700px;position:relative;align-items:flex-start;">
+    <div style="position:absolute;top:0;left:25%;right:25%;height:2px;background:var(--border-strong);"></div>
+    <!-- Euler -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 5px;">
+      <div class="tree-vline"></div>
+      <div class="tree-child-label">Quick estimate, large \(h\) OK</div>
+      <div class="tree-vline"></div>
+      <div class="node node-r" style="width:100%;">
+        <div class="node-label">1st-order method</div>
+        <div class="node-title">Euler's method</div>
+        <div class="node-body">
+          \(t_{n+1}=t_n+h,\quad y_{n+1}=y_n+h\,f(t_n,y_n)\).
+          <br>Global error \(O(h)\). Simple but accumulates error quickly.
+        </div>
+      </div>
+    </div>
+    <!-- RK4 -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 5px;">
+      <div class="tree-vline"></div>
+      <div class="tree-child-label">High accuracy needed</div>
+      <div class="tree-vline"></div>
+      <div class="node node-r" style="width:100%;">
+        <div class="node-label">4th-order method</div>
+        <div class="node-title">Runge–Kutta 4 (RK4)</div>
+        <div class="node-body">
+          Four slope evaluations \(k_1,k_2,k_3,k_4\) per step:
+          \[y_{n+1}=y_n+\tfrac{h}{6}(k_1+2k_2+2k_3+k_4)\]
+          Global error \(O(h^4)\). Standard choice in practice.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SUMMARY TABLE
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-head" style="margin-top:44px;">Quick-reference summary</div>
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden;">
+<table>
+  <thead>
+    <tr>
+      <th>ODE type</th>
+      <th>Key test</th>
+      <th>Method</th>
+      <th>Course notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tbl-type">1st-order, linear</td>
+      <td>Can be written \(x'+p(t)x=q(t)\)</td>
+      <td class="tbl-method">Integrating factor \(\mu=e^{\int p\,dt}\)</td>
+      <td>Notes 2, §1.4</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">1st-order, separable</td>
+      <td>Right side factors as \(g(t)\cdot f(x)\)</td>
+      <td class="tbl-method">Separation of variables</td>
+      <td>Notes 2, §1.3</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">1st-order, autonomous</td>
+      <td>\(x'=f(x)\), no explicit \(t\)</td>
+      <td class="tbl-method">Phase line, equilibria &amp; stability</td>
+      <td>Notes 3, §1.5</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">2nd-order, linear, homogeneous, const. coeff.</td>
+      <td>\(x''+px'+qx=0\)</td>
+      <td class="tbl-method">Characteristic equation (3 cases via \(\Delta\))</td>
+      <td>Notes 4, §2.2</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">2nd-order, nonhomogeneous, const. coeff. — "nice" \(f\)</td>
+      <td>\(f(t)\) is polynomial, \(e^{at}\), \(\sin/\cos\), or products</td>
+      <td class="tbl-method">Undetermined coefficients (+ modification rule)</td>
+      <td>Notes 4, §2.3</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">2nd-order, nonhomogeneous — general \(f\)</td>
+      <td>Any \(f(t)\); variable or constant coefficients</td>
+      <td class="tbl-method">Variation of parameters</td>
+      <td>Notes 5, §2.3–2.4</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">Any linear const. coeff. IVP, esp. with \(u(t)\) or \(\delta(t)\)</td>
+      <td>Initial values given; piecewise or impulsive forcing</td>
+      <td class="tbl-method">Laplace transform (4-step procedure)</td>
+      <td>Notes 6–8, Ch. 3</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">Linear system \(\mathbf{x}'=A\mathbf{x}\)</td>
+      <td>System of 1st-order linear ODEs in matrix form</td>
+      <td class="tbl-method">Eigenvalue–eigenvector method</td>
+      <td>Notes 9–11, Ch. 4</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">Nonlinear system \(x'=f(x,y),\,y'=g(x,y)\)</td>
+      <td>Cannot be linearized globally</td>
+      <td class="tbl-method">Nullclines, linearization via Jacobian, phase portrait</td>
+      <td>Notes 12–13, Ch. 5</td>
+    </tr>
+    <tr>
+      <td class="tbl-type">Any IVP (numerical)</td>
+      <td>Closed-form solution unavailable or impractical</td>
+      <td class="tbl-method">Euler's method (1st order) or RK4 (4th order)</td>
+      <td>Notes 14, Ch. 6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- Footnote -->
+<p style="margin-top:20px;font-size:12px;color:var(--text-mute);text-align:center;">
+  MATH 341 Differential Equations &nbsp;·&nbsp; University of Scranton &nbsp;·&nbsp; Fall 2026 &nbsp;·&nbsp;
+  Textbook: Logan, <em>A First Course in Differential Equations</em>, 3rd ed. &nbsp;·&nbsp;
+  Course site: <a href="https://math341diffeq.netlify.app/" style="color:var(--text-mute);">math341diffeq.netlify.app</a>
+</p>
+
+</main>
+</body>
+</html>
