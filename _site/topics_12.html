@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Hodgkin–Huxley Equations – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./topics.html" aria-current="page"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./topics_12.html">The Hodgkin–Huxley Equations</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Topics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dimensional Analysis and Non-Dimensionalization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bernoulli Equations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linearity and the Principle of Superposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Existence, Uniqueness, and Continuous Dependence</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Mechanics and the Spring–Mass System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RLC Circuits, Filters, and the DC Motor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Power Series Solutions of Differential Equations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Algebra for Applications</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bessel’s Equation and Bessel Functions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Draining Tanks, Coupled Reservoirs, and Drag</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Thermodynamics and Heat Transfer: ODE Applications</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topics_12.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">The Hodgkin–Huxley Equations</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1-the-membrane-as-an-electrical-circuit" id="toc-part-1-the-membrane-as-an-electrical-circuit" class="nav-link active" data-scroll-target="#part-1-the-membrane-as-an-electrical-circuit">Part 1 — The Membrane as an Electrical Circuit</a>
+  <ul class="collapse">
+  <li><a href="#the-cell-membrane-as-a-capacitor" id="toc-the-cell-membrane-as-a-capacitor" class="nav-link" data-scroll-target="#the-cell-membrane-as-a-capacitor">The Cell Membrane as a Capacitor</a></li>
+  </ul></li>
+  <li><a href="#part-2-gating-variables-a-family-of-first-order-linear-odes" id="toc-part-2-gating-variables-a-family-of-first-order-linear-odes" class="nav-link" data-scroll-target="#part-2-gating-variables-a-family-of-first-order-linear-odes">Part 2 — Gating Variables: A Family of First-Order Linear ODEs</a>
+  <ul class="collapse">
+  <li><a href="#each-gate-obeys-a-first-order-linear-ode" id="toc-each-gate-obeys-a-first-order-linear-ode" class="nav-link" data-scroll-target="#each-gate-obeys-a-first-order-linear-ode">Each Gate Obeys a First-Order Linear ODE</a></li>
+  </ul></li>
+  <li><a href="#part-3-the-full-hodgkinhuxley-system" id="toc-part-3-the-full-hodgkinhuxley-system" class="nav-link" data-scroll-target="#part-3-the-full-hodgkinhuxley-system">Part 3 — The Full Hodgkin–Huxley System</a>
+  <ul class="collapse">
+  <li><a href="#simulating-an-action-potential" id="toc-simulating-an-action-potential" class="nav-link" data-scroll-target="#simulating-an-action-potential">Simulating an Action Potential</a></li>
+  </ul></li>
+  <li><a href="#part-4-threshold-refractoriness-and-the-firing-rate-curve" id="toc-part-4-threshold-refractoriness-and-the-firing-rate-curve" class="nav-link" data-scroll-target="#part-4-threshold-refractoriness-and-the-firing-rate-curve">Part 4 — Threshold, Refractoriness, and the Firing-Rate Curve</a>
+  <ul class="collapse">
+  <li><a href="#all-or-none-threshold-behavior" id="toc-all-or-none-threshold-behavior" class="nav-link" data-scroll-target="#all-or-none-threshold-behavior">All-or-None Threshold Behavior</a></li>
+  <li><a href="#the-frequencycurrent-fi-curve" id="toc-the-frequencycurrent-fi-curve" class="nav-link" data-scroll-target="#the-frequencycurrent-fi-curve">The Frequency–Current (f–I) Curve</a></li>
+  </ul></li>
+  <li><a href="#part-5-phase-plane-reduction-the-fitzhughnagumo-model" id="toc-part-5-phase-plane-reduction-the-fitzhughnagumo-model" class="nav-link" data-scroll-target="#part-5-phase-plane-reduction-the-fitzhughnagumo-model">Part 5 — Phase-Plane Reduction: The FitzHugh–Nagumo Model</a></li>
+  <li><a href="#connecting-the-applications" id="toc-connecting-the-applications" class="nav-link" data-scroll-target="#connecting-the-applications">Connecting the Applications</a></li>
+  <li><a href="#relevant-videos" id="toc-relevant-videos" class="nav-link" data-scroll-target="#relevant-videos">Relevant Videos</a>
+  <ul class="collapse">
+  <li><a href="#the-hodgkinhuxley-model" id="toc-the-hodgkinhuxley-model" class="nav-link" data-scroll-target="#the-hodgkinhuxley-model">The Hodgkin–Huxley Model:</a></li>
+  </ul></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="topics_12.ipynb" download="topics_12.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Hodgkin–Huxley Equations</h1>
+<p class="subtitle lead">Nonlinear ODEs, Systems, and Numerical Methods in Electrophysiology</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="09d81241" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> find_peaks</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Nerve and muscle cells are <strong>excitable</strong>: a small electrical stimulus can trigger a brief, stereotyped spike in voltage across the cell membrane called an <strong><a href="https://en.wikipedia.org/wiki/Action_potential">action potential</a></strong>. In the 1950s <a href="https://en.wikipedia.org/wiki/Hodgkin%E2%80%93Huxley_model">Alan Hodgkin and Andrew Huxley</a> combined careful voltage-clamp experiments on the squid giant axon with exactly the kind of ODE modeling done in this course to produce a system of equations that quantitatively reproduces the action potential. Their model — now called the <strong>Hodgkin–Huxley (HH) equations</strong> — earned them a share of the 1963 Nobel Prize in Physiology or Medicine and remains the foundation of mathematical and computational neuroscience.</p>
+<p>This section of notes touches nearly every topic in the course:</p>
+<ol type="1">
+<li><strong>The membrane as a circuit</strong> — the membrane potential obeys a first-order nonlinear ODE that, in the passive (subthreshold) regime, reduces exactly to the <em>RC circuit</em> of Topics 6.</li>
+<li><strong>Gating variables</strong> — each one obeys a first-order <strong>linear</strong> ODE (Notes 2) whose coefficients happen to depend on the voltage, giving an exact solution by the integrating-factor method at any fixed voltage.</li>
+<li><strong>The full HH system</strong> — four coupled nonlinear ODEs with no closed-form solution, motivating the numerical methods (Chapter on numerical methods) used throughout the course.</li>
+<li><strong>Threshold, refractoriness, and firing rate</strong> — nonlinear phenomena with no linear-ODE analogue.</li>
+<li><strong>Phase-plane reduction and the FitzHugh–Nagumo model</strong> — a 2D nonlinear system whose equilibria, nullclines, and limit cycle can be analyzed with the qualitative tools from the nonlinear systems chapter.</li>
+</ol>
+<hr>
+<section id="part-1-the-membrane-as-an-electrical-circuit" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-the-membrane-as-an-electrical-circuit">Part 1 — The Membrane as an Electrical Circuit</h2>
+<section id="the-cell-membrane-as-a-capacitor" class="level3">
+<h3 class="anchored" data-anchor-id="the-cell-membrane-as-a-capacitor">The Cell Membrane as a Capacitor</h3>
+<p>A cell membrane separates charge, so it behaves like a <strong>capacitor</strong>. If <span class="math inline">\(V(t)\)</span> denotes the membrane potential (in mV, with <span class="math inline">\(t\)</span> measured in ms) and <span class="math inline">\(Q\)</span> is the charge separated across the membrane, then <span class="math inline">\(Q = C_m V\)</span> for a (constant) membrane capacitance <span class="math inline">\(C_m\)</span>. Differentiating and using <span class="math inline">\(dQ/dt = I_{\text{total}}\)</span>: <span class="math display">\[
+C_m\,\frac{dV}{dt} = I_{\text{total}}.
+\]</span> Hodgkin and Huxley determined experimentally that the total membrane current is the sum of a sodium current, a potassium current, a “leak” current carried by other ions, and any externally applied (experimental or synaptic) current <span class="math inline">\(I_{\text{ext}}(t)\)</span>: <span class="math display">\[
+C_m\,\frac{dV}{dt} = -I_{\text{Na}} - I_{\text{K}} - I_{\text{L}} + I_{\text{ext}}(t).
+\]</span> Each ionic current obeys an <strong><a href="https://en.wikipedia.org/wiki/Ohm%27s_law">Ohm’s law</a></strong> relationship — current is proportional to the <em>driving force</em> (the difference between <span class="math inline">\(V\)</span> and the ion’s reversal potential): <span class="math display">\[
+I_{\text{Na}} = g_{\text{Na}}(V - E_{\text{Na}}), \qquad
+I_{\text{K}} = g_{\text{K}}(V - E_{\text{K}}), \qquad
+I_{\text{L}} = g_{\text{L}}(V - E_{\text{L}}),
+\]</span> where <span class="math inline">\(E_{\text{Na}}, E_{\text{K}}, E_{\text{L}}\)</span> are constant <strong><a href="https://en.wikipedia.org/wiki/Reversal_potential">reversal potentials</a></strong> and <span class="math inline">\(g_{\text{Na}}, g_{\text{K}}, g_{\text{L}}\)</span> are <strong>conductances</strong> (reciprocal resistances). Putting this together: <span class="math display">\[
+\boxed{C_m\,\frac{dV}{dt} = -g_{\text{Na}}(V-E_{\text{Na}}) - g_{\text{K}}(V-E_{\text{K}}) - g_{\text{L}}(V-E_{\text{L}}) + I_{\text{ext}}(t).} \tag{HH-V}
+\]</span> This already looks like the RC-filter ODE of Topics 6 — and if the conductances were constant, it <em>would be</em> an RC circuit.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Connection to Topics 6: The Passive Membrane Is an RC Circuit
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(g_{\text{Na}}\)</span>, <span class="math inline">\(g_{\text{K}}\)</span>, and <span class="math inline">\(g_{\text{L}}\)</span> are all held fixed (the <strong>passive</strong>, or subthreshold, regime), (HH-V) is a <strong>first-order linear ODE</strong> exactly like the RC-circuit equation from Topics 6. Writing <span class="math inline">\(g_{\text{tot}} = g_{\text{Na}} + g_{\text{K}} + g_{\text{L}}\)</span> and combining the three driving terms into a single effective (Thévenin) reversal potential <span class="math inline">\(E_{\text{rest}} = (g_{\text{Na}}E_{\text{Na}} + g_{\text{K}}E_{\text{K}} + g_{\text{L}}E_{\text{L}})/g_{\text{tot}}\)</span>: <span class="math display">\[
+\tau_m\,\frac{dV}{dt} + V = E_{\text{rest}} + \frac{I_{\text{ext}}(t)}{g_{\text{tot}}}, \qquad
+\tau_m = \frac{C_m}{g_{\text{tot}}}.
+\]</span> This is precisely equation (RC) from Topics 6 with <span class="math inline">\(R \to 1/g_{\text{tot}}\)</span> and <span class="math inline">\(E_0 \to E_{\text{rest}}\)</span>. The <strong>membrane time constant</strong> <span class="math inline">\(\tau_m\)</span> plays the same role as the RC time constant <span class="math inline">\(\tau = RC\)</span>: it sets how quickly a small stimulus decays away, and it is one to two orders of magnitude <em>slower</em> than the spike itself. What makes the neuron interesting — and nonlinear — is that <span class="math inline">\(g_{\text{Na}}\)</span> and <span class="math inline">\(g_{\text{K}}\)</span> are <strong>not</strong> constant: they are themselves dynamical variables that depend on <span class="math inline">\(V\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-2-gating-variables-a-family-of-first-order-linear-odes" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-gating-variables-a-family-of-first-order-linear-odes">Part 2 — Gating Variables: A Family of First-Order Linear ODEs</h2>
+<p>Hodgkin and Huxley found that the leak conductance <span class="math inline">\(g_{\text{L}}\)</span> is constant, but the sodium and potassium conductances vary with both time and voltage according to <span class="math display">\[
+g_{\text{Na}}(t) = \bar{g}_{\text{Na}}\,m(t)^3 h(t), \qquad
+g_{\text{K}}(t) = \bar{g}_{\text{K}}\,n(t)^4,
+\]</span> where <span class="math inline">\(\bar{g}_{\text{Na}}\)</span> and <span class="math inline">\(\bar{g}_{\text{K}}\)</span> are constants (the maximal conductances) and <span class="math inline">\(m\)</span>, <span class="math inline">\(h\)</span>, <span class="math inline">\(n\)</span> are dimensionless <strong>gating variables</strong> taking values in <span class="math inline">\([0,1]\)</span>. Biophysically, a sodium channel is imagined to have three fast “activation” gates (each open with probability <span class="math inline">\(m\)</span>) and one slower “inactivation” gate (open with probability <span class="math inline">\(h\)</span>), so the fraction of open sodium channels is <span class="math inline">\(m^3h\)</span>; a potassium channel has four activation gates, each open with probability <span class="math inline">\(n\)</span>, so the fraction of open potassium channels is <span class="math inline">\(n^4\)</span>.</p>
+<section id="each-gate-obeys-a-first-order-linear-ode" class="level3">
+<h3 class="anchored" data-anchor-id="each-gate-obeys-a-first-order-linear-ode">Each Gate Obeys a First-Order Linear ODE</h3>
+<p>Each gating variable <span class="math inline">\(x \in \{m,h,n\}\)</span> opens at rate <span class="math inline">\(\alpha_x(V)\)</span> and closes at rate <span class="math inline">\(\beta_x(V)\)</span>, giving a <strong>linear kinetic equation</strong> <span class="math display">\[
+\frac{dx}{dt} = \alpha_x(V)(1-x) - \beta_x(V)\,x
+= \frac{x_\infty(V) - x}{\tau_x(V)}, \tag{Gate}
+\]</span> where <span class="math display">\[
+x_\infty(V) = \frac{\alpha_x(V)}{\alpha_x(V)+\beta_x(V)}, \qquad
+\tau_x(V) = \frac{1}{\alpha_x(V)+\beta_x(V)}.
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Connection to Notes 2: An Exact Solution by Integrating Factors
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(V\)</span> is held <strong>fixed</strong>, (Gate) is exactly the first-order linear ODE <span class="math inline">\(x' + x/\tau_x = x_\infty/\tau_x\)</span> solved in Notes 2 by an integrating factor. Its solution is <span class="math display">\[
+x(t) = x_\infty(V) + \big(x(0) - x_\infty(V)\big)e^{-t/\tau_x(V)}.
+\]</span> So <span class="math inline">\(x_\infty(V)\)</span> is the equilibrium value the gate relaxes <em>toward</em>, and <span class="math inline">\(\tau_x(V)\)</span> is the time constant governing <em>how fast</em> it gets there — both of which happen to depend on the (slowly or quickly) changing voltage <span class="math inline">\(V\)</span>. This is what makes the full system nonlinear: <span class="math inline">\(V\)</span> and <span class="math inline">\(x\)</span> are coupled through each other’s equations.</p>
+</div>
+</div>
+<p>The functions <span class="math inline">\(\alpha_x(V)\)</span> and <span class="math inline">\(\beta_x(V)\)</span> were fit by Hodgkin and Huxley to their voltage-clamp data. The classical forms (in mV and ms) are: <span class="math display">\[
+\begin{aligned}
+\alpha_m(V) &amp;= \frac{0.1(V+40)}{1-e^{-(V+40)/10}}, &amp;
+\beta_m(V) &amp;= 4\,e^{-(V+65)/18}, \\[4pt]
+\alpha_h(V) &amp;= 0.07\,e^{-(V+65)/20}, &amp;
+\beta_h(V) &amp;= \frac{1}{1+e^{-(V+35)/10}}, \\[4pt]
+\alpha_n(V) &amp;= \frac{0.01(V+55)}{1-e^{-(V+55)/10}}, &amp;
+\beta_n(V) &amp;= 0.125\,e^{-(V+65)/80}.
+\end{aligned}
+\]</span></p>
+<div id="cell-fig-gating" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> alpha_m(V): <span class="cf">return</span> <span class="fl">0.1</span><span class="op">*</span>(V<span class="op">+</span><span class="fl">40.0</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>np.exp(<span class="op">-</span>(V<span class="op">+</span><span class="fl">40.0</span>)<span class="op">/</span><span class="fl">10.0</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> beta_m(V):  <span class="cf">return</span> <span class="fl">4.0</span><span class="op">*</span>np.exp(<span class="op">-</span>(V<span class="op">+</span><span class="fl">65.0</span>)<span class="op">/</span><span class="fl">18.0</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> alpha_h(V): <span class="cf">return</span> <span class="fl">0.07</span><span class="op">*</span>np.exp(<span class="op">-</span>(V<span class="op">+</span><span class="fl">65.0</span>)<span class="op">/</span><span class="fl">20.0</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> beta_h(V):  <span class="cf">return</span> <span class="fl">1.0</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>np.exp(<span class="op">-</span>(V<span class="op">+</span><span class="fl">35.0</span>)<span class="op">/</span><span class="fl">10.0</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> alpha_n(V): <span class="cf">return</span> <span class="fl">0.01</span><span class="op">*</span>(V<span class="op">+</span><span class="fl">55.0</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>np.exp(<span class="op">-</span>(V<span class="op">+</span><span class="fl">55.0</span>)<span class="op">/</span><span class="fl">10.0</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> beta_n(V):  <span class="cf">return</span> <span class="fl">0.125</span><span class="op">*</span>np.exp(<span class="op">-</span>(V<span class="op">+</span><span class="fl">65.0</span>)<span class="op">/</span><span class="fl">80.0</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>V_range <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">400</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>m_inf <span class="op">=</span> alpha_m(V_range)<span class="op">/</span>(alpha_m(V_range)<span class="op">+</span>beta_m(V_range))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>h_inf <span class="op">=</span> alpha_h(V_range)<span class="op">/</span>(alpha_h(V_range)<span class="op">+</span>beta_h(V_range))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>n_inf <span class="op">=</span> alpha_n(V_range)<span class="op">/</span>(alpha_n(V_range)<span class="op">+</span>beta_n(V_range))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>tau_m <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(alpha_m(V_range)<span class="op">+</span>beta_m(V_range))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>tau_h <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(alpha_h(V_range)<span class="op">+</span>beta_h(V_range))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>tau_n <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(alpha_n(V_range)<span class="op">+</span>beta_n(V_range))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(V_range, m_inf, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$m_</span><span class="ch">\\</span><span class="st">infty(V)$'</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(V_range, h_inf, color<span class="op">=</span><span class="st">'crimson'</span>,   lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$h_</span><span class="ch">\\</span><span class="st">infty(V)$'</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(V_range, n_inf, color<span class="op">=</span><span class="st">'darkorange'</span>,lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$n_</span><span class="ch">\\</span><span class="st">infty(V)$'</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'V (mV)'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Steady-state value'</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Activation/inactivation curves'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(V_range, tau_m, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$</span><span class="ch">\\</span><span class="st">tau_m(V)$'</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(V_range, tau_h, color<span class="op">=</span><span class="st">'crimson'</span>,   lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$</span><span class="ch">\\</span><span class="st">tau_h(V)$'</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(V_range, tau_n, color<span class="op">=</span><span class="st">'darkorange'</span>,lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$</span><span class="ch">\\</span><span class="st">tau_n(V)$'</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'V (mV)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Time constant (ms)'</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Voltage-dependent time constants'</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-gating" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_12_files/figure-html/fig-gating-output-1.png" width="1635" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Steady-state activation curves <span class="math inline">\(x_\infty(V)\)</span> (left) and time constants <span class="math inline">\(\tau_x(V)\)</span> (right) for the three Hodgkin–Huxley gating variables. Note that <span class="math inline">\(\tau_m\)</span> is roughly an order of magnitude smaller than <span class="math inline">\(\tau_h\)</span> and <span class="math inline">\(\tau_n\)</span> — the sodium activation gate <span class="math inline">\(m\)</span> responds much faster to voltage changes than <span class="math inline">\(h\)</span> or <span class="math inline">\(n\)</span>, which drives the sharp upstroke of the action potential.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that <span class="math inline">\(m_\infty\)</span> and <span class="math inline">\(n_\infty\)</span> <strong>increase</strong> with <span class="math inline">\(V\)</span> (so <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> are called <em>activation</em> variables), while <span class="math inline">\(h_\infty\)</span> <strong>decreases</strong> with <span class="math inline">\(V\)</span> (so <span class="math inline">\(h\)</span> is called an <em>inactivation</em> variable). Also, <span class="math inline">\(\tau_m\)</span> is much smaller than <span class="math inline">\(\tau_h\)</span> and <span class="math inline">\(\tau_n\)</span> across the relevant voltage range — the sodium activation gate reacts almost instantaneously to a change in <span class="math inline">\(V\)</span>, while inactivation and potassium activation lag behind. This separation of time scales is what produces the sharp upstroke of the action potential followed by a slower recovery.</p>
+<hr>
+</section>
+</section>
+<section id="part-3-the-full-hodgkinhuxley-system" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-the-full-hodgkinhuxley-system">Part 3 — The Full Hodgkin–Huxley System</h2>
+<p>Combining (HH-V) with one copy of (Gate) for each of <span class="math inline">\(m,h,n\)</span> gives the complete <strong>Hodgkin–Huxley system</strong>, a coupled system of four nonlinear ODEs: <span class="math display">\[
+\boxed{
+\begin{aligned}
+C_m\,\frac{dV}{dt} &amp;= \bar{g}_{\text{Na}}m^3h(E_{\text{Na}}-V) + \bar{g}_{\text{K}}n^4(E_{\text{K}}-V) + \bar{g}_{\text{L}}(E_{\text{L}}-V) + I_{\text{ext}}(t), \\
+\frac{dm}{dt} &amp;= \alpha_m(V)(1-m) - \beta_m(V)m, \\
+\frac{dh}{dt} &amp;= \alpha_h(V)(1-h) - \beta_h(V)h, \\
+\frac{dn}{dt} &amp;= \alpha_n(V)(1-n) - \beta_n(V)n.
+\end{aligned}}
+\tag{HH}
+\]</span> This is a genuine <strong>first-order system</strong> in the sense of Chapter 3 of the course — four unknowns, four first-order ODEs — but it is <strong>nonlinear</strong> because <span class="math inline">\(\alpha_x(V)\)</span> and <span class="math inline">\(\beta_x(V)\)</span> depend on <span class="math inline">\(V\)</span>, and the <span class="math inline">\(V\)</span>-equation contains products like <span class="math inline">\(m^3h\,V\)</span>. There is no way to write down a closed-form solution, so we turn to <strong>numerical methods</strong>: we discretize and step the system forward with <code>scipy.integrate.solve_ivp</code>, exactly the tool used elsewhere in the course for nonlinear systems.</p>
+<p>The standard parameter values for the squid giant axon (with <span class="math inline">\(C_m\)</span> in <span class="math inline">\(\mu\text{F}/\text{cm}^2\)</span>, conductances in <span class="math inline">\(\text{mS}/\text{cm}^2\)</span>, and current density in <span class="math inline">\(\mu\text{A}/\text{cm}^2\)</span>) are:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th style="text-align: center;">Value</th>
+<th>Parameter</th>
+<th style="text-align: center;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(C_m\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1\)</span></td>
+<td></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\bar{g}_{\text{Na}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(120\)</span></td>
+<td><span class="math inline">\(E_{\text{Na}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(50\)</span> mV</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\bar{g}_{\text{K}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(36\)</span></td>
+<td><span class="math inline">\(E_{\text{K}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-77\)</span> mV</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\bar{g}_{\text{L}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.3\)</span></td>
+<td><span class="math inline">\(E_{\text{L}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-54.387\)</span> mV</td>
+</tr>
+</tbody>
+</table>
+<div id="7b650c25" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Cm  <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>gNa, ENa <span class="op">=</span> <span class="fl">120.0</span>, <span class="fl">50.0</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>gK,  EK  <span class="op">=</span> <span class="fl">36.0</span>, <span class="op">-</span><span class="fl">77.0</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>gL,  EL  <span class="op">=</span> <span class="fl">0.3</span>,  <span class="op">-</span><span class="fl">54.387</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hh_rhs(t, y, I_ext):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    V, m, h, n <span class="op">=</span> y</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    INa <span class="op">=</span> gNa<span class="op">*</span>m<span class="op">**</span><span class="dv">3</span><span class="op">*</span>h<span class="op">*</span>(V<span class="op">-</span>ENa)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    IK  <span class="op">=</span> gK<span class="op">*</span>n<span class="op">**</span><span class="dv">4</span><span class="op">*</span>(V<span class="op">-</span>EK)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    IL  <span class="op">=</span> gL<span class="op">*</span>(V<span class="op">-</span>EL)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    dV <span class="op">=</span> (I_ext(t) <span class="op">-</span> INa <span class="op">-</span> IK <span class="op">-</span> IL)<span class="op">/</span>Cm</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    dm <span class="op">=</span> alpha_m(V)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>m) <span class="op">-</span> beta_m(V)<span class="op">*</span>m</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    dh <span class="op">=</span> alpha_h(V)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>h) <span class="op">-</span> beta_h(V)<span class="op">*</span>h</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    dn <span class="op">=</span> alpha_n(V)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>n) <span class="op">-</span> beta_n(V)<span class="op">*</span>n</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dV, dm, dh, dn]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># resting initial condition: hold V fixed at V0 and let gates reach x_inf(V0)</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>V0 <span class="op">=</span> <span class="op">-</span><span class="fl">65.0</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> alpha_m(V0)<span class="op">/</span>(alpha_m(V0)<span class="op">+</span>beta_m(V0))</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>h0 <span class="op">=</span> alpha_h(V0)<span class="op">/</span>(alpha_h(V0)<span class="op">+</span>beta_h(V0))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>n0 <span class="op">=</span> alpha_n(V0)<span class="op">/</span>(alpha_n(V0)<span class="op">+</span>beta_n(V0))</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> [V0, m0, h0, n0]</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Resting state: V0=</span><span class="sc">{</span>V0<span class="sc">}</span><span class="ss"> mV, m0=</span><span class="sc">{</span>m0<span class="sc">:.4f}</span><span class="ss">, h0=</span><span class="sc">{</span>h0<span class="sc">:.4f}</span><span class="ss">, n0=</span><span class="sc">{</span>n0<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Resting state: V0=-65.0 mV, m0=0.0529, h0=0.5961, n0=0.3177</code></pre>
+</div>
+</div>
+<p>Note how the resting values <span class="math inline">\((m_0,h_0,n_0)\)</span> are obtained: they are just <span class="math inline">\(x_\infty(V_0)\)</span> from Part 2, evaluated at rest — the equilibrium of the first-order linear ODE (Gate) with <span class="math inline">\(V\)</span> frozen at <span class="math inline">\(V_0\)</span>.</p>
+<section id="simulating-an-action-potential" class="level3">
+<h3 class="anchored" data-anchor-id="simulating-an-action-potential">Simulating an Action Potential</h3>
+<p>We now inject a step current <span class="math inline">\(I_{\text{ext}}(t) = 10\ \mu\text{A/cm}^2\)</span> for <span class="math inline">\(5 \le t \le 60\)</span> ms and solve (HH) numerically.</p>
+<div id="cell-fig-ap" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pulse(t, t_on<span class="op">=</span><span class="dv">5</span>, t_off<span class="op">=</span><span class="dv">60</span>, amp<span class="op">=</span><span class="fl">10.0</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> amp <span class="cf">if</span> t_on <span class="op">&lt;=</span> t <span class="op">&lt;=</span> t_off <span class="cf">else</span> <span class="fl">0.0</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="op">*</span>t_span, <span class="dv">4000</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(hh_rhs, t_span, y0, args<span class="op">=</span>(<span class="kw">lambda</span> t: pulse(t),),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                 t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">6.5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvspan(<span class="dv">5</span>, <span class="dv">60</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.15</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="st">'$I_</span><span class="sc">{ext}</span><span class="st">=10</span><span class="ch">\\</span><span class="st">,</span><span class="ch">\\</span><span class="st">mu A/cm^2$'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'V (mV)'</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Membrane potential'</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(sol.t, sol.y[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'steelblue'</span>,  lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'$m(t)$'</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(sol.t, sol.y[<span class="dv">2</span>], color<span class="op">=</span><span class="st">'crimson'</span>,    lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'$h(t)$'</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(sol.t, sol.y[<span class="dv">3</span>], color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'$n(t)$'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'t (ms)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Gating variable'</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Gating variables'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_12_files/figure-html/fig-ap-output-1.png" width="1334" height="960" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: A single Hodgkin–Huxley action potential in response to a step current of <span class="math inline">\(10\,\mu\text{A/cm}^2\)</span> (shaded region). Top: membrane potential <span class="math inline">\(V(t)\)</span> — a slow rise to threshold followed by a rapid spike and an after-hyperpolarization, exactly the shape described in the Background. Bottom: the gating variables <span class="math inline">\(m\)</span>, <span class="math inline">\(h\)</span>, <span class="math inline">\(n\)</span>. Sodium activation <span class="math inline">\(m\)</span> turns on almost instantly at threshold; inactivation <span class="math inline">\(h\)</span> then shuts the sodium channel down while potassium activation <span class="math inline">\(n\)</span> (slower still) repolarizes the membrane.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The simulation reproduces the classic action potential shape: the voltage sits at rest (<span class="math inline">\(\approx -65\)</span> mV) until the injected current is applied, rises slowly, crosses a threshold near <span class="math inline">\(-55\)</span> mV, spikes rapidly to about <span class="math inline">\(+40\)</span> mV as <span class="math inline">\(m\)</span> shoots up, and then is driven back down (even briefly below rest — an <em>after-hyperpolarization</em>) as <span class="math inline">\(h\)</span> shuts off the sodium current and <span class="math inline">\(n\)</span> turns on the (slower) potassium current.</p>
+<hr>
+</section>
+</section>
+<section id="part-4-threshold-refractoriness-and-the-firing-rate-curve" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-threshold-refractoriness-and-the-firing-rate-curve">Part 4 — Threshold, Refractoriness, and the Firing-Rate Curve</h2>
+<section id="all-or-none-threshold-behavior" class="level3">
+<h3 class="anchored" data-anchor-id="all-or-none-threshold-behavior">All-or-None Threshold Behavior</h3>
+<p>Unlike a linear ODE, whose response scales smoothly with the size of the input, the HH system exhibits <strong>threshold</strong> behavior: sufficiently small currents produce only a small, decaying voltage bump, while currents above a threshold trigger a full-blown spike whose <em>shape</em> barely depends on how far above threshold the input is. This is the “all-or-none” principle of neurophysiology, and it is a genuinely nonlinear phenomenon.</p>
+<div id="cell-fig-threshold" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">7.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>amps <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.viridis(np.linspace(<span class="fl">0.15</span>, <span class="fl">0.85</span>, <span class="bu">len</span>(amps)))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> amp, color <span class="kw">in</span> <span class="bu">zip</span>(amps, colors):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(hh_rhs, (<span class="dv">0</span>, <span class="dv">60</span>), y0,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                     args<span class="op">=</span>(<span class="kw">lambda</span> t, amp<span class="op">=</span>amp: pulse(t, <span class="dv">5</span>, <span class="dv">60</span>, amp),),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                     t_eval<span class="op">=</span>np.linspace(<span class="dv">0</span>, <span class="dv">60</span>, <span class="dv">3000</span>), max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="ss">f'$I=</span><span class="sc">{</span>amp<span class="sc">}</span><span class="ch">\\</span><span class="ss">,</span><span class="ch">\\</span><span class="ss">mu A/cm^2$'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'t (ms)'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'V (mV)'</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Response to current pulses of increasing amplitude'</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_12_files/figure-html/fig-threshold-output-1.png" width="1109" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: All-or-none threshold behavior. A brief current pulse (<span class="math inline">\(5\)</span>–<span class="math inline">\(60\)</span> ms) of increasing amplitude is applied to a resting neuron. Below roughly <span class="math inline">\(I\approx2\)</span>–<span class="math inline">\(3\,\mu\text{A/cm}^2\)</span> the response is a small subthreshold bump that decays passively (as in the RC-circuit callout above); above threshold, a full spike of essentially fixed amplitude and shape is triggered, regardless of exactly how large the stimulus is.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-frequencycurrent-fi-curve" class="level3">
+<h3 class="anchored" data-anchor-id="the-frequencycurrent-fi-curve">The Frequency–Current (f–I) Curve</h3>
+<p>For a sustained current, the HH neuron settles into a repetitive firing pattern once <span class="math inline">\(I_{\text{ext}}\)</span> exceeds a critical value. Plotting the resulting firing rate against the applied current gives the <strong>f–I curve</strong>, a standard tool for characterizing excitability.</p>
+<div id="cell-fig-fi-curve" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>I_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">25</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>rates <span class="op">=</span> []</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> I_amp <span class="kw">in</span> I_vals:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(hh_rhs, (<span class="dv">0</span>, <span class="dv">300</span>), y0,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                     args<span class="op">=</span>(<span class="kw">lambda</span> t, amp<span class="op">=</span>I_amp: pulse(t, <span class="dv">5</span>, <span class="dv">300</span>, amp),),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                     t_eval<span class="op">=</span>np.linspace(<span class="dv">0</span>, <span class="dv">300</span>, <span class="dv">15000</span>), max_step<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    peaks, _ <span class="op">=</span> find_peaks(sol.y[<span class="dv">0</span>], height<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    peak_t <span class="op">=</span> sol.t[peaks]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    peak_t <span class="op">=</span> peak_t[peak_t <span class="op">&gt;</span> <span class="dv">20</span>]           <span class="co"># discard transient</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    rate <span class="op">=</span> <span class="fl">1000.0</span><span class="op">/</span>np.mean(np.diff(peak_t)) <span class="cf">if</span> <span class="bu">len</span>(peak_t) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="fl">0.0</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    rates.append(rate)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">6.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ax.plot(I_vals, rates, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$I_</span><span class="sc">{ext}</span><span class="st">$ ($</span><span class="ch">\\</span><span class="st">mu A/cm^2$)'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Firing rate (Hz)'</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'f–I curve'</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-fi-curve" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fi-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_12_files/figure-html/fig-fi-curve-output-1.png" width="960" height="657" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fi-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Frequency–current (f–I) curve for the Hodgkin–Huxley model: steady-state firing rate versus a sustained applied current. Firing turns on abruptly at a critical current rather than rising smoothly from zero — a signature of the underlying Hopf bifurcation in the nonlinear system, which guarantees a minimum nonzero firing rate.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why the Jump? A Hint of Bifurcation Theory
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As <span class="math inline">\(I_{\text{ext}}\)</span> is increased quasi-statically, the resting equilibrium of the HH system loses stability at a critical current through a <strong><a href="https://en.wikipedia.org/wiki/Hopf_bifurcation">Hopf bifurcation</a></strong> — the same qualitative event that, for a linear system, would correspond to a pair of complex eigenvalues crossing the imaginary axis. Past that critical current, trajectories are attracted to a stable limit cycle whose period (hence firing rate) is bounded away from zero, which is exactly the jump seen in the f–I curve above. Making this precise is beyond the scope of this course, but the underlying idea — eigenvalues of a linearization determining stability — is the same one used for linear systems in Chapter 3.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-5-phase-plane-reduction-the-fitzhughnagumo-model" class="level2">
+<h2 class="anchored" data-anchor-id="part-5-phase-plane-reduction-the-fitzhughnagumo-model">Part 5 — Phase-Plane Reduction: The FitzHugh–Nagumo Model</h2>
+<p>The full HH system lives in four dimensions and cannot be visualized directly with a phase portrait. A standard simplification exploits two observations: (i) <span class="math inline">\(m\)</span> relaxes so quickly (<span class="math inline">\(\tau_m\)</span> is tiny) that we may set <span class="math inline">\(m \approx m_\infty(V)\)</span> at all times, and (ii) <span class="math inline">\(h+n\)</span> stays nearly constant along trajectories, so <span class="math inline">\(h\)</span> can be eliminated in terms of <span class="math inline">\(n\)</span>. This leaves a <strong>two-dimensional</strong> nonlinear system in <span class="math inline">\((V,n)\)</span> that can be studied with the nullcline and phase-portrait tools from the nonlinear-systems chapter.</p>
+<p>Replacing the (complicated) HH nullclines with the simplest curves that have the same qualitative shape — a cubic for the fast (<span class="math inline">\(V\)</span>-like) variable and a straight line for the slow (recovery) variable — gives the classical <strong><a href="http://www.scholarpedia.org/article/FitzHugh-Nagumo_model">FitzHugh–Nagumo (FHN) model</a></strong>: <span class="math display">\[
+\boxed{
+\begin{aligned}
+\frac{dv}{dt} &amp;= v - \frac{v^3}{3} - w + I, \\
+\frac{dw}{dt} &amp;= \varepsilon\,(v + a - bw),
+\end{aligned}}
+\tag{FHN}
+\]</span> where <span class="math inline">\(v\)</span> plays the role of the (rescaled) membrane potential, <span class="math inline">\(w\)</span> is a single lumped recovery variable standing in for <span class="math inline">\(h\)</span> and <span class="math inline">\(n\)</span> together, <span class="math inline">\(I\)</span> is an applied current, and <span class="math inline">\(0 &lt; \varepsilon \ll 1\)</span> enforces the same separation of time scales seen in the HH gating variables (<span class="math inline">\(v\)</span> is “fast,” <span class="math inline">\(w\)</span> is “slow”). This is a genuinely <strong>nonlinear autonomous system</strong> — its equilibria and their stability can be studied with the linearization (Jacobian) techniques of the nonlinear-systems chapter, while its full trajectories require numerical methods.</p>
+<div id="cell-fig-fhn" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a_fhn, b_fhn, eps_fhn <span class="op">=</span> <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.08</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fhn(t, y, I):</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    v, w <span class="op">=</span> y</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    dv <span class="op">=</span> v <span class="op">-</span> v<span class="op">**</span><span class="dv">3</span><span class="op">/</span><span class="dv">3</span> <span class="op">-</span> w <span class="op">+</span> I</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    dw <span class="op">=</span> eps_fhn<span class="op">*</span>(v <span class="op">+</span> a_fhn <span class="op">-</span> b_fhn<span class="op">*</span>w)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dv, dw]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>v_arr <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="dv">300</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>w_null <span class="op">=</span> (v_arr <span class="op">+</span> a_fhn)<span class="op">/</span>b_fhn</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>cases <span class="op">=</span> [(<span class="fl">0.0</span>, <span class="st">'steelblue'</span>, <span class="st">'$I=0$ (excitable)'</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>         (<span class="fl">0.5</span>, <span class="st">'crimson'</span>,   <span class="st">'$I=0.5$ (oscillatory)'</span>)]</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> I, color, lbl <span class="kw">in</span> cases:</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    v_null <span class="op">=</span> v_arr <span class="op">-</span> v_arr<span class="op">**</span><span class="dv">3</span><span class="op">/</span><span class="dv">3</span> <span class="op">+</span> I</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(fhn, (<span class="dv">0</span>, <span class="dv">300</span>), [<span class="op">-</span><span class="fl">1.0</span>, <span class="op">-</span><span class="fl">0.5</span>], args<span class="op">=</span>(I,), max_step<span class="op">=</span><span class="fl">0.02</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                     t_eval<span class="op">=</span>np.linspace(<span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">3000</span>))</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(v_arr, v_null, color<span class="op">=</span>color, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(sol.y[<span class="dv">0</span>], sol.y[<span class="dv">1</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(v_arr, w_null, color<span class="op">=</span><span class="st">'k'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.3</span>, label<span class="op">=</span><span class="st">'$w$-nullcline'</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="fl">2.5</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'v'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'w'</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Phase plane: nullclines and trajectories'</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> I, color, lbl <span class="kw">in</span> cases:</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(fhn, (<span class="dv">0</span>, <span class="dv">200</span>), [<span class="op">-</span><span class="fl">1.0</span>, <span class="op">-</span><span class="fl">0.5</span>], args<span class="op">=</span>(I,), max_step<span class="op">=</span><span class="fl">0.02</span>,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>                     t_eval<span class="op">=</span>np.linspace(<span class="dv">0</span>, <span class="dv">200</span>, <span class="dv">4000</span>))</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'t'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'v(t)'</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Time series'</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-fhn" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fhn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_12_files/figure-html/fig-fhn-output-1.png" width="1634" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fhn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: The FitzHugh–Nagumo reduction (<span class="math inline">\(a=0.7\)</span>, <span class="math inline">\(b=0.8\)</span>, <span class="math inline">\(\varepsilon=0.08\)</span>). Left: phase plane with the cubic <span class="math inline">\(v\)</span>-nullcline, the linear <span class="math inline">\(w\)</span>-nullcline, and two trajectories. For <span class="math inline">\(I=0\)</span> the single equilibrium is a stable spiral (excitable, no sustained firing); for <span class="math inline">\(I=0.5\)</span> the equilibrium has lost stability and trajectories are attracted to a stable limit cycle (sustained oscillation/repetitive firing). Right: the corresponding time series <span class="math inline">\(v(t)\)</span> — a single excitable pulse versus sustained periodic spiking.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice the qualitative parallel with Part 4: as the parameter <span class="math inline">\(I\)</span> is increased, the equilibrium in the phase plane changes from a stable spiral (excitable resting state) to an unstable spiral surrounded by a stable limit cycle (sustained oscillation) — the same Hopf bifurcation mechanism responsible for the jump in the HH f–I curve, now visible directly in a two-dimensional phase portrait.</p>
+<hr>
+</section>
+<section id="connecting-the-applications" class="level2">
+<h2 class="anchored" data-anchor-id="connecting-the-applications">Connecting the Applications</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Passive membrane (Topics 6 RC circuit)</th>
+<th style="text-align: center;">Gating variable</th>
+<th style="text-align: center;">Full HH system</th>
+<th style="text-align: center;">FitzHugh–Nagumo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ODE order/type</strong></td>
+<td style="text-align: center;">1st, linear</td>
+<td style="text-align: center;">1st, linear (at fixed <span class="math inline">\(V\)</span>)</td>
+<td style="text-align: center;">4th, nonlinear system</td>
+<td style="text-align: center;">2nd, nonlinear system</td>
+</tr>
+<tr class="even">
+<td><strong>Solution method</strong></td>
+<td style="text-align: center;">Integrating factor (exact)</td>
+<td style="text-align: center;">Integrating factor (exact)</td>
+<td style="text-align: center;">Numerical (<code>solve_ivp</code>)</td>
+<td style="text-align: center;">Numerical + phase plane</td>
+</tr>
+<tr class="odd">
+<td><strong>Key parameter</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\tau_m = C_m/g_{\text{tot}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\tau_x(V)\)</span></td>
+<td style="text-align: center;">Injected current <span class="math inline">\(I_{\text{ext}}\)</span></td>
+<td style="text-align: center;">Injected current <span class="math inline">\(I\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Qualitative behavior</strong></td>
+<td style="text-align: center;">Exponential decay</td>
+<td style="text-align: center;">Exponential relaxation</td>
+<td style="text-align: center;">Threshold, spike, refractoriness</td>
+<td style="text-align: center;">Excitability, limit cycle</td>
+</tr>
+<tr class="odd">
+<td><strong>Application</strong></td>
+<td style="text-align: center;">Subthreshold signaling</td>
+<td style="text-align: center;">Channel kinetics</td>
+<td style="text-align: center;">Action potentials, neural coding</td>
+<td style="text-align: center;">Cardiac &amp; neural excitability models</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Looking Ahead: Why Not Laplace Transforms?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Laplace transform (Chapter on Laplace transforms) is a powerful tool for <em>linear</em> ODEs with constant coefficients — exactly the setting of the passive-membrane RC circuit in the callout in Part 1, whose transfer function could be written down and analyzed in the frequency domain just as in Topics 6. It does <strong>not</strong> apply directly to the full nonlinear HH system, because the transform of a product like <span class="math inline">\(m(t)^3h(t)V(t)\)</span> is not a simple algebraic expression in the transform variable <span class="math inline">\(s\)</span>. This is one of the main reasons nonlinear systems like (HH) and (FHN) must, in general, be studied with the qualitative (phase-plane, stability) and numerical tools developed later in the course rather than with transform methods.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="relevant-videos" class="level2">
+<h2 class="anchored" data-anchor-id="relevant-videos">Relevant Videos</h2>
+<section id="the-hodgkinhuxley-model" class="level3">
+<h3 class="anchored" data-anchor-id="the-hodgkinhuxley-model">The Hodgkin–Huxley Model:</h3>
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/1mObgrxATZM?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+  </iframe>
+</div>
+<hr>
+</section>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<p>The original model appears in <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1392413/">Hodgkin and Huxley (1952)</a>, <em>A quantitative description of membrane current and its application to conduction and excitation in nerve</em>, published in <em>The Journal of Physiology</em>. Accessible modern treatments include Christoph Börgers’ <em><a href="https://doi.org/10.1007/978-3-319-51171-9">An Introduction to Modeling Neuronal Dynamics</a></em> and G. Bard Ermentrout and David Terman’s <em><a href="https://doi.org/10.1007/978-0-387-87708-2">Mathematical Foundations of Neuroscience</a></em>, as well as the freely available online text <em><a href="https://neuronaldynamics.epfl.ch/">Neuronal Dynamics</a></em> by Gerstner, Kistler, Naud, and Paninski. The reduced two-variable model is due to <a href="https://en.wikipedia.org/wiki/FitzHugh%E2%80%93Nagumo_model">FitzHugh (1961)</a> and, independently, to Nagumo, Arimoto, and Yoshizawa (1962). Readers interested in a more detailed, R-based treatment of this same material (in the same spirit as these notes but with different notation and software) may consult <a href="https://topicsinbiomath.netlify.app/notes019">Course Notes 19</a> and <a href="https://topicsinbiomath.netlify.app/notes020">Course Notes 20</a> of <em>Topics in Biomathematics</em>.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="cb8c8423" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
