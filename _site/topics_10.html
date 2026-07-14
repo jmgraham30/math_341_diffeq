@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Draining Tanks, Coupled Reservoirs, and Drag – MATH 341 Differential Equations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3597b58ac030f433e6360a1039345bd2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MATH 341 Differential Equations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./topics.html"> 
+<span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./py_tutorial.html"> 
+<span class="menu-text">Python Reference</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1-torricellis-law-draining-a-tank" id="toc-part-1-torricellis-law-draining-a-tank" class="nav-link active" data-scroll-target="#part-1-torricellis-law-draining-a-tank">Part 1 — Torricelli’s Law: Draining a Tank</a>
+  <ul class="collapse">
+  <li><a href="#physical-setup" id="toc-physical-setup" class="nav-link" data-scroll-target="#physical-setup">Physical Setup</a></li>
+  <li><a href="#solving-the-ode" id="toc-solving-the-ode" class="nav-link" data-scroll-target="#solving-the-ode">Solving the ODE</a></li>
+  <li><a href="#extension-non-cylindrical-tanks" id="toc-extension-non-cylindrical-tanks" class="nav-link" data-scroll-target="#extension-non-cylindrical-tanks">Extension: Non-Cylindrical Tanks</a></li>
+  </ul></li>
+  <li><a href="#part-2-coupled-tanks-linear-systems-and-the-hydraulicelectrical-analogy" id="toc-part-2-coupled-tanks-linear-systems-and-the-hydraulicelectrical-analogy" class="nav-link" data-scroll-target="#part-2-coupled-tanks-linear-systems-and-the-hydraulicelectrical-analogy">Part 2 — Coupled Tanks: Linear Systems and the Hydraulic–Electrical Analogy</a>
+  <ul class="collapse">
+  <li><a href="#physical-setup-1" id="toc-physical-setup-1" class="nav-link" data-scroll-target="#physical-setup-1">Physical Setup</a></li>
+  <li><a href="#the-hydraulicelectrical-analogy" id="toc-the-hydraulicelectrical-analogy" class="nav-link" data-scroll-target="#the-hydraulicelectrical-analogy">The Hydraulic–Electrical Analogy</a></li>
+  <li><a href="#equilibrium-and-eigenvalues" id="toc-equilibrium-and-eigenvalues" class="nav-link" data-scroll-target="#equilibrium-and-eigenvalues">Equilibrium and Eigenvalues</a></li>
+  </ul></li>
+  <li><a href="#part-3-nonlinear-coupled-tanks-a-bridge-to-numerical-methods" id="toc-part-3-nonlinear-coupled-tanks-a-bridge-to-numerical-methods" class="nav-link" data-scroll-target="#part-3-nonlinear-coupled-tanks-a-bridge-to-numerical-methods">Part 3 — Nonlinear Coupled Tanks: A Bridge to Numerical Methods</a>
+  <ul class="collapse">
+  <li><a href="#turbulent-valves" id="toc-turbulent-valves" class="nav-link" data-scroll-target="#turbulent-valves">Turbulent Valves</a></li>
+  <li><a href="#equilibria-and-linearized-stability" id="toc-equilibria-and-linearized-stability" class="nav-link" data-scroll-target="#equilibria-and-linearized-stability">Equilibria and Linearized Stability</a></li>
+  <li><a href="#numerical-methods-euler-vs.-rk4" id="toc-numerical-methods-euler-vs.-rk4" class="nav-link" data-scroll-target="#numerical-methods-euler-vs.-rk4">Numerical Methods: Euler vs.&nbsp;RK4</a></li>
+  </ul></li>
+  <li><a href="#part-4-motion-through-a-fluid-stokes-drag-vs.-quadratic-drag" id="toc-part-4-motion-through-a-fluid-stokes-drag-vs.-quadratic-drag" class="nav-link" data-scroll-target="#part-4-motion-through-a-fluid-stokes-drag-vs.-quadratic-drag">Part 4 — Motion Through a Fluid: Stokes Drag vs.&nbsp;Quadratic Drag</a>
+  <ul class="collapse">
+  <li><a href="#newtons-second-law-with-drag" id="toc-newtons-second-law-with-drag" class="nav-link" data-scroll-target="#newtons-second-law-with-drag">Newton’s Second Law with Drag</a></li>
+  <li><a href="#case-1-stokes-linear-drag-a-settling-sphere" id="toc-case-1-stokes-linear-drag-a-settling-sphere" class="nav-link" data-scroll-target="#case-1-stokes-linear-drag-a-settling-sphere">Case 1: Stokes (Linear) Drag — a Settling Sphere</a></li>
+  <li><a href="#case-2-quadratic-form-drag-a-skydiver" id="toc-case-2-quadratic-form-drag-a-skydiver" class="nav-link" data-scroll-target="#case-2-quadratic-form-drag-a-skydiver">Case 2: Quadratic (Form) Drag — a Skydiver</a></li>
+  </ul></li>
+  <li><a href="#part-5-optional-capstone-the-surge-tank-and-laplace-transforms" id="toc-part-5-optional-capstone-the-surge-tank-and-laplace-transforms" class="nav-link" data-scroll-target="#part-5-optional-capstone-the-surge-tank-and-laplace-transforms">Part 5 (Optional Capstone) — The Surge Tank and Laplace Transforms</a>
+  <ul class="collapse">
+  <li><a href="#physical-setup-2" id="toc-physical-setup-2" class="nav-link" data-scroll-target="#physical-setup-2">Physical Setup</a></li>
+  <li><a href="#solving-with-the-laplace-transform" id="toc-solving-with-the-laplace-transform" class="nav-link" data-scroll-target="#solving-with-the-laplace-transform">Solving with the Laplace Transform</a></li>
+  </ul></li>
+  <li><a href="#connecting-the-fluid-dynamics-applications" id="toc-connecting-the-fluid-dynamics-applications" class="nav-link" data-scroll-target="#connecting-the-fluid-dynamics-applications">Connecting the Fluid-Dynamics Applications</a></li>
+  <li><a href="#relevant-videos" id="toc-relevant-videos" class="nav-link" data-scroll-target="#relevant-videos">Relevant Videos</a>
+  <ul class="collapse">
+  <li><a href="#torricellis-law" id="toc-torricellis-law" class="nav-link" data-scroll-target="#torricellis-law">Torricelli’s Law:</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="topics_10.ipynb" download="topics_10.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Draining Tanks, Coupled Reservoirs, and Drag</h1>
+<p class="subtitle lead">Fluid-Dynamics Applications of ODEs</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="a846373b" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> fsolve</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Math, display</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Fluid mechanics at the center of engineering applications (fluid mechanics, thermo-fluids, hydraulics, HVAC, and process control for MEs; sensors, actuators, and process instrumentation for EEs). It turns out that <strong>fluid systems reuse essentially every ODE technique in this course</strong> — first-order separable equations, first-order linear systems, nonlinear systems, numerical methods, and (in the optional capstone) Laplace transforms. This section develops four core applications, plus one optional capstone, each keyed to a specific part of the syllabus.</p>
+<ol type="1">
+<li><strong>Torricelli’s Law</strong> — a tank draining through a hole is a first-order <em>nonlinear</em> separable ODE (Notes 2), and it behaves qualitatively differently from the linear decay models you have already seen.</li>
+<li><strong>Coupled tanks with laminar valves</strong> — two interconnected reservoirs form a first-order <em>linear system</em> (Chapter 3), and the flow is governed by the exact same mathematics as an RC/RLC network — the hydraulic–electrical analogy made explicit.</li>
+<li><strong>Coupled tanks with turbulent valves</strong> — the same two tanks, but with a nonlinear (square-root) interconnection, giving a genuine <em>nonlinear system</em>: equilibria, linearization/stability, and a hands-on comparison of Euler’s method against RK4 (Numerical Methods).</li>
+<li><strong>Motion through a fluid</strong> — a falling object experiences either <strong>linear</strong> (Stokes) or <strong>quadratic</strong> (form) drag depending on the Reynolds number, giving a clean side-by-side example of a linear vs.&nbsp;a nonlinear first-order model of the <em>same</em> physical process.</li>
+<li><em>(Optional capstone)</em> <strong>The surge tank</strong> — a linear second-order ODE describing pressure-relief oscillations in a hydropower penstock, solved with the Laplace transform.</li>
+</ol>
+<hr>
+<section id="part-1-torricellis-law-draining-a-tank" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-torricellis-law-draining-a-tank">Part 1 — Torricelli’s Law: Draining a Tank</h2>
+<section id="physical-setup" class="level3">
+<h3 class="anchored" data-anchor-id="physical-setup">Physical Setup</h3>
+<p>Consider a tank with constant cross-sectional area <span class="math inline">\(A\)</span>, filled with liquid to height <span class="math inline">\(h(t)\)</span>, draining through a small hole of area <span class="math inline">\(a\)</span> in the bottom. <strong><a href="https://en.wikipedia.org/wiki/Torricelli%27s_law">Torricelli’s law</a></strong> (derivable from Bernoulli’s equation applied between the free surface and the orifice) states that liquid exits the hole with speed <span class="math display">\[
+v = \sqrt{2gh}.
+\]</span> The volumetric outflow rate is <span class="math inline">\(Q = C_d\,a\,v\)</span>, where <span class="math inline">\(C_d\)</span> is a <strong>discharge coefficient</strong> (<span class="math inline">\(C_d \approx 0.6\text{–}0.8\)</span> for a sharp-edged orifice) that accounts for the contraction of the exiting jet and other real-world losses. Conservation of volume (<span class="math inline">\(A\,dh = -Q\,dt\)</span>) gives <span class="math display">\[
+A\,\frac{dh}{dt} = -C_d\,a\sqrt{2g}\,\sqrt{h}.
+\]</span> Lumping the constants into <span class="math inline">\(k = C_d\,a\sqrt{2g}/A\)</span>: <span class="math display">\[
+\boxed{\frac{dh}{dt} = -k\sqrt{h}.} \tag{Torricelli}
+\]</span></p>
+</section>
+<section id="solving-the-ode" class="level3">
+<h3 class="anchored" data-anchor-id="solving-the-ode">Solving the ODE</h3>
+<p>This equation is <strong>first-order and separable</strong>, but — unlike every “decay” model you have seen so far (radioactive decay, Newton’s law of cooling, RC circuits) — it is <strong>nonlinear</strong>, because <span class="math inline">\(\sqrt{h}\)</span> is not proportional to <span class="math inline">\(h\)</span>. Separating variables, <span class="math display">\[
+\int h^{-1/2}\,dh = -k\int dt \quad\Longrightarrow\quad 2\sqrt{h} = -kt + 2\sqrt{h_0},
+\]</span> so <span class="math display">\[
+\boxed{h(t) = \left(\sqrt{h_0} - \frac{k}{2}t\right)^{\!2}, \qquad 0 \le t \le T,}
+\]</span> where <span class="math inline">\(h_0 = h(0)\)</span> and <span class="math display">\[
+T = \frac{2\sqrt{h_0}}{k}
+\]</span> is the <strong>drain time</strong> — the tank empties in <em>finite time</em>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A New Kind of Long-Term Behavior
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every linear first-order model in Notes 2 (exponential growth/decay, RC charging) approaches its equilibrium <em>asymptotically</em> — it gets arbitrarily close but never technically arrives at <span class="math inline">\(t=\infty\)</span>. Torricelli’s equation is qualitatively different: because the right-hand side is only Hölder continuous (not Lipschitz) at <span class="math inline">\(h=0\)</span>, the solution reaches <span class="math inline">\(h=0\)</span> in <strong>finite time</strong> and <em>stays there</em> (<span class="math inline">\(dh/dt=0\)</span> once <span class="math inline">\(h=0\)</span>, so the tank does not “go negative”). If you plug <span class="math inline">\(t&gt;T\)</span> into the boxed formula above, the algebra produces <span class="math inline">\(h(t) = \left(\tfrac{k}{2}t - \sqrt{h_0}\right)^2 &gt; 0\)</span> again — a tank mysteriously refilling itself! This is not a contradiction; it simply means the formula is only a valid solution to the <em>physical</em> problem on <span class="math inline">\(0 \le t \le T\)</span>. Past <span class="math inline">\(T\)</span>, the correct physical solution is <span class="math inline">\(h(t)\equiv 0\)</span>. Always check the <strong>domain of validity</strong> of a solution against the physics of the problem, not just against the algebra.</p>
+</div>
+</div>
+<div id="cell-fig-torricelli" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g   <span class="op">=</span> <span class="fl">9.81</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>A_t <span class="op">=</span> <span class="fl">0.20</span>      <span class="co"># m^2  (tank cross-section, ~50 cm diameter)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>a_t <span class="op">=</span> <span class="fl">1.0e-4</span>    <span class="co"># m^2  (orifice, ~1.1 cm diameter hole)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Cd  <span class="op">=</span> <span class="fl">0.6</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>h0  <span class="op">=</span> <span class="fl">1.0</span>       <span class="co"># m</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>k_t <span class="op">=</span> Cd<span class="op">*</span>a_t<span class="op">*</span>np.sqrt(<span class="dv">2</span><span class="op">*</span>g)<span class="op">/</span>A_t</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>T_t <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>np.sqrt(h0)<span class="op">/</span>k_t</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"k = </span><span class="sc">{</span>k_t<span class="sc">:.6f}</span><span class="ss"> m^0.5/s,  drain time T = </span><span class="sc">{</span>T_t<span class="sc">:.1f}</span><span class="ss"> s = </span><span class="sc">{</span>T_t<span class="op">/</span><span class="dv">60</span><span class="sc">:.2f}</span><span class="ss"> min"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> h_analytic(t):</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.maximum(np.sqrt(h0) <span class="op">-</span> k_t<span class="op">*</span>t<span class="op">/</span><span class="dv">2</span>, <span class="fl">0.0</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tank_ode(t, h):</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [<span class="op">-</span>k_t<span class="op">*</span>np.sqrt(<span class="bu">max</span>(h[<span class="dv">0</span>], <span class="fl">0.0</span>))]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>t_num <span class="op">=</span> np.linspace(<span class="dv">0</span>, T_t, <span class="dv">400</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(tank_ode, (<span class="dv">0</span>, T_t), [h0], t_eval<span class="op">=</span>t_num, max_step<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Physical solution vs. numerical check ───────────────────────</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, T_t, <span class="dv">400</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_plot<span class="op">/</span><span class="dv">60</span>, h_analytic(t_plot), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Analytic $h(t)$'</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol.t[::<span class="dv">20</span>]<span class="op">/</span><span class="dv">60</span>, sol.y[<span class="dv">0</span>][::<span class="dv">20</span>], <span class="st">'o'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>             ms<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical (solve</span><span class="ch">\\</span><span class="st">_ivp)'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvline(T_t<span class="op">/</span><span class="dv">60</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f'$T=</span><span class="sc">{</span>T_t<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss">$ min'</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Time (min)'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$h(t)$ (m)'</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Physical solution: tank empties at $t=T$'</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="fl">0.05</span>, <span class="fl">1.05</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Domain-of-validity issue ─────────────────────────────────</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>t_ext <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">1.6</span><span class="op">*</span>T_t, <span class="dv">400</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>h_naive <span class="op">=</span> (np.sqrt(h0) <span class="op">-</span> k_t<span class="op">*</span>t_ext<span class="op">/</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span>       <span class="co"># never clipped at 0</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_ext<span class="op">/</span><span class="dv">60</span>, h_naive, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Naive formula (unclipped)'</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_plot<span class="op">/</span><span class="dv">60</span>, h_analytic(t_plot), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Physical solution'</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axvline(T_t<span class="op">/</span><span class="dv">60</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f'$T=</span><span class="sc">{</span>T_t<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss">$ min'</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Time (min)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$h(t)$ (m)'</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Formula continued past $T$: unphysical rebound'</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>k = 0.001329 m^0.5/s,  drain time T = 1505.1 s = 25.08 min</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-torricelli" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-torricelli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_10_files/figure-html/fig-torricelli-output-2.png" width="1632" height="659" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-torricelli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Draining a cylindrical tank (<span class="math inline">\(A=0.20\,\text{m}^2\)</span>, orifice <span class="math inline">\(a=1\,\text{cm}^2\)</span>, <span class="math inline">\(C_d=0.6\)</span>, <span class="math inline">\(h_0=1\)</span> m). Left: the physical solution <span class="math inline">\(h(t)\)</span> (solid) reaches zero at the drain time <span class="math inline">\(T\approx 25.1\)</span> min and stays there, matching a direct numerical integration of the ODE (markers). Right: naively evaluating the closed-form parabola past <span class="math inline">\(t=T\)</span> (dashed) produces an unphysical rebound — a reminder to always check a solution’s domain of validity.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="extension-non-cylindrical-tanks" class="level3">
+<h3 class="anchored" data-anchor-id="extension-non-cylindrical-tanks">Extension: Non-Cylindrical Tanks</h3>
+<p>If the tank’s cross-sectional area depends on height, <span class="math inline">\(A=A(h)\)</span>, the same volume-conservation argument gives the more general separable equation <span class="math display">\[
+A(h)\,\frac{dh}{dt} = -C_d\,a\sqrt{2g}\,\sqrt{h} = -k_0\sqrt{h}, \qquad k_0 = C_d\,a\sqrt{2g}.
+\]</span></p>
+<p>For example, an inverted cone of top radius <span class="math inline">\(R\)</span> and height <span class="math inline">\(H\)</span> (apex at the bottom, where the drain is located) has <span class="math inline">\(A(h) = \pi (R/H)^2 h^2\)</span>, so <span class="math display">\[
+\pi\left(\frac{R}{H}\right)^{\!2} h^{3/2}\,dh = -k_0\,dt.
+\]</span> Integrating with <span class="math inline">\(h(0)=H\)</span>, <span class="math display">\[
+\boxed{h(t) = \left[H^{5/2} - \frac{5k_0}{2\pi(R/H)^2}\,t\right]^{2/5}, \qquad 0\le t\le T_{\text{cone}},}
+\]</span> with drain time <span class="math inline">\(T_{\text{cone}} = \dfrac{2\pi (R/H)^2 H^{5/2}}{5k_0}\)</span>. The same separation-of-variables technique applies to <em>any</em> tank shape; only the integral on the left changes.</p>
+<div id="cell-fig-cone-tank" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>R_cone <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>H_cone <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>k0 <span class="op">=</span> Cd<span class="op">*</span>a_t<span class="op">*</span>np.sqrt(<span class="dv">2</span><span class="op">*</span>g)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> h_cone(t):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    coef <span class="op">=</span> np.pi<span class="op">*</span>(R_cone<span class="op">/</span>H_cone)<span class="op">**</span><span class="dv">2</span><span class="op">*</span>(<span class="dv">2</span><span class="op">/</span><span class="dv">5</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> np.maximum(H_cone<span class="op">**</span><span class="fl">2.5</span> <span class="op">-</span> (k0<span class="op">/</span>coef)<span class="op">*</span>t, <span class="fl">0.0</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val<span class="op">**</span>(<span class="dv">2</span><span class="op">/</span><span class="dv">5</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>T_cone <span class="op">=</span> np.pi<span class="op">*</span>(R_cone<span class="op">/</span>H_cone)<span class="op">**</span><span class="dv">2</span><span class="op">*</span>(<span class="dv">2</span><span class="op">/</span><span class="dv">5</span>)<span class="op">*</span>H_cone<span class="op">**</span><span class="fl">2.5</span><span class="op">/</span>k0</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cylinder drain time: </span><span class="sc">{</span>T_t<span class="op">/</span><span class="dv">60</span><span class="sc">:.2f}</span><span class="ss"> min   |   Cone drain time: </span><span class="sc">{</span>T_cone<span class="op">/</span><span class="dv">60</span><span class="sc">:.2f}</span><span class="ss"> min"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>t_plot2 <span class="op">=</span> np.linspace(<span class="dv">0</span>, T_t, <span class="dv">400</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">6.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2<span class="op">/</span><span class="dv">60</span>, h_analytic(t_plot2), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f'Cylinder ($T=</span><span class="sc">{</span>T_t<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss">$ min)'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2<span class="op">/</span><span class="dv">60</span>, h_cone(t_plot2), color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f'Cone, apex down ($T=</span><span class="sc">{</span>T_cone<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss">$ min)'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>ax.axvline(T_cone<span class="op">/</span><span class="dv">60</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>ax.axvline(T_t<span class="op">/</span><span class="dv">60</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Time (min)'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$h(t)$ (m)'</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Tank shape changes the drain-time scale'</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cylinder drain time: 25.08 min   |   Cone drain time: 7.09 min</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-cone-tank" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cone-tank-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_10_files/figure-html/fig-cone-tank-output-2.png" width="957" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cone-tank-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Same orifice and initial height, two tank shapes. The cone (apex-down, top radius <span class="math inline">\(R=0.3\)</span> m at <span class="math inline">\(H=1\)</span> m) holds only a third of the cylinder’s volume at <span class="math inline">\(h=1\)</span> m, so it drains in about 7.1 min versus 25.1 min for the cylinder — the same <span class="math inline">\(k_0\)</span>, but a very different <span class="math inline">\(A(h)\)</span>, changes the whole time scale.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-2-coupled-tanks-linear-systems-and-the-hydraulicelectrical-analogy" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-coupled-tanks-linear-systems-and-the-hydraulicelectrical-analogy">Part 2 — Coupled Tanks: Linear Systems and the Hydraulic–Electrical Analogy</h2>
+<section id="physical-setup-1" class="level3">
+<h3 class="anchored" data-anchor-id="physical-setup-1">Physical Setup</h3>
+<p>Now connect two tanks in series: tank 1 is fed by a constant inflow <span class="math inline">\(q_{in}\)</span> and drains into tank 2 through a valve; tank 2 drains to atmosphere through a second valve. If both valves are <strong>laminar</strong> (a good approximation for narrow tubes, capillaries, or partially-closed valves at low flow), the flow through a valve is <em>proportional</em> to the pressure-head difference across it — the fluid analog of Ohm’s law: <span class="math display">\[
+Q = \frac{\Delta h}{R},
+\]</span> where <span class="math inline">\(R\)</span> is a <strong>hydraulic resistance</strong>. With <span class="math inline">\(A_1, A_2\)</span> the tank cross-sections and <span class="math inline">\(R_{12}, R_2\)</span> the two valve resistances, <span class="math display">\[
+\boxed{
+A_1\frac{dh_1}{dt} = q_{in} - \frac{h_1-h_2}{R_{12}}, \qquad
+A_2\frac{dh_2}{dt} = \frac{h_1-h_2}{R_{12}} - \frac{h_2}{R_2}.
+} \tag{Tanks–Linear}
+\]</span> This is a <strong>first-order linear system</strong> <span class="math inline">\(\mathbf{h}' = A\mathbf{h} + \mathbf{b}\)</span> — exactly the Chapter 3 material — with <span class="math display">\[
+A =
+\begin{pmatrix}
+-\dfrac{1}{A_1 R_{12}} &amp; \dfrac{1}{A_1 R_{12}} \\[2mm]
+\dfrac{1}{A_2 R_{12}} &amp; -\dfrac{1}{A_2 R_{12}} - \dfrac{1}{A_2 R_2}
+\end{pmatrix},
+\qquad
+\mathbf{b} = \begin{pmatrix} q_{in}/A_1 \\ 0 \end{pmatrix}.
+\]</span></p>
+</section>
+<section id="the-hydraulicelectrical-analogy" class="level3">
+<h3 class="anchored" data-anchor-id="the-hydraulicelectrical-analogy">The Hydraulic–Electrical Analogy</h3>
+<p>Compare (Tanks–Linear) to the RC circuit equation from Topics 6: <span class="math inline">\(RC\,V_C' + V_C = V_{in}(t)\)</span>. The correspondence is exact — a fluid reservoir with a resistive drain is <em>literally the same differential equation</em> as a capacitor discharging through a resistor:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Fluid system</th>
+<th>Electrical system</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Height <span class="math inline">\(h\)</span></td>
+<td>Voltage <span class="math inline">\(V\)</span></td>
+</tr>
+<tr class="even">
+<td>Flow rate <span class="math inline">\(Q\)</span></td>
+<td>Current <span class="math inline">\(I\)</span></td>
+</tr>
+<tr class="odd">
+<td>Tank area <span class="math inline">\(A\)</span></td>
+<td>Capacitance <span class="math inline">\(C\)</span></td>
+</tr>
+<tr class="even">
+<td>Valve resistance <span class="math inline">\(R\)</span></td>
+<td>Resistance <span class="math inline">\(R\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>A tank stores fluid volume the way a capacitor stores charge; a laminar valve dissipates head the way a resistor dissipates voltage. Any student comfortable with RC circuits (Topics 6, Part 1) already understands the qualitative behavior of a single draining/filling tank with a linear valve, and — as we will see below — the <em>coupled</em>-tank system behaves like a two-capacitor RC network, not like an RLC circuit, because nothing in a tank-and-valve system stores fluid <strong>momentum</strong> the way an inductor stores magnetic energy. There is no hydraulic analog of <span class="math inline">\(L\)</span> here, which is exactly why (as shown below) this system cannot oscillate.</p>
+</section>
+<section id="equilibrium-and-eigenvalues" class="level3">
+<h3 class="anchored" data-anchor-id="equilibrium-and-eigenvalues">Equilibrium and Eigenvalues</h3>
+<p>Setting <span class="math inline">\(\mathbf{h}'=\mathbf{0}\)</span> gives the steady-state heights <span class="math inline">\(h_{1,eq} = q_{in}(R_{12}+R_2)\)</span>, <span class="math inline">\(h_{2,eq} = q_{in}R_2\)</span> — both tanks settle to a constant fill level determined entirely by the inflow rate and the two resistances. The transient behavior is governed by the eigenvalues of <span class="math inline">\(A\)</span>:</p>
+<div id="b581e387" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>A1 <span class="op">=</span> A2 <span class="op">=</span> <span class="fl">1.0</span>     <span class="co"># m^2</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>R12 <span class="op">=</span> <span class="fl">5.0</span>         <span class="co"># s/m^2</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>R2  <span class="op">=</span> <span class="fl">10.0</span>        <span class="co"># s/m^2</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>qin <span class="op">=</span> <span class="fl">0.1</span>         <span class="co"># m^3/s</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Amat <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">1</span><span class="op">/</span>(A1<span class="op">*</span>R12), <span class="dv">1</span><span class="op">/</span>(A1<span class="op">*</span>R12)],</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                  [<span class="dv">1</span><span class="op">/</span>(A2<span class="op">*</span>R12), <span class="op">-</span><span class="dv">1</span><span class="op">/</span>(A2<span class="op">*</span>R12) <span class="op">-</span> <span class="dv">1</span><span class="op">/</span>(A2<span class="op">*</span>R2)]])</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>bvec <span class="op">=</span> np.array([qin<span class="op">/</span>A1, <span class="fl">0.0</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>eigval, eigvec <span class="op">=</span> np.linalg.eig(Amat)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>h_eq <span class="op">=</span> np.linalg.solve(<span class="op">-</span>Amat, bvec)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A =</span><span class="ch">\n</span><span class="st">"</span>, Amat)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"eigenvalues:"</span>, eigval)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"equilibrium (h1_eq, h2_eq):"</span>, h_eq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>A =
+ [[-0.2  0.2]
+ [ 0.2 -0.3]]
+eigenvalues: [-0.04384472 -0.45615528]
+equilibrium (h1_eq, h2_eq): [1.5 1. ]</code></pre>
+</div>
+</div>
+<p>Both eigenvalues are <strong>real and negative</strong> (<span class="math inline">\(\lambda_1\approx-0.044\)</span>, <span class="math inline">\(\lambda_2\approx-0.456\)</span> for the parameters above) — this is a <strong>stable node</strong>, exactly as you would expect for two resistively-coupled first-order storage elements. The system approaches equilibrium <em>monotonically</em>; unlike the RLC circuit, it can never overshoot or oscillate, because doing so would require an inertial (second-derivative) term that this model simply does not have.</p>
+<div id="cell-fig-coupled-tanks-linear" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> linear_tanks(t, h):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Amat <span class="op">@</span> h <span class="op">+</span> bvec</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">150</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="op">*</span>t_span, <span class="dv">400</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>sol_lin <span class="op">=</span> solve_ivp(linear_tanks, t_span, [<span class="fl">0.0</span>, <span class="fl">0.0</span>], t_eval<span class="op">=</span>t_eval)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol_lin.t, sol_lin.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$h_1(t)$'</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol_lin.t, sol_lin.y[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'$h_2(t)$'</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(h_eq[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'$h_</span><span class="ch">{{</span><span class="ss">1,eq</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>h_eq[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">$ m'</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(h_eq[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'$h_</span><span class="ch">{{</span><span class="ss">2,eq</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>h_eq[<span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">$ m'</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Time (s)'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Height (m)'</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Approach to equilibrium (no overshoot)'</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(sol_lin.y[<span class="dv">0</span>], sol_lin.y[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(<span class="dv">0</span>, <span class="dv">0</span>, <span class="st">'ko'</span>, ms<span class="op">=</span><span class="dv">7</span>, label<span class="op">=</span><span class="st">'Start'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(h_eq[<span class="dv">0</span>], h_eq[<span class="dv">1</span>], <span class="st">'g*'</span>, ms<span class="op">=</span><span class="dv">13</span>, label<span class="op">=</span><span class="st">'Equilibrium'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co"># eigenvector directions through the equilibrium</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> lam, vec, color, lbl <span class="kw">in</span> <span class="bu">zip</span>(eigval, eigvec.T, [<span class="st">'gray'</span>, <span class="st">'darkorange'</span>],</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                                 [<span class="st">'Fast eigendirection'</span>, <span class="st">'Slow eigendirection'</span>]):</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    pts <span class="op">=</span> np.array([h_eq <span class="op">-</span> <span class="fl">0.6</span><span class="op">*</span>vec, h_eq <span class="op">+</span> <span class="fl">0.6</span><span class="op">*</span>vec])</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(pts[:,<span class="dv">0</span>], pts[:,<span class="dv">1</span>], color<span class="op">=</span>color, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.3</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$h_1$ (m)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$h_2$ (m)'</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Phase portrait: a stable node'</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="fl">7.5</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-coupled-tanks-linear" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-coupled-tanks-linear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_10_files/figure-html/fig-coupled-tanks-linear-output-1.png" width="1630" height="657" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coupled-tanks-linear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Two laminar-valve tanks starting empty (<span class="math inline">\(A_1=A_2=1\,\text{m}^2\)</span>, <span class="math inline">\(R_{12}=5\)</span>, <span class="math inline">\(R_2=10\)</span>, <span class="math inline">\(q_{in}=0.1\,\text{m}^3/\text{s}\)</span>). Left: <span class="math inline">\(h_1(t)\)</span> and <span class="math inline">\(h_2(t)\)</span> rise monotonically to their equilibrium values (dashed) — no overshoot is possible. Right: phase portrait <span class="math inline">\((h_1,h_2)\)</span>; the trajectory approaches equilibrium along the slow eigendirection (<span class="math inline">\(\lambda_2\approx-0.044\)</span>), the signature of a stable node.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Looking Ahead: Systems Theory
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is a direct, physically transparent illustration of everything Chapter 3 teaches about linear systems: eigenvalues determine stability and the type of equilibrium (here, a stable node because both eigenvalues are real and negative); eigenvectors determine the geometry of the approach (the “slow” and “fast” directions visible in the phase portrait); and the particular/steady-state solution is found by solving the algebraic system <span class="math inline">\(A\mathbf{h}_{eq}+\mathbf{b}=\mathbf{0}\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-3-nonlinear-coupled-tanks-a-bridge-to-numerical-methods" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-nonlinear-coupled-tanks-a-bridge-to-numerical-methods">Part 3 — Nonlinear Coupled Tanks: A Bridge to Numerical Methods</h2>
+<section id="turbulent-valves" class="level3">
+<h3 class="anchored" data-anchor-id="turbulent-valves">Turbulent Valves</h3>
+<p>The linear (laminar) valve law <span class="math inline">\(Q=\Delta h/R\)</span> only holds at low flow speeds. Most real valves and orifices operate in the <strong>turbulent</strong> regime, where — just as in Part 1 — flow is proportional to <span class="math inline">\(\sqrt{|\Delta h|}\)</span> rather than to <span class="math inline">\(\Delta h\)</span> itself: <span class="math display">\[
+Q = c\,\operatorname{sgn}(\Delta h)\sqrt{|\Delta h|}.
+\]</span> Replacing both valves in the two-tank system with turbulent valves gives <span class="math display">\[
+\boxed{
+A_1\frac{dh_1}{dt} = q_{in} - c_{12}\sqrt{h_1-h_2}, \qquad
+A_2\frac{dh_2}{dt} = c_{12}\sqrt{h_1-h_2} - c_2\sqrt{h_2}
+} \tag{Tanks–Nonlinear}
+\]</span> (taking <span class="math inline">\(h_1 \ge h_2\)</span>, so the sign function is <span class="math inline">\(+1\)</span>). This is a genuine <strong>nonlinear planar system</strong> — there is no elementary closed-form solution, but the qualitative tools from the nonlinear-systems unit apply directly.</p>
+</section>
+<section id="equilibria-and-linearized-stability" class="level3">
+<h3 class="anchored" data-anchor-id="equilibria-and-linearized-stability">Equilibria and Linearized Stability</h3>
+<p>Setting both derivatives to zero and solving the resulting algebraic system (generally by a numerical root-finder, since it is nonlinear) gives the equilibrium. Then the <strong>Jacobian matrix</strong>, evaluated at the equilibrium, plays the same role that the coefficient matrix <span class="math inline">\(A\)</span> played in Part 2 — its eigenvalues determine local stability.</p>
+<div id="302ba351" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>qin  <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>c12  <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>c2   <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tank_rhs(h):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    h1, h2 <span class="op">=</span> h</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    Q12 <span class="op">=</span> c12<span class="op">*</span>np.sign(h1<span class="op">-</span>h2)<span class="op">*</span>np.sqrt(<span class="bu">abs</span>(h1<span class="op">-</span>h2))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    Q2  <span class="op">=</span> c2<span class="op">*</span>np.sqrt(<span class="bu">max</span>(h2, <span class="fl">0.0</span>))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array([qin <span class="op">-</span> Q12, Q12 <span class="op">-</span> Q2])</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>h_eq_nl <span class="op">=</span> fsolve(tank_rhs, [<span class="fl">1.5</span>, <span class="fl">1.0</span>])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Nonlinear equilibrium (h1_eq, h2_eq):"</span>, h_eq_nl)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Jacobian, evaluated symbolically then substituted at equilibrium</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>h1s, h2s <span class="op">=</span> sym.symbols(<span class="st">'h1 h2'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>Q12s <span class="op">=</span> c12<span class="op">*</span>sym.sqrt(h1s <span class="op">-</span> h2s)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>Q2s  <span class="op">=</span> c2<span class="op">*</span>sym.sqrt(h2s)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> qin <span class="op">-</span> Q12s</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> Q12s <span class="op">-</span> Q2s</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>Jsym <span class="op">=</span> sym.Matrix([f1, f2]).jacobian([h1s, h2s])</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>Jnum <span class="op">=</span> np.array(Jsym.subs({h1s: h_eq_nl[<span class="dv">0</span>], h2s: h_eq_nl[<span class="dv">1</span>]})).astype(<span class="bu">float</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Jacobian at equilibrium:</span><span class="ch">\n</span><span class="st">"</span>, Jnum)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"eigenvalues of Jacobian:"</span>, np.linalg.eigvals(Jnum))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nonlinear equilibrium (h1_eq, h2_eq): [2. 1.]
+Jacobian at equilibrium:
+ [[-0.05  0.05]
+ [ 0.05 -0.1 ]]
+eigenvalues of Jacobian: [-0.0190983 -0.1309017]</code></pre>
+</div>
+</div>
+<p>The equilibrium is <span class="math inline">\((h_{1,eq}, h_{2,eq}) \approx (2.0, 1.0)\)</span> m, and both Jacobian eigenvalues are again real and negative (<span class="math inline">\(\lambda_1\approx-0.019\)</span>, <span class="math inline">\(\lambda_2\approx-0.131\)</span>) — a <strong>locally stable node</strong>, just as in the linear case, even though the global dynamics are now genuinely nonlinear. This is exactly the linearization-and-classify procedure from the nonlinear-systems unit: near an equilibrium, a nonlinear system behaves (to first order) like the linear system defined by its Jacobian.</p>
+</section>
+<section id="numerical-methods-euler-vs.-rk4" class="level3">
+<h3 class="anchored" data-anchor-id="numerical-methods-euler-vs.-rk4">Numerical Methods: Euler vs.&nbsp;RK4</h3>
+<p>Because (Tanks–Nonlinear) has no closed-form solution, we must integrate it numerically — and this system is a good stress-test for numerical methods, because <span class="math inline">\(\sqrt{h_2}\)</span> has an <strong>infinite slope at <span class="math inline">\(h_2=0\)</span></strong>. Near the start of the simulation (both tanks empty), the local behavior is stiff enough that a coarse step size can produce not just an inaccurate answer, but a <em>physically impossible</em> one (a negative water height).</p>
+<div id="cell-fig-euler-rk4" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rhs_t(t, h):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    h1, h2 <span class="op">=</span> <span class="bu">max</span>(h[<span class="dv">0</span>], <span class="op">-</span><span class="dv">10</span>), <span class="bu">max</span>(h[<span class="dv">1</span>], <span class="op">-</span><span class="dv">10</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    Q12 <span class="op">=</span> c12<span class="op">*</span>np.sign(h1<span class="op">-</span>h2)<span class="op">*</span>np.sqrt(<span class="bu">abs</span>(h1<span class="op">-</span>h2))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    Q2  <span class="op">=</span> c2<span class="op">*</span>np.sqrt(<span class="bu">abs</span>(h2)) <span class="op">*</span> (<span class="dv">1</span> <span class="cf">if</span> h2 <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [qin <span class="op">-</span> Q12, Q12 <span class="op">-</span> Q2]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>t_final <span class="op">=</span> <span class="dv">400</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>t_fine <span class="op">=</span> np.linspace(<span class="dv">0</span>, t_final, <span class="dv">2000</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>sol_ref <span class="op">=</span> solve_ivp(rhs_t, (<span class="dv">0</span>, t_final), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], t_eval<span class="op">=</span>t_fine, max_step<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> euler_fixed(dt):</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">int</span>(t_final<span class="op">/</span>dt)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> np.zeros((n<span class="op">+</span><span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.zeros(n<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        h[i<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> h[i] <span class="op">+</span> dt<span class="op">*</span>np.array(rhs_t(t[i], h[i]))</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        t[i<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> t[i] <span class="op">+</span> dt</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> t, h</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>t_e10, h_e10 <span class="op">=</span> euler_fixed(<span class="fl">10.0</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>t_e20, h_e20 <span class="op">=</span> euler_fixed(<span class="fl">20.0</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(sol_ref.t, sol_ref.y[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'RK45 reference'</span>)</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_e10, h_e10[:,<span class="dv">1</span>], <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, ms<span class="op">=</span><span class="dv">3</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'Euler, $</span><span class="ch">\\</span><span class="st">Delta t=10$ s'</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_e20, h_e20[:,<span class="dv">1</span>], <span class="st">'s-'</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ms<span class="op">=</span><span class="dv">4</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'Euler, $</span><span class="ch">\\</span><span class="st">Delta t=20$ s'</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(h_eq_nl[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="ss">f'$h_</span><span class="ch">{{</span><span class="ss">2,eq</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>h_eq_nl[<span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss">$ m'</span>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Time (s)'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$h_2(t)$ (m)'</span>)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Coarse Euler drives $h_2$ negative'</span>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(sol_ref.y[<span class="dv">0</span>], sol_ref.y[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'RK45 reference'</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(h_e10[:,<span class="dv">0</span>], h_e10[:,<span class="dv">1</span>], <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, ms<span class="op">=</span><span class="dv">3</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'Euler, $</span><span class="ch">\\</span><span class="st">Delta t=10$ s'</span>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(h_e20[:,<span class="dv">0</span>], h_e20[:,<span class="dv">1</span>], <span class="st">'s-'</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ms<span class="op">=</span><span class="dv">4</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'Euler, $</span><span class="ch">\\</span><span class="st">Delta t=20$ s'</span>)</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(h_eq_nl[<span class="dv">0</span>], h_eq_nl[<span class="dv">1</span>], <span class="st">'g*'</span>, ms<span class="op">=</span><span class="dv">13</span>, label<span class="op">=</span><span class="st">'Equilibrium'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$h_1$ (m)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$h_2$ (m)'</span>)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Phase plane: coarse Euler overshoots the node'</span>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="fl">7.5</span>)</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-euler-rk4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-euler-rk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_10_files/figure-html/fig-euler-rk4-output-1.png" width="1632" height="656" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-euler-rk4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Same nonlinear tank system, starting empty. Left: <span class="math inline">\(h_2(t)\)</span> under three methods — a fine RK45 reference (<code>solve_ivp</code>, effectively exact), fixed-step Euler with <span class="math inline">\(\Delta t=10\)</span> s (visually indistinguishable from the reference), and Euler with <span class="math inline">\(\Delta t=20\)</span> s (overshoots and drives <span class="math inline">\(h_2\)</span> negative — an unphysical result). Right: the same comparison in the phase plane; the coarse-Euler trajectory spirals away from the true solution instead of settling smoothly onto the equilibrium node.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why This Happens
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Euler’s method takes a single linear step using the slope at the <em>start</em> of the interval. When <span class="math inline">\(h_2\)</span> is small, <span class="math inline">\(d(\sqrt{h_2})/dh_2 = 1/(2\sqrt{h_2})\)</span> is enormous, so the true solution curves sharply — a large step size badly misjudges how much <span class="math inline">\(h_2\)</span> should change and can overshoot past zero into “negative water,” after which the (still-large) slope estimate overcorrects in the other direction, producing the oscillatory blow-up seen above. Halving the step size to <span class="math inline">\(\Delta t=10\)</span> s is already enough to tame it here. This is exactly the kind of local-error analysis behind adaptive step-size control in <code>solve_ivp</code>, and a good reason to always sanity-check a numerical solution against the physics (can <span class="math inline">\(h_2\)</span> actually be negative?).</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-4-motion-through-a-fluid-stokes-drag-vs.-quadratic-drag" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-motion-through-a-fluid-stokes-drag-vs.-quadratic-drag">Part 4 — Motion Through a Fluid: Stokes Drag vs.&nbsp;Quadratic Drag</h2>
+<section id="newtons-second-law-with-drag" class="level3">
+<h3 class="anchored" data-anchor-id="newtons-second-law-with-drag">Newton’s Second Law with Drag</h3>
+<p>An object of mass <span class="math inline">\(m\)</span> falling through a fluid experiences gravity and a drag force opposing its motion. Which drag law applies depends on the <strong><a href="https://en.wikipedia.org/wiki/Reynolds_number">Reynolds number</a></strong> <span class="math inline">\(Re\)</span>, a dimensionless ratio of inertial to viscous forces:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Regime</th>
+<th>Drag law</th>
+<th>Force</th>
+<th>ODE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Re \ll 1\)</span> (Stokes / laminar)</td>
+<td>Linear in <span class="math inline">\(v\)</span></td>
+<td><span class="math inline">\(F_d = 6\pi\mu r v\)</span></td>
+<td><span class="math inline">\(m v' = mg - 6\pi\mu r\,v\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Re \gg 1\)</span> (form / turbulent)</td>
+<td>Quadratic in <span class="math inline">\(v\)</span></td>
+<td><span class="math inline">\(F_d = \tfrac12\rho C_d A v^2\)</span></td>
+<td><span class="math inline">\(m v' = mg - k v^2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Here <span class="math inline">\(\mu\)</span> is the fluid’s dynamic viscosity, <span class="math inline">\(r\)</span> the object’s radius, <span class="math inline">\(\rho\)</span> the fluid density, <span class="math inline">\(C_d\)</span> a drag coefficient, and <span class="math inline">\(A\)</span> the object’s cross-sectional area. Both are first-order ODEs for <span class="math inline">\(v(t)\)</span> — but one is linear and one is nonlinear, letting us directly compare techniques on the same physical problem.</p>
+</section>
+<section id="case-1-stokes-linear-drag-a-settling-sphere" class="level3">
+<h3 class="anchored" data-anchor-id="case-1-stokes-linear-drag-a-settling-sphere">Case 1: Stokes (Linear) Drag — a Settling Sphere</h3>
+<p>For a small sphere settling slowly through a viscous fluid (e.g., a steel ball bearing sinking in glycerin), <span class="math inline">\(mv' = mg - cv\)</span> with <span class="math inline">\(c=6\pi\mu r\)</span>. This is the familiar linear first-order ODE from Notes 2: <span class="math display">\[
+\boxed{v(t) = v_{term}\left(1-e^{-t/\tau}\right)}, \qquad
+v_{term} = \frac{mg}{c}, \quad \tau = \frac{m}{c}.
+\]</span></p>
+</section>
+<section id="case-2-quadratic-form-drag-a-skydiver" class="level3">
+<h3 class="anchored" data-anchor-id="case-2-quadratic-form-drag-a-skydiver">Case 2: Quadratic (Form) Drag — a Skydiver</h3>
+<p>For a large, fast-moving object in air (a skydiver in free fall), the Reynolds number is huge and drag is quadratic: <span class="math inline">\(mv' = mg - kv^2\)</span>, which is <strong>nonlinear but still separable</strong>. Writing <span class="math inline">\(v_{term}^2 = mg/k\)</span>, <span class="math display">\[
+\frac{dv}{dt} = g\left(1 - \frac{v^2}{v_{term}^2}\right)
+\quad\Longrightarrow\quad
+\int \frac{dv}{1-(v/v_{term})^2} = \int g\,dt.
+\]</span> The left integral is <span class="math inline">\(v_{term}\operatorname{artanh}(v/v_{term})\)</span>, so (with <span class="math inline">\(v(0)=0\)</span>): <span class="math display">\[
+\boxed{v(t) = v_{term}\tanh\!\left(\frac{gt}{v_{term}}\right)}.
+\]</span> Integrating once more gives the distance fallen, <span class="math display">\[
+x(t) = \frac{v_{term}^2}{g}\ln\!\left[\cosh\!\left(\frac{gt}{v_{term}}\right)\right].
+\]</span></p>
+<p>Both models describe an object approaching a terminal velocity, but the <em>shape</em> of the approach differs: <span class="math inline">\(1-e^{-t/\tau}\)</span> has a constant relative decay rate, while <span class="math inline">\(\tanh\)</span> approaches its asymptote with the same qualitative S-shaped saturation but arises from an entirely different (nonlinear) mechanism.</p>
+<div id="cell-fig-drag" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="fl">9.81</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Stokes drag: steel ball bearing in glycerin ──────────────</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>r_ball   <span class="op">=</span> <span class="fl">1.5e-3</span>      <span class="co"># m</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>rho_steel, rho_gly, mu <span class="op">=</span> <span class="fl">7800.0</span>, <span class="fl">1260.0</span>, <span class="fl">1.4</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>m_ball   <span class="op">=</span> (<span class="dv">4</span><span class="op">/</span><span class="dv">3</span>)<span class="op">*</span>np.pi<span class="op">*</span>r_ball<span class="op">**</span><span class="dv">3</span><span class="op">*</span>rho_steel</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>Vol_ball <span class="op">=</span> (<span class="dv">4</span><span class="op">/</span><span class="dv">3</span>)<span class="op">*</span>np.pi<span class="op">*</span>r_ball<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>net_grav <span class="op">=</span> m_ball<span class="op">*</span>g <span class="op">-</span> rho_gly<span class="op">*</span>Vol_ball<span class="op">*</span>g   <span class="co"># weight minus buoyancy</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>c_stokes <span class="op">=</span> <span class="dv">6</span><span class="op">*</span>np.pi<span class="op">*</span>mu<span class="op">*</span>r_ball</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>v_term_s <span class="op">=</span> net_grav<span class="op">/</span>c_stokes</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>tau_s    <span class="op">=</span> m_ball<span class="op">/</span>c_stokes</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>Re_s     <span class="op">=</span> rho_gly<span class="op">*</span>v_term_s<span class="op">*</span>(<span class="dv">2</span><span class="op">*</span>r_ball)<span class="op">/</span>mu</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Stokes: v_term = </span><span class="sc">{</span>v_term_s<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss"> cm/s, tau = </span><span class="sc">{</span>tau_s<span class="op">*</span><span class="fl">1e3</span><span class="sc">:.2f}</span><span class="ss"> ms, Re = </span><span class="sc">{</span>Re_s<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Quadratic drag: skydiver ──────────────────────────────────</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>m_sky, rho_air, Cd_sky, Area <span class="op">=</span> <span class="fl">75.0</span>, <span class="fl">1.225</span>, <span class="fl">1.0</span>, <span class="fl">0.7</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>k_quad   <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>rho_air<span class="op">*</span>Cd_sky<span class="op">*</span>Area</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>v_term_q <span class="op">=</span> np.sqrt(m_sky<span class="op">*</span>g<span class="op">/</span>k_quad)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>t95      <span class="op">=</span> v_term_q<span class="op">/</span>g<span class="op">*</span>np.arctanh(<span class="fl">0.95</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quadratic: v_term = </span><span class="sc">{</span>v_term_q<span class="sc">:.2f}</span><span class="ss"> m/s = </span><span class="sc">{</span>v_term_q<span class="op">*</span><span class="fl">3.6</span><span class="sc">:.0f}</span><span class="ss"> km/h, t95% = </span><span class="sc">{</span>t95<span class="sc">:.2f}</span><span class="ss"> s"</span>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>t_s <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">7</span><span class="op">*</span>tau_s, <span class="dv">300</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>v_s <span class="op">=</span> v_term_s<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>np.exp(<span class="op">-</span>t_s<span class="op">/</span>tau_s))</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(t_s<span class="op">*</span><span class="fl">1e3</span>, v_s<span class="op">*</span><span class="dv">100</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(v_term_s<span class="op">*</span><span class="dv">100</span>, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'$v_</span><span class="ch">{{</span><span class="ss">term</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>v_term_s<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">$ cm/s'</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvline(tau_s<span class="op">*</span><span class="fl">1e3</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'$</span><span class="ch">\\</span><span class="ss">tau=</span><span class="sc">{</span>tau_s<span class="op">*</span><span class="fl">1e3</span><span class="sc">:.2f}</span><span class="ss">$ ms'</span>)</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Time (ms)'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$v(t)$ (cm/s)'</span>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Stokes drag: ball bearing in glycerin'</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>t_q <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">30</span>, <span class="dv">300</span>)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>v_q <span class="op">=</span> v_term_q<span class="op">*</span>np.tanh(g<span class="op">*</span>t_q<span class="op">/</span>v_term_q)</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(t_q, v_q, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(v_term_q, color<span class="op">=</span><span class="st">'crimson'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'$v_</span><span class="ch">{{</span><span class="ss">term</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>v_term_q<span class="sc">:.1f}</span><span class="ss">$ m/s'</span>)</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axvline(t95, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">':'</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="ss">f'95% at $t=</span><span class="sc">{</span>t95<span class="sc">:.1f}</span><span class="ss">$ s'</span>)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Time (s)'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$v(t)$ (m/s)'</span>)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Quadratic drag: skydiver in free fall'</span>)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stokes: v_term = 2.29 cm/s, tau = 2.79 ms, Re = 0.062
+Quadratic: v_term = 41.43 m/s = 149 km/h, t95% = 7.74 s</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-drag" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-drag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_10_files/figure-html/fig-drag-output-2.png" width="1632" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-drag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Two drag regimes for the same Newton’s-second-law setup. Left: a 3 mm-diameter steel ball bearing settling in glycerin (<span class="math inline">\(Re\approx0.06\)</span>, Stokes regime) reaches terminal velocity in a few milliseconds (<span class="math inline">\(\tau=2.8\)</span> ms). Right: a skydiver in free fall (<span class="math inline">\(Re\gg1\)</span>, quadratic-drag regime) reaches 95% of terminal velocity (<span class="math inline">\(\approx41.4\)</span> m/s <span class="math inline">\(\approx149\)</span> km/h) after about 7.7 s — the qualitative S-shape looks similar, but the underlying ODE, and the physical mechanism, are completely different.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-5-optional-capstone-the-surge-tank-and-laplace-transforms" class="level2">
+<h2 class="anchored" data-anchor-id="part-5-optional-capstone-the-surge-tank-and-laplace-transforms">Part 5 (Optional Capstone) — The Surge Tank and Laplace Transforms</h2>
+<section id="physical-setup-2" class="level3">
+<h3 class="anchored" data-anchor-id="physical-setup-2">Physical Setup</h3>
+<p>A <strong><a href="https://en.wikipedia.org/wiki/Surge_tank">surge tank</a></strong> is a vertical shaft added to a hydropower penstock (the pressurized pipe carrying water from a reservoir to a turbine) to absorb pressure transients. If a downstream valve closes suddenly, the moving column of water cannot stop instantly, and without a surge tank the resulting pressure spike (“water hammer”) could rupture the pipe. Instead, the water surges up into the tank and oscillates before settling to a new steady level. With appropriate linearization of the friction terms, the water-level deviation <span class="math inline">\(z(t)\)</span> in the surge tank satisfies a linear, constant-coefficient, second-order ODE — structurally identical to the RLC circuit and the mass–spring–damper system studied elsewhere in this course: <span class="math display">\[
+\boxed{z'' + 2\zeta\omega_n\,z' + \omega_n^2\,z = \omega_n^2\,z_{ss}\,u(t),} \tag{Surge}
+\]</span> where <span class="math inline">\(u(t)\)</span> is the unit step function (modeling a valve closure at <span class="math inline">\(t=0\)</span> that shifts the target level from <span class="math inline">\(0\)</span> to <span class="math inline">\(z_{ss}\)</span>), <span class="math inline">\(\omega_n\)</span> is the natural surge frequency (set by the tank and tunnel geometry), and <span class="math inline">\(\zeta\)</span> is a damping ratio (set by pipe friction).</p>
+</section>
+<section id="solving-with-the-laplace-transform" class="level3">
+<h3 class="anchored" data-anchor-id="solving-with-the-laplace-transform">Solving with the Laplace Transform</h3>
+<p>Taking the Laplace transform of (Surge) with zero initial conditions: <span class="math display">\[
+\left(s^2 + 2\zeta\omega_n s + \omega_n^2\right)Z(s) = \frac{\omega_n^2\,z_{ss}}{s}
+\quad\Longrightarrow\quad
+Z(s) = \frac{\omega_n^2\,z_{ss}}{s\left(s^2+2\zeta\omega_n s+\omega_n^2\right)}.
+\]</span> Inverting (by partial fractions, exactly the underdamped case worked out for the RLC circuit and the DC motor) gives the classical <strong>underdamped step response</strong>: <span class="math display">\[
+\boxed{z(t) = z_{ss}\left[1 - \frac{e^{-\zeta\omega_n t}}{\sqrt{1-\zeta^2}}\sin(\omega_d t + \phi)\right]},
+\qquad \omega_d = \omega_n\sqrt{1-\zeta^2}, \quad \phi = \arccos\zeta.
+\]</span></p>
+<div id="15aaced0" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>t, s <span class="op">=</span> sym.symbols(<span class="st">'t s'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>zeta_s, wn_s, zss_s <span class="op">=</span> sym.symbols(<span class="st">'zeta omega_n z_ss'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>Zs <span class="op">=</span> wn_s<span class="op">**</span><span class="dv">2</span><span class="op">*</span>zss_s<span class="op">/</span>(s<span class="op">*</span>(s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>zeta_s<span class="op">*</span>wn_s<span class="op">*</span>s <span class="op">+</span> wn_s<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>z_of_t <span class="op">=</span> sym.inverse_laplace_transform(Zs, s, t)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="st">"Z(s) = "</span> <span class="op">+</span> sym.latex(Zs)))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>display(Math(<span class="st">"z(t) = "</span> <span class="op">+</span> sym.latex(sym.simplify(z_of_t))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle Z(s) = \frac{\omega_{n}^{2} z_{ss}}{s \left(\omega_{n}^{2} + 2 \omega_{n} s \zeta + s^{2}\right)}\)</span></p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p><span class="math inline">\(\displaystyle z(t) = - \frac{z_{ss} \zeta e^{- \omega_{n} t \zeta} \sin{\left(\omega_{n} t \sqrt{1 - \zeta^{2}} \right)}}{\sqrt{1 - \zeta^{2}}} + z_{ss} - z_{ss} e^{- \omega_{n} t \zeta} \cos{\left(\omega_{n} t \sqrt{1 - \zeta^{2}} \right)}\)</span></p>
+</div>
+</div>
+<p>For a lightly damped surge tank (<span class="math inline">\(\zeta=0.15\)</span>, <span class="math inline">\(\omega_n = 0.05\)</span> rad/s, corresponding to a natural surge period of about two minutes) responding to a valve closure that raises the target level by <span class="math inline">\(z_{ss}=2\)</span> m:</p>
+<div id="cell-fig-surge-tank" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>zeta_v, wn_v, zss_v <span class="op">=</span> <span class="fl">0.15</span>, <span class="fl">0.05</span>, <span class="fl">2.0</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>wd_v <span class="op">=</span> wn_v<span class="op">*</span>np.sqrt(<span class="dv">1</span><span class="op">-</span>zeta_v<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>phi_v <span class="op">=</span> np.arccos(zeta_v)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>tp_v  <span class="op">=</span> np.pi<span class="op">/</span>wd_v</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>OS_v  <span class="op">=</span> np.exp(<span class="op">-</span>zeta_v<span class="op">*</span>np.pi<span class="op">/</span>np.sqrt(<span class="dv">1</span><span class="op">-</span>zeta_v<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>ts_2pct <span class="op">=</span> <span class="dv">4</span><span class="op">/</span>(zeta_v<span class="op">*</span>wn_v)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peak time = </span><span class="sc">{</span>tp_v<span class="sc">:.1f}</span><span class="ss"> s = </span><span class="sc">{</span>tp_v<span class="op">/</span><span class="dv">60</span><span class="sc">:.2f}</span><span class="ss"> min,  overshoot = </span><span class="sc">{</span>OS_v<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peak level = </span><span class="sc">{</span>zss_v<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>OS_v)<span class="sc">:.2f}</span><span class="ss"> m,  2%-settling time (est.) = </span><span class="sc">{</span>ts_2pct<span class="sc">:.0f}</span><span class="ss"> s = </span><span class="sc">{</span>ts_2pct<span class="op">/</span><span class="dv">60</span><span class="sc">:.1f}</span><span class="ss"> min"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>t_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">600</span>, <span class="dv">1000</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>z_t <span class="op">=</span> zss_v<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> np.exp(<span class="op">-</span>zeta_v<span class="op">*</span>wn_v<span class="op">*</span>t_plot)<span class="op">/</span>np.sqrt(<span class="dv">1</span><span class="op">-</span>zeta_v<span class="op">**</span><span class="dv">2</span>)<span class="op">*</span>np.sin(wd_v<span class="op">*</span>t_plot <span class="op">+</span> phi_v))</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">7.5</span>, <span class="fl">4.5</span>))</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot, z_t, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>ax.axhline(zss_v, color<span class="op">=</span><span class="st">'k'</span>, ls<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="ss">f'New steady level $z_</span><span class="ch">{{</span><span class="ss">ss</span><span class="ch">}}</span><span class="ss">=</span><span class="sc">{</span>zss_v<span class="sc">}</span><span class="ss">$ m'</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>ax.plot(tp_v, zss_v<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>OS_v), <span class="st">'ro'</span>, ms<span class="op">=</span><span class="dv">7</span>, zorder<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="ss">f'Peak: </span><span class="sc">{</span>zss_v<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>OS_v)<span class="sc">:.2f}</span><span class="ss"> m at $t=</span><span class="sc">{</span>tp_v<span class="sc">:.0f}</span><span class="ss">$ s'</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>ax.fill_between(t_plot, zss_v<span class="op">*</span><span class="fl">0.98</span>, zss_v<span class="op">*</span><span class="fl">1.02</span>, color<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.15</span>, label<span class="op">=</span><span class="st">'$</span><span class="ch">\\</span><span class="st">pm 2</span><span class="ch">\\</span><span class="st">%$ band'</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Time (s)'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'Surge level $z(t)$ (m)'</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Surge-tank oscillation following a valve closure'</span>)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Peak time = 63.6 s = 1.06 min,  overshoot = 62.1%
+Peak level = 3.24 m,  2%-settling time (est.) = 533 s = 8.9 min</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-surge-tank" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-surge-tank-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="topics_10_files/figure-html/fig-surge-tank-output-2.png" width="1108" height="660" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-surge-tank-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Surge tank step response after a sudden valve closure (<span class="math inline">\(\zeta=0.15\)</span>, <span class="math inline">\(\omega_n=0.05\)</span> rad/s, <span class="math inline">\(z_{ss}=2\)</span> m). The level overshoots the new steady value by about 62% before oscillating (period <span class="math inline">\(\approx 2.1\)</span> min) toward equilibrium. Light damping like this is exactly why real surge tanks add extra throttling to increase <span class="math inline">\(\zeta\)</span> and tame the overshoot.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Looking Ahead: Laplace Transforms
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The surge tank is the fluid-dynamics twin of the driven RLC circuit and the forced mass–spring–damper: same governing ODE, same Laplace-transform solution technique, same vocabulary of natural frequency, damping ratio, peak overshoot, and settling time. If you can solve one of these three problems with Laplace transforms, you can solve all of them — only the physical meaning of <span class="math inline">\(\omega_n\)</span>, <span class="math inline">\(\zeta\)</span>, and <span class="math inline">\(z_{ss}\)</span> changes.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="connecting-the-fluid-dynamics-applications" class="level2">
+<h2 class="anchored" data-anchor-id="connecting-the-fluid-dynamics-applications">Connecting the Fluid-Dynamics Applications</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">Draining tank</th>
+<th style="text-align: center;">Coupled tanks (linear)</th>
+<th style="text-align: center;">Coupled tanks (nonlinear)</th>
+<th style="text-align: center;">Drag</th>
+<th style="text-align: center;">Surge tank</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ODE type</strong></td>
+<td style="text-align: center;">1st-order, nonlinear (separable)</td>
+<td style="text-align: center;">1st-order linear system</td>
+<td style="text-align: center;">1st-order nonlinear system</td>
+<td style="text-align: center;">1st-order, linear <em>or</em> nonlinear</td>
+<td style="text-align: center;">2nd-order linear</td>
+</tr>
+<tr class="even">
+<td><strong>Course topic</strong></td>
+<td style="text-align: center;">Notes 2</td>
+<td style="text-align: center;">Chapter 3 (systems)</td>
+<td style="text-align: center;">Chapter 3 + Numerical Methods</td>
+<td style="text-align: center;">Notes 2</td>
+<td style="text-align: center;">Laplace transforms</td>
+</tr>
+<tr class="odd">
+<td><strong>Key parameter</strong></td>
+<td style="text-align: center;">Drain time <span class="math inline">\(T=2\sqrt{h_0}/k\)</span></td>
+<td style="text-align: center;">Eigenvalues of <span class="math inline">\(A\)</span></td>
+<td style="text-align: center;">Eigenvalues of Jacobian</td>
+<td style="text-align: center;">Time constant <span class="math inline">\(\tau\)</span> or <span class="math inline">\(v_{term}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\omega_n,\ \zeta\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Long-term behavior</strong></td>
+<td style="text-align: center;">Reaches 0 in <em>finite</em> time</td>
+<td style="text-align: center;">Stable node (no oscillation)</td>
+<td style="text-align: center;">Locally stable node</td>
+<td style="text-align: center;">Approaches <span class="math inline">\(v_{term}\)</span></td>
+<td style="text-align: center;">Damped oscillation</td>
+</tr>
+<tr class="odd">
+<td><strong>Engineering relevance</strong></td>
+<td style="text-align: center;">Tank sizing, batch processes</td>
+<td style="text-align: center;">Reservoir/process networks</td>
+<td style="text-align: center;">Realistic valve networks</td>
+<td style="text-align: center;">Sedimentation, free fall, HVAC</td>
+<td style="text-align: center;">Hydropower, water hammer</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The Analogy, Extended
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The hydraulic–electrical analogy from Part 2 extends naturally to mechanics as well — every linear storage-and-dissipation system in this course (RC/RLC circuits in Topics 6, the spring–mass–damper in Topics 5, and the tank networks here) is governed by the same handful of ODE structures:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Fluid</th>
+<th>Electrical</th>
+<th>Mechanical</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Height <span class="math inline">\(h\)</span></td>
+<td>Voltage <span class="math inline">\(V\)</span></td>
+<td>Displacement <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td>Flow rate <span class="math inline">\(Q\)</span></td>
+<td>Current <span class="math inline">\(I\)</span></td>
+<td>Velocity <span class="math inline">\(x'\)</span></td>
+</tr>
+<tr class="odd">
+<td>Tank area <span class="math inline">\(A\)</span></td>
+<td>Capacitance <span class="math inline">\(C\)</span></td>
+<td><span class="math inline">\(1/k\)</span> (inverse spring constant)</td>
+</tr>
+<tr class="even">
+<td>Valve resistance <span class="math inline">\(R\)</span></td>
+<td>Resistance <span class="math inline">\(R\)</span></td>
+<td>Damping <span class="math inline">\(\gamma\)</span></td>
+</tr>
+<tr class="odd">
+<td><em>(no direct analog)</em></td>
+<td>Inductance <span class="math inline">\(L\)</span></td>
+<td>Mass <span class="math inline">\(m\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Notice the tank network has no analog of <span class="math inline">\(L\)</span> or <span class="math inline">\(m\)</span> — nothing in it stores <em>inertia</em> — which is precisely why coupled tanks can only settle monotonically to equilibrium, while RLC circuits and mass–spring systems can ring. The surge tank in Part 5 is the exception: the momentum of the moving water column in the connecting tunnel <em>does</em> act like an inductor/mass, which is exactly what makes surge-tank oscillations possible in the first place.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="relevant-videos" class="level2">
+<h2 class="anchored" data-anchor-id="relevant-videos">Relevant Videos</h2>
+<section id="torricellis-law" class="level3">
+<h3 class="anchored" data-anchor-id="torricellis-law">Torricelli’s Law:</h3>
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/f-i0QdRoEwc?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+                 encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+  </iframe>
+</div>
+<hr>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="7b762a21" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
+numpy==2.4.3
+sympy==1.14.0
+matplotlib==3.10.8</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="reuse" class="level2">
+<h2 class="anchored" data-anchor-id="reuse">Reuse</h2>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"><img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1" class="img-fluid quarto-figure quarto-figure-left figure-img" style="width:15.0%"></a></p>
+</figure>
+</div>
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
