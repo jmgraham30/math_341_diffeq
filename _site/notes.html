@@ -97,6 +97,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -300,6 +329,10 @@ div.csl-indent {
     <a class="nav-link" href="./py_tutorial.html"> 
 <span class="menu-text">Python Reference</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./study_tips.html"> 
+<span class="menu-text">Study Tips</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -425,7 +458,6 @@ div.csl-indent {
    
   <ul>
   <li><a href="#tips-on-reading-the-notes" id="toc-tips-on-reading-the-notes" class="nav-link active" data-scroll-target="#tips-on-reading-the-notes">Tips on Reading the Notes</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -471,7 +503,81 @@ div.csl-indent {
 </ul>
 <section id="tips-on-reading-the-notes" class="level2">
 <h2 class="anchored" data-anchor-id="tips-on-reading-the-notes">Tips on Reading the Notes</h2>
-</section>
+<p>These notes are written to be <em>worked through</em>, not read passively like a novel. Most sections mix formal derivations, worked examples, and Python/SymPy verification — treating them as a scroll-and-skim document will leave you with a false sense of understanding. A few concrete habits make a big difference.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Read with pencil and paper in hand
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every derivation and worked example in these notes is something you should be able to <strong>reproduce independently</strong>, not just follow along with. Concretely:</p>
+<ul>
+<li>When you hit a derivation (e.g., completing the square for a Laplace inversion, or deriving the variation-of-parameters formula), stop, cover the page, and try to redo the steps yourself before reading on.</li>
+<li>For every worked example, pause after reading the problem statement and attempt it before looking at the solution. If your answer doesn’t match, find <em>where</em> your reasoning diverged — that’s usually where the real learning happens.</li>
+<li>Treat the “Show the code” blocks the same way: try to predict what the plot or symbolic output will look like before running or reading it. If you have Python available, re-run the code yourself and tweak the parameters (change <span class="math inline">\(r\)</span>, <span class="math inline">\(K\)</span>, initial conditions, etc.) to see how the behavior changes.</li>
+</ul>
+<p>A section you’ve only read with your eyes, and never worked with a pencil, is not yet learned — it just feels familiar.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Expect to reread — plan for it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These notes are dense, and full comprehension on a single pass is not the expectation. A productive rhythm is:</p>
+<ol type="1">
+<li><strong>First pass:</strong> read for the big picture — what problem is this section solving, and why does it matter? The “Goals” box and section introduction at the top of each page are designed for this.</li>
+<li><strong>Second pass:</strong> work through the derivations and examples with pencil and paper, as above.</li>
+<li><strong>Third pass (later, e.g.&nbsp;before an exam or when the next section builds on this one):</strong> skim again with the benefit of hindsight. Ideas that seemed opaque the first time are often obvious once you’ve seen where they’re headed.</li>
+</ol>
+<p>If a particular derivation or example still doesn’t click after two honest attempts, that’s exactly what office hours, asking questions in class, or a study group are for — flag it and ask.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Read in parallel with the textbook and lectures
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These notes are a <em>supplement</em>, not a replacement for the textbook (Logan) or for attending lecture:</p>
+<ul>
+<li>Each notes page states which section(s) of Logan it corresponds to — read the analogous textbook section alongside it. Seeing the same idea presented in two different voices, with different examples, is one of the most effective ways to solidify understanding.</li>
+<li>Skim the relevant section <strong>before</strong> lecture, so that lecture is reinforcing material you’ve already met once rather than being your first exposure to it. You don’t need to master it beforehand — just show up having seen the vocabulary and the main idea once.</li>
+<li>After lecture, revisit the notes to fill in any gaps between what was covered in class and what’s on the page (the notes may be more detailed or complete than what fits in class time).</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A few more habits worth building
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Use the Goals box.</strong> Each section opens with a short list of goals. Read it first, and check back against it when you finish. Ask yourself, “can I actually do each item on the list?”</li>
+<li><strong>Don’t skip the “why,” even when you want the formula.</strong> Notice how often a technique is motivated before it’s derived (e.g., <em>why</em> Laplace transforms are useful before <em>how</em> to compute one). Understanding the motivation makes the formula far easier to retain and to apply.</li>
+<li><strong>Use the embedded code as a sandbox.</strong> The Python/SymPy blocks are not just for display — they’re meant to be run, modified, and used to check your own hand computations. If SymPy’s answer disagrees with yours, that’s valuable information.</li>
+<li><strong>Watch the linked videos when a topic isn’t landing.</strong> A different presentation of the same material (different notation, different pace) often resolves confusion that rereading the same page won’t.</li>
+<li><strong>Budget real time.</strong> These are not five-minute reads. An approximate time range is posted near the top of each notes page — use it to plan your study sessions rather than skimming a 45-minute section in 10 minutes and assuming you’ve got it.</li>
+<li><strong>The “Summary” and “Key Takeaways” boxes are a self-test, not a substitute.</strong> After finishing a section, try to reconstruct the summary table from memory before rereading it. If you can’t, that’s a sign to go back through the section rather than move on.</li>
+</ul>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
@@ -481,6 +587,9 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 
 
+</section>
+</div>
+</div>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->

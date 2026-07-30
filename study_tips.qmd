@@ -1,0 +1,142 @@
+---
+title: "Study Tips"
+jupyter: diffeq_py
+format:
+  html: default
+license: "CC BY-NC-SA 4.0"
+bibliography: diffeq_bib.bib
+---
+
+The tips on this page are aimed specifically at *this* course: a four-credit, differential equations course where homework is meant to build fluency and exams are closed-book, pencil-and-paper. Good study habits from other courses (rereading notes, highlighting, watching videos passively) are necessary but not sufficient here — differential equations is a course you learn by doing a large volume of problems by hand, repeatedly, until the procedures become automatic.
+
+### General Philosophy
+
+::: {.callout-important}
+## This is a "hands" course, not a "read" course
+
+You will not learn to solve differential equations by reading about how to solve them, any more than you'd learn to swim by reading about swimming. The notes and lectures give you the *why* and the *procedure*; homework and practice are where the procedure becomes something you can execute reliably, under time pressure, without a reference in front of you.
+
+A rough (and deliberately aggressive) benchmark: for every hour of lecture, expect to spend two to three hours outside of class on this material — reading, doing homework, and practicing extra problems — to stay on top of a four-credit course at this pace.
+:::
+
+::: {.callout-tip}
+## Interleave, don't block
+
+It's tempting to do all your Chapter 3 (Laplace transform) homework problems back-to-back once you've just learned the technique — but this can create an illusion of mastery, because you already know which method to use before you've even read the problem. A stronger (if less comfortable) practice is **interleaving**: periodically mix in a few problems from earlier sections when you do a new problem set. Having to first figure out *which* technique applies — separable? linear? Laplace? eigenvalue method? — is often the harder and more valuable skill, and it's exactly what a cumulative exam demands.
+:::
+
+### Homework Strategies
+
+::: {.callout-important}
+## Attempt every problem cold before consulting anything
+
+Before opening the notes, the textbook, a solution, or asking a classmate, spend a genuine, timed attempt (10–15 minutes is a reasonable default) trying the problem with just your own head and a blank sheet of paper. This is uncomfortable — you will get stuck, and that's the point. Struggling productively with a problem before seeking help is one of the most well-supported ways to build durable understanding, even though it feels less efficient in the moment than jumping straight to a worked example.
+
+Only after a genuine attempt should you consult the notes or textbook for the relevant method, and only after *that* attempt should you consult the instructor or a classmate.
+:::
+
+::: {.callout-tip}
+## Use a "clean copy" pass
+
+After you've worked a homework problem — especially a messy one with cross-outs, false starts, and algebra fixes — redo it once more on a fresh sheet from scratch, aiming for the cleanest, most efficient path to the answer. This second pass does two things: it consolidates the correct method in your memory (rather than the memory of your false starts), and it's excellent practice for exam conditions, where you need to produce a clean solution the first time.
+:::
+
+::: {.callout-tip}
+## Use SymPy and `solve_ivp` to check, never to replace, hand work
+
+The notes include a lot of Python/SymPy verification, and you should absolutely use it — but only *after* you've solved a problem by hand. A good workflow:
+
+1. Solve the problem completely by hand.
+2. Check your answer with SymPy (`dsolve`, `laplace_transform`, eigenvector computations, etc.) or by plugging your solution back into the original ODE.
+3. If it disagrees, find your error algebraically — don't just copy the correct answer and move on. The value is in locating *where* your reasoning went wrong.
+
+On exams you will not have computer access, so treat code as a grading assistant for practice, not a solving tool.
+:::
+
+::: {.callout-tip}
+## Keep an "error log"
+
+Keep a running list (a page in a notebook, a note on your phone, whatever is durable) of every mistake you make on homework that isn't a one-off typo — sign errors in integrating factors, forgetting the $-x(0)$ term in a Laplace derivative formula, mixing up the modification rule for undetermined coefficients, forgetting to check for repeated eigenvalues, misreading a nullcline direction. Before an exam, read through this list. Students tend to make the *same* few categories of mistakes repeatedly; a five-minute review of your personal error log is often more valuable than another hour of new practice problems.
+:::
+
+::: {.callout-note}
+## Working in groups
+
+Study groups are valuable for this material, but structure matters:
+
+- Attempt problems individually first, then compare methods and answers — don't solve problems for the first time as a group, or you'll only ever see one person's way of thinking.
+- Take turns explaining a solution out loud to the group, including *why* each step is valid, not just *what* the step is. If you can't explain why you multiplied by an integrating factor, you don't yet understand it well enough for a test that includes conceptual questions.
+- Whiteboards or shared paper are better than a shared laptop — this course is about pencil-and-paper fluency, and typing/copying LaTeX doesn't build the same muscle memory.
+:::
+
+### Preparing for Pencil-and-Paper Exams
+
+::: {.callout-important}
+## Practice under real exam conditions — no notes, no computer, timed
+
+The single biggest gap students encounter is between "I understand this when I look at my notes" and "I can produce this from memory, under time pressure, with nothing but a pencil." The only way to close that gap is to practice in the actual exam condition:
+
+- Pick a set of problems (old exams if available, or a mix of homework and notes examples) and do them **closed-book, timed, on blank paper**, exactly as you will on exam day.
+- Simulate the actual time constraint: if the exam is 50 minutes, time yourself doing a representative subset of problems in a proportional amount of time.
+- Grade yourself honestly against a solution, the same way an instructor would — partial credit for showing correct setup, but be strict about arithmetic and sign errors, since those cost real points on exams too.
+
+Doing this once the week before an exam is good; doing it two or three times, spaced out, is much better.
+:::
+
+::: {.callout-tip}
+## Build (and then internalize) a "method map"
+
+A large part of exam difficulty in this course is not the algebra itself but **recognizing which method applies** to a given equation, especially on a cumulative exam covering many chapters at once. Before an exam, build yourself a one-page decision map, e.g.:
+
+- Is it first-order? Separable? Linear (integrating factor)? Autonomous (phase line)?
+- Is it a linear constant-coefficient 2nd-order ODE? Homogeneous or not? What are the three cases for the characteristic equation?
+- Does the forcing function suggest undetermined coefficients, or does it require variation of parameters (or Laplace, for discontinuous/impulsive forcing)?
+- Is it a system? Real/complex/repeated eigenvalues? What does the trace–determinant plane say?
+- Is it nonlinear? Find critical points, compute the Jacobian, classify by $\text{tr}\,J$ and $\det J$.
+
+The value of building this map yourself (rather than copying one) is that the act of constructing it *is* the review. Once built, don't just reread it — cover it and try to reconstruct it from memory, the same way you'd reconstruct a derivation.
+:::
+
+::: {.callout-tip}
+## Practice the "boring" parts on purpose
+
+Exam points are lost disproportionately often on the routine steps surrounding a technique, not the technique's central idea: sign errors in the quadratic formula, arithmetic mistakes in partial fractions, forgetting an initial condition when solving for constants, mislabeling which eigenvector goes with which eigenvalue, algebra slips when completing the square for a Laplace inversion. These are exactly the steps that feel too easy to bother practicing — which is why they're worth deliberately practicing. Do a handful of "plumbing" reps (just the partial fractions, just solving for the constants from ICs, just the eigenvector algebra) in isolation, not embedded in a full problem, so the routine steps become fast and automatic and don't eat into your exam time or attention.
+:::
+
+::: {.callout-tip}
+## Practice drawing by hand what the notes show you in Python
+
+Several major topics in this course — phase lines, phase portraits, bifurcation diagrams, nullclines, slope fields — are illustrated in the notes with polished computer-generated figures. On an exam, you will need to produce a *recognizable, correct, hand-sketched* version of these with nothing but a pencil: correct equilibria, correct stability (arrows/spiral direction/node vs. saddle), correct nullclines. This is a distinct skill from reading a computer-generated figure and needs its own practice:
+
+- Given only a matrix (or a nonlinear system with its Jacobian), sketch the phase portrait by hand — eigenvector directions, arrows, general shape — *before* checking it against a computer plot.
+- Practice going from an equation to a rough sketch quickly; on an exam you often need the qualitative picture fast, not a beautifully rendered one.
+:::
+
+::: {.callout-tip}
+## Do a cumulative pass before exams that cover multiple chapters
+
+If an exam is cumulative (or covers several chapters at once), your last study session before it should not be organized chapter-by-chapter. Instead, take a mixed set of problems spanning all the relevant chapters, shuffle them, and work through them in a random order. This directly practices the recognition skill described above (method-map) and closely mimics what the actual exam will demand, since exam problems will not be pre-sorted by topic for you.
+:::
+
+::: {.callout-note}
+## In the exam itself
+
+- **Skim the whole exam first** before writing anything, so you can budget time and don't get stuck early on a problem worth few points at the expense of one worth more.
+- **Write down what you're given and what you're solving for** at the start of each problem — this costs seconds and often prevents you from solving the wrong thing or missing an initial condition partway through.
+- **Show your method clearly**, even under time pressure — partial credit depends on the grader being able to see your reasoning, not just a final boxed answer.
+- **Sanity-check your answer** when time allows: does the solution satisfy the ODE? Does it satisfy the initial condition? Is the equilibrium classification consistent with both the eigenvalues *and* a quick nullcline check? A 30-second check can catch a sign error that would otherwise cost most of a problem's points.
+- **If you get stuck, move on and come back.** A partially worked problem you return to with fresh eyes is often easier than a fully stuck problem you stare at for ten minutes.
+:::
+
+### Longer-Term Retention
+
+::: {.callout-note}
+## Spaced review beats last-minute review
+
+Material from Chapter 1 (first-order equations) is foundational to everything that follows — separable equations reappear inside variation-of-parameters derivations, phase-line ideas reappear in nonlinear systems, and so on. Revisiting earlier material briefly and periodically throughout the semester (not just cramming it once before the exam that originally covered it) will make later chapters easier and will pay off directly on any cumulative exam or the final.
+
+
+## References
+
+::: {#refs}
+:::
