@@ -131,6 +131,81 @@ jupyter lab
 
 Select the **"Python (diffeq_py)"** kernel when opening notebooks.
 
+## Access to Jupyter Notebooks
+
+Click any badge below to open that notebook directly in Google Colab — no installation required. See the [course website](https://math341diffeq.netlify.app/) for the notes, examples, and topics these notebooks accompany.
+
+### Reference
+
+| Notebook | Open in Colab |
+|---|---|
+| Calculus Review | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/calc_review.ipynb) |
+| Glossary | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/glossary.ipynb) |
+| Notes Overview | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes.ipynb) |
+| Python Tutorial | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/py_tutorial.ipynb) |
+
+### Notes
+
+| Notebook | Open in Colab |
+|---|---|
+| Notes 1 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_01.ipynb) |
+| Notes 2 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_02.ipynb) |
+| Notes 3 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_03.ipynb) |
+| Notes 4 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_04.ipynb) |
+| Notes 5 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_05.ipynb) |
+| Notes 6 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_06.ipynb) |
+| Notes 7 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_07.ipynb) |
+| Notes 8 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_08.ipynb) |
+| Notes 9 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_09.ipynb) |
+| Notes 10 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_10.ipynb) |
+| Notes 11 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_11.ipynb) |
+| Notes 12 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_12.ipynb) |
+| Notes 13 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_13.ipynb) |
+| Notes 14 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes_14.ipynb) |
+
+### Examples
+
+| Notebook | Open in Colab |
+|---|---|
+| Examples 1 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_01.ipynb) |
+| Examples 2 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_02.ipynb) |
+| Examples 3 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_03.ipynb) |
+| Examples 4 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_04.ipynb) |
+| Examples 5 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_05.ipynb) |
+| Examples 6 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_06.ipynb) |
+| Examples 7 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_07.ipynb) |
+| Examples 8 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_08.ipynb) |
+| Examples 9 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_09.ipynb) |
+| Examples 10 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_10.ipynb) |
+| Examples 11 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/examples_11.ipynb) |
+
+### Topics
+
+| Notebook | Open in Colab |
+|---|---|
+| Topics 1 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_01.ipynb) |
+| Topics 2 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_02.ipynb) |
+| Topics 3 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_03.ipynb) |
+| Topics 4 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_04.ipynb) |
+| Topics 5 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_05.ipynb) |
+| Topics 6 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_06.ipynb) |
+| Topics 7 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_07.ipynb) |
+| Topics 8 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_08.ipynb) |
+| Topics 9 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_09.ipynb) |
+| Topics 10 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_10.ipynb) |
+| Topics 11 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_11.ipynb) |
+| Topics 12 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/topics_12.ipynb) |
+
+### Review
+
+| Notebook | Open in Colab |
+|---|---|
+| Review 1 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/review_01.ipynb) |
+| Review 2 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/review_02.ipynb) |
+| Review 3 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/review_03.ipynb) |
+
+
+
 ## License
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
