@@ -140,8 +140,6 @@ Click any badge below to open that notebook directly in Google Colab — no inst
 | Notebook | Open in Colab |
 |---|---|
 | Calculus Review | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/calc_review.ipynb) |
-| Glossary | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/glossary.ipynb) |
-| Notes Overview | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/notes.ipynb) |
 | Python Tutorial | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/py_tutorial.ipynb) |
 
 ### Notes
