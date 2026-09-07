@@ -7774,5 +7774,33 @@
     "crumbs": [
       "Reviews"
     ]
+  },
+  {
+    "objectID": "select_solutions.html",
+    "href": "select_solutions.html",
+    "title": "Solutions to Selected Homeworks",
+    "section": "",
+    "text": "Show the code\n# This is a code cell that imports the necessary libraries for our session.\nimport numpy as np                        # NumPy for numerical computations\nimport scipy as sp                        # SciPy for scientific computing\nimport sympy as sym                       # SymPy for symbolic mathematics\nimport matplotlib as mpl                  # Matplotlib for plotting\nimport matplotlib.pyplot as plt           # Matplotlib pyplot interface\nfrom scipy.integrate import solve_ivp     # ODE solver\nmpl.rcParams['figure.dpi'] = 150\nmpl.rcParams['axes.spines.top'] = False\nmpl.rcParams['axes.spines.right'] = False\nThis page collects full solutions to select homework exercises. Each solution is worked out “by hand” and then, where helpful, confirmed symbolically using SymPy or other computational tools."
+  },
+  {
+    "objectID": "select_solutions.html#homework-1",
+    "href": "select_solutions.html#homework-1",
+    "title": "Solutions to Selected Homeworks",
+    "section": "Homework 1",
+    "text": "Homework 1\n\nSection 1.1 Exercise 9, page 10\nFind two values of \\(\\lambda\\) for which \\(x(t) = e^{\\lambda t}\\) is a solution of the differential equation \\(2x'' - 5x' - 3x = 0\\).\n\nBy Hand\nStep 1 — Differentiate the candidate solution.\nFor \\(x(t) = e^{\\lambda t}\\), \\[\nx'(t) = \\lambda e^{\\lambda t}, \\qquad x''(t) = \\lambda^2 e^{\\lambda t}.\n\\]\nStep 2 — Substitute into the differential equation.\n\\[\n2x'' - 5x' - 3x = 2\\lambda^2 e^{\\lambda t} - 5\\lambda e^{\\lambda t} - 3 e^{\\lambda t} = \\left(2\\lambda^2 - 5\\lambda - 3\\right)e^{\\lambda t}.\n\\]\nSince \\(e^{\\lambda t} \\neq 0\\) for any \\(t\\), this expression is zero exactly when\n\\[\n2\\lambda^2 - 5\\lambda - 3 = 0.\n\\]\nThis is the characteristic equation associated with the ODE.\nStep 3 — Solve the characteristic equation.\nFactoring, \\[\n2\\lambda^2 - 5\\lambda - 3 = (2\\lambda + 1)(\\lambda - 3) = 0,\n\\] so \\[\n\\lambda = -\\frac{1}{2} \\qquad \\text{or} \\qquad \\lambda = 3.\n\\]\n\n\n\n\n\n\nTip\n\n\n\nBoth values work independently: \\(x_1(t) = e^{-t/2}\\) and \\(x_2(t) = e^{3t}\\) are each solutions of \\(2x'' - 5x' - 3x = 0\\), and so is any linear combination \\(x(t) = c_1 e^{-t/2} + c_2 e^{3t}\\).\n\n\n\n\nUsing SymPy\n\nt, lam = sym.symbols('t lambda', real=True)\n\nx = sym.exp(lam * t)\n\nlhs = 2 * sym.diff(x, t, 2) - 5 * sym.diff(x, t) - 3 * x\nchar_eq = sym.simplify(lhs / x)   # divide out the common factor e^{lambda t}\n\nprint(\"2x'' - 5x' - 3x  simplifies to:\", sym.expand(char_eq), \" * e^(lambda t)\")\n\nlambda_solutions = sym.solve(sym.Eq(char_eq, 0), lam)\nprint(\"Values of lambda:\", lambda_solutions)\n\n2x'' - 5x' - 3x  simplifies to: 2*lambda**2 - 5*lambda - 3  * e^(lambda t)\nValues of lambda: [-1/2, 3]\n\n\n\n\n\n\n\n\nNote\n\n\n\nSymPy confirms the two characteristic roots found by hand: \\(\\lambda = -\\dfrac{1}{2}\\) and \\(\\lambda = 3\\).\n\n\n\n\n\n\nSection 1.1 Exercise 12, page 11\n(Physics) In deep water, the intensity of light \\(I = I(x)\\) at a depth \\(x\\) meters below the water surface is modeled by the equation \\(I' = -1.4I\\). At what depth is the light intensity \\(1\\%\\) that at the surface?\n\nBy Hand\nStep 1 — Solve the differential equation.\nThe equation \\(I' = -1.4I\\) is of the form \\(I'=aI\\) where \\(a = -1.4\\), so we know from lecture that the general solution must be \\(I(x) = I_0 e^{ax}\\) for some constant \\(I_0\\).\nStep 2 — Impose the \\(1\\%\\) condition.\nWe want the depth \\(x\\) at which \\(I(x) = 0.01\\,I_0\\): \\[\n0.01\\,I_0 = I_0 e^{-1.4x} \\quad \\Longrightarrow \\quad 0.01 = e^{-1.4x}.\n\\]\nStep 3 — Solve for \\(x\\).\nTaking the natural log of both sides, \\[\n\\ln(0.01) = -1.4x \\quad \\Longrightarrow \\quad x = -\\frac{\\ln(0.01)}{1.4} = \\frac{\\ln(100)}{1.4}.\n\\]\nNumerically, \\[\nx = \\frac{\\ln(100)}{1.4} \\approx \\frac{4.6052}{1.4} \\approx 3.29 \\text{ meters}.\n\\]\n\n\n\n\n\n\nTip\n\n\n\nInterpretation. Since \\(1.4 &gt; 0\\) is the decay rate, light intensity decreases exponentially with depth. At roughly \\(3.29\\) meters below the surface, only \\(1\\%\\) of the surface intensity remains — a useful benchmark for how quickly light is absorbed in deep water."
+  },
+  {
+    "objectID": "select_solutions.html#references",
+    "href": "select_solutions.html#references",
+    "title": "Solutions to Selected Homeworks",
+    "section": "References",
+    "text": "References\n\n\n\n\n\n\n\n\n\nTipExpand for Session Info\n\n\n\n\n\n\n\nShow the code\nimport sys # sys for system-specific parameters and functions\nprint(\"Python version:\", sys.version)\nprint('\\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))\n\n\nPython version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]\nnumpy==2.4.3\nscipy==1.17.1\nsympy==1.14.0\nmatplotlib==3.10.8"
+  },
+  {
+    "objectID": "select_solutions.html#reuse",
+    "href": "select_solutions.html#reuse",
+    "title": "Solutions to Selected Homeworks",
+    "section": "Reuse",
+    "text": "Reuse\n\n\n\n\n\nCC BY-NC-SA 4.0"
   }
 ]

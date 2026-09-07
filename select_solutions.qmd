@@ -1,0 +1,154 @@
+---
+title: "Solutions to Selected Homeworks"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# This is a code cell that imports the necessary libraries for our session.
+import numpy as np                        # NumPy for numerical computations
+import scipy as sp                        # SciPy for scientific computing
+import sympy as sym                       # SymPy for symbolic mathematics
+import matplotlib as mpl                  # Matplotlib for plotting
+import matplotlib.pyplot as plt           # Matplotlib pyplot interface
+from scipy.integrate import solve_ivp     # ODE solver
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+This page collects full solutions to select homework exercises. Each solution is worked out "by hand" and then, where helpful, confirmed symbolically using SymPy or other computational tools.
+
+
+## Homework 1
+
+### Section 1.1 Exercise 9, page 10
+
+Find two values of $\lambda$ for which $x(t) = e^{\lambda t}$ is a solution of the differential equation $2x'' - 5x' - 3x = 0$.
+
+#### By Hand
+
+**Step 1 — Differentiate the candidate solution.**
+
+For $x(t) = e^{\lambda t}$,
+$$
+x'(t) = \lambda e^{\lambda t}, \qquad x''(t) = \lambda^2 e^{\lambda t}.
+$$
+
+**Step 2 — Substitute into the differential equation.**
+
+$$
+2x'' - 5x' - 3x = 2\lambda^2 e^{\lambda t} - 5\lambda e^{\lambda t} - 3 e^{\lambda t} = \left(2\lambda^2 - 5\lambda - 3\right)e^{\lambda t}.
+$$
+
+Since $e^{\lambda t} \neq 0$ for any $t$, this expression is zero exactly when
+
+$$
+2\lambda^2 - 5\lambda - 3 = 0.
+$$
+
+This is the **characteristic equation** associated with the ODE.
+
+**Step 3 — Solve the characteristic equation.**
+
+Factoring,
+$$
+2\lambda^2 - 5\lambda - 3 = (2\lambda + 1)(\lambda - 3) = 0,
+$$
+so
+$$
+\lambda = -\frac{1}{2} \qquad \text{or} \qquad \lambda = 3.
+$$
+
+::: {.callout-tip}
+Both values work independently: $x_1(t) = e^{-t/2}$ and $x_2(t) = e^{3t}$ are each solutions of $2x'' - 5x' - 3x = 0$, and so is any linear combination $x(t) = c_1 e^{-t/2} + c_2 e^{3t}$.
+:::
+
+#### Using SymPy
+
+```{python}
+t, lam = sym.symbols('t lambda', real=True)
+
+x = sym.exp(lam * t)
+
+lhs = 2 * sym.diff(x, t, 2) - 5 * sym.diff(x, t) - 3 * x
+char_eq = sym.simplify(lhs / x)   # divide out the common factor e^{lambda t}
+
+print("2x'' - 5x' - 3x  simplifies to:", sym.expand(char_eq), " * e^(lambda t)")
+
+lambda_solutions = sym.solve(sym.Eq(char_eq, 0), lam)
+print("Values of lambda:", lambda_solutions)
+```
+
+::: {.callout-note}
+SymPy confirms the two characteristic roots found by hand: $\lambda = -\dfrac{1}{2}$ and $\lambda = 3$.
+:::
+
+---
+
+### Section 1.1 Exercise 12, page 11
+
+*(Physics)* In deep water, the intensity of light $I = I(x)$ at a depth $x$ meters below the water surface is modeled by the equation $I' = -1.4I$. At what depth is the light intensity $1\%$ that at the surface?
+
+#### By Hand
+
+**Step 1 — Solve the differential equation.**
+
+The equation $I' = -1.4I$ is of the form $I'=aI$ where $a = -1.4$, so we know from lecture that the general solution must be $I(x) = I_0 e^{ax}$ for some constant $I_0$.
+
+**Step 2 — Impose the $1\%$ condition.**
+
+We want the depth $x$ at which $I(x) = 0.01\,I_0$:
+$$
+0.01\,I_0 = I_0 e^{-1.4x} \quad \Longrightarrow \quad 0.01 = e^{-1.4x}.
+$$
+
+**Step 3 — Solve for $x$.**
+
+Taking the natural log of both sides,
+$$
+\ln(0.01) = -1.4x \quad \Longrightarrow \quad x = -\frac{\ln(0.01)}{1.4} = \frac{\ln(100)}{1.4}.
+$$
+
+Numerically,
+$$
+x = \frac{\ln(100)}{1.4} \approx \frac{4.6052}{1.4} \approx 3.29 \text{ meters}.
+$$
+
+::: {.callout-tip}
+**Interpretation.** Since $1.4 > 0$ is the decay rate, light intensity decreases exponentially with depth. At roughly $3.29$ meters below the surface, only $1\%$ of the surface intensity remains — a useful benchmark for how quickly light is absorbed in deep water.
+:::
+
+
+
+---
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys # sys for system-specific parameters and functions
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+## Reuse
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
+
+
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
