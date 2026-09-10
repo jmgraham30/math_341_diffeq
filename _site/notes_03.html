@@ -565,7 +565,7 @@ window.Quarto = {
 </header>
 
 
-<div id="6b25b435" class="cell" data-execution_count="1">
+<div id="641accf4" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -961,7 +961,7 @@ f'(x) = r\!\left(1 - \frac{2x}{K}\right).
 <p><strong>Cubic</strong> <span class="math inline">\(x' = x^3 - x\)</span>: <span class="math display">\[
 f'(x) = 3x^2 - 1.
 \]</span> At <span class="math inline">\(x^* = \pm 1\)</span>: <span class="math inline">\(f'(\pm 1) = 2 &gt; 0\)</span> → <strong>unstable</strong>. At <span class="math inline">\(x^* = 0\)</span>: <span class="math inline">\(f'(0) = -1 &lt; 0\)</span> → <strong>stable</strong>.</p>
-<div id="8ccd35b7" class="cell" data-execution_count="4">
+<div id="a7161845" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>t_sym, x_sym, r_sym, K_sym <span class="op">=</span> sym.symbols(<span class="st">'t x r K'</span>, real<span class="op">=</span><span class="va">True</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -1521,31 +1521,38 @@ x' = rx\!\left(1 - \frac{x}{K}\right) - \frac{x^2}{1+x^2},
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># f(x) for three r values</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>x_arr <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">12</span>, <span class="dv">400</span>)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>pred  <span class="op">=</span> x_arr<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> x_arr<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r_val, color, lbl <span class="kw">in</span> <span class="bu">zip</span>([<span class="fl">0.3</span>, <span class="fl">0.55</span>, <span class="fl">0.85</span>],</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                               [<span class="st">'steelblue'</span>, <span class="st">'darkorange'</span>, <span class="st">'crimson'</span>],</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                               [<span class="st">'$r=0.30$ (one eq.)'</span>, <span class="st">'$r=0.55$ (bistable)'</span>, <span class="st">'$r=0.85$ (outbreak)'</span>]):</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    growth <span class="op">=</span> r_val <span class="op">*</span> x_arr <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x_arr<span class="op">/</span>K_bw)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(x_arr, growth <span class="op">-</span> pred, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$f(x)$'</span>)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Budworm $f(x)$ for three values of $r$'</span>)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Solutions for bistable case r=0.55</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>r_bw  <span class="op">=</span> <span class="fl">0.55</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>f_bw  <span class="op">=</span> <span class="kw">lambda</span> t, x: [r_bw<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x[<span class="dv">0</span>]<span class="op">/</span>K_bw) <span class="op">-</span> x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span>)]</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">600</span>)</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="fl">0.3</span>, <span class="fl">0.8</span>, <span class="fl">1.5</span>, <span class="fl">3.0</span>, <span class="fl">5.0</span>, <span class="fl">7.0</span>, <span class="fl">9.0</span>, <span class="fl">11.0</span>],</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>                     plt.cm.viridis(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="dv">8</span>))):</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f_bw, (<span class="dv">0</span>, <span class="dv">40</span>), [x0], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0<span class="sc">}</span><span class="ss">$'</span>)</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Bistable solutions ($r=</span><span class="sc">{</span>r_bw<span class="sc">}</span><span class="ss">$, $K=</span><span class="sc">{</span>K_bw<span class="sc">}</span><span class="ss">$)'</span>)</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">7</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Spruce Budworm Model"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>r_bw  <span class="op">=</span> <span class="fl">0.40</span>   <span class="co"># &lt;-- was 0.55; too close to the bifurcation boundary, dip was only ~0.01 deep</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r_val, color, lbl <span class="kw">in</span> <span class="bu">zip</span>([<span class="fl">0.3</span>, r_bw, <span class="fl">0.85</span>],</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                               [<span class="st">'steelblue'</span>, <span class="st">'darkorange'</span>, <span class="st">'crimson'</span>],</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                               [<span class="st">'$r=0.30$ (one eq.)'</span>, <span class="ss">f'$r=</span><span class="sc">{</span>r_bw<span class="sc">}</span><span class="ss">$ (bistable)'</span>, <span class="st">'$r=0.85$ (outbreak)'</span>]):</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    growth <span class="op">=</span> r_val <span class="op">*</span> x_arr <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> x_arr<span class="op">/</span>K_bw)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    fvals <span class="op">=</span> growth <span class="op">-</span> pred</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(x_arr, fvals, color<span class="op">=</span>color, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>lbl)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r_val <span class="op">==</span> r_bw:</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># mark the three positive equilibria so bistability is visible, not just implied</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        roots_x <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">12</span>, <span class="dv">200000</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        roots_f <span class="op">=</span> r_val<span class="op">*</span>roots_x<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>roots_x<span class="op">/</span>K_bw) <span class="op">-</span> roots_x<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>roots_x<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        crossings <span class="op">=</span> roots_x[np.where(np.diff(np.sign(roots_f)) <span class="op">!=</span> <span class="dv">0</span>)[<span class="dv">0</span>]]</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        axes[<span class="dv">0</span>].plot(crossings, np.zeros_like(crossings), <span class="st">'ko'</span>, markersize<span class="op">=</span><span class="dv">6</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'$x$'</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">'$f(x)$'</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Budworm $f(x)$ for three values of $r$'</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Solutions for bistable case</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>f_bw  <span class="op">=</span> <span class="kw">lambda</span> t, x: [r_bw<span class="op">*</span>x[<span class="dv">0</span>]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x[<span class="dv">0</span>]<span class="op">/</span>K_bw) <span class="op">-</span> x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span>)]</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>t_eval <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">600</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, color <span class="kw">in</span> <span class="bu">zip</span>([<span class="fl">0.3</span>, <span class="fl">0.8</span>, <span class="fl">1.5</span>, <span class="fl">3.0</span>, <span class="fl">5.0</span>, <span class="fl">7.0</span>, <span class="fl">9.0</span>, <span class="fl">11.0</span>],</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>                     plt.cm.viridis(np.linspace(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="dv">8</span>))):</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f_bw, (<span class="dv">0</span>, <span class="dv">40</span>), [x0], t_eval<span class="op">=</span>t_eval, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span>color, lw<span class="op">=</span><span class="fl">1.8</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Bistable solutions ($r=</span><span class="sc">{</span>r_bw<span class="sc">}</span><span class="ss">$, $K=</span><span class="sc">{</span>K_bw<span class="sc">}</span><span class="ss">$)'</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(fontsize<span class="op">=</span><span class="dv">7</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"Spruce Budworm Model"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-budworm" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1695,7 +1702,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="a67d5c89" class="cell" data-execution_count="11">
+<div id="3166d009" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>

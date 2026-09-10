@@ -692,29 +692,44 @@ This is an example of **hysteresis** — the forward and backward transitions oc
 #| fig-height: 3.8
 
 K_bw = 10.0
-fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
 
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+# f(x) for three r values
 x_arr = np.linspace(0.01, 12, 400)
 pred  = x_arr**2 / (1 + x_arr**2)
-for r_val, color, lbl in zip([0.3, 0.55, 0.85],
-                               ['steelblue','darkorange','crimson'],
-                               ['$r=0.30$ (one eq.)', '$r=0.55$ (bistable)', '$r=0.85$ (outbreak)']):
+r_bw  = 0.40   # <-- was 0.55; too close to the bifurcation boundary, dip was only ~0.01 deep
+for r_val, color, lbl in zip([0.3, r_bw, 0.85],
+                               ['steelblue', 'darkorange', 'crimson'],
+                               ['$r=0.30$ (one eq.)', f'$r={r_bw}$ (bistable)', '$r=0.85$ (outbreak)']):
     growth = r_val * x_arr * (1 - x_arr/K_bw)
-    axes[0].plot(x_arr, growth - pred, color=color, lw=2, label=lbl)
+    fvals = growth - pred
+    axes[0].plot(x_arr, fvals, color=color, lw=2, label=lbl)
+    if r_val == r_bw:
+        # mark the three positive equilibria so bistability is visible, not just implied
+        roots_x = np.linspace(0.01, 12, 200000)
+        roots_f = r_val*roots_x*(1-roots_x/K_bw) - roots_x**2/(1+roots_x**2)
+        crossings = roots_x[np.where(np.diff(np.sign(roots_f)) != 0)[0]]
+        axes[0].plot(crossings, np.zeros_like(crossings), 'ko', markersize=6, zorder=5)
 axes[0].axhline(0, color='k', lw=0.8)
 axes[0].set_xlabel('$x$'); axes[0].set_ylabel('$f(x)$')
-axes[0].set_title('$f(x)$ for three values of $r$'); axes[0].legend(fontsize=8); axes[0].set_ylim(-1.5, 1.5)
+axes[0].set_title('Budworm $f(x)$ for three values of $r$')
+axes[0].legend(fontsize=8); axes[0].set_ylim(-1.5, 1.5)
 
-r_bw = 0.55
-f_bw = lambda t, x: [r_bw*x[0]*(1-x[0]/K_bw) - x[0]**2/(1+x[0]**2)]
-t_eval = np.linspace(0, 40, 500)
-for x0, color in zip([0.3,0.8,1.5,3.0,5.0,7.0,9.0,11.0],
-                     plt.cm.viridis(np.linspace(0.1,0.9,8))):
-    sol = solve_ivp(f_bw,(0,40),[x0],t_eval=t_eval,max_step=0.05)
+# Solutions for bistable case
+f_bw  = lambda t, x: [r_bw*x[0]*(1-x[0]/K_bw) - x[0]**2/(1+x[0]**2)]
+t_eval = np.linspace(0, 40, 600)
+for x0, color in zip([0.3, 0.8, 1.5, 3.0, 5.0, 7.0, 9.0, 11.0],
+                     plt.cm.viridis(np.linspace(0.1, 0.9, 8))):
+    sol = solve_ivp(f_bw, (0, 40), [x0], t_eval=t_eval, max_step=0.05)
     axes[1].plot(sol.t, sol.y[0], color=color, lw=1.8, label=f'$x_0={x0}$')
 axes[1].set_xlabel('$t$'); axes[1].set_ylabel('$x(t)$')
-axes[1].set_title(f'Bistable solutions ($r={r_bw}$)'); axes[1].legend(fontsize=6, ncol=2)
-plt.suptitle("Spruce Budworm Model", fontsize=11); plt.tight_layout(); plt.show()
+axes[1].set_title(f'Bistable solutions ($r={r_bw}$, $K={K_bw}$)')
+axes[1].legend(fontsize=7, ncol=2)
+
+plt.suptitle("Spruce Budworm Model", fontsize=12)
+plt.tight_layout()
+plt.show()
 ```
 
 ::: {.callout-note}
