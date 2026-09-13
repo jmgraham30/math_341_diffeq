@@ -126,8 +126,419 @@ $$
 :::
 
 
+## Homework 2
+
+
+### Section 1.1.3 — Slope Fields
+
+#### Exercise 6, Page 6
+
+Use software to sketch the slope field for the differential equation $x' = x^2 - t$ on the square $-3 < t < 3,\ -3 < x < 3$.
+
+**Setting up the slope field.**
+
+A slope field is produced by evaluating the right-hand side $f(t,x) = x^2 - t$ at a grid of points $(t,x)$ in the given square, and at each point drawing a short line segment with that slope. Since no closed-form solution is needed, the natural way to "solve" this exercise is with code.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-slope-field-x2-t
+#| fig-cap: "Slope field for $x' = x^2 - t$ on $-3 < t < 3,\\ -3 < x < 3$. A few representative solution curves (found numerically) are overlaid in color."
+
+def f(t, x):
+    return x**2 - t
+
+# Grid of points for the slope field arrows
+t_grid = np.linspace(-3, 3, 21)
+x_grid = np.linspace(-3, 3, 21)
+T, X = np.meshgrid(t_grid, x_grid)
+slopes = f(T, X)
+
+# Normalize direction vectors so every arrow has the same visual length
+dt = np.ones_like(slopes)
+dx = slopes
+norm = np.sqrt(dt**2 + dx**2)
+dt_unit, dx_unit = dt / norm, dx / norm
+
+fig, ax = plt.subplots(figsize=(6, 6))
+ax.quiver(T, X, dt_unit, dx_unit, angles='xy', pivot='mid',
+          headwidth=0, headlength=0, headaxislength=0,
+          color='steelblue', width=0.003)
+
+# Overlay a handful of numerically computed solution curves
+for x0 in [-2.5, -1, 0, 1, 2.5]:
+    sol = solve_ivp(f, [0, 3], [x0], dense_output=True, max_step=0.05)
+    ax.plot(sol.t, sol.y[0], color='darkorange', lw=1.5)
+    sol_back = solve_ivp(f, [0, -3], [x0], dense_output=True, max_step=0.05)
+    ax.plot(sol_back.t, sol_back.y[0], color='darkorange', lw=1.5)
+
+ax.set_xlim(-3, 3)
+ax.set_ylim(-3, 3)
+ax.set_xlabel('$t$', fontsize=13)
+ax.set_ylabel('$x$', fontsize=13)
+ax.set_title(r"Slope field for $x' = x^2 - t$", fontsize=13)
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+There is no elementary closed-form solution for $x' = x^2 - t$ (it is a form of **Riccati equation**), so this exercise is intentionally solved by producing the slope field and, optionally, a few numerically-generated solution curves rather than an explicit formula.
+:::
 
 ---
+
+### Section 1.3.1 — Separable Equations
+
+#### Exercise 4(a), Page 26
+
+Find the general solution: $x' = \dfrac{2x}{t+1}$.
+
+**By Hand.**
+
+Separate variables (assuming $x \neq 0$ and $t \neq -1$):
+$$
+\frac{dx}{x} = \frac{2}{t+1}\,dt.
+$$
+
+Integrating both sides,
+$$
+\ln|x| = 2\ln|t+1| + C.
+$$
+
+Exponentiating,
+$$
+|x| = e^{C}(t+1)^2 \quad \Longrightarrow \quad x(t) = A(t+1)^2,
+$$
+where $A$ is an arbitrary constant (absorbing the sign and $e^C$). Note $A = 0$ recovers the trivial solution $x \equiv 0$, so this formula captures **all** solutions.
+
+$$
+\boxed{x(t) = A(t+1)^2}
+$$
+
+```{python}
+t = sym.symbols('t')
+x = sym.Function('x')
+
+eq = sym.Eq(sym.diff(x(t), t), 2*x(t)/(t+1))
+sol = sym.dsolve(eq, x(t))
+print("General solution:", sol)
+```
+
+::: {.callout-note}
+SymPy returns $x(t) = C_1(t+1)^2$, matching the boxed formula above (with $A = C_1$).
+:::
+
+#### Exercise 10, Page 27
+
+Solve the following initial value problems.
+
+##### (a) $\dfrac{dx}{dt} = e^{t+x}, \quad x(0) = 0$.
+
+**By Hand.**
+
+Rewrite the right-hand side as $e^t e^x$ and separate variables:
+$$
+e^{-x}\,dx = e^{t}\,dt.
+$$
+
+Integrating,
+$$
+-e^{-x} = e^{t} + C.
+$$
+
+Apply $x(0) = 0$: $-e^{0} = e^{0} + C \Rightarrow -1 = 1 + C \Rightarrow C = -2$. So
+$$
+-e^{-x} = e^t - 2 \quad \Longrightarrow \quad e^{-x} = 2 - e^t \quad \Longrightarrow \quad x(t) = -\ln\!\left(2 - e^t\right).
+$$
+
+$$
+\boxed{x(t) = -\ln(2 - e^t)}, \qquad t < \ln 2.
+$$
+
+::: {.callout-tip}
+The restriction $t < \ln 2$ is required for $2 - e^t > 0$, so that the logarithm is defined. This is an example of a solution whose **interval of existence** is limited even though the differential equation itself is defined for all $t$ and $x$.
+:::
+
+```{python}
+xf = sym.Function('x')
+eq10a = sym.Eq(sym.diff(xf(t), t), sym.exp(t + xf(t)))
+sol10a = sym.dsolve(eq10a, xf(t), ics={xf(0): 0})
+print("Solution:", sym.simplify(sol10a))
+```
+
+##### (b) $\dfrac{dT}{dt} = 2at\left(T^2 - a^2\right), \quad T(0) = 0$.
+
+**By Hand.**
+
+Separate variables:
+$$
+\frac{dT}{T^2 - a^2} = 2at\,dt.
+$$
+
+Using the partial fraction decomposition $\dfrac{1}{T^2-a^2} = \dfrac{1}{2a}\left(\dfrac{1}{T-a} - \dfrac{1}{T+a}\right)$ and integrating both sides,
+$$
+\frac{1}{2a}\ln\left|\frac{T-a}{T+a}\right| = at^2 + C.
+$$
+
+Applying $T(0) = 0$: the left side is $\dfrac{1}{2a}\ln\left|\dfrac{-a}{a}\right| = \dfrac{1}{2a}\ln(1) = 0$, so $C = 0$. Thus
+$$
+\ln\left|\frac{T-a}{T+a}\right| = 2a^2t^2 \quad \Longrightarrow \quad \frac{T-a}{T+a} = \pm\, e^{2a^2t^2}.
+$$
+
+The initial condition $T(0)=0$ forces $\dfrac{T-a}{T+a}\Big|_{t=0} = -1$, so the sign is negative:
+$$
+\frac{T-a}{T+a} = -e^{2a^2t^2}.
+$$
+
+Solving for $T$:
+$$
+T - a = -e^{2a^2t^2}(T+a) \quad \Longrightarrow \quad T\left(1+e^{2a^2t^2}\right) = a\left(1 - e^{2a^2t^2}\right)
+$$
+$$
+\Longrightarrow \quad T = a\,\frac{1 - e^{2a^2t^2}}{1+e^{2a^2t^2}} = -a\,\frac{e^{2a^2t^2}-1}{e^{2a^2t^2}+1}.
+$$
+
+Using the identity $\tanh(u) = \dfrac{e^{2u}-1}{e^{2u}+1}$ with $u = a^2t^2$, this simplifies to
+
+$$
+\boxed{T(t) = -a\tanh\!\left(a^2t^2\right)}.
+$$
+
+```{python}
+a, t = sym.symbols('a t', positive=True)
+Tf = sym.Function('T')
+
+# Verify the closed-form solution directly, since dsolve with these ics
+# runs into the usual difficulty of picking out one branch of a
+# multivalued implicit solution.
+T_guess = -a * sym.tanh(a**2 * t**2)
+
+lhs = sym.diff(T_guess, t)
+rhs = 2*a*t*(T_guess**2 - a**2)
+print("Residual dT/dt - 2at(T^2 - a^2):", sym.simplify(lhs - rhs))
+print("T(0) =", T_guess.subs(t, 0))
+```
+
+::: {.callout-note}
+SymPy confirms both that the proposed closed-form $T(t) = -a\tanh(a^2t^2)$ satisfies the differential equation exactly (the residual simplifies to $0$) and that it meets the initial condition $T(0) = 0$.
+:::
+
+##### (c) $\dfrac{dy}{dt} = t^2\tan y, \quad y(0) = 0$.
+
+**By Hand.**
+
+Notice that $y \equiv 0$ makes both sides zero: the left side is $\frac{d}{dt}(0) = 0$, and the right side is $t^2\tan(0) = 0$. Since $y(0) = 0$ matches this constant function, and the right-hand side $t^2\tan y$ is smooth (hence Lipschitz) near $y = 0$, the initial value problem has a **unique** solution — and it must be the equilibrium solution.
+
+$$
+\boxed{y(t) \equiv 0}
+$$
+
+::: {.callout-tip}
+It is instructive to see where a naive separation of variables leads: dividing by $\tan y$ gives $\cot y\,dy = t^2\,dt$, so $\ln|\sin y| = \tfrac{1}{3}t^3 + C$. This step implicitly assumes $\sin y \neq 0$, silently discarding the constant solution $y \equiv 0$ — exactly the solution the initial condition selects. This is a good reminder to always check for equilibrium (constant) solutions before dividing them away.
+:::
+
+```{python}
+t = sym.symbols('t')
+yf = sym.Function('y')
+eq10c = sym.Eq(sym.diff(yf(t), t), t**2 * sym.tan(yf(t)))
+
+# The zero function should satisfy the ODE identically
+residual = sym.diff(0, t) - t**2 * sym.tan(0)
+print("Residual for y = 0:", residual)
+```
+
+---
+
+### Section 1.4.1 — First-Order Linear Equations & Integrating Factors
+
+#### Exercise 2(a), Page 42
+
+Find the general solution: $x' = -\dfrac{2}{t}x + t$.
+
+**By Hand.**
+
+Write the equation in standard linear form:
+$$
+x' + \frac{2}{t}x = t.
+$$
+
+The integrating factor is
+$$
+\mu(t) = \exp\!\left(\int \frac{2}{t}\,dt\right) = \exp\!\left(2\ln|t|\right) = t^2.
+$$
+
+Multiplying both sides by $\mu(t) = t^2$, the left side becomes an exact derivative:
+$$
+\left(t^2 x\right)' = t^2 \cdot t = t^3.
+$$
+
+Integrating,
+$$
+t^2 x = \frac{t^4}{4} + C.
+$$
+
+$$
+\boxed{x(t) = \frac{t^2}{4} + \frac{C}{t^2}}
+$$
+
+```{python}
+t = sym.symbols('t')
+x = sym.Function('x')
+
+eq2a = sym.Eq(sym.diff(x(t), t), -(2/t)*x(t) + t)
+sol2a = sym.dsolve(eq2a, x(t))
+print("General solution:", sol2a)
+```
+
+::: {.callout-note}
+SymPy's result $x(t) = \dfrac{C_1 + t^4/4}{t^2} = \dfrac{C_1}{t^2} + \dfrac{t^2}{4}$ agrees with the boxed formula.
+:::
+
+#### Exercise 3(a), Page 42
+
+Solve the initial value problem: $x' + \dfrac{5}{t}x = 1+t, \quad x(1) = 1$.
+
+**By Hand.**
+
+The equation is already in standard linear form with $p(t) = 5/t$. The integrating factor is
+$$
+\mu(t) = \exp\!\left(\int \frac{5}{t}\,dt\right) = e^{5\ln|t|} = t^5.
+$$
+
+Multiplying through by $t^5$:
+$$
+\left(t^5 x\right)' = t^5(1+t) = t^5 + t^6.
+$$
+
+Integrating,
+$$
+t^5 x = \frac{t^6}{6} + \frac{t^7}{7} + C \quad \Longrightarrow \quad x(t) = \frac{t}{6} + \frac{t^2}{7} + \frac{C}{t^5}.
+$$
+
+Applying $x(1) = 1$:
+$$
+1 = \frac{1}{6} + \frac{1}{7} + C \quad \Longrightarrow \quad C = 1 - \frac{13}{42} = \frac{29}{42}.
+$$
+
+$$
+\boxed{x(t) = \frac{t}{6} + \frac{t^2}{7} + \frac{29}{42\,t^5}}
+$$
+
+```{python}
+t = sym.symbols('t')
+x = sym.Function('x')
+
+eq3a = sym.Eq(sym.diff(x(t), t) + (5/t)*x(t), 1 + t)
+sol3a = sym.dsolve(eq3a, x(t), ics={x(1): 1})
+print("Particular solution:", sym.simplify(sol3a))
+
+# Compare against the boxed formula
+manual = t/6 + t**2/7 + sym.Rational(29, 42)/t**5
+residual = sym.simplify(manual - sol3a.rhs)
+print("Difference from by-hand formula:", residual)
+```
+
+::: {.callout-note}
+SymPy's particular solution agrees exactly with the by-hand formula (the difference simplifies to $0$).
+:::
+
+---
+
+### Section 1.4.3 — Applications: RC Circuits
+
+#### Exercise 1, Page 53
+
+Write the equation that governs an RC circuit with a 12-volt battery, taking $R = 1$ and $C = \tfrac{1}{2}$. Determine the equilibrium solution and its stability. If $Q(0) = 5$, find a formula for $Q(t)$. Find the current $I(t)$. Plot the charge and the current on the same set of axes.
+
+**By Hand.**
+
+**Step 1 — Set up the governing equation.**
+
+For an RC circuit with a constant voltage source $V$, resistance $R$, and capacitance $C$, the charge $Q(t)$ on the capacitor satisfies
+$$
+R\frac{dQ}{dt} + \frac{Q}{C} = V \quad \Longrightarrow \quad \frac{dQ}{dt} = \frac{V}{R} - \frac{Q}{RC}.
+$$
+
+Substituting $V = 12$, $R = 1$, $C = \tfrac12$:
+$$
+\frac{dQ}{dt} = 12 - 2Q.
+$$
+
+**Step 2 — Find the equilibrium solution and its stability.**
+
+Setting $\dfrac{dQ}{dt} = 0$ gives $12 - 2Q_{\text{eq}} = 0$, so $Q_{\text{eq}} = 6$. Writing the equation as
+$$
+\frac{dQ}{dt} = -2(Q - 6),
+$$
+we see that $Q > 6 \Rightarrow \dfrac{dQ}{dt} < 0$ and $Q < 6 \Rightarrow \dfrac{dQ}{dt} > 0$: solutions are always pushed back toward $Q = 6$. Hence $Q_{\text{eq}} = 6$ is a **stable** equilibrium.
+
+**Step 3 — Solve for $Q(t)$ with $Q(0) = 5$.**
+
+This is linear with integrating factor $\mu(t) = e^{2t}$:
+$$
+\left(Qe^{2t}\right)' = 12e^{2t} \quad \Longrightarrow \quad Qe^{2t} = 6e^{2t} + C \quad \Longrightarrow \quad Q(t) = 6 + Ce^{-2t}.
+$$
+
+Applying $Q(0) = 5$: $5 = 6 + C \Rightarrow C = -1$.
+
+$$
+\boxed{Q(t) = 6 - e^{-2t}}
+$$
+
+**Step 4 — Find the current $I(t)$.**
+
+The current is the rate of change of charge:
+$$
+I(t) = \frac{dQ}{dt} = \frac{d}{dt}\left(6 - e^{-2t}\right).
+$$
+
+$$
+\boxed{I(t) = 2e^{-2t}}
+$$
+
+```{python}
+t = sym.symbols('t')
+Q = sym.Function('Q')
+
+eqQ = sym.Eq(sym.diff(Q(t), t), 12 - 2*Q(t))
+solQ = sym.dsolve(eqQ, Q(t), ics={Q(0): 5})
+print("Q(t):", solQ)
+
+I_expr = sym.diff(solQ.rhs, t)
+print("I(t) = dQ/dt:", I_expr)
+```
+
+::: {.callout-note}
+SymPy confirms $Q(t) = 6 - e^{-2t}$, and differentiating gives $I(t) = 2e^{-2t}$, matching both boxed results.
+:::
+
+**Step 5 — Plot $Q(t)$ and $I(t)$.**
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-rc-circuit
+#| fig-cap: "Charge $Q(t) = 6 - e^{-2t}$ and current $I(t) = 2e^{-2t}$ for the RC circuit in Exercise 1. The charge rises monotonically toward the stable equilibrium $Q_{\\text{eq}} = 6$, while the current decays to $0$."
+
+t_vals = np.linspace(0, 4, 400)
+Q_vals = 6 - np.exp(-2*t_vals)
+I_vals = 2*np.exp(-2*t_vals)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.plot(t_vals, Q_vals, color='steelblue', lw=2, label='$Q(t)$ (charge)')
+ax.plot(t_vals, I_vals, color='darkorange', lw=2, label='$I(t)$ (current)')
+ax.axhline(6, color='gray', linestyle='--', lw=1, label='Equilibrium $Q_{eq} = 6$')
+
+ax.set_xlabel('$t$', fontsize=13)
+ax.set_ylabel('Charge / Current', fontsize=13)
+ax.set_title('RC Circuit: Charge and Current vs. Time', fontsize=13)
+ax.legend(fontsize=10, loc='center right')
+plt.tight_layout()
+plt.show()
+```
+
+---
+
 
 ## References
 

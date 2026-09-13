@@ -402,6 +402,13 @@ window.Quarto = {
   <li><a href="#section-1.1-exercise-9-page-10" id="toc-section-1.1-exercise-9-page-10" class="nav-link" data-scroll-target="#section-1.1-exercise-9-page-10">Section 1.1 Exercise 9, page 10</a></li>
   <li><a href="#section-1.1-exercise-12-page-11" id="toc-section-1.1-exercise-12-page-11" class="nav-link" data-scroll-target="#section-1.1-exercise-12-page-11">Section 1.1 Exercise 12, page 11</a></li>
   </ul></li>
+  <li><a href="#homework-2" id="toc-homework-2" class="nav-link" data-scroll-target="#homework-2">Homework 2</a>
+  <ul class="collapse">
+  <li><a href="#section-1.1.3-slope-fields" id="toc-section-1.1.3-slope-fields" class="nav-link" data-scroll-target="#section-1.1.3-slope-fields">Section 1.1.3 — Slope Fields</a></li>
+  <li><a href="#section-1.3.1-separable-equations" id="toc-section-1.3.1-separable-equations" class="nav-link" data-scroll-target="#section-1.3.1-separable-equations">Section 1.3.1 — Separable Equations</a></li>
+  <li><a href="#section-1.4.1-first-order-linear-equations-integrating-factors" id="toc-section-1.4.1-first-order-linear-equations-integrating-factors" class="nav-link" data-scroll-target="#section-1.4.1-first-order-linear-equations-integrating-factors">Section 1.4.1 — First-Order Linear Equations &amp; Integrating Factors</a></li>
+  <li><a href="#section-1.4.3-applications-rc-circuits" id="toc-section-1.4.3-applications-rc-circuits" class="nav-link" data-scroll-target="#section-1.4.3-applications-rc-circuits">Section 1.4.3 — Applications: RC Circuits</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
   </ul>
@@ -430,7 +437,7 @@ window.Quarto = {
 </header>
 
 
-<div id="0f3dbaa1" class="cell" data-execution_count="1">
+<div id="cdb41ce6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -488,7 +495,7 @@ Tip
 </section>
 <section id="using-sympy" class="level4">
 <h4 class="anchored" data-anchor-id="using-sympy">Using SymPy</h4>
-<div id="46e04f71" class="cell" data-execution_count="2">
+<div id="b39f8c37" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t, lam <span class="op">=</span> sym.symbols(<span class="st">'t lambda'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.exp(lam <span class="op">*</span> t)</span>
@@ -552,6 +559,452 @@ Tip
 <p><strong>Interpretation.</strong> Since <span class="math inline">\(1.4 &gt; 0\)</span> is the decay rate, light intensity decreases exponentially with depth. At roughly <span class="math inline">\(3.29\)</span> meters below the surface, only <span class="math inline">\(1\%\)</span> of the surface intensity remains — a useful benchmark for how quickly light is absorbed in deep water.</p>
 </div>
 </div>
+</section>
+</section>
+</section>
+<section id="homework-2" class="level2">
+<h2 class="anchored" data-anchor-id="homework-2">Homework 2</h2>
+<section id="section-1.1.3-slope-fields" class="level3">
+<h3 class="anchored" data-anchor-id="section-1.1.3-slope-fields">Section 1.1.3 — Slope Fields</h3>
+<section id="exercise-6-page-6" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-6-page-6">Exercise 6, Page 6</h4>
+<p>Use software to sketch the slope field for the differential equation <span class="math inline">\(x' = x^2 - t\)</span> on the square <span class="math inline">\(-3 &lt; t &lt; 3,\ -3 &lt; x &lt; 3\)</span>.</p>
+<p><strong>Setting up the slope field.</strong></p>
+<p>A slope field is produced by evaluating the right-hand side <span class="math inline">\(f(t,x) = x^2 - t\)</span> at a grid of points <span class="math inline">\((t,x)\)</span> in the given square, and at each point drawing a short line segment with that slope. Since no closed-form solution is needed, the natural way to “solve” this exercise is with code.</p>
+<div id="cell-fig-slope-field-x2-t" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t, x):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> t</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid of points for the slope field arrows</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>t_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">21</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>x_grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">21</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>T, X <span class="op">=</span> np.meshgrid(t_grid, x_grid)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>slopes <span class="op">=</span> f(T, X)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize direction vectors so every arrow has the same visual length</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> np.ones_like(slopes)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>dx <span class="op">=</span> slopes</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> np.sqrt(dt<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> dx<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>dt_unit, dx_unit <span class="op">=</span> dt <span class="op">/</span> norm, dx <span class="op">/</span> norm</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ax.quiver(T, X, dt_unit, dx_unit, angles<span class="op">=</span><span class="st">'xy'</span>, pivot<span class="op">=</span><span class="st">'mid'</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>          headwidth<span class="op">=</span><span class="dv">0</span>, headlength<span class="op">=</span><span class="dv">0</span>, headaxislength<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>          color<span class="op">=</span><span class="st">'steelblue'</span>, width<span class="op">=</span><span class="fl">0.003</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay a handful of numerically computed solution curves</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0 <span class="kw">in</span> [<span class="op">-</span><span class="fl">2.5</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">2.5</span>]:</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f, [<span class="dv">0</span>, <span class="dv">3</span>], [x0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    sol_back <span class="op">=</span> solve_ivp(f, [<span class="dv">0</span>, <span class="op">-</span><span class="dv">3</span>], [x0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol_back.t, sol_back.y[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x$'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Slope field for </span><span class="dv">$</span><span class="vs">x' = x</span><span class="dv">^</span><span class="vs">2 - t</span><span class="dv">$</span><span class="vs">"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-slope-field-x2-t" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-slope-field-x2-t-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-slope-field-x2-t-output-1.png" width="884" height="883" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-slope-field-x2-t-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Slope field for <span class="math inline">\(x' = x^2 - t\)</span> on <span class="math inline">\(-3 &lt; t &lt; 3,\ -3 &lt; x &lt; 3\)</span>. A few representative solution curves (found numerically) are overlaid in color.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is no elementary closed-form solution for <span class="math inline">\(x' = x^2 - t\)</span> (it is a form of <strong>Riccati equation</strong>), so this exercise is intentionally solved by producing the slope field and, optionally, a few numerically-generated solution curves rather than an explicit formula.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="section-1.3.1-separable-equations" class="level3">
+<h3 class="anchored" data-anchor-id="section-1.3.1-separable-equations">Section 1.3.1 — Separable Equations</h3>
+<section id="exercise-4a-page-26" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-4a-page-26">Exercise 4(a), Page 26</h4>
+<p>Find the general solution: <span class="math inline">\(x' = \dfrac{2x}{t+1}\)</span>.</p>
+<p><strong>By Hand.</strong></p>
+<p>Separate variables (assuming <span class="math inline">\(x \neq 0\)</span> and <span class="math inline">\(t \neq -1\)</span>): <span class="math display">\[
+\frac{dx}{x} = \frac{2}{t+1}\,dt.
+\]</span></p>
+<p>Integrating both sides, <span class="math display">\[
+\ln|x| = 2\ln|t+1| + C.
+\]</span></p>
+<p>Exponentiating, <span class="math display">\[
+|x| = e^{C}(t+1)^2 \quad \Longrightarrow \quad x(t) = A(t+1)^2,
+\]</span> where <span class="math inline">\(A\)</span> is an arbitrary constant (absorbing the sign and <span class="math inline">\(e^C\)</span>). Note <span class="math inline">\(A = 0\)</span> recovers the trivial solution <span class="math inline">\(x \equiv 0\)</span>, so this formula captures <strong>all</strong> solutions.</p>
+<p><span class="math display">\[
+\boxed{x(t) = A(t+1)^2}
+\]</span></p>
+<div id="2bd791dd" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>eq <span class="op">=</span> sym.Eq(sym.diff(x(t), t), <span class="dv">2</span><span class="op">*</span>x(t)<span class="op">/</span>(t<span class="op">+</span><span class="dv">1</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> sym.dsolve(eq, x(t))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"General solution:"</span>, sol)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>General solution: Eq(x(t), C1*(t**2 + 2*t + 1))</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SymPy returns <span class="math inline">\(x(t) = C_1(t+1)^2\)</span>, matching the boxed formula above (with <span class="math inline">\(A = C_1\)</span>).</p>
+</div>
+</div>
+</section>
+<section id="exercise-10-page-27" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-10-page-27">Exercise 10, Page 27</h4>
+<p>Solve the following initial value problems.</p>
+<section id="a-dfracdxdt-etx-quad-x0-0." class="level5">
+<h5 class="anchored" data-anchor-id="a-dfracdxdt-etx-quad-x0-0.">(a) <span class="math inline">\(\dfrac{dx}{dt} = e^{t+x}, \quad x(0) = 0\)</span>.</h5>
+<p><strong>By Hand.</strong></p>
+<p>Rewrite the right-hand side as <span class="math inline">\(e^t e^x\)</span> and separate variables: <span class="math display">\[
+e^{-x}\,dx = e^{t}\,dt.
+\]</span></p>
+<p>Integrating, <span class="math display">\[
+-e^{-x} = e^{t} + C.
+\]</span></p>
+<p>Apply <span class="math inline">\(x(0) = 0\)</span>: <span class="math inline">\(-e^{0} = e^{0} + C \Rightarrow -1 = 1 + C \Rightarrow C = -2\)</span>. So <span class="math display">\[
+-e^{-x} = e^t - 2 \quad \Longrightarrow \quad e^{-x} = 2 - e^t \quad \Longrightarrow \quad x(t) = -\ln\!\left(2 - e^t\right).
+\]</span></p>
+<p><span class="math display">\[
+\boxed{x(t) = -\ln(2 - e^t)}, \qquad t &lt; \ln 2.
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The restriction <span class="math inline">\(t &lt; \ln 2\)</span> is required for <span class="math inline">\(2 - e^t &gt; 0\)</span>, so that the logarithm is defined. This is an example of a solution whose <strong>interval of existence</strong> is limited even though the differential equation itself is defined for all <span class="math inline">\(t\)</span> and <span class="math inline">\(x\)</span>.</p>
+</div>
+</div>
+<div id="fc27dae8" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>xf <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>eq10a <span class="op">=</span> sym.Eq(sym.diff(xf(t), t), sym.exp(t <span class="op">+</span> xf(t)))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sol10a <span class="op">=</span> sym.dsolve(eq10a, xf(t), ics<span class="op">=</span>{xf(<span class="dv">0</span>): <span class="dv">0</span>})</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution:"</span>, sym.simplify(sol10a))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution: Eq(x(t), log(-1/(exp(t) - 2)))</code></pre>
+</div>
+</div>
+</section>
+<section id="b-dfracdtdt-2atleftt2---a2right-quad-t0-0." class="level5">
+<h5 class="anchored" data-anchor-id="b-dfracdtdt-2atleftt2---a2right-quad-t0-0.">(b) <span class="math inline">\(\dfrac{dT}{dt} = 2at\left(T^2 - a^2\right), \quad T(0) = 0\)</span>.</h5>
+<p><strong>By Hand.</strong></p>
+<p>Separate variables: <span class="math display">\[
+\frac{dT}{T^2 - a^2} = 2at\,dt.
+\]</span></p>
+<p>Using the partial fraction decomposition <span class="math inline">\(\dfrac{1}{T^2-a^2} = \dfrac{1}{2a}\left(\dfrac{1}{T-a} - \dfrac{1}{T+a}\right)\)</span> and integrating both sides, <span class="math display">\[
+\frac{1}{2a}\ln\left|\frac{T-a}{T+a}\right| = at^2 + C.
+\]</span></p>
+<p>Applying <span class="math inline">\(T(0) = 0\)</span>: the left side is <span class="math inline">\(\dfrac{1}{2a}\ln\left|\dfrac{-a}{a}\right| = \dfrac{1}{2a}\ln(1) = 0\)</span>, so <span class="math inline">\(C = 0\)</span>. Thus <span class="math display">\[
+\ln\left|\frac{T-a}{T+a}\right| = 2a^2t^2 \quad \Longrightarrow \quad \frac{T-a}{T+a} = \pm\, e^{2a^2t^2}.
+\]</span></p>
+<p>The initial condition <span class="math inline">\(T(0)=0\)</span> forces <span class="math inline">\(\dfrac{T-a}{T+a}\Big|_{t=0} = -1\)</span>, so the sign is negative: <span class="math display">\[
+\frac{T-a}{T+a} = -e^{2a^2t^2}.
+\]</span></p>
+<p>Solving for <span class="math inline">\(T\)</span>: <span class="math display">\[
+T - a = -e^{2a^2t^2}(T+a) \quad \Longrightarrow \quad T\left(1+e^{2a^2t^2}\right) = a\left(1 - e^{2a^2t^2}\right)
+\]</span> <span class="math display">\[
+\Longrightarrow \quad T = a\,\frac{1 - e^{2a^2t^2}}{1+e^{2a^2t^2}} = -a\,\frac{e^{2a^2t^2}-1}{e^{2a^2t^2}+1}.
+\]</span></p>
+<p>Using the identity <span class="math inline">\(\tanh(u) = \dfrac{e^{2u}-1}{e^{2u}+1}\)</span> with <span class="math inline">\(u = a^2t^2\)</span>, this simplifies to</p>
+<p><span class="math display">\[
+\boxed{T(t) = -a\tanh\!\left(a^2t^2\right)}.
+\]</span></p>
+<div id="d9211f86" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>a, t <span class="op">=</span> sym.symbols(<span class="st">'a t'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Tf <span class="op">=</span> sym.Function(<span class="st">'T'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the closed-form solution directly, since dsolve with these ics</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># runs into the usual difficulty of picking out one branch of a</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># multivalued implicit solution.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>T_guess <span class="op">=</span> <span class="op">-</span>a <span class="op">*</span> sym.tanh(a<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> t<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>lhs <span class="op">=</span> sym.diff(T_guess, t)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>rhs <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>a<span class="op">*</span>t<span class="op">*</span>(T_guess<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> a<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Residual dT/dt - 2at(T^2 - a^2):"</span>, sym.simplify(lhs <span class="op">-</span> rhs))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"T(0) ="</span>, T_guess.subs(t, <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual dT/dt - 2at(T^2 - a^2): 0
+T(0) = 0</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SymPy confirms both that the proposed closed-form <span class="math inline">\(T(t) = -a\tanh(a^2t^2)\)</span> satisfies the differential equation exactly (the residual simplifies to <span class="math inline">\(0\)</span>) and that it meets the initial condition <span class="math inline">\(T(0) = 0\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="c-dfracdydt-t2tan-y-quad-y0-0." class="level5">
+<h5 class="anchored" data-anchor-id="c-dfracdydt-t2tan-y-quad-y0-0.">(c) <span class="math inline">\(\dfrac{dy}{dt} = t^2\tan y, \quad y(0) = 0\)</span>.</h5>
+<p><strong>By Hand.</strong></p>
+<p>Notice that <span class="math inline">\(y \equiv 0\)</span> makes both sides zero: the left side is <span class="math inline">\(\frac{d}{dt}(0) = 0\)</span>, and the right side is <span class="math inline">\(t^2\tan(0) = 0\)</span>. Since <span class="math inline">\(y(0) = 0\)</span> matches this constant function, and the right-hand side <span class="math inline">\(t^2\tan y\)</span> is smooth (hence Lipschitz) near <span class="math inline">\(y = 0\)</span>, the initial value problem has a <strong>unique</strong> solution — and it must be the equilibrium solution.</p>
+<p><span class="math display">\[
+\boxed{y(t) \equiv 0}
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is instructive to see where a naive separation of variables leads: dividing by <span class="math inline">\(\tan y\)</span> gives <span class="math inline">\(\cot y\,dy = t^2\,dt\)</span>, so <span class="math inline">\(\ln|\sin y| = \tfrac{1}{3}t^3 + C\)</span>. This step implicitly assumes <span class="math inline">\(\sin y \neq 0\)</span>, silently discarding the constant solution <span class="math inline">\(y \equiv 0\)</span> — exactly the solution the initial condition selects. This is a good reminder to always check for equilibrium (constant) solutions before dividing them away.</p>
+</div>
+</div>
+<div id="1f34949f" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>yf <span class="op">=</span> sym.Function(<span class="st">'y'</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>eq10c <span class="op">=</span> sym.Eq(sym.diff(yf(t), t), t<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.tan(yf(t)))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The zero function should satisfy the ODE identically</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> sym.diff(<span class="dv">0</span>, t) <span class="op">-</span> t<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.tan(<span class="dv">0</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Residual for y = 0:"</span>, residual)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Residual for y = 0: 0</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="section-1.4.1-first-order-linear-equations-integrating-factors" class="level3">
+<h3 class="anchored" data-anchor-id="section-1.4.1-first-order-linear-equations-integrating-factors">Section 1.4.1 — First-Order Linear Equations &amp; Integrating Factors</h3>
+<section id="exercise-2a-page-42" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-2a-page-42">Exercise 2(a), Page 42</h4>
+<p>Find the general solution: <span class="math inline">\(x' = -\dfrac{2}{t}x + t\)</span>.</p>
+<p><strong>By Hand.</strong></p>
+<p>Write the equation in standard linear form: <span class="math display">\[
+x' + \frac{2}{t}x = t.
+\]</span></p>
+<p>The integrating factor is <span class="math display">\[
+\mu(t) = \exp\!\left(\int \frac{2}{t}\,dt\right) = \exp\!\left(2\ln|t|\right) = t^2.
+\]</span></p>
+<p>Multiplying both sides by <span class="math inline">\(\mu(t) = t^2\)</span>, the left side becomes an exact derivative: <span class="math display">\[
+\left(t^2 x\right)' = t^2 \cdot t = t^3.
+\]</span></p>
+<p>Integrating, <span class="math display">\[
+t^2 x = \frac{t^4}{4} + C.
+\]</span></p>
+<p><span class="math display">\[
+\boxed{x(t) = \frac{t^2}{4} + \frac{C}{t^2}}
+\]</span></p>
+<div id="93af084d" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>eq2a <span class="op">=</span> sym.Eq(sym.diff(x(t), t), <span class="op">-</span>(<span class="dv">2</span><span class="op">/</span>t)<span class="op">*</span>x(t) <span class="op">+</span> t)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>sol2a <span class="op">=</span> sym.dsolve(eq2a, x(t))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"General solution:"</span>, sol2a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>General solution: Eq(x(t), (C1 + t**4/4)/t**2)</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SymPy’s result <span class="math inline">\(x(t) = \dfrac{C_1 + t^4/4}{t^2} = \dfrac{C_1}{t^2} + \dfrac{t^2}{4}\)</span> agrees with the boxed formula.</p>
+</div>
+</div>
+</section>
+<section id="exercise-3a-page-42" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-3a-page-42">Exercise 3(a), Page 42</h4>
+<p>Solve the initial value problem: <span class="math inline">\(x' + \dfrac{5}{t}x = 1+t, \quad x(1) = 1\)</span>.</p>
+<p><strong>By Hand.</strong></p>
+<p>The equation is already in standard linear form with <span class="math inline">\(p(t) = 5/t\)</span>. The integrating factor is <span class="math display">\[
+\mu(t) = \exp\!\left(\int \frac{5}{t}\,dt\right) = e^{5\ln|t|} = t^5.
+\]</span></p>
+<p>Multiplying through by <span class="math inline">\(t^5\)</span>: <span class="math display">\[
+\left(t^5 x\right)' = t^5(1+t) = t^5 + t^6.
+\]</span></p>
+<p>Integrating, <span class="math display">\[
+t^5 x = \frac{t^6}{6} + \frac{t^7}{7} + C \quad \Longrightarrow \quad x(t) = \frac{t}{6} + \frac{t^2}{7} + \frac{C}{t^5}.
+\]</span></p>
+<p>Applying <span class="math inline">\(x(1) = 1\)</span>: <span class="math display">\[
+1 = \frac{1}{6} + \frac{1}{7} + C \quad \Longrightarrow \quad C = 1 - \frac{13}{42} = \frac{29}{42}.
+\]</span></p>
+<p><span class="math display">\[
+\boxed{x(t) = \frac{t}{6} + \frac{t^2}{7} + \frac{29}{42\,t^5}}
+\]</span></p>
+<div id="851e6019" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>eq3a <span class="op">=</span> sym.Eq(sym.diff(x(t), t) <span class="op">+</span> (<span class="dv">5</span><span class="op">/</span>t)<span class="op">*</span>x(t), <span class="dv">1</span> <span class="op">+</span> t)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>sol3a <span class="op">=</span> sym.dsolve(eq3a, x(t), ics<span class="op">=</span>{x(<span class="dv">1</span>): <span class="dv">1</span>})</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Particular solution:"</span>, sym.simplify(sol3a))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare against the boxed formula</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>manual <span class="op">=</span> t<span class="op">/</span><span class="dv">6</span> <span class="op">+</span> t<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">7</span> <span class="op">+</span> sym.Rational(<span class="dv">29</span>, <span class="dv">42</span>)<span class="op">/</span>t<span class="op">**</span><span class="dv">5</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> sym.simplify(manual <span class="op">-</span> sol3a.rhs)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Difference from by-hand formula:"</span>, residual)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Particular solution: Eq(x(t), (t**6*(6*t + 7) + 29)/(42*t**5))
+Difference from by-hand formula: 0</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SymPy’s particular solution agrees exactly with the by-hand formula (the difference simplifies to <span class="math inline">\(0\)</span>).</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="section-1.4.3-applications-rc-circuits" class="level3">
+<h3 class="anchored" data-anchor-id="section-1.4.3-applications-rc-circuits">Section 1.4.3 — Applications: RC Circuits</h3>
+<section id="exercise-1-page-53" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-1-page-53">Exercise 1, Page 53</h4>
+<p>Write the equation that governs an RC circuit with a 12-volt battery, taking <span class="math inline">\(R = 1\)</span> and <span class="math inline">\(C = \tfrac{1}{2}\)</span>. Determine the equilibrium solution and its stability. If <span class="math inline">\(Q(0) = 5\)</span>, find a formula for <span class="math inline">\(Q(t)\)</span>. Find the current <span class="math inline">\(I(t)\)</span>. Plot the charge and the current on the same set of axes.</p>
+<p><strong>By Hand.</strong></p>
+<p><strong>Step 1 — Set up the governing equation.</strong></p>
+<p>For an RC circuit with a constant voltage source <span class="math inline">\(V\)</span>, resistance <span class="math inline">\(R\)</span>, and capacitance <span class="math inline">\(C\)</span>, the charge <span class="math inline">\(Q(t)\)</span> on the capacitor satisfies <span class="math display">\[
+R\frac{dQ}{dt} + \frac{Q}{C} = V \quad \Longrightarrow \quad \frac{dQ}{dt} = \frac{V}{R} - \frac{Q}{RC}.
+\]</span></p>
+<p>Substituting <span class="math inline">\(V = 12\)</span>, <span class="math inline">\(R = 1\)</span>, <span class="math inline">\(C = \tfrac12\)</span>: <span class="math display">\[
+\frac{dQ}{dt} = 12 - 2Q.
+\]</span></p>
+<p><strong>Step 2 — Find the equilibrium solution and its stability.</strong></p>
+<p>Setting <span class="math inline">\(\dfrac{dQ}{dt} = 0\)</span> gives <span class="math inline">\(12 - 2Q_{\text{eq}} = 0\)</span>, so <span class="math inline">\(Q_{\text{eq}} = 6\)</span>. Writing the equation as <span class="math display">\[
+\frac{dQ}{dt} = -2(Q - 6),
+\]</span> we see that <span class="math inline">\(Q &gt; 6 \Rightarrow \dfrac{dQ}{dt} &lt; 0\)</span> and <span class="math inline">\(Q &lt; 6 \Rightarrow \dfrac{dQ}{dt} &gt; 0\)</span>: solutions are always pushed back toward <span class="math inline">\(Q = 6\)</span>. Hence <span class="math inline">\(Q_{\text{eq}} = 6\)</span> is a <strong>stable</strong> equilibrium.</p>
+<p><strong>Step 3 — Solve for <span class="math inline">\(Q(t)\)</span> with <span class="math inline">\(Q(0) = 5\)</span>.</strong></p>
+<p>This is linear with integrating factor <span class="math inline">\(\mu(t) = e^{2t}\)</span>: <span class="math display">\[
+\left(Qe^{2t}\right)' = 12e^{2t} \quad \Longrightarrow \quad Qe^{2t} = 6e^{2t} + C \quad \Longrightarrow \quad Q(t) = 6 + Ce^{-2t}.
+\]</span></p>
+<p>Applying <span class="math inline">\(Q(0) = 5\)</span>: <span class="math inline">\(5 = 6 + C \Rightarrow C = -1\)</span>.</p>
+<p><span class="math display">\[
+\boxed{Q(t) = 6 - e^{-2t}}
+\]</span></p>
+<p><strong>Step 4 — Find the current <span class="math inline">\(I(t)\)</span>.</strong></p>
+<p>The current is the rate of change of charge: <span class="math display">\[
+I(t) = \frac{dQ}{dt} = \frac{d}{dt}\left(6 - e^{-2t}\right).
+\]</span></p>
+<p><span class="math display">\[
+\boxed{I(t) = 2e^{-2t}}
+\]</span></p>
+<div id="984948dd" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> sym.Function(<span class="st">'Q'</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>eqQ <span class="op">=</span> sym.Eq(sym.diff(Q(t), t), <span class="dv">12</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>Q(t))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>solQ <span class="op">=</span> sym.dsolve(eqQ, Q(t), ics<span class="op">=</span>{Q(<span class="dv">0</span>): <span class="dv">5</span>})</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Q(t):"</span>, solQ)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>I_expr <span class="op">=</span> sym.diff(solQ.rhs, t)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"I(t) = dQ/dt:"</span>, I_expr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Q(t): Eq(Q(t), 6 - exp(-2*t))
+I(t) = dQ/dt: 2*exp(-2*t)</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SymPy confirms <span class="math inline">\(Q(t) = 6 - e^{-2t}\)</span>, and differentiating gives <span class="math inline">\(I(t) = 2e^{-2t}\)</span>, matching both boxed results.</p>
+</div>
+</div>
+<p><strong>Step 5 — Plot <span class="math inline">\(Q(t)\)</span> and <span class="math inline">\(I(t)\)</span>.</strong></p>
+<div id="cell-fig-rc-circuit" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">400</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Q_vals <span class="op">=</span> <span class="dv">6</span> <span class="op">-</span> np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t_vals)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>I_vals <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t_vals)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, Q_vals, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$Q(t)$ (charge)'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, I_vals, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'$I(t)$ (current)'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">6</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'Equilibrium $Q_</span><span class="sc">{eq}</span><span class="st"> = 6$'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Charge / Current'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'RC Circuit: Charge and Current vs. Time'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>, loc<span class="op">=</span><span class="st">'center right'</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-rc-circuit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rc-circuit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-rc-circuit-output-1.png" width="1185" height="735" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rc-circuit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Charge <span class="math inline">\(Q(t) = 6 - e^{-2t}\)</span> and current <span class="math inline">\(I(t) = 2e^{-2t}\)</span> for the RC circuit in Exercise 1. The charge rises monotonically toward the stable equilibrium <span class="math inline">\(Q_{\text{eq}} = 6\)</span>, while the current decays to <span class="math inline">\(0\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 </section>
 </section>
@@ -562,7 +1015,7 @@ Tip
 
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -571,14 +1024,14 @@ Tip
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="c6d2192f" class="cell" data-execution_count="3">
+<div id="78b4542b" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
