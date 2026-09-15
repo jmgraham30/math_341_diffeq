@@ -361,12 +361,24 @@ window.Quarto = {
 <span class="menu-text">Additional Topics</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./reviews.html"> 
+<span class="menu-text">Reviews</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./py_tutorial.html"> 
 <span class="menu-text">Python Reference</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./study_tips.html"> 
 <span class="menu-text">Study Tips</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./glossary.html"> 
+<span class="menu-text">Glossary</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./calc_review.html"> 
+<span class="menu-text">Calc Review</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -555,7 +567,7 @@ window.Quarto = {
 </header>
 
 
-<div id="092c351f" class="cell" data-execution_count="1">
+<div id="3a8e03d5" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -610,12 +622,12 @@ Note
 </section>
 <section id="why-numerical-methods" class="level2">
 <h2 class="anchored" data-anchor-id="why-numerical-methods">Why Numerical Methods?</h2>
-<p>Most differential equations cannot be solved analytically by a simple formula. In industry and science, differential equations are almost always solved numerically because most real-world models lead to models too complicated to solve analytically. And, in the rare case that the problem can be solved analytically, the solution is often in the form of a complicated integral or infinite series which must be resolved by a computer calculation anyway. Logan remarks that “many would say that the material in this brief section is the most important in the entire book.”</p>
+<p>Most differential equations cannot be solved analytically by a simple formula. In industry and science, differential equations are almost always solved numerically because most real-world models lead to equations too complicated to solve analytically. And, in the rare case that the problem can be solved analytically, the solution is often in the form of a complicated integral or infinite series which, to be practically useful, must be resolved by a computer calculation anyway. Logan remarks that “many would say that the material in this brief section is the most important in the entire book.”</p>
 <p>The goal is this: given the IVP</p>
 <p><span class="math display">\[
 x' = f(t, x), \qquad x(t_0) = x_0, \tag{6.3}
 \]</span></p>
-<p>produce a sequence of approximations <span class="math inline">\(X_0, X_1, X_2, \ldots, X_N\)</span> at discrete times <span class="math inline">\(t_0 &lt; t_1 &lt; \cdots &lt; t_N = T\)</span>, connected by straight line segments, that accurately represents the true solution <span class="math inline">\(x(t)\)</span>.</p>
+<p>produce a sequence of <strong>approximations</strong> <span class="math inline">\(X_0, X_1, X_2, \ldots, X_N\)</span> at <strong>discrete</strong> times <span class="math inline">\(t_0 &lt; t_1 &lt; \cdots &lt; t_N = T\)</span>, that can be interpolated (<em>e.g.</em>, connected by straight line segments), that accurately represents the true solution <span class="math inline">\(x(t)\)</span>.</p>
 <hr>
 </section>
 <section id="section-6.2-numerical-methods" class="level2">
@@ -626,11 +638,11 @@ x' = f(t, x), \qquad x(t_0) = x_0, \tag{6.3}
 <p><span class="math display">\[
 h = \frac{T - t_0}{N} \qquad (\text{the \textbf{step size}}),
 \]</span></p>
-<p>defining the equally-spaced grid</p>
+<p>defining the equally-spaced temporal grid</p>
 <p><span class="math display">\[
 t_n = t_0 + nh, \quad n = 0, 1, 2, \ldots, N.
 \]</span></p>
-<p>We seek a <strong>recursive formula</strong> that computes <span class="math inline">\(X_{n+1}\)</span> from <span class="math inline">\(X_n\)</span>. Starting from <span class="math inline">\(X_0 = x_0\)</span>, this formula is applied <span class="math inline">\(N\)</span> times to march from <span class="math inline">\(t_0\)</span> to <span class="math inline">\(T\)</span>, yielding the <strong>numerical solution</strong> <span class="math inline">\(\{(t_n, X_n)\}\)</span>.</p>
+<p>We seek a <strong>recursive formula</strong> that computes <span class="math inline">\(X_{n+1}\)</span> from <span class="math inline">\(X_n\)</span>. Starting from <span class="math inline">\(X_0 = x_0\)</span>, this formula is applied <span class="math inline">\(N\)</span> times to march from <span class="math inline">\(t_0\)</span> to <span class="math inline">\(T\)</span>, yielding the <strong>numerical solution</strong>, that is, the sequence of points <span class="math inline">\(\{(t_n, X_n)\}\)</span>.</p>
 <hr>
 </section>
 <section id="section-6.2.1-the-euler-method" class="level3">
@@ -641,7 +653,7 @@ t_n = t_0 + nh, \quad n = 0, 1, 2, \ldots, N.
 <p><span class="math display">\[
 \int_{t_n}^{t_{n+1}} x'(t)\,dt = \int_{t_n}^{t_{n+1}} f(t, x(t))\,dt. \tag{6.4}
 \]</span></p>
-<p>The left side equals <span class="math inline">\(x(t_{n+1}) - x(t_n)\)</span> by the Fundamental Theorem. The right side is approximated by the <strong>left-hand (rectangle) rule</strong>: replace <span class="math inline">\(f(t, x(t))\)</span> by its value at the left endpoint <span class="math inline">\(t_n\)</span>:</p>
+<p>The left side equals <span class="math inline">\(x(t_{n+1}) - x(t_n)\)</span> by the Fundamental Theorem of Calculus. The right side is approximated by the <strong>left-hand (rectangle) rule</strong>: replace <span class="math inline">\(f(t, x(t))\)</span> by its value at the left endpoint <span class="math inline">\(t_n\)</span>:</p>
 <p><span class="math display">\[
 x(t_{n+1}) - x(t_n) = h\,f(t_n, x(t_n)) + O(h^2).
 \]</span></p>
@@ -946,7 +958,7 @@ Figure&nbsp;2: Comparison of Euler (red), Modified Euler/RK2 (orange), and RK4 (
 </div>
 </div>
 </div>
-<div id="64e9b97a" class="cell" data-execution_count="4">
+<div id="ac425dcf" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify the concrete error table values above (all method functions now defined)</span></span>
@@ -1386,7 +1398,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="25df59ad" class="cell" data-execution_count="7">
+<div id="9ca97a0b" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
