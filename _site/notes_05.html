@@ -564,7 +564,7 @@ window.Quarto = {
 </header>
 
 
-<div id="f6af0d5e" class="cell" data-execution_count="1">
+<div id="01150ed9" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -861,7 +861,7 @@ Note
 <p>Note that <span class="math inline">\(te^t(\ln t - 1) = te^t\ln t - te^t\)</span>, and the <span class="math inline">\(-te^t\)</span> part could be absorbed into the <span class="math inline">\(C_2 te^t\)</span> term by redefining <span class="math inline">\(C_2\)</span>. This is valid because <strong>particular solutions are not unique</strong> — any particular solution differs from any other by a solution of the homogeneous equation, so absorbing constant-multiple terms from <span class="math inline">\(x_p\)</span> into <span class="math inline">\(x_h\)</span> yields the same general solution. In practice we keep the particular solution as found and let the constants adjust when ICs are applied.</p>
 </div>
 </div>
-<div id="ca0a7c83" class="cell" data-execution_count="3">
+<div id="63672e33" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SymPy verification</span></span>
@@ -886,27 +886,28 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t_plot2 <span class="op">=</span> np.linspace(<span class="fl">1.0</span>, <span class="fl">2.8</span>, <span class="dv">400</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># IVP: x(1)=0, x'(1)=0</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Solving: C1 + C2 - 1 = 0 and C1 + 2*C2 + 1 = 0  =&gt;  C1=2, C2=-1</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>C1_2, C2_2 <span class="op">=</span> <span class="fl">2.0</span>, <span class="op">-</span><span class="fl">1.0</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>xp2  <span class="op">=</span> t_plot2 <span class="op">*</span> np.exp(t_plot2) <span class="op">*</span> (np.log(t_plot2) <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>xh2  <span class="op">=</span> C1_2<span class="op">*</span>np.exp(t_plot2) <span class="op">+</span> C2_2<span class="op">*</span>t_plot2<span class="op">*</span>np.exp(t_plot2)   <span class="co"># 2e^t - te^t</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>x2_full <span class="op">=</span> xh2 <span class="op">+</span> xp2</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, x2_full, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Full solution $x(t)$'</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xh2,     color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'$x_h = 2e^t - te^t$ (with $C_1=2$, $C_2=-1$)'</span>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xp2,     color<span class="op">=</span><span class="st">'seagreen'</span>,   lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'-.'</span>, label<span class="op">=</span><span class="st">'$x_p = te^t(</span><span class="ch">\\</span><span class="st">ln t-1)$'</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode2(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="dv">2</span><span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> y[<span class="dv">0</span>] <span class="op">+</span> np.exp(t)<span class="op">/</span>t]</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>sol2n <span class="op">=</span> solve_ivp(ode2, (<span class="fl">1.0</span>, <span class="fl">2.8</span>), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>t_dots2 <span class="op">=</span> np.linspace(<span class="fl">1.0</span>, <span class="fl">2.8</span>, <span class="dv">18</span>)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots2, sol2n.sol(t_dots2)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical check'</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x''-2x'</span><span class="op">+</span><span class="vs">x=e</span><span class="dv">^</span><span class="vs">t/t</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x'</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># x(1):  e*(C1 + C2 - 1) = 0  =&gt;  C1 + C2 = 1</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># x'(1): e*(C2)          = 0  =&gt;  C2 = 0, C1 = 1</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>C1_2, C2_2 <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">0.0</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>xp2  <span class="op">=</span> t_plot2 <span class="op">*</span> np.exp(t_plot2) <span class="op">*</span> (np.log(t_plot2) <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>xh2  <span class="op">=</span> C1_2<span class="op">*</span>np.exp(t_plot2) <span class="op">+</span> C2_2<span class="op">*</span>t_plot2<span class="op">*</span>np.exp(t_plot2)   <span class="co"># e^t</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>x2_full <span class="op">=</span> xh2 <span class="op">+</span> xp2</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, x2_full, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'Full solution $x(t)$'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xh2,     color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'$x_h = e^t$ (with $C_1=1$, $C_2=0$)'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ax.plot(t_plot2, xp2,     color<span class="op">=</span><span class="st">'seagreen'</span>,   lw<span class="op">=</span><span class="fl">1.8</span>, ls<span class="op">=</span><span class="st">'-.'</span>, label<span class="op">=</span><span class="st">'$x_p = te^t(</span><span class="ch">\\</span><span class="st">ln t-1)$'</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ode2(t, y): <span class="cf">return</span> [y[<span class="dv">1</span>], <span class="dv">2</span><span class="op">*</span>y[<span class="dv">1</span>] <span class="op">-</span> y[<span class="dv">0</span>] <span class="op">+</span> np.exp(t)<span class="op">/</span>t]</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>sol2n <span class="op">=</span> solve_ivp(ode2, (<span class="fl">1.0</span>, <span class="fl">2.8</span>), [<span class="fl">0.0</span>, <span class="fl">0.0</span>], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>t_dots2 <span class="op">=</span> np.linspace(<span class="fl">1.0</span>, <span class="fl">2.8</span>, <span class="dv">18</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>ax.plot(t_dots2, sol2n.sol(t_dots2)[<span class="dv">0</span>], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">5</span>, label<span class="op">=</span><span class="st">'Numerical check'</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"</span><span class="dv">$</span><span class="vs">x''-2x'</span><span class="op">+</span><span class="vs">x=e</span><span class="dv">^</span><span class="vs">t/t</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">, </span><span class="dv">$</span><span class="vs">x'</span><span class="kw">(</span><span class="vs">1</span><span class="kw">)</span><span class="vs">=0</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-ex2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -933,7 +934,7 @@ Figure&nbsp;2: Example 2: <span class="math inline">\(x''-2x'+x=e^t/t\)</span> w
 <p><strong>Step 5.</strong> Using integration by parts for <span class="math inline">\(u_1\)</span>: <span class="math display">\[u_1 = -\int t\sin t\,dt = t\cos t - \sin t, \qquad u_2 = \int\sin t\,dt = -\cos t.\]</span></p>
 <p><strong>Step 6.</strong> <span class="math display">\[x_p = t(t\cos t - \sin t) + t^2(-\cos t) = t^2\cos t - t\sin t - t^2\cos t = -t\sin t.\]</span></p>
 <p><strong>General solution:</strong> <span class="math display">\[\boxed{x(t) = C_1 t + C_2 t^2 - t\sin t.}\]</span></p>
-<div id="5ce04c2a" class="cell" data-execution_count="5">
+<div id="964cf705" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SymPy verification</span></span>
@@ -1083,7 +1084,7 @@ Figure&nbsp;4: Example 4: <span class="math inline">\(x''+x=\csc t\)</span>, <sp
 </section>
 <section id="sympy-solving-all-four-examples-symbolically" class="level3">
 <h3 class="anchored" data-anchor-id="sympy-solving-all-four-examples-symbolically">SymPy: Solving All Four Examples Symbolically</h3>
-<div id="bb3397a8" class="cell" data-execution_count="8">
+<div id="cac08b9e" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>t_sym <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -1312,7 +1313,7 @@ Logan, J David. 2015. <em>A First Course in Differential Equations, Third Editio
 </div>
 <div id="callout-13" class="callout-13-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="7a96fe3a" class="cell" data-execution_count="9">
+<div id="b2d4407f" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>

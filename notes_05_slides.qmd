@@ -246,14 +246,14 @@ $$\boxed{x(t) = C_1 e^t + C_2 te^t + te^t(\ln t-1), \quad t>0}$$
 #| fig-height: 3.6
 
 t_plot2 = np.linspace(1.0, 2.8, 400)
-xp2  = t_plot2*np.exp(t_plot2)*(np.log(t_plot2)-1)
-# IVP x(1)=0, x'(1)=0 => C1=2, C2=-1
-xh2  = 2*np.exp(t_plot2) - t_plot2*np.exp(t_plot2)
+C1_2, C2_2 = 1.0, 0.0
+xp2  = t_plot2 * np.exp(t_plot2) * (np.log(t_plot2) - 1)
+xh2  = C1_2*np.exp(t_plot2) + C2_2*t_plot2*np.exp(t_plot2)   # e^t
 x2_full = xh2 + xp2
 
 fig, ax = plt.subplots(figsize=(9, 3.4))
 ax.plot(t_plot2, x2_full, color='steelblue',  lw=2.5, label='Full $x(t)$')
-ax.plot(t_plot2, xh2,     color='darkorange', lw=1.8, ls='--', label='$x_h=2e^t-te^t$')
+ax.plot(t_plot2, xh2,     color='darkorange', lw=1.8, ls='--', label='$x_h = e^t$')
 ax.plot(t_plot2, xp2,     color='seagreen',   lw=1.8, ls='-.', label='$x_p=te^t(\\ln t-1)$')
 def ode2(t, y): return [y[1], 2*y[1]-y[0]+np.exp(t)/t]
 sol2n = solve_ivp(ode2,(1,2.8),[0.0,0.0],dense_output=True,max_step=0.005)
