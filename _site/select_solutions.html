@@ -409,6 +409,11 @@ window.Quarto = {
   <li><a href="#section-1.4.1-first-order-linear-equations-integrating-factors" id="toc-section-1.4.1-first-order-linear-equations-integrating-factors" class="nav-link" data-scroll-target="#section-1.4.1-first-order-linear-equations-integrating-factors">Section 1.4.1 — First-Order Linear Equations &amp; Integrating Factors</a></li>
   <li><a href="#section-1.4.3-applications-rc-circuits" id="toc-section-1.4.3-applications-rc-circuits" class="nav-link" data-scroll-target="#section-1.4.3-applications-rc-circuits">Section 1.4.3 — Applications: RC Circuits</a></li>
   </ul></li>
+  <li><a href="#homework-3" id="toc-homework-3" class="nav-link" data-scroll-target="#homework-3">Homework 3</a>
+  <ul class="collapse">
+  <li><a href="#section-1.5.1-autonomous-systems" id="toc-section-1.5.1-autonomous-systems" class="nav-link" data-scroll-target="#section-1.5.1-autonomous-systems">Section 1.5.1 — Autonomous Systems</a></li>
+  <li><a href="#section-1.5.2-bifurcations" id="toc-section-1.5.2-bifurcations" class="nav-link" data-scroll-target="#section-1.5.2-bifurcations">Section 1.5.2 — Bifurcations</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#reuse" id="toc-reuse" class="nav-link" data-scroll-target="#reuse">Reuse</a></li>
   </ul>
@@ -437,7 +442,7 @@ window.Quarto = {
 </header>
 
 
-<div id="cdb41ce6" class="cell" data-execution_count="1">
+<div id="eff6853d" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -495,7 +500,7 @@ Tip
 </section>
 <section id="using-sympy" class="level4">
 <h4 class="anchored" data-anchor-id="using-sympy">Using SymPy</h4>
-<div id="b39f8c37" class="cell" data-execution_count="2">
+<div id="7a122a58" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t, lam <span class="op">=</span> sym.symbols(<span class="st">'t lambda'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.exp(lam <span class="op">*</span> t)</span>
@@ -656,7 +661,7 @@ Note
 <p><span class="math display">\[
 \boxed{x(t) = A(t+1)^2}
 \]</span></p>
-<div id="2bd791dd" class="cell" data-execution_count="4">
+<div id="28b423ff" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -712,7 +717,7 @@ Tip
 <p>The restriction <span class="math inline">\(t &lt; \ln 2\)</span> is required for <span class="math inline">\(2 - e^t &gt; 0\)</span>, so that the logarithm is defined. This is an example of a solution whose <strong>interval of existence</strong> is limited even though the differential equation itself is defined for all <span class="math inline">\(t\)</span> and <span class="math inline">\(x\)</span>.</p>
 </div>
 </div>
-<div id="fc27dae8" class="cell" data-execution_count="5">
+<div id="5c02c201" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>xf <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>eq10a <span class="op">=</span> sym.Eq(sym.diff(xf(t), t), sym.exp(t <span class="op">+</span> xf(t)))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sol10a <span class="op">=</span> sym.dsolve(eq10a, xf(t), ics<span class="op">=</span>{xf(<span class="dv">0</span>): <span class="dv">0</span>})</span>
@@ -746,7 +751,7 @@ T - a = -e^{2a^2t^2}(T+a) \quad \Longrightarrow \quad T\left(1+e^{2a^2t^2}\right
 <p><span class="math display">\[
 \boxed{T(t) = -a\tanh\!\left(a^2t^2\right)}.
 \]</span></p>
-<div id="d9211f86" class="cell" data-execution_count="6">
+<div id="5fb3217d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>a, t <span class="op">=</span> sym.symbols(<span class="st">'a t'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Tf <span class="op">=</span> sym.Function(<span class="st">'T'</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -798,7 +803,7 @@ Tip
 <p>It is instructive to see where a naive separation of variables leads: dividing by <span class="math inline">\(\tan y\)</span> gives <span class="math inline">\(\cot y\,dy = t^2\,dt\)</span>, so <span class="math inline">\(\ln|\sin y| = \tfrac{1}{3}t^3 + C\)</span>. This step implicitly assumes <span class="math inline">\(\sin y \neq 0\)</span>, silently discarding the constant solution <span class="math inline">\(y \equiv 0\)</span> — exactly the solution the initial condition selects. This is a good reminder to always check for equilibrium (constant) solutions before dividing them away.</p>
 </div>
 </div>
-<div id="1f34949f" class="cell" data-execution_count="7">
+<div id="405e21db" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>yf <span class="op">=</span> sym.Function(<span class="st">'y'</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>eq10c <span class="op">=</span> sym.Eq(sym.diff(yf(t), t), t<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> sym.tan(yf(t)))</span>
@@ -835,7 +840,7 @@ t^2 x = \frac{t^4}{4} + C.
 <p><span class="math display">\[
 \boxed{x(t) = \frac{t^2}{4} + \frac{C}{t^2}}
 \]</span></p>
-<div id="93af084d" class="cell" data-execution_count="8">
+<div id="b3683c6c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -879,7 +884,7 @@ t^5 x = \frac{t^6}{6} + \frac{t^7}{7} + C \quad \Longrightarrow \quad x(t) = \fr
 <p><span class="math display">\[
 \boxed{x(t) = \frac{t}{6} + \frac{t^2}{7} + \frac{29}{42\,t^5}}
 \]</span></p>
-<div id="851e6019" class="cell" data-execution_count="9">
+<div id="5f61dbd5" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -944,7 +949,7 @@ I(t) = \frac{dQ}{dt} = \frac{d}{dt}\left(6 - e^{-2t}\right).
 <p><span class="math display">\[
 \boxed{I(t) = 2e^{-2t}}
 \]</span></p>
-<div id="984948dd" class="cell" data-execution_count="10">
+<div id="a1d80f1d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> sym.Function(<span class="st">'Q'</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1005,6 +1010,809 @@ Figure&nbsp;2: Charge <span class="math inline">\(Q(t) = 6 - e^{-2t}\)</span> an
 </div>
 </div>
 </div>
+</section>
+</section>
+</section>
+<section id="homework-3" class="level2">
+<h2 class="anchored" data-anchor-id="homework-3">Homework 3</h2>
+<section id="section-1.5.1-autonomous-systems" class="level3">
+<h3 class="anchored" data-anchor-id="section-1.5.1-autonomous-systems">Section 1.5.1 — Autonomous Systems</h3>
+<section id="exercise-2b" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-2b">Exercise 2(b)</h4>
+<p>For the model <span class="math inline">\(x' = x(4-x)(5-x)^2\)</span>: (a) plot the growth rate <span class="math inline">\(f(x)\)</span> versus <span class="math inline">\(x\)</span> and sketch the phase line diagram; (b) find the equilibria analytically and classify them according to their stability using Theorem 1.32; (c) draw a few key time series plots, <span class="math inline">\(x = x(t)\)</span>, in the <span class="math inline">\(tx\)</span>-plane.</p>
+<p><strong>(a) &amp; (b) — Equilibria, stability, and the phase line.</strong></p>
+<p>Setting <span class="math inline">\(f(x) = x(4-x)(5-x)^2 = 0\)</span> gives three equilibria: <span class="math inline">\(x = 0,\ 4,\ 5\)</span>.</p>
+<p>Theorem 1.32 classifies a <em>hyperbolic</em> equilibrium (one where <span class="math inline">\(f'(x_{eq}) \neq 0\)</span>) by the sign of <span class="math inline">\(f'(x_{eq})\)</span>: negative means stable, positive means unstable. Differentiating and evaluating, <span class="math display">\[
+f'(0) = 100 &gt; 0 \ (\text{unstable}), \qquad f'(4) = -4 &lt; 0 \ (\text{stable}), \qquad f'(5) = 0 \ (\text{inconclusive}).
+\]</span></p>
+<p>Since <span class="math inline">\(f'(5) = 0\)</span>, Theorem 1.32 does not directly apply at <span class="math inline">\(x=5\)</span> and we examine the sign of <span class="math inline">\(f(x)\)</span> directly instead. Because <span class="math inline">\((5-x)^2 \geq 0\)</span> never changes sign, the sign of <span class="math inline">\(f(x)\)</span> near <span class="math inline">\(x=5\)</span> is controlled by <span class="math inline">\(x(4-x)\)</span>, which is negative for <span class="math inline">\(x\)</span> near <span class="math inline">\(5\)</span> on <strong>both</strong> sides. Tabulating the sign of <span class="math inline">\(f\)</span> on each interval:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Interval</th>
+<th><span class="math inline">\((-\infty, 0)\)</span></th>
+<th><span class="math inline">\((0,4)\)</span></th>
+<th><span class="math inline">\((4,5)\)</span></th>
+<th><span class="math inline">\((5,\infty)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sign of <span class="math inline">\(f(x)\)</span></td>
+<td><span class="math inline">\(-\)</span></td>
+<td><span class="math inline">\(+\)</span></td>
+<td><span class="math inline">\(-\)</span></td>
+<td><span class="math inline">\(-\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>At <span class="math inline">\(x=0\)</span>: sign goes <span class="math inline">\(- \to +\)</span>, so trajectories are pushed away on both sides <span class="math inline">\(\Rightarrow\)</span> <strong>unstable</strong>.</li>
+<li>At <span class="math inline">\(x=4\)</span>: sign goes <span class="math inline">\(+ \to -\)</span>, so trajectories are pulled in from both sides <span class="math inline">\(\Rightarrow\)</span> <strong>stable</strong>.</li>
+<li>At <span class="math inline">\(x=5\)</span>: the sign is negative on both sides, so trajectories from below move <em>away</em> from <span class="math inline">\(5\)</span> (down toward <span class="math inline">\(4\)</span>) while trajectories from above move <em>toward</em> <span class="math inline">\(5\)</span> <span class="math inline">\(\Rightarrow\)</span> <strong>semistable</strong>.</li>
+</ul>
+<div id="cell-fig-2b-phaseline" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f2b(x):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x<span class="op">*</span>(<span class="dv">4</span><span class="op">-</span>x)<span class="op">*</span>(<span class="dv">5</span><span class="op">-</span>x)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>xmin, xmax <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(xmin, xmax, <span class="dv">500</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                                gridspec_kw<span class="op">=</span>{<span class="st">'height_ratios'</span>: [<span class="dv">3</span>, <span class="dv">1</span>]}, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>ax1.plot(x, f2b(x), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>ax1.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>ax1.plot(<span class="dv">0</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'white'</span>, mec<span class="op">=</span><span class="st">'crimson'</span>, mew<span class="op">=</span><span class="dv">2</span>, zorder<span class="op">=</span><span class="dv">5</span>)          <span class="co"># unstable</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>ax1.plot(<span class="dv">4</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>, mec<span class="op">=</span><span class="st">'seagreen'</span>, zorder<span class="op">=</span><span class="dv">5</span>)             <span class="co"># stable</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>ax1.plot(<span class="dv">5</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, fillstyle<span class="op">=</span><span class="st">'right'</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>          markerfacecoloralt<span class="op">=</span><span class="st">'crimson'</span>, mec<span class="op">=</span><span class="st">'black'</span>, zorder<span class="op">=</span><span class="dv">5</span>)                          <span class="co"># semistable</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="op">-</span><span class="dv">60</span>, <span class="dv">60</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'$f(x)$'</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="vs">r"Growth rate </span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = x</span><span class="kw">(</span><span class="vs">4-x</span><span class="kw">)(</span><span class="vs">5-x</span><span class="kw">)</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>bounds <span class="op">=</span> [xmin, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">5</span>, xmax]</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>ax2.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(bounds[:<span class="op">-</span><span class="dv">1</span>], bounds[<span class="dv">1</span>:]):</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    mid <span class="op">=</span> (a <span class="op">+</span> b) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    sign <span class="op">=</span> np.sign(f2b(mid))</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    x0, x1 <span class="op">=</span> (a <span class="op">+</span> <span class="fl">0.15</span>, b <span class="op">-</span> <span class="fl">0.15</span>) <span class="cf">if</span> sign <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> (b <span class="op">-</span> <span class="fl">0.15</span>, a <span class="op">+</span> <span class="fl">0.15</span>)</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    ax2.annotate(<span class="st">''</span>, xy<span class="op">=</span>(x1, <span class="dv">0</span>), xytext<span class="op">=</span>(x0, <span class="dv">0</span>),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                 arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-|&gt;'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>ax2.plot(<span class="dv">0</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'white'</span>, mec<span class="op">=</span><span class="st">'crimson'</span>, mew<span class="op">=</span><span class="dv">2</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>ax2.plot(<span class="dv">4</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>, mec<span class="op">=</span><span class="st">'seagreen'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>ax2.plot(<span class="dv">5</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, fillstyle<span class="op">=</span><span class="st">'right'</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>,</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>          markerfacecoloralt<span class="op">=</span><span class="st">'crimson'</span>, mec<span class="op">=</span><span class="st">'black'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>ax2.set_yticks([])</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'$x$'</span>)</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-2b-phaseline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-2b-phaseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-2b-phaseline-output-1.png" width="1031" height="883" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-2b-phaseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Growth rate and phase line for <span class="math inline">\(x' = x(4-x)(5-x)^2\)</span>. Filled green = stable, open red = unstable, half-filled = semistable.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="a49f75c3" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.symbols(<span class="st">'x'</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> x<span class="op">*</span>(<span class="dv">4</span><span class="op">-</span>x)<span class="op">*</span>(<span class="dv">5</span><span class="op">-</span>x)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>eqs <span class="op">=</span> sym.solve(sym.Eq(f, <span class="dv">0</span>), x)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> sym.diff(f, x)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Equilibria:"</span>, eqs)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> eqs:</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  f'(</span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">) ="</span>, fp.subs(x, e))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Equilibria: [0, 4, 5]
+  f'(0) = 100
+  f'(4) = -4
+  f'(5) = 0</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SymPy confirms the equilibria <span class="math inline">\(x = 0, 4, 5\)</span> and the derivative values used above; the vanishing derivative at <span class="math inline">\(x=5\)</span> is exactly what forced the direct sign analysis.</p>
+</div>
+</div>
+<p><strong>(c) — Representative time series.</strong></p>
+<div id="cell-fig-2b-timeseries" class="cell" data-execution_count="14">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f2b_t(t, x):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x<span class="op">*</span>(<span class="dv">4</span><span class="op">-</span>x)<span class="op">*</span>(<span class="dv">5</span><span class="op">-</span>x)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0 <span class="kw">in</span> [<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">4.5</span>, <span class="dv">5</span>, <span class="fl">5.5</span>, <span class="dv">6</span>]:</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f2b_t, [<span class="dv">0</span>, <span class="dv">3</span>], [x0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.01</span>, rtol<span class="op">=</span><span class="fl">1e-8</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> level <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">5</span>]:</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    ax.axhline(level, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">3</span>, <span class="dv">7</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Representative solutions for </span><span class="dv">$</span><span class="vs">x' = x</span><span class="kw">(</span><span class="vs">4-x</span><span class="kw">)(</span><span class="vs">5-x</span><span class="kw">)</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-2b-timeseries" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-2b-timeseries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-2b-timeseries-output-1.png" width="1031" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-2b-timeseries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Representative solutions of <span class="math inline">\(x' = x(4-x)(5-x)^2\)</span>. Solutions starting below <span class="math inline">\(0\)</span> diverge to <span class="math inline">\(-\infty\)</span>; solutions in <span class="math inline">\((0,5)\)</span> are drawn to the stable equilibrium <span class="math inline">\(x=4\)</span>; solutions above <span class="math inline">\(5\)</span> decay back down to <span class="math inline">\(x=5\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="exercise-2g" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-2g">Exercise 2(g)</h4>
+<p>For the model <span class="math inline">\(x' = (4-x)(2-x)^3\)</span>: (a) plot the growth rate <span class="math inline">\(f(x)\)</span> versus <span class="math inline">\(x\)</span> and sketch the phase line diagram; (b) find the equilibria analytically and classify them according to their stability using Theorem 1.32; (c) draw a few key time series plots, <span class="math inline">\(x = x(t)\)</span>, in the <span class="math inline">\(tx\)</span>-plane.</p>
+<p><strong>(a) &amp; (b) — Equilibria, stability, and the phase line.</strong></p>
+<p>Setting <span class="math inline">\(f(x) = (4-x)(2-x)^3 = 0\)</span> gives two equilibria: <span class="math inline">\(x = 2\)</span> (a triple root of the factor <span class="math inline">\((2-x)^3\)</span>) and <span class="math inline">\(x = 4\)</span>.</p>
+<p><span class="math display">\[
+f'(2) = 0 \ (\text{inconclusive}), \qquad f'(4) = 8 &gt; 0 \ (\text{unstable}).
+\]</span></p>
+<p>Since <span class="math inline">\(f'(2)=0\)</span> (the triple root makes <span class="math inline">\(x=2\)</span> non-hyperbolic), we again check signs directly:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Interval</th>
+<th><span class="math inline">\((-\infty, 2)\)</span></th>
+<th><span class="math inline">\((2,4)\)</span></th>
+<th><span class="math inline">\((4,\infty)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sign of <span class="math inline">\(f(x)\)</span></td>
+<td><span class="math inline">\(+\)</span></td>
+<td><span class="math inline">\(-\)</span></td>
+<td><span class="math inline">\(+\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>At <span class="math inline">\(x=2\)</span>: sign goes <span class="math inline">\(+ \to -\)</span> <span class="math inline">\(\Rightarrow\)</span> <strong>stable</strong>.</li>
+<li>At <span class="math inline">\(x=4\)</span>: sign goes <span class="math inline">\(- \to +\)</span>, consistent with <span class="math inline">\(f'(4)&gt;0\)</span> <span class="math inline">\(\Rightarrow\)</span> <strong>unstable</strong>.</li>
+</ul>
+<div id="cell-fig-2g-phaseline" class="cell" data-execution_count="15">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f2g(x):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="dv">4</span><span class="op">-</span>x)<span class="op">*</span>(<span class="dv">2</span><span class="op">-</span>x)<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>xmin, xmax <span class="op">=</span> <span class="dv">0</span>, <span class="dv">6</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(xmin, xmax, <span class="dv">500</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                                gridspec_kw<span class="op">=</span>{<span class="st">'height_ratios'</span>: [<span class="dv">3</span>, <span class="dv">1</span>]}, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>ax1.plot(x, f2g(x), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>ax1.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>ax1.plot(<span class="dv">2</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>, mec<span class="op">=</span><span class="st">'seagreen'</span>, zorder<span class="op">=</span><span class="dv">5</span>)     <span class="co"># stable</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>ax1.plot(<span class="dv">4</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'white'</span>, mec<span class="op">=</span><span class="st">'crimson'</span>, mew<span class="op">=</span><span class="dv">2</span>, zorder<span class="op">=</span><span class="dv">5</span>) <span class="co"># unstable</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="op">-</span><span class="dv">30</span>, <span class="dv">30</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'$f(x)$'</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="vs">r"Growth rate </span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">x</span><span class="kw">)</span><span class="vs"> = </span><span class="kw">(</span><span class="vs">4-x</span><span class="kw">)(</span><span class="vs">2-x</span><span class="kw">)</span><span class="dv">^</span><span class="vs">3</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>bounds <span class="op">=</span> [xmin, <span class="dv">2</span>, <span class="dv">4</span>, xmax]</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>ax2.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(bounds[:<span class="op">-</span><span class="dv">1</span>], bounds[<span class="dv">1</span>:]):</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    mid <span class="op">=</span> (a <span class="op">+</span> b) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    sign <span class="op">=</span> np.sign(f2g(mid))</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    x0, x1 <span class="op">=</span> (a <span class="op">+</span> <span class="fl">0.15</span>, b <span class="op">-</span> <span class="fl">0.15</span>) <span class="cf">if</span> sign <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> (b <span class="op">-</span> <span class="fl">0.15</span>, a <span class="op">+</span> <span class="fl">0.15</span>)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    ax2.annotate(<span class="st">''</span>, xy<span class="op">=</span>(x1, <span class="dv">0</span>), xytext<span class="op">=</span>(x0, <span class="dv">0</span>),</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>                 arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-|&gt;'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>ax2.plot(<span class="dv">2</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>, mec<span class="op">=</span><span class="st">'seagreen'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>ax2.plot(<span class="dv">4</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'white'</span>, mec<span class="op">=</span><span class="st">'crimson'</span>, mew<span class="op">=</span><span class="dv">2</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>ax2.set_yticks([])</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'$x$'</span>)</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-2g-phaseline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-2g-phaseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-2g-phaseline-output-1.png" width="1031" height="883" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-2g-phaseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Growth rate and phase line for <span class="math inline">\(x' = (4-x)(2-x)^3\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="f5086c00" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.symbols(<span class="st">'x'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (<span class="dv">4</span><span class="op">-</span>x)<span class="op">*</span>(<span class="dv">2</span><span class="op">-</span>x)<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>eqs <span class="op">=</span> sym.solve(sym.Eq(f, <span class="dv">0</span>), x)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> sym.diff(f, x)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Equilibria:"</span>, eqs)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> eqs:</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  f'(</span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">) ="</span>, fp.subs(x, e))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Equilibria: [2, 4]
+  f'(2) = 0
+  f'(4) = 8</code></pre>
+</div>
+</div>
+<p><strong>(c) — Representative time series.</strong></p>
+<div id="cell-fig-2g-timeseries" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f2g_t(t, x):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="dv">4</span><span class="op">-</span>x)<span class="op">*</span>(<span class="dv">2</span><span class="op">-</span>x)<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0 <span class="kw">in</span> [<span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="fl">3.9</span>, <span class="dv">4</span>, <span class="fl">4.1</span>, <span class="fl">4.5</span>]:</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> solve_ivp(f2g_t, [<span class="dv">0</span>, <span class="dv">2</span>], [x0], dense_output<span class="op">=</span><span class="va">True</span>, max_step<span class="op">=</span><span class="fl">0.005</span>, rtol<span class="op">=</span><span class="fl">1e-9</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    ax.plot(sol.t, sol.y[<span class="dv">0</span>], lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'$x_0=</span><span class="sc">{</span>x0<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> level <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">4</span>]:</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    ax.axhline(level, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">8</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$'</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x(t)$'</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Representative solutions for </span><span class="dv">$</span><span class="vs">x' = </span><span class="kw">(</span><span class="vs">4-x</span><span class="kw">)(</span><span class="vs">2-x</span><span class="kw">)</span><span class="dv">^</span><span class="vs">3</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-2g-timeseries" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-2g-timeseries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-2g-timeseries-output-1.png" width="1031" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-2g-timeseries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Representative solutions of <span class="math inline">\(x' = (4-x)(2-x)^3\)</span>. Solutions in <span class="math inline">\((-\infty, 4)\)</span> are drawn (slowly, since <span class="math inline">\(f'(2)=0\)</span>) toward the stable equilibrium <span class="math inline">\(x=2\)</span>; solutions above <span class="math inline">\(4\)</span> diverge to <span class="math inline">\(+\infty\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice how flat the curves are near <span class="math inline">\(x=2\)</span> compared with how sharply solutions bend away near <span class="math inline">\(x=4\)</span>. This reflects <span class="math inline">\(f'(2)=0\)</span> versus <span class="math inline">\(f'(4) = 8\)</span>: convergence toward a non-hyperbolic equilibrium (a repeated root) is much slower than the exponential rate predicted by Theorem 1.32 at a hyperbolic one.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="exercise-3c" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-3c">Exercise 3(c)</h4>
+<p>Use analytical or graphical methods to determine the equilibria of <span class="math inline">\(R' = \dfrac{3R}{1+R^2} - 1\)</span>.</p>
+<p><strong>By Hand.</strong></p>
+<p>Setting <span class="math inline">\(f(R) = \dfrac{3R}{1+R^2} - 1 = 0\)</span>: <span class="math display">\[
+\frac{3R}{1+R^2} = 1 \quad \Longrightarrow \quad 3R = 1 + R^2 \quad \Longrightarrow \quad R^2 - 3R + 1 = 0.
+\]</span></p>
+<p>By the quadratic formula, <span class="math display">\[
+R = \frac{3 \pm \sqrt{9-4}}{2} = \frac{3 \pm \sqrt{5}}{2}.
+\]</span></p>
+<p><span class="math display">\[
+\boxed{R_1 = \frac{3-\sqrt{5}}{2} \approx 0.382, \qquad R_2 = \frac{3+\sqrt{5}}{2} \approx 2.618}
+\]</span></p>
+<p>Graphically, these are exactly the two places where the curve <span class="math inline">\(f(R)\)</span> crosses the <span class="math inline">\(R\)</span>-axis:</p>
+<div id="cell-fig-3c-growth" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f3c(R):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">3</span><span class="op">*</span>R<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>R<span class="op">**</span><span class="dv">2</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">500</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>R1 <span class="op">=</span> (<span class="dv">3</span> <span class="op">-</span> np.sqrt(<span class="dv">5</span>)) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>R2 <span class="op">=</span> (<span class="dv">3</span> <span class="op">+</span> np.sqrt(<span class="dv">5</span>)) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>ax.plot(R, f3c(R), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>ax.plot(R1, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'white'</span>, mec<span class="op">=</span><span class="st">'crimson'</span>, mew<span class="op">=</span><span class="dv">2</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>ax.plot(R2, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>, mec<span class="op">=</span><span class="st">'seagreen'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="ss">f'$R_1 </span><span class="ch">\\</span><span class="ss">approx </span><span class="sc">{</span>R1<span class="sc">:.3f}</span><span class="ss">$'</span>, xy<span class="op">=</span>(R1, <span class="dv">0</span>), xytext<span class="op">=</span>(R1<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">0.6</span>),</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">9</span>, ha<span class="op">=</span><span class="st">'right'</span>, arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, lw<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="ss">f'$R_2 </span><span class="ch">\\</span><span class="ss">approx </span><span class="sc">{</span>R2<span class="sc">:.3f}</span><span class="ss">$'</span>, xy<span class="op">=</span>(R2, <span class="dv">0</span>), xytext<span class="op">=</span>(R2<span class="op">+</span><span class="fl">0.3</span>, <span class="fl">0.6</span>),</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">9</span>, ha<span class="op">=</span><span class="st">'left'</span>, arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, lw<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$R$'</span>)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"$R' = f(R)$"</span>)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Growth rate </span><span class="dv">$</span><span class="vs">f</span><span class="kw">(</span><span class="vs">R</span><span class="kw">)</span><span class="vs"> = </span><span class="dv">\d</span><span class="vs">frac{3R}{1</span><span class="op">+</span><span class="vs">R</span><span class="dv">^</span><span class="vs">2} - 1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-3c-growth" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-3c-growth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-3c-growth-output-1.png" width="1031" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-3c-growth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Growth rate <span class="math inline">\(f(R) = 3R/(1+R^2) - 1\)</span>, crossing zero at the two equilibria <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="e7518eae" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> sym.symbols(<span class="st">'R'</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="dv">3</span><span class="op">*</span>R<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>R<span class="op">**</span><span class="dv">2</span>) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>eqs <span class="op">=</span> sym.solve(sym.Eq(f, <span class="dv">0</span>), R)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Equilibria (exact):"</span>, eqs)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Equilibria (decimal):"</span>, [sym.N(e) <span class="cf">for</span> e <span class="kw">in</span> eqs])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Equilibria (exact): [3/2 - sqrt(5)/2, sqrt(5)/2 + 3/2]
+Equilibria (decimal): [0.381966011250105, 2.61803398874989]</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although the exercise only asks for the equilibria, stability comes almost for free from the same plot: the curve crosses from <span class="math inline">\(+\)</span> to <span class="math inline">\(-\)</span> at <span class="math inline">\(R_2\)</span> (stable) and from <span class="math inline">\(-\)</span> to <span class="math inline">\(+\)</span> at <span class="math inline">\(R_1\)</span> (unstable) — consistent with <span class="math inline">\(f'(R_1) \approx 1.95 &gt; 0\)</span> and <span class="math inline">\(f'(R_2) \approx -0.28 &lt; 0\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="exercise-6-heat-transfer" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-6-heat-transfer">Exercise 6 (Heat transfer)</h4>
+<p>Heat transfer by radiation from a body to its surroundings is modeled by the Stefan–Boltzmann law <span class="math display">\[
+\frac{dT}{dt} = -k\left(T^4 - S^4\right),
+\]</span> where <span class="math inline">\(T = T(t)\)</span> is the absolute temperature of the body and <span class="math inline">\(S\)</span> is the (constant) temperature of the surroundings.</p>
+<p><strong>(a) Phase line diagram and nature of the solution.</strong></p>
+<p>The only equilibrium (for <span class="math inline">\(T, S \geq 0\)</span>) is <span class="math inline">\(T = S\)</span>, since <span class="math inline">\(T^4 = S^4\)</span> with <span class="math inline">\(T,S\ge 0\)</span> forces <span class="math inline">\(T=S\)</span>. Writing <span class="math inline">\(f(T) = -k(T^4-S^4)\)</span>:</p>
+<ul>
+<li>For <span class="math inline">\(T &gt; S\)</span>: <span class="math inline">\(T^4 &gt; S^4\)</span>, so <span class="math inline">\(f(T) &lt; 0\)</span> (temperature decreasing — the body cools toward <span class="math inline">\(S\)</span>).</li>
+<li>For <span class="math inline">\(T &lt; S\)</span>: <span class="math inline">\(T^4 &lt; S^4\)</span>, so <span class="math inline">\(f(T) &gt; 0\)</span> (temperature increasing — the body warms toward <span class="math inline">\(S\)</span>).</li>
+</ul>
+<p>So <span class="math inline">\(T = S\)</span> is a <strong>stable</strong> equilibrium, and every solution approaches it <em>monotonically</em> (no overshoot or oscillation) — exactly the physically expected behavior of a body radiating heat until it reaches thermal equilibrium with its surroundings.</p>
+<div id="cell-fig-ex6-phaseline" class="cell" data-execution_count="20">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>k_demo <span class="op">=</span> <span class="fl">2.0e-12</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>S_demo <span class="op">=</span> <span class="dv">300</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fT(T, S):</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>k_demo<span class="op">*</span>(T<span class="op">**</span><span class="dv">4</span> <span class="op">-</span> S<span class="op">**</span><span class="dv">4</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>Tvals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>S_demo, <span class="dv">300</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>                                gridspec_kw<span class="op">=</span>{<span class="st">'height_ratios'</span>: [<span class="dv">3</span>, <span class="dv">1</span>]}, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>ax1.plot(Tvals, fT(Tvals, S_demo), color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>ax1.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>ax1.plot(S_demo, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>, mec<span class="op">=</span><span class="st">'seagreen'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"$T' = -k(T^4-S^4)$"</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Growth rate for $T' = -k(T^4 - S^4)$"</span>)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>bounds <span class="op">=</span> [<span class="dv">0</span>, S_demo, <span class="dv">2</span><span class="op">*</span>S_demo]</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>ax2.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, lw<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(bounds[:<span class="op">-</span><span class="dv">1</span>], bounds[<span class="dv">1</span>:]):</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    mid <span class="op">=</span> (a <span class="op">+</span> b) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    sign <span class="op">=</span> np.sign(fT(mid, S_demo))</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    x0, x1 <span class="op">=</span> (a <span class="op">+</span> <span class="fl">0.05</span><span class="op">*</span>S_demo, b <span class="op">-</span> <span class="fl">0.05</span><span class="op">*</span>S_demo) <span class="cf">if</span> sign <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> (b <span class="op">-</span> <span class="fl">0.05</span><span class="op">*</span>S_demo, a <span class="op">+</span> <span class="fl">0.05</span><span class="op">*</span>S_demo)</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    ax2.annotate(<span class="st">''</span>, xy<span class="op">=</span>(x1, <span class="dv">0</span>), xytext<span class="op">=</span>(x0, <span class="dv">0</span>),</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>                 arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-|&gt;'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>ax2.plot(S_demo, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, ms<span class="op">=</span><span class="dv">10</span>, mfc<span class="op">=</span><span class="st">'seagreen'</span>, mec<span class="op">=</span><span class="st">'seagreen'</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>ax2.set_yticks([])</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'$T$'</span>)</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex6-phaseline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex6-phaseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-ex6-phaseline-output-1.png" width="1031" height="808" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex6-phaseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Growth rate and phase line for <span class="math inline">\(T' = -k(T^4-S^4)\)</span>, showing the single, globally stable equilibrium <span class="math inline">\(T = S\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>(b) Approximate solution neglecting <span class="math inline">\(S\)</span>.</strong></p>
+<p>With <span class="math inline">\(T(0) = 2000\,\text{K}\)</span> and <span class="math inline">\(S = 300\,\text{K}\)</span>, since <span class="math inline">\(S \ll T\)</span> we drop the <span class="math inline">\(S^4\)</span> term and solve <span class="math display">\[
+\frac{dT}{dt} = -kT^4, \qquad k = 2.0\times10^{-12}\ \text{K}^{-3}\text{sec}^{-1}.
+\]</span></p>
+<p>This is separable: <span class="math display">\[
+\frac{dT}{T^4} = -k\,dt \quad \Longrightarrow \quad -\frac{1}{3}T^{-3} = -kt + C \quad \Longrightarrow \quad T^{-3} = 3kt + T_0^{-3}.
+\]</span></p>
+<p>Solving for <span class="math inline">\(T\)</span> and substituting <span class="math inline">\(T_0 = 2000\)</span>: <span class="math display">\[
+T(t) = \frac{T_0}{\left(1 + 3kT_0^3\,t\right)^{1/3}}.
+\]</span></p>
+<p>Since <span class="math inline">\(3kT_0^3 = 3(2.0\times10^{-12})(2000)^3 = 0.048\ \text{sec}^{-1}\)</span>,</p>
+<p><span class="math display">\[
+\boxed{T(t) = \frac{2000}{(1+0.048\,t)^{1/3}} \ \text{K}, \qquad t \text{ in seconds}.}
+\]</span></p>
+<div id="48264bda" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> sym.Function(<span class="st">'T'</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>k_val <span class="op">=</span> sym.Rational(<span class="dv">2</span>, <span class="dv">10</span><span class="op">**</span><span class="dv">12</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>eq <span class="op">=</span> sym.Eq(sym.diff(T(t), t), <span class="op">-</span>k_val<span class="op">*</span>T(t)<span class="op">**</span><span class="dv">4</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> sym.dsolve(eq, T(t), ics<span class="op">=</span>{T(<span class="dv">0</span>): <span class="dv">2000</span>})</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Solution:"</span>, sym.simplify(sol))</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Coefficient 3*k*T0^3 ="</span>, sym.N(<span class="dv">3</span><span class="op">*</span>k_val<span class="op">*</span><span class="dv">2000</span><span class="op">**</span><span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solution: Eq(T(t), 10000/(6*t + 125)**(1/3))
+Coefficient 3*k*T0^3 = 0.0480000000000000</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>SymPy confirms <span class="math inline">\(T(t)^{-3} = \dfrac{3t}{5\times10^{11}} + \dfrac{1}{8\times 10^9}\)</span> (an equivalent way of writing the boxed formula), and the numerically computed coefficient matches <span class="math inline">\(0.048\)</span>.</p>
+</div>
+</div>
+<div id="cell-fig-ex6-cooling" class="cell" data-execution_count="22">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>T0 <span class="op">=</span> <span class="dv">2000</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="fl">2.0e-12</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> <span class="dv">300</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>t_vals <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3000</span>, <span class="dv">400</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>T_approx <span class="op">=</span> T0 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>k<span class="op">*</span>T0<span class="op">**</span><span class="dv">3</span><span class="op">*</span>t_vals)<span class="op">**</span>(<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>ax.plot(t_vals, T_approx, color<span class="op">=</span><span class="st">'steelblue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">T</span><span class="kw">(</span><span class="vs">t</span><span class="kw">)</span><span class="vs"> = 2000</span><span class="kw">(</span><span class="vs">1</span><span class="op">+</span><span class="vs">0</span><span class="dv">.</span><span class="vs">048t</span><span class="kw">)</span><span class="dv">^</span><span class="vs">{-1/3}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>ax.axhline(S, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'$S = 300$ K'</span>)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$t$ (seconds)'</span>)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$T$ (K)'</span>)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Approximate cooling curve, neglecting $S$'</span>)</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-ex6-cooling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex6-cooling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-ex6-cooling-output-1.png" width="1032" height="731" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex6-cooling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Approximate cooling curve <span class="math inline">\(T(t) = 2000(1+0.048t)^{-1/3}\)</span>, neglecting the surroundings term <span class="math inline">\(S^4\)</span>. The dashed line marks <span class="math inline">\(S=300\,\)</span>K, where the approximation (<span class="math inline">\(S \ll T\)</span>) starts to break down.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The approximate solution is only valid while <span class="math inline">\(T \gg S\)</span>. By <span class="math inline">\(t \approx 3000\)</span> sec the body has cooled to around <span class="math inline">\(380\,\)</span>K — close enough to <span class="math inline">\(S = 300\,\)</span>K that neglecting <span class="math inline">\(S^4\)</span> in the original equation is no longer well justified; the full equation (including <span class="math inline">\(S^4\)</span>) would need to be solved (numerically) to accurately track the final approach to equilibrium.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="section-1.5.2-bifurcations" class="level3">
+<h3 class="anchored" data-anchor-id="section-1.5.2-bifurcations">Section 1.5.2 — Bifurcations</h3>
+<p>For each model below (containing a parameter <span class="math inline">\(h\)</span>): (a) find the equilibria in terms of <span class="math inline">\(h\)</span> and determine their stability using Theorem 1.32, to the extent possible; (b) construct a bifurcation diagram showing how the equilibria depend on <span class="math inline">\(h\)</span>, labeling the branches as stable or unstable.</p>
+<section id="exercise-1a-x-h---x3" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-1a-x-h---x3">Exercise 1(a): <span class="math inline">\(x' = h - x^3\)</span></h4>
+<p><strong>By Hand.</strong></p>
+<p>Setting <span class="math inline">\(f(x) = h - x^3 = 0\)</span> gives the unique real equilibrium <span class="math display">\[
+x_{eq}(h) = h^{1/3}
+\]</span> (the cube root function is one-to-one on <span class="math inline">\(\mathbb{R}\)</span>, so there is exactly one real equilibrium for every <span class="math inline">\(h\)</span>; the other two roots of <span class="math inline">\(x^3=h\)</span> are complex and not relevant here).</p>
+<p>Differentiating, <span class="math inline">\(f'(x) = -3x^2\)</span>, so <span class="math display">\[
+f'\!\left(x_{eq}\right) = -3h^{2/3} \leq 0 \quad \text{for every } h,
+\]</span> with equality only at <span class="math inline">\(h=0\)</span>. Thus <span class="math inline">\(x_{eq}(h) = h^{1/3}\)</span> is <strong>stable for every <span class="math inline">\(h \neq 0\)</span></strong>. At <span class="math inline">\(h=0\)</span> (so <span class="math inline">\(x_{eq}=0\)</span>), Theorem 1.32 is inconclusive since <span class="math inline">\(f'(0)=0\)</span>, but checking <span class="math inline">\(f(x,0) = -x^3\)</span> directly shows <span class="math inline">\(f&gt;0\)</span> for <span class="math inline">\(x&lt;0\)</span> and <span class="math inline">\(f&lt;0\)</span> for <span class="math inline">\(x&gt;0\)</span> — trajectories are still drawn toward <span class="math inline">\(0\)</span> from both sides, so <span class="math inline">\(x=0\)</span> remains stable (just non-hyperbolically so).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is no actual bifurcation here: a single, always-stable branch of equilibria exists for every value of <span class="math inline">\(h\)</span>, and no qualitative change in the equilibrium structure ever occurs. This example is a useful contrast to (b)–(d) below, where genuine bifurcations do occur.</p>
+</div>
+</div>
+<div id="cell-fig-1a-bifurcation" class="cell" data-execution_count="23">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">400</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>x_eq <span class="op">=</span> np.sign(h) <span class="op">*</span> np.<span class="bu">abs</span>(h)<span class="op">**</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>ax.plot(h, x_eq, color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'stable'</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$h$'</span>)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'$x_</span><span class="sc">{eq}</span><span class="st">$'</span>)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Bifurcation diagram: </span><span class="dv">$</span><span class="vs">x' = h - x</span><span class="dv">^</span><span class="vs">3</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-1a-bifurcation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1a-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-1a-bifurcation-output-1.png" width="882" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1a-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Bifurcation diagram for <span class="math inline">\(x' = h - x^3\)</span>: a single, always-stable branch <span class="math inline">\(x_{eq} = h^{1/3}\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="exercise-1b-x-x-1x-h" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-1b-x-x-1x-h">Exercise 1(b): <span class="math inline">\(x' = (x-1)(x-h)\)</span></h4>
+<p><strong>By Hand.</strong></p>
+<p>The equilibria are <span class="math inline">\(x=1\)</span> and <span class="math inline">\(x=h\)</span>. Differentiating, <span class="math inline">\(f'(x) = (x-h)+(x-1) = 2x-(1+h)\)</span>, so <span class="math display">\[
+f'(1) = 1-h, \qquad f'(h) = h-1.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(x=1\)</span> is <strong>stable</strong> when <span class="math inline">\(h&gt;1\)</span> (so <span class="math inline">\(f'(1)&lt;0\)</span>) and <strong>unstable</strong> when <span class="math inline">\(h&lt;1\)</span>.</li>
+<li><span class="math inline">\(x=h\)</span> is <strong>stable</strong> when <span class="math inline">\(h&lt;1\)</span> (so <span class="math inline">\(f'(h)&lt;0\)</span>) and <strong>unstable</strong> when <span class="math inline">\(h&gt;1\)</span>.</li>
+</ul>
+<p>At <span class="math inline">\(h=1\)</span>, the two equilibria collide at <span class="math inline">\(x=1\)</span> and <em>exchange stability</em> as <span class="math inline">\(h\)</span> increases through <span class="math inline">\(1\)</span> — this is the hallmark of a <strong>transcritical bifurcation</strong>.</p>
+<div id="ede9362d" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>h_sym, x_sym <span class="op">=</span> sym.symbols(<span class="st">'h x'</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (x_sym<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>(x_sym<span class="op">-</span>h_sym)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>eqs <span class="op">=</span> sym.solve(sym.Eq(f,<span class="dv">0</span>), x_sym)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> sym.diff(f, x_sym)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Equilibria:"</span>, eqs)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> eqs:</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  f'(</span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">) ="</span>, sym.simplify(fp.subs(x_sym, e)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Equilibria: [1, h]
+  f'(1) = 1 - h
+  f'(h) = h - 1</code></pre>
+</div>
+</div>
+<div id="cell-fig-1b-bifurcation" class="cell" data-execution_count="25">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>h_lo, h_hi <span class="op">=</span> h[h <span class="op">&lt;=</span> <span class="dv">1</span>], h[h <span class="op">&gt;=</span> <span class="dv">1</span>]</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>ax.plot(h_lo, np.ones_like(h_lo), color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>ax.plot(h_hi, np.ones_like(h_hi), color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>ax.plot(h_lo, h_lo, color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>ax.plot(h_hi, h_hi, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">1</span>, <span class="dv">1</span>, marker<span class="op">=</span><span class="st">'o'</span>, mfc<span class="op">=</span><span class="st">'black'</span>, mec<span class="op">=</span><span class="st">'black'</span>, ms<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$h$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x_</span><span class="sc">{eq}</span><span class="st">$'</span>)</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Bifurcation diagram: </span><span class="dv">$</span><span class="vs">x' = </span><span class="kw">(</span><span class="vs">x-1</span><span class="kw">)(</span><span class="vs">x-h</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>handles <span class="op">=</span> [Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'stable'</span>),</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>           Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'unstable'</span>)]</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>handles)</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-1b-bifurcation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1b-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-1b-bifurcation-output-1.png" width="882" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1b-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Transcritical bifurcation diagram for <span class="math inline">\(x' = (x-1)(x-h)\)</span>. The branches <span class="math inline">\(x=1\)</span> and <span class="math inline">\(x=h\)</span> cross at <span class="math inline">\((h,x)=(1,1)\)</span> and exchange stability.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="exercise-1c-y-hy---y2" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-1c-y-hy---y2">Exercise 1(c): <span class="math inline">\(y' = hy - y^2\)</span></h4>
+<p><strong>By Hand.</strong></p>
+<p>Factoring, <span class="math inline">\(f(y) = y(h-y) = 0\)</span> gives equilibria <span class="math inline">\(y=0\)</span> and <span class="math inline">\(y=h\)</span>. Differentiating, <span class="math inline">\(f'(y) = h-2y\)</span>, so <span class="math display">\[
+f'(0) = h, \qquad f'(h) = -h.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(y=0\)</span> is <strong>stable</strong> for <span class="math inline">\(h&lt;0\)</span> and <strong>unstable</strong> for <span class="math inline">\(h&gt;0\)</span>.</li>
+<li><span class="math inline">\(y=h\)</span> is <strong>unstable</strong> for <span class="math inline">\(h&lt;0\)</span> and <strong>stable</strong> for <span class="math inline">\(h&gt;0\)</span>.</li>
+</ul>
+<p>At <span class="math inline">\(h=0\)</span> the two equilibria merge at <span class="math inline">\(y=0\)</span> and swap stability — this is the textbook normal form for a <strong>transcritical bifurcation</strong>.</p>
+<div id="dbe2df33" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>h_sym, y_sym <span class="op">=</span> sym.symbols(<span class="st">'h y'</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> h_sym<span class="op">*</span>y_sym <span class="op">-</span> y_sym<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>eqs <span class="op">=</span> sym.solve(sym.Eq(f,<span class="dv">0</span>), y_sym)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> sym.diff(f, y_sym)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Equilibria:"</span>, eqs)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> eqs:</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  f'(</span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">) ="</span>, sym.simplify(fp.subs(y_sym, e)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Equilibria: [0, h]
+  f'(0) = h
+  f'(h) = -h</code></pre>
+</div>
+</div>
+<div id="cell-fig-1c-bifurcation" class="cell" data-execution_count="27">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>h_lo, h_hi <span class="op">=</span> h[h <span class="op">&lt;=</span> <span class="dv">0</span>], h[h <span class="op">&gt;=</span> <span class="dv">0</span>]</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>ax.plot(h_lo, np.zeros_like(h_lo), color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>ax.plot(h_hi, np.zeros_like(h_hi), color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>ax.plot(h_lo, h_lo, color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>ax.plot(h_hi, h_hi, color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, mfc<span class="op">=</span><span class="st">'black'</span>, mec<span class="op">=</span><span class="st">'black'</span>, ms<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$h$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$y_</span><span class="sc">{eq}</span><span class="st">$'</span>)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Bifurcation diagram: </span><span class="dv">$</span><span class="vs">y' = hy - y</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>handles <span class="op">=</span> [Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'stable'</span>),</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>           Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'unstable'</span>)]</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>handles)</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-1c-bifurcation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1c-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-1c-bifurcation-output-1.png" width="882" height="733" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1c-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Transcritical bifurcation diagram for <span class="math inline">\(y' = hy - y^2\)</span>, the standard normal form, with the exchange of stability at <span class="math inline">\(h=0\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="exercise-1d-x-1-xx2-h" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-1d-x-1-xx2-h">Exercise 1(d): <span class="math inline">\(x' = (1-x)(x^2-h)\)</span></h4>
+<p><strong>By Hand.</strong></p>
+<p>Setting <span class="math inline">\(f(x) = (1-x)(x^2-h) = 0\)</span> gives <span class="math inline">\(x=1\)</span> (for every <span class="math inline">\(h\)</span>) together with <span class="math inline">\(x = \pm\sqrt{h}\)</span> whenever <span class="math inline">\(h \geq 0\)</span> (no real square-root equilibria when <span class="math inline">\(h&lt;0\)</span>). Differentiating, <span class="math display">\[
+f'(x) = -(x^2-h) + (1-x)(2x) = h + 2x - 3x^2,
+\]</span> so <span class="math display">\[
+f'(1) = h - 1, \qquad f'(\sqrt{h}) = 2\sqrt{h}\left(1-\sqrt{h}\right), \qquad f'(-\sqrt{h}) = -2\sqrt{h}\left(1+\sqrt{h}\right).
+\]</span></p>
+<ul>
+<li><span class="math inline">\(x=1\)</span>: <strong>stable</strong> for <span class="math inline">\(h&lt;1\)</span>, <strong>unstable</strong> for <span class="math inline">\(h&gt;1\)</span>.</li>
+<li><span class="math inline">\(x=-\sqrt{h}\)</span> (exists for <span class="math inline">\(h \geq 0\)</span>): since <span class="math inline">\(\sqrt{h}\geq0\)</span>, <span class="math inline">\(f'(-\sqrt h)\leq 0\)</span> always <span class="math inline">\(\Rightarrow\)</span> <strong>always stable</strong>.</li>
+<li><span class="math inline">\(x=\sqrt{h}\)</span> (exists for <span class="math inline">\(h \geq 0\)</span>): <span class="math inline">\(f'(\sqrt h) = 2\sqrt h(1-\sqrt h)\)</span> is positive for <span class="math inline">\(0&lt;h&lt;1\)</span> (<strong>unstable</strong>) and negative for <span class="math inline">\(h&gt;1\)</span> (<strong>stable</strong>).</li>
+</ul>
+<p>Two qualitative changes occur as <span class="math inline">\(h\)</span> varies:</p>
+<ul>
+<li><strong>At <span class="math inline">\(h=0\)</span>:</strong> for <span class="math inline">\(h&lt;0\)</span> there is only the single equilibrium <span class="math inline">\(x=1\)</span>; as <span class="math inline">\(h\)</span> increases through <span class="math inline">\(0\)</span>, a pair of equilibria <span class="math inline">\(x=\pm\sqrt h\)</span> is born out of the degenerate double root at <span class="math inline">\(x=0\)</span> (where, at <span class="math inline">\(h=0\)</span>, <span class="math inline">\(f(x,0)=(1-x)x^2\)</span> is semistable: attracting from the left, repelling from the right). This is a <strong>saddle-node bifurcation</strong>.</li>
+<li><strong>At <span class="math inline">\(h=1\)</span>:</strong> the branches <span class="math inline">\(x=1\)</span> and <span class="math inline">\(x=\sqrt h\)</span> meet (both equal <span class="math inline">\(1\)</span> there) and exchange stability — a <strong>transcritical bifurcation</strong>, exactly as in parts (b) and (c).</li>
+</ul>
+<div id="1b91826f" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>h_sym, x_sym <span class="op">=</span> sym.symbols(<span class="st">'h x'</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (<span class="dv">1</span><span class="op">-</span>x_sym)<span class="op">*</span>(x_sym<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> h_sym)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>eqs <span class="op">=</span> sym.solve(sym.Eq(f,<span class="dv">0</span>), x_sym)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> sym.diff(f, x_sym)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Equilibria:"</span>, eqs)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> eqs:</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  f'(</span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">) ="</span>, sym.simplify(fp.subs(x_sym, e)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Equilibria: [1, -sqrt(h), sqrt(h)]
+  f'(1) = h - 1
+  f'(-sqrt(h)) = -2*sqrt(h) - 2*h
+  f'(sqrt(h)) = 2*sqrt(h) - 2*h</code></pre>
+</div>
+</div>
+<div id="cell-fig-1d-bifurcation" class="cell" data-execution_count="29">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>h_pos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>h_all <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">400</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">6.5</span>, <span class="fl">5.5</span>))</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>h_lo, h_hi <span class="op">=</span> h_all[h_all <span class="op">&lt;=</span> <span class="dv">1</span>], h_all[h_all <span class="op">&gt;=</span> <span class="dv">1</span>]</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>ax.plot(h_lo, np.ones_like(h_lo), color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>ax.plot(h_hi, np.ones_like(h_hi), color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>h1, h2 <span class="op">=</span> h_pos[h_pos <span class="op">&lt;=</span> <span class="dv">1</span>], h_pos[h_pos <span class="op">&gt;=</span> <span class="dv">1</span>]</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>ax.plot(h1, np.sqrt(h1), color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>ax.plot(h2, np.sqrt(h2), color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>ax.plot(h_pos, <span class="op">-</span>np.sqrt(h_pos), color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">0</span>, <span class="dv">0</span>, marker<span class="op">=</span><span class="st">'o'</span>, mfc<span class="op">=</span><span class="st">'black'</span>, mec<span class="op">=</span><span class="st">'black'</span>, ms<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="dv">1</span>, <span class="dv">1</span>, marker<span class="op">=</span><span class="st">'o'</span>, mfc<span class="op">=</span><span class="st">'black'</span>, mec<span class="op">=</span><span class="st">'black'</span>, ms<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'$h$'</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">'$x_</span><span class="sc">{eq}</span><span class="st">$'</span>)</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"Bifurcation diagram: </span><span class="dv">$</span><span class="vs">x' = </span><span class="kw">(</span><span class="vs">1-x</span><span class="kw">)(</span><span class="vs">x</span><span class="dv">^</span><span class="vs">2-h</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>, pad<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">1.9</span>, <span class="fl">2.3</span>)</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>handles <span class="op">=</span> [Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">'seagreen'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'stable'</span>),</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>           Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">'crimson'</span>, lw<span class="op">=</span><span class="fl">2.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'unstable'</span>)]</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>handles, loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">'saddle-node</span><span class="ch">\n</span><span class="st">(h=0)'</span>, xy<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">0</span>), xytext<span class="op">=</span>(<span class="op">-</span><span class="fl">2.7</span>, <span class="op">-</span><span class="fl">1.6</span>), fontsize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>            arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>))</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">'transcritical</span><span class="ch">\n</span><span class="st">(h=1)'</span>, xy<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>), xytext<span class="op">=</span>(<span class="fl">1.7</span>, <span class="fl">1.75</span>), fontsize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>            arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>))</span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-1d-bifurcation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1d-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="select_solutions_files/figure-html/fig-1d-bifurcation-output-1.png" width="957" height="808" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1d-bifurcation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Bifurcation diagram for <span class="math inline">\(x' = (1-x)(x^2-h)\)</span>, combining a saddle-node bifurcation at <span class="math inline">\(h=0\)</span> (creating the pair <span class="math inline">\(x=\pm\sqrt h\)</span>) with a transcritical bifurcation at <span class="math inline">\(h=1\)</span> (where <span class="math inline">\(x=1\)</span> and <span class="math inline">\(x=\sqrt h\)</span> exchange stability).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 </section>
 </section>
@@ -1015,7 +1823,7 @@ Figure&nbsp;2: Charge <span class="math inline">\(Q(t) = 6 - e^{-2t}\)</span> an
 
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1024,14 +1832,14 @@ Figure&nbsp;2: Charge <span class="math inline">\(Q(t) = 6 - e^{-2t}\)</span> an
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="78b4542b" class="cell" data-execution_count="12">
+<div id="fbc2076d" class="cell" data-execution_count="30">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python version:"</span>, sys.version)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="ss">f'</span><span class="sc">{</span>m<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">==</span><span class="sc">{</span>m<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">globals</span>().values() <span class="cf">if</span> <span class="bu">getattr</span>(m, <span class="st">'__version__'</span>, <span class="va">None</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Python version: 3.14.4 | packaged by conda-forge | (main, Apr  8 2026, 02:33:53) [Clang 20.1.8 ]
