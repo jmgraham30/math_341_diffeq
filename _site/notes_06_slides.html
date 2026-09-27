@@ -442,7 +442,7 @@
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="University of Scranton">
-  <meta name="dcterms.date" content="2026-09-24">
+  <meta name="dcterms.date" content="2026-09-27">
   <title>MATH 341 Differential Equations – The Laplace Transform</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1088,7 +1088,7 @@ University of Scranton
 </div>
 </div>
 
-  <p class="date">2026-09-24</p>
+  <p class="date">2026-09-27</p>
 </section>
 <section>
 <section id="goals" class="title-slide slide level1 center" data-background-color="#2c3e50">
@@ -1309,6 +1309,55 @@ Figure 1
 <div class="fragment">
 <p><strong>Failure examples:</strong> - <span class="math inline">\(e^{t^2}\)</span>: not exponential order (grows too fast) - <span class="math inline">\(1/t\)</span>: not piecewise continuous at <span class="math inline">\(t=0\)</span> - If <span class="math inline">\(X(s)\not\to 0\)</span> as <span class="math inline">\(s\to\infty\)</span>, it cannot be a Laplace transform</p>
 </div>
+</section>
+<section id="shift-property" class="slide level2">
+<h2>Shift Property</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Shift Property</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math display">\[\mathscr{L}[f(t)e^{at}] = F(s-a)\]</span></p>
+<p>Multiplying by <span class="math inline">\(e^{at}\)</span> in the time domain <strong>shifts the transform <span class="math inline">\(a\)</span> units right</strong> in the <span class="math inline">\(s\)</span>-domain.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(f(t)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(F(s)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(f(t)e^{at}\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\mathscr{L}[f(t)e^{at}]\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/s^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(te^{-2t}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/(s+2)^2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\sin 3t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(3/(s^2+9)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(e^{-t}\sin 3t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(3/((s+1)^2+9)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\cos 3t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(s/(s^2+9)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(e^{2t}\cos 3t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\((s-2)/((s-2)^2+9)\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section></section>
 <section>
 <section id="the-inverse-transform" class="title-slide slide level1 center" data-background-color="#2c3e50">
@@ -1336,7 +1385,7 @@ Figure 1
 </div>
 <div class="fragment">
 <p><strong>Invert:</strong> <span class="math display">\[x(t) = \frac{7}{2}e^{-t} - \frac{3}{2}e^{-3t}.\]</span></p>
-<div id="e8f0a7cc" class="cell" data-execution_count="3">
+<div id="8b0666e6" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-label="1"></a>s_v, t_v <span class="op">=</span> sym.symbols(<span class="st">&#39;s t&#39;</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-2"><a aria-label="2"></a>expr <span class="op">=</span> (<span class="dv">2</span><span class="op">*</span>s_v<span class="op">+</span><span class="dv">9</span>)<span class="op">/</span>((s_v<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(s_v<span class="op">+</span><span class="dv">3</span>))</span>
 <span id="cb1-3"><a aria-label="3"></a>display(Math(<span class="vs">r&quot;</span><span class="ch">\t</span><span class="vs">ext{PF: }&quot;</span> <span class="op">+</span> sym.latex(sym.apart(expr,s_v))))</span>
@@ -1449,57 +1498,6 @@ Figure 2
 <section id="operational-properties" class="title-slide slide level1 center" data-background-color="#1a5276">
 <h1>Operational Properties</h1>
 
-</section>
-<section id="shift-property" class="slide level2">
-<h2>Shift Property</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Shift Property</strong></p>
-</div>
-<div class="callout-content">
-<p><span class="math display">\[\mathscr{L}[f(t)e^{at}] = F(s-a)\]</span></p>
-<p>Multiplying by <span class="math inline">\(e^{at}\)</span> in the time domain <strong>shifts the transform <span class="math inline">\(a\)</span> units right</strong> in the <span class="math inline">\(s\)</span>-domain.</p>
-</div>
-</div>
-</div>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;"><span class="math inline">\(f(t)\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(F(s)\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(f(t)e^{at}\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(\mathscr{L}[f(t)e^{at}]\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(t\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(1/s^2\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(te^{-2t}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(1/(s+2)^2\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><span class="math inline">\(\sin 3t\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(3/(s^2+9)\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(e^{-t}\sin 3t\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(3/((s+1)^2+9)\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\cos 3t\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(s/(s^2+9)\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(e^{2t}\cos 3t\)</span></td>
-<td style="text-align: center;"><span class="math inline">\((s-2)/((s-2)^2+9)\)</span></td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<p><strong>Inverse direction.</strong> Whenever you see <span class="math inline">\((s-a)^2+k^2\)</span> in the denominator, complete the square and apply the shift property in reverse.</p>
-<p><strong>Example:</strong> <span class="math inline">\(\mathscr{L}^{-1}\!\left[\dfrac{3}{(s+1)^2+9}\right] = e^{-t}\sin 3t.\)</span></p>
-</div>
 </section>
 <section id="switching-property" class="slide level2">
 <h2>Switching Property</h2>
