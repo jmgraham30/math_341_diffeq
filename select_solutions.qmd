@@ -1778,6 +1778,408 @@ Parts (c) and (e) illustrate an important point: the variation of parameters for
 
 
 
+## Homework 5
+
+### Section 3.1
+
+#### Exercise 6
+
+Use the definition of the Laplace transform to show that
+$$
+\mathcal{L}[f(t)H(t-a)] = e^{-as}\mathcal{L}[f(t+a)].
+$$
+
+**By Hand.**
+
+By definition,
+$$
+\mathcal{L}[f(t)H(t-a)] = \int_0^\infty f(t)H(t-a)e^{-st}\,dt.
+$$
+
+Since $H(t-a) = 0$ for $t<a$ and $H(t-a)=1$ for $t>a$, the integrand vanishes on $[0,a)$, so
+$$
+\mathcal{L}[f(t)H(t-a)] = \int_a^\infty f(t)e^{-st}\,dt.
+$$
+
+Now substitute $\tau = t-a$ (so $t = \tau+a$, $dt=d\tau$); when $t=a$, $\tau=0$, and as $t\to\infty$, $\tau\to\infty$:
+$$
+\int_a^\infty f(t)e^{-st}\,dt = \int_0^\infty f(\tau+a)\,e^{-s(\tau+a)}\,d\tau = e^{-as}\int_0^\infty f(\tau+a)\,e^{-s\tau}\,d\tau.
+$$
+
+The remaining integral is exactly $\mathcal{L}[f(t+a)]$ (with the dummy variable renamed from $\tau$ back to $t$). Therefore
+
+$$
+\boxed{\mathcal{L}[f(t)H(t-a)] = e^{-as}\mathcal{L}[f(t+a)].}
+$$
+
+::: {.callout-tip}
+This is subtly different from the more familiar (second) shift theorem $\mathcal{L}[f(t-a)H(t-a)] = e^{-as}F(s)$. Here the function $f$ multiplying $H(t-a)$ is **not** pre-shifted — it's the *original* $f(t)$, not $f(t-a)$ — so the shift has to be built in by evaluating $f$ at $t+a$ inside the transform on the right-hand side.
+:::
+
+---
+
+#### Exercise 7
+
+Use the preceding exercise to compute $\mathcal{L}[t^2H(t-1)]$.
+
+**By Hand.**
+
+Apply the result of Exercise 6 with $f(t)=t^2$ and $a=1$:
+$$
+\mathcal{L}[t^2H(t-1)] = e^{-s}\mathcal{L}[(t+1)^2] = e^{-s}\mathcal{L}[t^2+2t+1].
+$$
+
+Using $\mathcal{L}[t^2]=2/s^3$, $\mathcal{L}[t]=1/s^2$, $\mathcal{L}[1]=1/s$:
+$$
+\mathcal{L}[(t+1)^2] = \frac{2}{s^3}+\frac{2}{s^2}+\frac{1}{s}.
+$$
+
+$$
+\boxed{\mathcal{L}[t^2H(t-1)] = e^{-s}\left(\frac{2}{s^3}+\frac{2}{s^2}+\frac{1}{s}\right).}
+$$
+
+```{python}
+t, s = sym.symbols('t s', positive=True)
+
+f_shifted = (t+1)**2
+F_shifted = sym.laplace_transform(f_shifted, t, s, noconds=True)
+print("L[(t+1)^2] =", sym.expand(F_shifted))
+print("so L[t^2 H(t-1)] = e^(-s) * (", sym.expand(F_shifted), ")")
+
+# Direct check using Heaviside
+H = sym.Heaviside
+direct = sym.laplace_transform(t**2*H(t-1), t, s, noconds=True)
+mine = sym.exp(-s)*(2/s**3+2/s**2+1/s)
+print("Direct L[t^2 H(t-1)] - boxed formula simplifies to:", sym.simplify(direct - mine))
+```
+
+::: {.callout-note}
+SymPy's direct computation of $\mathcal{L}[t^2H(t-1)]$ (via the Heaviside function) matches the boxed formula exactly.
+:::
+
+---
+
+#### Exercise 8: Laplace Transforms
+
+**(a) $6+5e^{-2t}+te^{3t}$.**
+
+Using linearity together with $\mathcal{L}[1]=1/s$, $\mathcal{L}[e^{at}]=1/(s-a)$, and $\mathcal{L}[te^{at}]=1/(s-a)^2$:
+$$
+\boxed{\mathcal{L}\left[6+5e^{-2t}+te^{3t}\right] = \frac{6}{s} + \frac{5}{s+2} + \frac{1}{(s-3)^2}.}
+$$
+
+**(b) $tH(t-3)$.**
+
+Apply Exercise 6 with $f(t)=t,\ a=3$: $\mathcal{L}[tH(t-3)] = e^{-3s}\mathcal{L}[t+3] = e^{-3s}\left(\dfrac{1}{s^2}+\dfrac{3}{s}\right)$.
+
+$$
+\boxed{\mathcal{L}[tH(t-3)] = e^{-3s}\left(\frac{1}{s^2}+\frac{3}{s}\right).}
+$$
+
+**(c) $\cos 5t$.**
+
+Using $\mathcal{L}[\cos kt] = s/(s^2+k^2)$ with $k=5$:
+
+$$
+\boxed{\mathcal{L}[\cos5t] = \frac{s}{s^2+25}.}
+$$
+
+**(f) $H(t-\pi)\cos(t-\pi)$.**
+
+This is already in the shifted form $f(t-a)H(t-a)$ with $f(t)=\cos t,\ a=\pi$. By the (second) shift theorem, $\mathcal{L}[f(t-a)H(t-a)] = e^{-as}F(s)$ where $F(s) = \mathcal{L}[\cos t] = s/(s^2+1)$.
+
+$$
+\boxed{\mathcal{L}[H(t-\pi)\cos(t-\pi)] = \frac{s\,e^{-\pi s}}{s^2+1}.}
+$$
+
+```{python}
+H = sym.Heaviside
+
+for label, f in [
+    ("(a)", 6 + 5*sym.exp(-2*t) + t*sym.exp(3*t)),
+    ("(b)", t*H(t-3)),
+    ("(c)", sym.cos(5*t)),
+    ("(f)", H(t-sym.pi)*sym.cos(t-sym.pi)),
+]:
+    F = sym.laplace_transform(f, t, s, noconds=True)
+    print(label, sym.simplify(F))
+```
+
+::: {.callout-note}
+All four SymPy results agree with the boxed formulas above.
+:::
+
+---
+
+#### Exercise 9: Inverse Laplace Transforms
+
+**(c) $\dfrac{2}{(s-5)^2}$.**
+
+Using $\mathcal{L}^{-1}\left[\dfrac{1}{(s-a)^2}\right] = te^{at}$ with $a=5$:
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{2}{(s-5)^2}\right] = 2t\,e^{5t}.}
+$$
+
+**(d) $\dfrac{7}{s}e^{-4s}$.**
+
+By the (second) shift theorem, $\mathcal{L}^{-1}[e^{-as}F(s)] = f(t-a)H(t-a)$. Here $F(s)=7/s$ corresponds to $f(t)=7$, and $a=4$:
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{7}{s}e^{-4s}\right] = 7H(t-4).}
+$$
+
+**(f) $\dfrac{7s+1}{s^2+4}$.**
+
+Split into two familiar pieces:
+$$
+\frac{7s+1}{s^2+4} = \frac{7s}{s^2+4} + \frac{1}{s^2+4} = 7\cdot\frac{s}{s^2+4} + \frac12\cdot\frac{2}{s^2+4}.
+$$
+
+Using $\mathcal{L}^{-1}\left[\dfrac{s}{s^2+k^2}\right]=\cos kt$ and $\mathcal{L}^{-1}\left[\dfrac{k}{s^2+k^2}\right]=\sin kt$ with $k=2$:
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{7s+1}{s^2+4}\right] = 7\cos2t + \frac12\sin2t.}
+$$
+
+```{python}
+for label, F in [
+    ("(c)", 2/(s-5)**2),
+    ("(d)", (sym.Rational(7)/s)*sym.exp(-4*s)),
+    ("(f)", (7*s+1)/(s**2+4)),
+]:
+    f = sym.inverse_laplace_transform(F, s, t)
+    print(label, sym.simplify(f))
+```
+
+::: {.callout-note}
+All three inverse transforms match the boxed formulas above.
+:::
+
+---
+
+#### Exercise 12
+
+Use the switching property to find the Laplace transform of
+$$
+x(t) = \begin{cases} 0, & t<2 \\ e^{-t}, & t>2. \end{cases}
+$$
+
+**By Hand.**
+
+We can write $x(t) = e^{-t}H(t-2)$. To use the (second) shift theorem $\mathcal{L}[f(t-a)H(t-a)]=e^{-as}F(s)$, we need to express $e^{-t}$ in terms of $(t-2)$. Writing
+$$
+e^{-t} = e^{-(t-2)-2} = e^{-2}\,e^{-(t-2)},
+$$
+we get $x(t) = e^{-2}\,e^{-(t-2)}H(t-2) = e^{-2}\,g(t-2)H(t-2)$ where $g(t)=e^{-t}$. Then, with $G(s)=\mathcal{L}[g(t)]=\dfrac{1}{s+1}$ and $a=2$:
+$$
+\mathcal{L}[x(t)] = e^{-2}\cdot e^{-2s}\,G(s) = e^{-2-2s}\cdot\frac{1}{s+1}.
+$$
+
+$$
+\boxed{\mathcal{L}[x(t)] = \frac{e^{-2(s+1)}}{s+1}.}
+$$
+
+```{python}
+H = sym.Heaviside
+x = sym.exp(-t)*H(t-2)
+X = sym.laplace_transform(x, t, s, noconds=True)
+print("L[x(t)] =", sym.simplify(X))
+
+mine = sym.exp(-2*(s+1))/(s+1)
+print("Boxed formula:", mine, " — difference:", sym.simplify(X - mine))
+```
+
+::: {.callout-note}
+SymPy confirms $\mathcal{L}[x(t)] = \dfrac{e^{-2(s+1)}}{s+1}$, matching the boxed formula exactly.
+:::
+
+---
+
+### Section 3.2
+
+#### Exercise 2: Laplace Transforms
+
+**(a) $H(t-\pi)\cos t$.**
+
+Unlike Exercise 8(f) above, here the cosine is **not** pre-shifted — it's $\cos t$, not $\cos(t-\pi)$ — so we need the Exercise 6 formula rather than the ordinary shift theorem. With $f(t)=\cos t,\ a=\pi$:
+$$
+\mathcal{L}[H(t-\pi)\cos t] = e^{-\pi s}\mathcal{L}[\cos(t+\pi)].
+$$
+
+Since $\cos(t+\pi) = -\cos t$ (a phase shift of $\pi$ flips the sign), $\mathcal{L}[\cos(t+\pi)] = -\dfrac{s}{s^2+1}$.
+
+$$
+\boxed{\mathcal{L}[H(t-\pi)\cos t] = -\frac{s\,e^{-\pi s}}{s^2+1}.}
+$$
+
+::: {.callout-tip}
+Compare this with Exercise 8(f): the two problems look superficially similar but differ by exactly a sign, precisely because $\cos(t-\pi) = -\cos t$ — the argument shift there is already "baked in," while here it has to be introduced via the Exercise 6 formula.
+:::
+
+**(b) $3t^4$.**
+
+Using $\mathcal{L}[t^n] = n!/s^{n+1}$ with $n=4$: $\mathcal{L}[t^4] = 4!/s^5 = 24/s^5$.
+
+$$
+\boxed{\mathcal{L}[3t^4] = \frac{72}{s^5}.}
+$$
+
+**(c) $t^2\sin t$.**
+
+Using the derivative-of-transform property $\mathcal{L}[t^nf(t)] = (-1)^nF^{(n)}(s)$ with $n=2$ and $F(s)=\mathcal{L}[\sin t] = \dfrac{1}{s^2+1}$:
+$$
+\mathcal{L}[t^2\sin t] = F''(s).
+$$
+
+Differentiating twice:
+$$
+F'(s) = -\frac{2s}{(s^2+1)^2}, \qquad F''(s) = \frac{-2(s^2+1)^2 + 2s\cdot2(s^2+1)(2s)}{(s^2+1)^4} = \frac{6s^2-2}{(s^2+1)^3}.
+$$
+
+$$
+\boxed{\mathcal{L}[t^2\sin t] = \frac{2(3s^2-1)}{(s^2+1)^3}.}
+$$
+
+**(e) $e^{-6t}\sin3t$.**
+
+Using the (first) shift theorem $\mathcal{L}[e^{at}f(t)] = F(s-a)$ with $F(s)=\mathcal{L}[\sin3t] = \dfrac{3}{s^2+9}$ and $a=-6$ (so $s\to s-(-6)=s+6$):
+
+$$
+\boxed{\mathcal{L}[e^{-6t}\sin3t] = \frac{3}{(s+6)^2+9}.}
+$$
+
+```{python}
+H = sym.Heaviside
+
+for label, f in [
+    ("(a)", H(t-sym.pi)*sym.cos(t)),
+    ("(b)", 3*t**4),
+    ("(c)", t**2*sym.sin(t)),
+    ("(e)", sym.exp(-6*t)*sym.sin(3*t)),
+]:
+    F = sym.laplace_transform(f, t, s, noconds=True)
+    print(label, sym.simplify(F))
+```
+
+::: {.callout-note}
+SymPy confirms all four transforms, including the sign in part (a) and the polynomial-over-cubic form in part (c).
+:::
+
+#### Exercise 3: Inverse Laplace Transforms
+
+**(a) $\dfrac{s}{s^2+7s-8}$.**
+
+Factor the denominator: $s^2+7s-8 = (s-1)(s+8)$. Partial fractions:
+$$
+\frac{s}{(s-1)(s+8)} = \frac{A}{s-1}+\frac{B}{s+8}.
+$$
+
+Clearing denominators, $s = A(s+8)+B(s-1)$. Setting $s=1$: $1=9A\Rightarrow A=\tfrac19$. Setting $s=-8$: $-8=-9B\Rightarrow B=\tfrac89$.
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{s}{s^2+7s-8}\right] = \frac19e^{t} + \frac89e^{-8t}.}
+$$
+
+**(b) $\dfrac{3-2s}{s^2+2s+10}$.**
+
+Complete the square: $s^2+2s+10 = (s+1)^2+9$. Write the numerator in terms of $(s+1)$:
+$$
+3-2s = -2(s+1)+5.
+$$
+So
+$$
+\frac{3-2s}{(s+1)^2+9} = -2\cdot\frac{s+1}{(s+1)^2+9} + 5\cdot\frac{1}{(s+1)^2+9} = -2\cdot\frac{s+1}{(s+1)^2+9} + \frac53\cdot\frac{3}{(s+1)^2+9}.
+$$
+
+Using the shift theorem with $\mathcal{L}^{-1}\left[\dfrac{s}{s^2+9}\right]=\cos3t$ and $\mathcal{L}^{-1}\left[\dfrac{3}{s^2+9}\right]=\sin3t$:
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{3-2s}{s^2+2s+10}\right] = e^{-t}\left(-2\cos3t + \frac53\sin3t\right).}
+$$
+
+**(c) $\dfrac{2}{(s-5)^4}$.**
+
+Using $\mathcal{L}^{-1}\left[\dfrac{1}{(s-a)^{n+1}}\right] = \dfrac{t^ne^{at}}{n!}$ with $a=5,\ n=3$:
+$$
+\mathcal{L}^{-1}\left[\frac{1}{(s-5)^4}\right] = \frac{t^3e^{5t}}{3!} = \frac{t^3e^{5t}}{6}.
+$$
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{2}{(s-5)^4}\right] = \frac{t^3e^{5t}}{3}.}
+$$
+
+**(d) $\dfrac{1}{s(s-2)}e^{-s}$.**
+
+First invert $F(s) = \dfrac{1}{s(s-2)}$ without the exponential factor. Partial fractions:
+$$
+\frac{1}{s(s-2)} = \frac{A}{s}+\frac{B}{s-2}.
+$$
+Clearing denominators: $1=A(s-2)+Bs$. At $s=0$: $A=-\tfrac12$. At $s=2$: $B=\tfrac12$. So
+$$
+f(t) = \mathcal{L}^{-1}[F(s)] = -\frac12 + \frac12e^{2t}.
+$$
+
+By the (second) shift theorem, $\mathcal{L}^{-1}[e^{-s}F(s)] = f(t-1)H(t-1)$:
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{e^{-s}}{s(s-2)}\right] = \left(-\frac12+\frac12e^{2(t-1)}\right)H(t-1).}
+$$
+
+**(e) $\dfrac{7s+1}{s^2+4}$.**
+
+This is the same expression as Exercise 9(f) in §3.1:
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{7s+1}{s^2+4}\right] = 7\cos2t + \frac12\sin2t.}
+$$
+
+**(g) $\dfrac{4}{(s-3)^9}$.**
+
+Using $\mathcal{L}^{-1}\left[\dfrac{1}{(s-a)^{n+1}}\right] = \dfrac{t^ne^{at}}{n!}$ with $a=3,\ n=8$:
+$$
+\mathcal{L}^{-1}\left[\frac{1}{(s-3)^9}\right] = \frac{t^8e^{3t}}{8!} = \frac{t^8e^{3t}}{40320}.
+$$
+
+$$
+\boxed{\mathcal{L}^{-1}\left[\frac{4}{(s-3)^9}\right] = \frac{t^8e^{3t}}{10080}.}
+$$
+
+```{python}
+for label, F in [
+    ("(a)", s/(s**2+7*s-8)),
+    ("(b)", (3-2*s)/(s**2+2*s+10)),
+    ("(c)", 2/(s-5)**4),
+    ("(d)", sym.exp(-s)/(s*(s-2))),
+    ("(e)", (7*s+1)/(s**2+4)),
+    ("(g)", 4/(s-3)**9),
+]:
+    f = sym.inverse_laplace_transform(F, s, t)
+    print(label, sym.simplify(f))
+```
+
+::: {.callout-note}
+All six inverse transforms match the boxed formulas above (SymPy's part (d) output, written with `Heaviside(t-1)` factored out, is algebraically identical to $\left(-\tfrac12+\tfrac12e^{2(t-1)}\right)H(t-1)$).
+:::
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
