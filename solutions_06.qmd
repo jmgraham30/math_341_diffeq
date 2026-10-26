@@ -1,0 +1,379 @@
+---
+title: "Homework 6 Solutions"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# This is a code cell that imports the necessary libraries for our session.
+import numpy as np                        # NumPy for numerical computations
+import scipy as sp                        # SciPy for scientific computing
+import sympy as sym                       # SymPy for symbolic mathematics
+import matplotlib as mpl                  # Matplotlib for plotting
+import matplotlib.pyplot as plt           # Matplotlib pyplot interface
+from scipy.integrate import solve_ivp     # ODE solver
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+This page collects full solutions to select exercises from Homework 6. Each solution is worked out "by hand" and then, where helpful, confirmed symbolically using SymPy or other computational tools. See the [Homework Solutions](solutions.qmd) page for the full list.
+
+## Section 3.2
+
+### Exercise 6: Solving IVPs with Laplace Transforms
+
+**(a) $x'+5x=H(t-2),\ x(0)=1$.**
+
+Taking the Laplace transform of both sides, using $\mathcal{L}[x'] = sX(s)-x(0)$ and $\mathcal{L}[H(t-2)] = e^{-2s}/s$:
+$$
+sX(s) - 1 + 5X(s) = \frac{e^{-2s}}{s} \quad \Longrightarrow \quad X(s)(s+5) = 1 + \frac{e^{-2s}}{s}.
+$$
+
+$$
+X(s) = \frac{1}{s+5} + \frac{e^{-2s}}{s(s+5)}.
+$$
+
+For the second term, first invert $\dfrac{1}{s(s+5)}$ by partial fractions:
+$$
+\frac{1}{s(s+5)} = \frac{1}{5}\left(\frac{1}{s}-\frac{1}{s+5}\right) \quad \Longrightarrow \quad \mathcal{L}^{-1}\left[\frac{1}{s(s+5)}\right] = \frac15\left(1-e^{-5t}\right).
+$$
+
+By the shift theorem, $\mathcal{L}^{-1}\left[e^{-2s}\cdot\dfrac{1}{s(s+5)}\right] = \dfrac15\left(1-e^{-5(t-2)}\right)H(t-2)$.
+
+$$
+\boxed{x(t) = e^{-5t} + \frac15\left(1-e^{-5(t-2)}\right)H(t-2).}
+$$
+
+**(b) $x'+x=\sin2t,\ x(0)=0$.**
+
+$$
+sX(s)+X(s) = \frac{2}{s^2+4} \quad \Longrightarrow \quad X(s) = \frac{2}{(s+1)(s^2+4)}.
+$$
+
+Partial fractions: $\dfrac{2}{(s+1)(s^2+4)} = \dfrac{A}{s+1}+\dfrac{Bs+C}{s^2+4}$. Clearing denominators, $2 = A(s^2+4)+(Bs+C)(s+1)$. Setting $s=-1$: $2=5A\Rightarrow A=\tfrac25$. Matching the $s^2$ coefficient: $A+B=0\Rightarrow B=-\tfrac25$. Matching the constant: $4A+C=2\Rightarrow C=\tfrac25$.
+
+$$
+X(s) = \frac{2/5}{s+1} + \frac{2}{5}\left(\frac{1}{s^2+4} - \frac{s}{s^2+4}\right).
+$$
+
+$$
+\boxed{x(t) = \frac25e^{-t} - \frac25\cos2t + \frac15\sin2t.}
+$$
+
+**(e) $x''-2x'+2x=e^{-t},\ x(0)=0,\ x'(0)=1$.**
+
+$$
+s^2X(s)-1-2sX(s)+2X(s) = \frac{1}{s+1} \quad \Longrightarrow \quad (s^2-2s+2)X(s) = 1+\frac{1}{s+1} = \frac{s+2}{s+1}.
+$$
+
+$$
+X(s) = \frac{s+2}{(s+1)(s^2-2s+2)} = \frac{s+2}{(s+1)\left[(s-1)^2+1\right]}.
+$$
+
+Partial fractions: $\dfrac{s+2}{(s+1)[(s-1)^2+1]} = \dfrac{A}{s+1} + \dfrac{B(s-1)+C}{(s-1)^2+1}$. Setting $s=-1$: $1=5A\Rightarrow A=\tfrac15$. Matching coefficients of the expanded numerator gives $B=-\tfrac15,\ C=\tfrac75$.
+
+$$
+X(s) = \frac{1/5}{s+1} - \frac15\cdot\frac{s-1}{(s-1)^2+1} + \frac75\cdot\frac{1}{(s-1)^2+1}.
+$$
+
+Using the shift theorem with $\mathcal{L}^{-1}\left[\dfrac{s}{s^2+1}\right]=\cos t$ and $\mathcal{L}^{-1}\left[\dfrac{1}{s^2+1}\right]=\sin t$:
+
+$$
+\boxed{x(t) = \frac15e^{-t} + e^{t}\left(-\frac15\cos t + \frac75\sin t\right).}
+$$
+
+**(j) $x'=2x+H(t-1),\ x(0)=0$.**
+
+$$
+sX(s) - 2X(s) = \frac{e^{-s}}{s} \quad \Longrightarrow \quad X(s) = \frac{e^{-s}}{s(s-2)}.
+$$
+
+From Homework 5 (§3.2 Exercise 3d), $\mathcal{L}^{-1}\left[\dfrac{1}{s(s-2)}\right] = -\dfrac12+\dfrac12e^{2t}$. By the shift theorem:
+
+$$
+\boxed{x(t) = \left(-\frac12+\frac12e^{2(t-1)}\right)H(t-1).}
+$$
+
+```{python}
+t, s = sym.symbols('t s', positive=True)
+x = sym.Function('x')
+H = sym.Heaviside
+
+for label, eq, ics in [
+    ("(a)", sym.Eq(sym.diff(x(t),t) + 5*x(t), H(t-2)), {x(0): 1}),
+    ("(b)", sym.Eq(sym.diff(x(t),t) + x(t), sym.sin(2*t)), {x(0): 0}),
+    ("(e)", sym.Eq(sym.diff(x(t),t,2) - 2*sym.diff(x(t),t) + 2*x(t), sym.exp(-t)),
+            {x(0): 0, x(t).diff(t).subs(t, 0): 1}),
+    ("(j)", sym.Eq(sym.diff(x(t),t), 2*x(t) + H(t-1)), {x(0): 0}),
+]:
+    sol = sym.dsolve(eq, x(t), ics=ics)
+    print(label, sym.simplify(sol))
+```
+
+::: {.callout-note}
+All four of SymPy's solutions agree with the boxed formulas above (allowing for algebraic rearrangement — e.g. SymPy's $e^{10-5t} = e^{-5(t-2)}$ in part (a)).
+:::
+
+---
+
+### Exercise 7
+
+Sketch the function $f(t) = 2H(t-3) - 2H(t-4)$ and find its Laplace transform.
+
+**By Hand.**
+
+Since $H(t-3)=1$ for $t\ge3$ and $H(t-4)=1$ for $t\ge4$,
+$$
+f(t) = \begin{cases} 0, & t<3 \\ 2, & 3\le t<4 \\ 0, & t\ge4, \end{cases}
+$$
+a rectangular pulse of height $2$ on the interval $[3,4)$.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex7-pulse
+#| fig-cap: "The rectangular pulse $f(t) = 2H(t-3)-2H(t-4)$."
+
+def f_pulse(tt):
+    return np.where((tt >= 3) & (tt < 4), 2.0, 0.0)
+
+t_vals = np.linspace(0, 6, 1000)
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(t_vals, f_pulse(t_vals), color='steelblue', lw=2)
+ax.plot(3, 2, marker='o', mfc='steelblue', mec='steelblue', ms=6, zorder=5)
+ax.plot(3, 0, marker='o', mfc='white', mec='steelblue', ms=6, zorder=5)
+ax.plot(4, 2, marker='o', mfc='white', mec='steelblue', ms=6, zorder=5)
+ax.plot(4, 0, marker='o', mfc='steelblue', mec='steelblue', ms=6, zorder=5)
+ax.set_xlabel('$t$')
+ax.set_ylabel('$f(t)$')
+ax.set_title(r"$f(t) = 2H(t-3) - 2H(t-4)$")
+ax.set_ylim(-0.3, 2.5)
+plt.tight_layout()
+plt.show()
+```
+
+Using $\mathcal{L}[H(t-a)] = e^{-as}/s$:
+
+$$
+\boxed{\mathcal{L}[f(t)] = \frac{2e^{-3s}}{s} - \frac{2e^{-4s}}{s} = \frac{2}{s}\left(e^{-3s}-e^{-4s}\right).}
+$$
+
+```{python}
+f = 2*H(t-3) - 2*H(t-4)
+F = sym.laplace_transform(f, t, s, noconds=True)
+print("L[f(t)] =", sym.simplify(F))
+
+mine = (2/s)*(sym.exp(-3*s) - sym.exp(-4*s))
+print("Boxed formula simplified:", sym.simplify(mine))
+print("Difference:", sym.simplify(F - mine))
+```
+
+::: {.callout-note}
+SymPy confirms the transform exactly.
+:::
+
+---
+
+### Exercise 11
+
+Solve the initial value problem
+$$
+x'' + 4x = \begin{cases}\cos2t, & 0\le t\le2\pi \\ 0, & t>2\pi,\end{cases} \qquad x(0)=x'(0)=0,
+$$
+and sketch the solution.
+
+**By Hand.**
+
+**Step 1 — Write the forcing in shifted form.**
+
+The forcing $f(t)$ "switches off" at $t=2\pi$, so write it as
+$$
+f(t) = \cos2t - \cos2t\cdot H(t-2\pi).
+$$
+
+Because $\cos2t$ has period $\pi$ (so, in particular, period $2\pi$ as well), $\cos\big(2(t-2\pi)\big) = \cos(2t-4\pi) = \cos2t$. This lets us rewrite the second term in genuinely shifted form:
+$$
+f(t) = \cos2t - \cos\big(2(t-2\pi)\big)H(t-2\pi) = g(t) - g(t-2\pi)H(t-2\pi), \qquad g(t)=\cos2t.
+$$
+
+**Step 2 — Laplace transform.**
+
+With $G(s) = \mathcal{L}[\cos2t] = \dfrac{s}{s^2+4}$, the shift theorem gives $\mathcal{L}[f(t)] = G(s)\left(1-e^{-2\pi s}\right)$. Since $x(0)=x'(0)=0$,
+$$
+(s^2+4)X(s) = \frac{s}{s^2+4}\left(1-e^{-2\pi s}\right) \quad \Longrightarrow \quad X(s) = \frac{s\left(1-e^{-2\pi s}\right)}{(s^2+4)^2}.
+$$
+
+**Step 3 — Invert.**
+
+We use the standard resonance pair $\mathcal{L}^{-1}\left[\dfrac{s}{(s^2+k^2)^2}\right] = \dfrac{t}{2k}\sin kt$ (which follows from $\mathcal{L}[t\sin kt] = \dfrac{2ks}{(s^2+k^2)^2}$). With $k=2$:
+$$
+\mathcal{L}^{-1}\left[\frac{s}{(s^2+4)^2}\right] = \frac{t}{4}\sin2t.
+$$
+
+By the shift theorem, the $e^{-2\pi s}$ term inverts to $\dfrac{t-2\pi}{4}\sin\big(2(t-2\pi)\big)H(t-2\pi) = \dfrac{t-2\pi}{4}\sin(2t)H(t-2\pi)$ (again using the periodicity of $\sin2t$).
+
+$$
+x(t) = \frac{t}{4}\sin2t - \frac{t-2\pi}{4}\sin(2t)\,H(t-2\pi).
+$$
+
+**Step 4 — Simplify piecewise.** For $0\le t\le2\pi$ the Heaviside term is off:
+$$
+x(t) = \frac{t}{4}\sin2t.
+$$
+For $t>2\pi$, both terms are active and combine:
+$$
+x(t) = \frac{\sin2t}{4}\Big[t-(t-2\pi)\Big] = \frac{\sin2t}{4}\cdot2\pi = \frac{\pi}{2}\sin2t.
+$$
+
+$$
+\boxed{x(t) = \begin{cases} \dfrac{t}{4}\sin2t, & 0\le t\le2\pi \\[4pt] \dfrac{\pi}{2}\sin2t, & t>2\pi. \end{cases}}
+$$
+
+::: {.callout-tip}
+This is a classic **resonance-then-release** scenario: because the forcing frequency matches the natural frequency ($\omega=2=\sqrt4$), the amplitude grows *linearly* in $t$ while the forcing is on — the hallmark of pure resonance. The moment the forcing shuts off at $t=2\pi$, the growing envelope "freezes" at whatever amplitude it had reached ($\pi/2$), and the system continues forever after as an undamped, constant-amplitude oscillation at the natural frequency.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex11-resonance
+#| fig-cap: "Solution of $x''+4x=\\cos2t\\,[1-H(t-2\\pi)]$, $x(0)=x'(0)=0$. The amplitude grows linearly during resonant forcing ($0\\le t\\le2\\pi$) and then stays fixed at $\\pi/2$ once the forcing turns off."
+
+def x_closed(tt):
+    return np.where(tt <= 2*np.pi, (tt/4)*np.sin(2*tt), (np.pi/2)*np.sin(2*tt))
+
+t_vals = np.linspace(0, 4*np.pi, 1000)
+x_vals = x_closed(t_vals)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.plot(t_vals, x_vals, color='steelblue', lw=2)
+ax.axvline(2*np.pi, color='gray', linestyle='--', lw=1, label=r'$t=2\pi$ (forcing turns off)')
+ax.axhline(np.pi/2, color='gray', linestyle=':', lw=1)
+ax.axhline(-np.pi/2, color='gray', linestyle=':', lw=1)
+ax.set_xlabel('$t$')
+ax.set_ylabel('$x(t)$')
+ax.set_title(r"Solution of $x''+4x=\cos2t\,[1-H(t-2\pi)]$, $x(0)=x'(0)=0$")
+ax.legend(fontsize=9)
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Independent numerical check: integrate the ODE directly and compare to the closed form
+def f_forcing(tt):
+    return np.cos(2*tt) if tt <= 2*np.pi else 0.0
+
+def rhs(tt, y):
+    x1, x2 = y
+    return [x2, -4*x1 + f_forcing(tt)]
+
+sol = solve_ivp(rhs, [0, 4*np.pi], [0, 0], max_step=0.001, dense_output=True)
+
+for tv in [1, 3, 5, 2*np.pi, 2*np.pi + 0.5, 8, 10]:
+    num = sol.sol(tv)[0]
+    closed = x_closed(tv)
+    print(f"t={tv:.4f}: numeric={num:.6f}, closed-form={closed:.6f}, diff={abs(num-closed):.2e}")
+```
+
+::: {.callout-note}
+Direct numerical integration of the ODE matches the closed-form piecewise solution at every test point (to within numerical integration tolerance), confirming the Laplace-transform derivation.
+:::
+
+---
+
+### Exercise 14
+
+Solve $x' = -x + H(t-1) - H(t-2),\ x(0)=1$.
+
+**By Hand.**
+
+$$
+sX(s)-1 = -X(s) + \frac{e^{-s}}{s} - \frac{e^{-2s}}{s} \quad \Longrightarrow \quad X(s)(s+1) = 1+\frac{e^{-s}}{s}-\frac{e^{-2s}}{s}.
+$$
+
+$$
+X(s) = \frac{1}{s+1} + \frac{e^{-s}}{s(s+1)} - \frac{e^{-2s}}{s(s+1)}.
+$$
+
+As in Exercise 6(a) above, $\mathcal{L}^{-1}\left[\dfrac{1}{s(s+1)}\right] = 1-e^{-t}$. Applying the shift theorem to each exponential term:
+
+$$
+\boxed{x(t) = e^{-t} + \left(1-e^{-(t-1)}\right)H(t-1) - \left(1-e^{-(t-2)}\right)H(t-2).}
+$$
+
+::: {.callout-tip}
+The forcing $H(t-1)-H(t-2)$ is itself a unit-height rectangular pulse on $[1,2)$ — structurally the same kind of input as Exercise 7's pulse — so the response is the sum of the natural decay $e^{-t}$ plus the system's reaction to "switching on" at $t=1$ and "switching back off" at $t=2$.
+:::
+
+```{python}
+eq14 = sym.Eq(sym.diff(x(t), t), -x(t) + H(t-1) - H(t-2))
+sol14 = sym.dsolve(eq14, x(t), ics={x(0): 1})
+print(sym.simplify(sol14))
+
+mine14 = sym.exp(-t) + (1 - sym.exp(-(t-1)))*H(t-1) - (1 - sym.exp(-(t-2)))*H(t-2)
+print("Boxed formula:", mine14)
+```
+
+::: {.callout-note}
+SymPy's solution, when its terms are regrouped by Heaviside factor, is algebraically identical to the boxed formula above.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex14-pulse-response
+#| fig-cap: "Solution $x(t)$ of Exercise 14: exponential decay from $x(0)=1$, interrupted by a unit pulse of forcing on $[1,2)$."
+
+def x14(tt):
+    base = np.exp(-tt)
+    pulse_on = np.where(tt >= 1, 1 - np.exp(-(tt - 1)), 0.0)
+    pulse_off = np.where(tt >= 2, 1 - np.exp(-(tt - 2)), 0.0)
+    return base + pulse_on - pulse_off
+
+t_vals = np.linspace(0, 6, 1000)
+fig, ax = plt.subplots(figsize=(7, 5))
+ax.plot(t_vals, x14(t_vals), color='steelblue', lw=2)
+ax.axvline(1, color='gray', linestyle='--', lw=1)
+ax.axvline(2, color='gray', linestyle='--', lw=1)
+ax.set_xlabel('$t$')
+ax.set_ylabel('$x(t)$')
+ax.set_title(r"Solution of $x'=-x+H(t-1)-H(t-2)$, $x(0)=1$")
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys # sys for system-specific parameters and functions
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+## Reuse
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
+
+
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
