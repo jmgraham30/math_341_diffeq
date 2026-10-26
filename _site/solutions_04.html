@@ -454,7 +454,7 @@ window.Quarto = {
 </header>
 
 
-<div id="af6cf713" class="cell" data-execution_count="1">
+<div id="ad311e13" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -469,7 +469,7 @@ window.Quarto = {
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>This page collects full solutions to select exercises from Homework 4. Each solution is worked out “by hand” and then, where helpful, confirmed symbolically using SymPy or other computational tools. See the <a href="solutions.qmd">Homework Solutions</a> page for the full list.</p>
+<p>This page collects full solutions to select exercises from Homework 4. Each solution is worked out “by hand” and then, where helpful, confirmed symbolically using SymPy or other computational tools. See the <a href="https://math341diffeq.netlify.app/select_hw_solutions">Homework Solutions</a> page for the full list.</p>
 <section id="exercise-1-interpreting-numerical-output" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-1-interpreting-numerical-output">Exercise 1 — Interpreting Numerical Output</h2>
 <p>Consider the initial value problem <span class="math inline">\(x' = -2tx,\ x(0)=1\)</span>, which has exact solution <span class="math inline">\(x(t) = e^{-t^2}\)</span>. Euler’s method was used to approximate <span class="math inline">\(x(1)\)</span> for several step sizes <span class="math inline">\(h\)</span>:</p>
@@ -506,7 +506,7 @@ window.Quarto = {
 </table>
 <section id="a-ratio-of-consecutive-errors" class="level3">
 <h3 class="anchored" data-anchor-id="a-ratio-of-consecutive-errors">(a) Ratio of consecutive errors</h3>
-<div id="b95bddff" class="cell" data-execution_count="2">
+<div id="33c54aca" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hs <span class="op">=</span> [<span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>, <span class="fl">0.025</span>]</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>errs <span class="op">=</span> [<span class="fl">3.150e-2</span>, <span class="fl">1.383e-2</span>, <span class="fl">6.505e-3</span>, <span class="fl">3.157e-3</span>]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -528,7 +528,7 @@ Error(0.05) / Error(0.025) = 2.0605</code></pre>
 <p>Since <span class="math inline">\(h=0.0125\)</span> is exactly half of <span class="math inline">\(h=0.025\)</span>, and the error should again roughly halve (per part (a)): <span class="math display">\[
 \text{Error}(0.0125) \approx \frac{\text{Error}(0.025)}{2} = \frac{3.157\times10^{-3}}{2} \approx 1.58\times10^{-3}.
 \]</span></p>
-<div id="d64893fd" class="cell" data-execution_count="3">
+<div id="1758b79e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>predicted <span class="op">=</span> errs[<span class="dv">3</span>] <span class="op">/</span> <span class="dv">2</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Predicted error at h = 0.0125: </span><span class="sc">{</span>predicted<span class="sc">:.3e}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -560,7 +560,7 @@ Tip
 <p>For the fourth-order Runge–Kutta (RK4) method, the global error is <span class="math inline">\(O(h^4)\)</span>, i.e.&nbsp;<span class="math inline">\(\text{Error}(h) \approx Ch^4\)</span>. To reduce the error by a factor of <span class="math inline">\(8\)</span>, we need <span class="math display">\[
 \frac{\text{Error}(h)}{\text{Error}(h/r)} = \frac{Ch^4}{C(h/r)^4} = r^4 = 8 \quad \Longrightarrow \quad r = 8^{1/4}.
 \]</span></p>
-<div id="38b08068" class="cell" data-execution_count="4">
+<div id="8cb9141b" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="dv">8</span><span class="op">**</span>(sym.Rational(<span class="dv">1</span>,<span class="dv">4</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Required factor for RK4:"</span>, sym.N(r, <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -606,7 +606,7 @@ Note
 <p>The characteristic equation is <span class="math inline">\(\lambda^2+4\lambda+3=(\lambda+1)(\lambda+3)=0\)</span>, giving <strong>distinct real roots</strong> <span class="math inline">\(\lambda=-1,-3\)</span>. <span class="math display">\[
 \boxed{x(t) = C_1 e^{-t} + C_2 e^{-3t}.}
 \]</span></p>
-<div id="ab3e3b2a" class="cell" data-execution_count="5">
+<div id="af6830c3" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -652,7 +652,7 @@ Note
 <p><strong>(d).</strong> From <span class="math inline">\(x(t)=C_1e^{-t}+C_2e^{-3t}\)</span>: <span class="math inline">\(x(0)=C_1+C_2=1\)</span>, and <span class="math inline">\(x'(t)=-C_1e^{-t}-3C_2e^{-3t}\)</span>, so <span class="math inline">\(x'(0)=-C_1-3C_2=0\Rightarrow C_1=-3C_2\)</span>. Substituting: <span class="math inline">\(-3C_2+C_2=1\Rightarrow C_2=-\tfrac12,\ C_1=\tfrac32\)</span>. <span class="math display">\[
 \boxed{x(t) = \frac32 e^{-t} - \frac12 e^{-3t}.}
 \]</span></p>
-<div id="1e75030d" class="cell" data-execution_count="6">
+<div id="3a6716f8" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, eq <span class="kw">in</span> [</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"(a)"</span>, sym.Eq(sym.diff(x(t),t,<span class="dv">2</span>) <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>sym.diff(x(t),t) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x(t), <span class="dv">0</span>)),</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"(b)"</span>, sym.Eq(sym.diff(x(t),t,<span class="dv">2</span>) <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>sym.diff(x(t),t), <span class="dv">0</span>)),</span>
@@ -707,7 +707,7 @@ Note
 <p><strong>(f) <span class="math inline">\(\tfrac12x''+\tfrac56x'+\tfrac29x=0\)</span>.</strong> Multiplying by <span class="math inline">\(18\)</span>: <span class="math inline">\(9x''+15x'+4x=0\)</span>, so <span class="math inline">\(\lambda = \dfrac{-15\pm\sqrt{225-144}}{18} = \dfrac{-15\pm9}{18}\)</span>, giving <span class="math inline">\(\lambda = -\tfrac13, -\tfrac43\)</span> (distinct real). <span class="math display">\[
 \boxed{x(t) = C_1e^{-t/3} + C_2e^{-4t/3}.}
 \]</span></p>
-<div id="32a0d26e" class="cell" data-execution_count="7">
+<div id="2d3da409" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, eq <span class="kw">in</span> [</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"(a)"</span>, sym.Eq(sym.diff(x(t),t,<span class="dv">2</span>) <span class="op">+</span> sym.diff(x(t),t) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x(t), <span class="dv">0</span>)),</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"(b)"</span>, sym.Eq(sym.diff(x(t),t,<span class="dv">2</span>) <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>sym.diff(x(t),t) <span class="op">+</span> <span class="dv">6</span><span class="op">*</span>x(t), <span class="dv">0</span>)),</span>
@@ -761,7 +761,7 @@ Note
 <p><strong>(f).</strong> <span class="math inline">\(x(t)=C_1e^{-t/3}+C_2e^{-4t/3}\)</span>: <span class="math inline">\(x(0)=C_1+C_2=1\)</span>, <span class="math inline">\(x'(0)=-\tfrac13C_1-\tfrac43C_2=0\Rightarrow C_1=-4C_2\)</span>. So <span class="math inline">\(-4C_2+C_2=1\Rightarrow C_2=-\tfrac13,\ C_1=\tfrac43\)</span>. <span class="math display">\[
 \boxed{x(t) = \tfrac43e^{-t/3} - \tfrac13e^{-4t/3}.}
 \]</span></p>
-<div id="f3bb6028" class="cell" data-execution_count="8">
+<div id="35076e19" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, eq <span class="kw">in</span> [</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"(a)"</span>, sym.Eq(sym.diff(x(t),t,<span class="dv">2</span>) <span class="op">+</span> sym.diff(x(t),t) <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x(t), <span class="dv">0</span>)),</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"(b)"</span>, sym.Eq(sym.diff(x(t),t,<span class="dv">2</span>) <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>sym.diff(x(t),t) <span class="op">+</span> <span class="dv">6</span><span class="op">*</span>x(t), <span class="dv">0</span>)),</span>
@@ -832,7 +832,7 @@ Tip
 <p>For <span class="math inline">\(k \le 0\)</span> solutions neither oscillate nor decay to zero (they approach a nonzero constant at <span class="math inline">\(k=0\)</span>, or grow without bound for <span class="math inline">\(k&lt;0\)</span>) — worth noting even though the exercise only asks about the three listed behaviors.</p>
 </div>
 </div>
-<div id="02cca8f8" class="cell" data-execution_count="9">
+<div id="836ef5fd" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lam, k <span class="op">=</span> sym.symbols(<span class="st">'lambda k'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>char <span class="op">=</span> lam<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> lam <span class="op">+</span> k</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>roots <span class="op">=</span> sym.solve(sym.Eq(char, <span class="dv">0</span>), lam)</span>
@@ -917,7 +917,7 @@ Tip
 <p><span class="math display">\[
 \boxed{x(t) = e^{-t/2}\left(C_1\cos\tfrac{\sqrt7}{2}t+C_2\sin\tfrac{\sqrt7}{2}t\right) + \left(-\frac{t}{4}-\frac18\right)\cos2t + \left(-\frac{t}{4}+\frac12\right)\sin2t.}
 \]</span></p>
-<div id="404652f2" class="cell" data-execution_count="10">
+<div id="febfe354" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Function(<span class="st">'x'</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -968,7 +968,7 @@ x_p = -\cos t\left(\ln|\sec t+\tan t| - \sin t\right) + \sin t(-\cos t) = -\cos 
 <p><span class="math display">\[
 \boxed{x_p(t) = -\cos t\,\ln\left|\sec t+\tan t\right|.}
 \]</span></p>
-<div id="cad78725" class="cell" data-execution_count="11">
+<div id="0a7bcd48" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>y1, y2 <span class="op">=</span> sym.cos(t), sym.sin(t)</span>
@@ -1008,7 +1008,7 @@ x_p = -e^t\int e^{-t}\cdot\frac{1}{-2t}\,dt + e^{-t}\int e^t\cdot\frac{1}{-2t}\,
 <p><span class="math display">\[
 \boxed{x_p(t) = \frac12 e^t\,\mathrm{Ei}(-t) - \frac12 e^{-t}\,\mathrm{Ei}(t).}
 \]</span></p>
-<div id="4ff324be" class="cell" data-execution_count="12">
+<div id="aca80023" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> expi</span>
@@ -1052,7 +1052,7 @@ Note
 <p><span class="math display">\[
 \boxed{x_p(t) = -\cos t\Big[\cos(1)\mathrm{Si}(t+1) - \sin(1)\mathrm{Ci}(t+1)\Big] + \sin t\Big[\cos(1)\mathrm{Ci}(t+1) + \sin(1)\mathrm{Si}(t+1)\Big].}
 \]</span></p>
-<div id="de703cbf" class="cell" data-execution_count="13">
+<div id="6a18b8c5" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> sici</span>
@@ -1121,7 +1121,7 @@ Tip
 </div>
 <div id="callout-15" class="callout-15-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="929dab31" class="cell" data-execution_count="14">
+<div id="4138833e" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
