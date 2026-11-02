@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -92,18 +92,19 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ae920ef06c86f28852ada85860fa35ce.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-3c130c5defd991cb152cb62b99f241eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-ae920ef06c86f28852ada85860fa35ce.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-70fcc070c3e703541873fc1738a17695.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d504df138cf6328fd1200585706fdd42.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-70fcc070c3e703541873fc1738a17695.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -165,7 +166,7 @@ window.Quarto = {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -188,6 +189,7 @@ window.Quarto = {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -217,13 +219,19 @@ window.Quarto = {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -317,6 +325,7 @@ window.Quarto = {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -331,15 +340,14 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">MATH 341 Differential Equations</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -359,6 +367,10 @@ window.Quarto = {
   <li class="nav-item">
     <a class="nav-link" href="./topics.html"> 
 <span class="menu-text">Additional Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./phaseplane.html"> 
+<span class="menu-text">Phase Plane</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./reviews.html"> 
@@ -383,8 +395,9 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -393,7 +406,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -443,7 +456,7 @@ window.Quarto = {
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="calc_review.ipynb" download="calc_review.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -469,7 +482,7 @@ window.Quarto = {
 <ul>
 <li><a href="https://colab.research.google.com/github/jmgraham30/math_341_diffeq/blob/main/_site/calc_review.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open In Colab"></a></li>
 </ul>
-<div id="969d6774" class="cell" data-execution_count="1">
+<div id="02437556" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -499,7 +512,7 @@ p(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0, \qquad a_n \neq 0,
 r(x) = \frac{p(x)}{q(x)},
 \]</span></p>
 <p>defined wherever <span class="math inline">\(q(x) \neq 0\)</span>. Rational functions appear prominently in the method of partial fractions (see <a href="#sec-partial-fractions" class="quarto-xref">Section&nbsp;3.3</a>) and in Laplace transform computations.</p>
-<div id="360c66df" class="cell" data-execution_count="2">
+<div id="9e0b283f" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a symbolic variable</span></span>
@@ -554,7 +567,7 @@ e^{a+b} = e^a e^b, \qquad e^{-x} = \frac{1}{e^x}, \qquad \left(e^x\right)^r = e^
 \ln(ab) = \ln a + \ln b, \qquad \ln\!\left(\frac{a}{b}\right) = \ln a - \ln b, \qquad \ln(a^r) = r \ln a.
 \]</span></p>
 <p>The general exponential <span class="math inline">\(a^x = e^{x \ln a}\)</span> for <span class="math inline">\(a &gt; 0\)</span> reduces all exponential functions to the natural base, which is why <span class="math inline">\(e\)</span> plays a privileged role throughout the course.</p>
-<div id="8ec91840" class="cell" data-execution_count="3">
+<div id="878ccd49" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -665,7 +678,7 @@ Logarithm of a product:
 <p><span class="math display">\[
 \int \frac{dx}{1 + x^2} = \arctan x + C.
 \]</span></p>
-<div id="46e96bed" class="cell" data-execution_count="4">
+<div id="788c731f" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -722,7 +735,7 @@ sin(2x) - 2sin(x)cos(x) = 0</code></pre>
 \frac{d}{dx}\sinh x = \cosh x, \qquad \frac{d}{dx}\cosh x = \sinh x.
 \]</span></p>
 <p>Hyperbolic functions appear as solutions to the ODE <span class="math inline">\(y'' - y = 0\)</span> (note the minus sign, versus <span class="math inline">\(y'' + y = 0\)</span> for circular functions), and arise in problems involving catenary curves, heat conduction, and certain boundary-value problems. The remaining hyperbolic functions are defined analogously: <span class="math inline">\(\tanh x = \sinh x / \cosh x\)</span>, etc.</p>
-<div id="ae49cf50" class="cell" data-execution_count="5">
+<div id="1b35faf3" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -811,7 +824,7 @@ d/dx cosh(x) = sinh(x)</code></pre>
 </tbody>
 </table>
 <p>The <strong>chain rule</strong> is particularly important in differential equations because solutions frequently take the form <span class="math inline">\(e^{rt}\)</span>, <span class="math inline">\(\sin(\omega t)\)</span>, or other composed functions whose derivatives we must compute routinely.</p>
-<div id="75702f69" class="cell" data-execution_count="6">
+<div id="df821325" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -920,7 +933,7 @@ Chain rule example:
 </tr>
 </tbody>
 </table>
-<div id="08b4b19f" class="cell" data-execution_count="7">
+<div id="95b38406" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x, a <span class="op">=</span> sym.symbols(<span class="st">'x a'</span>, real<span class="op">=</span><span class="va">True</span>, positive<span class="op">=</span><span class="va">True</span>)</span>
@@ -979,7 +992,7 @@ cos(ax)               -a*sin(a*x)                     sin(a*x)/a
 \]</span></p>
 </div>
 </div>
-<div id="0bb900d4" class="cell" data-execution_count="8">
+<div id="bb2b46e4" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -1033,7 +1046,7 @@ Note: ln(2) ≈ 0.6931471805599453</code></pre>
 <p><span class="math display">\[
 \int e^{ax}\cos(bx)\,dx = \frac{e^{ax}(a\cos bx + b\sin bx)}{a^2 + b^2} + C.
 \]</span></p>
-<div id="c81e79ed" class="cell" data-execution_count="9">
+<div id="4160921c" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>x, a, b <span class="op">=</span> sym.symbols(<span class="st">'x a b'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
@@ -1056,7 +1069,7 @@ Note: ln(2) ≈ 0.6931471805599453</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>∫ t·exp(-t) dt = (-t - 1)*exp(-t)
 
-∫ exp(ax)·cos(bx) dx = Piecewise((x, Eq(a, 0) &amp; Eq(b, 0)), ((b*x*exp(I*b*x) + I*cos(b*x))*exp(-I*b*x)/(2*b), Eq(a, -I*b)), ((b*x*exp(-I*b*x) - I*cos(b*x))*exp(I*b*x)/(2*b), Eq(a, I*b)), ((a*cos(b*x) + b*sin(b*x))*exp(a*x)/(a**2 + b**2), True))
+∫ exp(ax)·cos(bx) dx = Piecewise((x, Eq(a, 0) &amp; Eq(b, 0)), ((b*x*exp(I*b*x) + sin(b*x))*exp(-I*b*x)/(2*b), Eq(a, -I*b)), ((b*x*exp(-I*b*x) + sin(b*x))*exp(I*b*x)/(2*b), Eq(a, I*b)), ((a*cos(b*x) + b*sin(b*x))*exp(a*x)/(a**2 + b**2), True))
 
 ∫ x²·sin(x) dx = -x**2*cos(x) + 2*x*sin(x) + 2*cos(x)</code></pre>
 </div>
@@ -1087,7 +1100,7 @@ Note: ln(2) ≈ 0.6931471805599453</code></pre>
 <p><span class="math display">\[\frac{3x+5}{(x-1)(x+3)} = \frac{2}{x-1} + \frac{1}{x+3}.\]</span></p>
 </div>
 </div>
-<div id="564eecad" class="cell" data-execution_count="10">
+<div id="a8fcef4e" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -1150,7 +1163,7 @@ e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3
 e^{i\theta} = \cos\theta + i\sin\theta,
 \]</span></p>
 <p>and is used extensively when solving linear ODEs with complex characteristic roots.</p>
-<div id="4fc0c9fc" class="cell" data-execution_count="11">
+<div id="6c23d0d4" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -1225,7 +1238,7 @@ x = x(t), \qquad y = y(t), \qquad t \in [a, b].
 L = \int_a^b \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\,dt.
 \]</span></p>
 <p>Parametric curves are most relevant in MATH 341 when we study <strong>systems of differential equations</strong>, where the solution <span class="math inline">\((x(t), y(t))\)</span> is a curve in the <strong>phase plane</strong>. Plotting these trajectories is a central tool for understanding the long-time behavior of a system.</p>
-<div id="b3012208" class="cell" data-execution_count="12">
+<div id="7451d8d6" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.Symbol(<span class="st">'t'</span>)</span>
@@ -1299,7 +1312,7 @@ F_{xy} = \frac{\partial^2 F}{\partial y \partial x} = \frac{\partial^2 F}{\parti
 <p><span class="math display">\[
 \frac{dF}{dx} = F_x + F_y \frac{dy}{dx} = 0 \implies \frac{dy}{dx} = -\frac{F_x}{F_y}.
 \]</span></p>
-<div id="847227f5" class="cell" data-execution_count="13">
+<div id="03a38ecc" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> sym.symbols(<span class="st">'x y'</span>)</span>
@@ -1393,7 +1406,7 @@ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}, \qquad n = 0, 1, 2, \ldots
 <p><span class="math inline">\(f'(x) = 3x^2\)</span>, so the iteration is <span class="math inline">\(x_{n+1} = x_n - (x_n^3 - 2)/(3x_n^2)\)</span>.</p>
 </div>
 </div>
-<div id="91b27a70" class="cell" data-execution_count="14">
+<div id="9eff2019" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Manual Newton's method implementation</span></span>
@@ -1444,7 +1457,7 @@ Converged in 6 iterations
 </div>
 </div>
 <p>The quadratic convergence is visible in the <code>error</code> column: the number of significant digits approximately doubles each step. SciPy’s <code>newton</code> function in <code>scipy.optimize</code> provides a robust, production-quality implementation that also handles the <strong>secant method</strong> (when no derivative is supplied) and <strong>Halley’s method</strong> (when the second derivative is supplied).</p>
-<div id="d76a4809" class="cell" data-execution_count="15">
+<div id="627dcb20" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> newton <span class="im">as</span> sp_newton</span>
@@ -1508,7 +1521,7 @@ scipy secant result: 1.2599210498947795</code></pre>
 x_{n+1} = x_n - f(x_n)\,\frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}.
 \]</span></p>
 <p>It converges super-linearly (order <span class="math inline">\(\approx 1.618\)</span>, the golden ratio), slightly slower than Newton but requiring only function evaluations. For bracketing problems — where a sign change is known — <strong>Brent’s method</strong> (<code>scipy.optimize.brentq</code>) combines bisection, secant, and inverse quadratic interpolation to guarantee convergence and is often the safest general-purpose choice.</p>
-<div id="f0962474" class="cell" data-execution_count="16">
+<div id="36d59ca4" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> brentq</span>
@@ -1553,7 +1566,7 @@ J_F = \begin{pmatrix} 2x &amp; 2y \\ y &amp; x \end{pmatrix}.
 \]</span></p>
 </div>
 </div>
-<div id="48995237" class="cell" data-execution_count="17">
+<div id="7bf859a7" class="cell" data-execution_count="17">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Multi-variable Newton's method (manual)</span></span>
@@ -1626,7 +1639,7 @@ Converged in 5 iterations</code></pre>
 </div>
 </div>
 <p>For production use, <code>scipy.optimize.fsolve</code> (a wrapper around MINPACK’s hybrd) and <code>scipy.optimize.root</code> implement Newton-like and Krylov-based methods for nonlinear systems and handle many edge cases automatically.</p>
-<div id="7192c85f" class="cell" data-execution_count="18">
+<div id="93744e7f" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> fsolve, root</span>
@@ -1699,7 +1712,7 @@ f''(x^*) &gt; 0 \implies \text{local minimum}, \qquad f''(x^*) &lt; 0 \implies \
 <p><span class="math inline">\(f''(x) = 6x - 6\)</span>, so <span class="math inline">\(f''(-1) = -12 &lt; 0\)</span> (local max) and <span class="math inline">\(f''(3) = 12 &gt; 0\)</span> (local min).</p>
 </div>
 </div>
-<div id="dd80e34b" class="cell" data-execution_count="19">
+<div id="77d7bd5f" class="cell" data-execution_count="19">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sym.Symbol(<span class="st">'x'</span>)</span>
@@ -1757,7 +1770,7 @@ f''(x) = 6*(x - 1)
 </div>
 </div>
 <p>For optimization problems where a closed-form solution is unavailable, <code>scipy.optimize.minimize_scalar</code> finds a local minimum numerically over an interval.</p>
-<div id="3eae032e" class="cell" data-execution_count="20">
+<div id="e4712aa1" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize_scalar</span>
@@ -1835,7 +1848,7 @@ H(f) = \begin{pmatrix} f_{xx} &amp; f_{xy} \\ f_{xy} &amp; f_{yy} \end{pmatrix},
 <p>At <span class="math inline">\((0,0)\)</span>: <span class="math inline">\(f_{xx} = 0\)</span>, <span class="math inline">\(f_{yy} = 0\)</span>, <span class="math inline">\(f_{xy} = -3\)</span>, so <span class="math inline">\(D = -9 &lt; 0\)</span> — a saddle point.</p>
 </div>
 </div>
-<div id="50385cd1" class="cell" data-execution_count="21">
+<div id="0787972d" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> sym.symbols(<span class="st">'x y'</span>)</span>
@@ -1919,7 +1932,7 @@ Real critical points: [(0, 0), (1, 1)]
 </div>
 </div>
 <p>For numerical multi-variable optimization, <code>scipy.optimize.minimize</code> provides a range of gradient-based methods. The default <strong>BFGS</strong> method is a quasi-Newton scheme that builds up an approximation to the Hessian iteratively and is well-suited to smooth unconstrained problems.</p>
-<div id="7f2b4e29" class="cell" data-execution_count="22">
+<div id="300890fa" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize</span>
@@ -2027,7 +2040,7 @@ Real critical points: [(0, 0), (1, 1)]
 </div>
 <div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f650c92b" class="cell" data-execution_count="23">
+<div id="37bab628" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
@@ -2063,15 +2076,50 @@ matplotlib==3.10.8</code></pre>
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -2150,7 +2198,8 @@ matplotlib==3.10.8</code></pre>
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -2159,8 +2208,69 @@ matplotlib==3.10.8</code></pre>
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -2174,6 +2284,7 @@ matplotlib==3.10.8</code></pre>
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -2336,44 +2447,54 @@ matplotlib==3.10.8</code></pre>
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -2471,6 +2592,9 @@ matplotlib==3.10.8</code></pre>
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 
