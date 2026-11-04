@@ -1,0 +1,633 @@
+---
+title: "Homework 8 Solutions"
+jupyter: diffeq_py
+bibliography: diffeq_bib.bib
+execute:
+  warning: false
+  error: false
+---
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# This is a code cell that imports the necessary libraries for our session.
+import numpy as np                        # NumPy for numerical computations
+import scipy as sp                        # SciPy for scientific computing
+import sympy as sym                       # SymPy for symbolic mathematics
+import matplotlib as mpl                  # Matplotlib for plotting
+import matplotlib.pyplot as plt           # Matplotlib pyplot interface
+from scipy.integrate import solve_ivp     # ODE solver
+mpl.rcParams['figure.dpi'] = 150
+mpl.rcParams['axes.spines.top'] = False
+mpl.rcParams['axes.spines.right'] = False
+```
+
+This page collects full solutions to select exercises from Homework 8. Each solution is worked out "by hand" and then, where helpful, confirmed symbolically using SymPy or other computational tools. See the [Homework Solutions](https://math341diffeq.netlify.app/select_hw_solutions) page for the full list.
+
+## Section 4.1 — Phase-Plane Curves
+
+### Exercise 1 (a) and (c), Page 190
+
+Find and plot the following parametric curves in the phase plane for $-\infty<t<\infty$ by eliminating the time from the equations.
+
+**(a) $x=3\sin2\pi t,\ y=4\cos2\pi t$.**
+
+**By Hand.**
+
+Solve each equation for the trigonometric function:
+$$
+\frac{x}{3}=\sin2\pi t, \qquad \frac{y}{4}=\cos2\pi t.
+$$
+
+Squaring and adding, and using $\sin^2\theta+\cos^2\theta=1$ with $\theta=2\pi t$, eliminates $t$:
+$$
+\left(\frac{x}{3}\right)^2+\left(\frac{y}{4}\right)^2=1.
+$$
+
+$$
+\boxed{\frac{x^2}{9}+\frac{y^2}{16}=1}
+$$
+
+This is an **ellipse** centered at the origin with semi-axis $3$ in the $x$-direction and semi-axis $4$ in the $y$-direction.
+
+*Direction of travel.* At $t=0$ the point is $(0,4)$, and $x'(0)=6\pi\cos 0=6\pi>0$, so the point moves to the right at the top of the ellipse. The motion is therefore **clockwise**. Since $\sin2\pi t$ and $\cos2\pi t$ have period $1$, the ellipse is traced once every unit of time, and over $-\infty<t<\infty$ it is traced infinitely many times.
+
+**(c) $x=t^2-1,\ y=2t$.**
+
+**By Hand.**
+
+The second equation gives $t=y/2$. Substituting into the first,
+$$
+x=\left(\frac{y}{2}\right)^2-1=\frac{y^2}{4}-1.
+$$
+
+$$
+\boxed{x=\frac{y^2}{4}-1 \quad\Longleftrightarrow\quad y^2=4(x+1)}
+$$
+
+This is a **parabola opening to the right** with vertex $(-1,0)$.
+
+*Direction of travel.* Since $y'(t)=2>0$, the point always moves upward. As $t\to-\infty$ it comes in along the lower branch, passes through the vertex $(-1,0)$ at $t=0$, and then departs along the upper branch as $t\to+\infty$. Every point of the parabola is visited exactly once.
+
+```{python}
+t = sym.symbols('t', real=True)
+
+# (a) the parametrization should satisfy (x/3)^2 + (y/4)^2 = 1 for every t
+x_a, y_a = 3*sym.sin(2*sym.pi*t), 4*sym.cos(2*sym.pi*t)
+print("(a) (x/3)^2 + (y/4)^2 - 1 =", sym.simplify((x_a/3)**2 + (y_a/4)**2 - 1))
+
+# (c) the parametrization should satisfy x = y^2/4 - 1 for every t
+x_c, y_c = t**2 - 1, 2*t
+print("(c) y^2/4 - 1 - x =", sym.simplify(y_c**2/4 - 1 - x_c))
+```
+
+::: {.callout-note}
+In both cases the relation found by hand holds identically in $t$ (the residual simplifies to $0$), so each parametrization really does lie on the curve we obtained by eliminating $t$.
+:::
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| label: fig-ex1-phase-curves
+#| fig-cap: "Phase-plane curves for Exercise 1. Left: the ellipse $x^2/9+y^2/16=1$ from part (a), traced clockwise. Right: the parabola $x=y^2/4-1$ from part (c), traced upward. The dot marks the position at $t=0$."
+
+def arrow(ax, xf, yf, t0, dt, color='steelblue'):
+    ax.annotate('', xy=(xf(t0 + dt), yf(t0 + dt)), xytext=(xf(t0), yf(t0)),
+                arrowprops=dict(arrowstyle='-|>', color=color, lw=2, mutation_scale=18))
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.8))
+
+# (a) ellipse
+xa = lambda tt: 3*np.sin(2*np.pi*tt)
+ya = lambda tt: 4*np.cos(2*np.pi*tt)
+tt = np.linspace(0, 1, 400)
+ax1.plot(xa(tt), ya(tt), color='steelblue', lw=2)
+arrow(ax1, xa, ya, 0.12, 0.01)
+arrow(ax1, xa, ya, 0.62, 0.01)
+ax1.plot(xa(0), ya(0), 'o', color='darkorange', ms=7, zorder=5)
+ax1.annotate('$t=0$', xy=(xa(0), ya(0)), xytext=(0.4, 4.3), fontsize=10)
+ax1.set_aspect('equal')
+ax1.set_xlim(-5, 5); ax1.set_ylim(-5, 5)
+ax1.axhline(0, color='gray', lw=0.5); ax1.axvline(0, color='gray', lw=0.5)
+ax1.set_xlabel('$x$'); ax1.set_ylabel('$y$')
+ax1.set_title(r"(a) $x^2/9 + y^2/16 = 1$")
+
+# (c) parabola
+xc = lambda tt: tt**2 - 1
+yc = lambda tt: 2*tt
+tt = np.linspace(-3, 3, 400)
+ax2.plot(xc(tt), yc(tt), color='steelblue', lw=2)
+arrow(ax2, xc, yc, -1.8, 0.05)
+arrow(ax2, xc, yc, 1.8, 0.05)
+ax2.plot(xc(0), yc(0), 'o', color='darkorange', ms=7, zorder=5)
+ax2.annotate('$t=0$', xy=(xc(0), yc(0)), xytext=(-0.8, -0.9), fontsize=10)
+ax2.set_xlim(-2, 9); ax2.set_ylim(-6.5, 6.5)
+ax2.axhline(0, color='gray', lw=0.5); ax2.axvline(0, color='gray', lw=0.5)
+ax2.set_xlabel('$x$'); ax2.set_ylabel('$y$')
+ax2.set_title(r"(c) $x = y^2/4 - 1$")
+
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-tip}
+An orbit in the phase plane is a *curve*, so eliminating $t$ gives the shape of the orbit but throws away the timing. The arrows restore the one piece of time information that matters in the phase plane: the direction of travel.
+:::
+
+---
+
+## Section 4.2 — Matrices and Linear Systems
+
+### Exercise 6, Page 198
+
+Write each system in matrix form, and for each system determine all values $m$ for which the system has no solution, a unique solution, or infinitely many solutions.
+
+For a square system $A\mathbf{x}=\mathbf{b}$ with $A$ a $2\times2$ matrix, the key fact is that $\det A\neq0$ gives a **unique** solution, while $\det A=0$ gives either **no** solution or **infinitely many**, depending on whether the equations are consistent.
+
+**(a) $2x+3y=m,\ -6x-9y=5$.**
+
+**By Hand.**
+
+$$
+\begin{pmatrix}2&3\\-6&-9\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}m\\5\end{pmatrix}.
+$$
+
+Here $\det A=2(-9)-3(-6)=-18+18=0$ for **every** $m$, so a unique solution is impossible. Adding $3\times$(first equation) to the second equation eliminates both unknowns:
+$$
+(-6x-9y)+3(2x+3y)=5+3m \quad\Longrightarrow\quad 0=5+3m.
+$$
+
+- If $m\neq-\tfrac53$, this reads $0=5+3m\neq0$, a contradiction: **no solution**.
+- If $m=-\tfrac53$, the second equation is $-3$ times the first, so the two equations describe the same line $2x+3y=-\tfrac53$: **infinitely many solutions**.
+
+$$
+\boxed{\text{no solution for } m\neq-\tfrac53; \quad \text{infinitely many for } m=-\tfrac53; \quad \text{never a unique solution.}}
+$$
+
+**(b) $2x+my=6,\ x+y=2$.**
+
+**By Hand.**
+
+$$
+\begin{pmatrix}2&m\\1&1\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}6\\2\end{pmatrix}, \qquad \det A=2-m.
+$$
+
+- If $m\neq2$, then $\det A\neq0$ and the solution is unique. By Cramer's rule, $x=\dfrac{6-2m}{2-m}$ and $y=\dfrac{-2}{2-m}$.
+- If $m=2$, the first equation is $2x+2y=6$, i.e. $x+y=3$, which contradicts $x+y=2$: **no solution**.
+
+$$
+\boxed{\text{unique solution for } m\neq2; \quad \text{no solution for } m=2; \quad \text{never infinitely many.}}
+$$
+
+**(c) $mx-2y=0,\ 2x+4y=0$.**
+
+**By Hand.**
+
+$$
+\begin{pmatrix}m&-2\\2&4\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}0\\0\end{pmatrix}, \qquad \det A=4m+4=4(m+1).
+$$
+
+This system is **homogeneous**, so $x=y=0$ is always a solution and "no solution" can never occur.
+
+- If $m\neq-1$, then $\det A\neq0$ and the only solution is the trivial one, $(0,0)$: **unique**.
+- If $m=-1$, the first equation is $-x-2y=0$ and the second is $2x+4y=0$. Both say $x=-2y$, so every point on that line is a solution: **infinitely many**.
+
+$$
+\boxed{\text{unique solution } (0,0) \text{ for } m\neq-1; \quad \text{infinitely many for } m=-1; \quad \text{never no solution.}}
+$$
+
+**(d) $mx+3y=m,\ 3x-my=1$.**
+
+**By Hand.**
+
+$$
+\begin{pmatrix}m&3\\3&-m\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}m\\1\end{pmatrix}, \qquad \det A=-m^2-9=-(m^2+9).
+$$
+
+Since $m^2+9\geq9>0$ for every real $m$, the determinant is never zero, so the solution is always unique. Cramer's rule gives
+$$
+x=\frac{\det\begin{pmatrix}m&3\\1&-m\end{pmatrix}}{-(m^2+9)}=\frac{-m^2-3}{-(m^2+9)}=\frac{m^2+3}{m^2+9}, \qquad
+y=\frac{\det\begin{pmatrix}m&m\\3&1\end{pmatrix}}{-(m^2+9)}=\frac{-2m}{-(m^2+9)}=\frac{2m}{m^2+9}.
+$$
+
+$$
+\boxed{\text{unique solution for every real } m: \quad (x,y)=\left(\frac{m^2+3}{m^2+9},\ \frac{2m}{m^2+9}\right).}
+$$
+
+```{python}
+m = sym.symbols('m')
+
+systems = [
+    ("(a)", sym.Matrix([[2, 3], [-6, -9]]), sym.Matrix([m, 5]),  [sym.Rational(-5, 3), 0, 1]),
+    ("(b)", sym.Matrix([[2, m], [1, 1]]),   sym.Matrix([6, 2]),  [2, 0, 5]),
+    ("(c)", sym.Matrix([[m, -2], [2, 4]]),  sym.Matrix([0, 0]),  [-1, 0, 3]),
+    ("(d)", sym.Matrix([[m, 3], [3, -m]]),  sym.Matrix([m, 1]),  [0, 1, -2]),
+]
+
+def classify(A, b):
+    """Compare rank of A with rank of the augmented matrix [A | b]."""
+    rA, rAb = A.rank(), A.row_join(b).rank()
+    if rA != rAb:
+        return "no solution"
+    return "unique solution" if rA == 2 else "infinitely many solutions"
+
+for label, A, b, tests in systems:
+    print(f"{label}  det A = {sym.factor(A.det())}")
+    for mv in tests:
+        print(f"      m = {mv}: {classify(A.subs(m, mv), b.subs(m, mv))}")
+
+# (a): det A is identically 0, so look at the consistency condition after eliminating
+print("\n(a) consistency condition 0 = 5 + 3m  ->  m =", sym.solve(5 + 3*m, m))
+
+# (b), (d): Cramer's rule / direct solve with m symbolic
+print("(b) solution for m != 2:", sym.solve([2*sym.Symbol('x') + m*sym.Symbol('y') - 6,
+                                            sym.Symbol('x') + sym.Symbol('y') - 2],
+                                           [sym.Symbol('x'), sym.Symbol('y')], dict=True))
+print("(d) solution:", sym.solve([m*sym.Symbol('x') + 3*sym.Symbol('y') - m,
+                                  3*sym.Symbol('x') - m*sym.Symbol('y') - 1],
+                                 [sym.Symbol('x'), sym.Symbol('y')], dict=True))
+```
+
+::: {.callout-note}
+SymPy's rank test reproduces every case found by hand: the special values $m=-\tfrac53$ in (a), $m=2$ in (b), and $m=-1$ in (c) change the type of solution set, while (d) is always unique. The symbolic solutions for (b) and (d) match the Cramer's-rule formulas above.
+:::
+
+::: {.callout-tip}
+Geometrically, each equation is a line in the $xy$-plane and a solution is a point lying on both lines. Two lines either cross at one point (unique), are parallel and distinct (none), or coincide (infinitely many). The determinant vanishes exactly when the lines are parallel, and the right-hand side then decides between "none" and "infinitely many".
+:::
+
+---
+
+### Exercise 1, Page 201
+
+Write each of the following systems in matrix format and identify the coefficient matrix.
+
+Each system has the form $\mathbf{x}'=A\mathbf{x}$ with $\mathbf{x}=\begin{pmatrix}x\\y\end{pmatrix}$, where the first row of $A$ holds the coefficients of $x$ and $y$ in the equation for $x'$, and the second row holds those in the equation for $y'$.
+
+**(a)** $x'=-2x-3y,\ y'=-x+4y$:
+$$
+\begin{pmatrix}x'\\y'\end{pmatrix}=\begin{pmatrix}-2&-3\\-1&4\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}, \qquad \boxed{A=\begin{pmatrix}-2&-3\\-1&4\end{pmatrix}.}
+$$
+
+**(b)** $x'=-3y,\ y'=-2x+y$ (the missing $x$ term in the first equation gives a zero entry):
+$$
+\boxed{A=\begin{pmatrix}0&-3\\-2&1\end{pmatrix}.}
+$$
+
+**(c)** $x'=-2x,\ y'=x$:
+$$
+\boxed{A=\begin{pmatrix}-2&0\\1&0\end{pmatrix}.}
+$$
+
+**(d)** $x'=-2x-y,\ y'=-4y$:
+$$
+\boxed{A=\begin{pmatrix}-2&-1\\0&-4\end{pmatrix}.}
+$$
+
+**(e)** $x'=x-2y,\ y'=-2x+4y$:
+$$
+\boxed{A=\begin{pmatrix}1&-2\\-2&4\end{pmatrix}.}
+$$
+
+**(f)** The book prints this part as $x=-6y,\ y'=6y$, with no prime on the $x$. We read this as the typo it appears to be and take the system to be $x'=-6y,\ y'=6y$:
+$$
+\boxed{A=\begin{pmatrix}0&-6\\0&6\end{pmatrix}.}
+$$
+
+### Exercise 2, Page 201
+
+Determine the critical points for the systems in Exercise 1.
+
+A **critical point** (equilibrium) is a point where $x'=0$ and $y'=0$ simultaneously, i.e. a solution of $A\mathbf{x}=\mathbf{0}$. If $\det A\neq0$, the only solution is $\mathbf{x}=\mathbf{0}$. If $\det A=0$, there is a whole line of critical points.
+
+**(a)** $\det A=(-2)(4)-(-3)(-1)=-8-3=-11\neq0$.
+$$
+\boxed{\text{The only critical point is } (0,0).}
+$$
+
+**(b)** $\det A=0\cdot1-(-3)(-2)=-6\neq0$.
+$$
+\boxed{\text{The only critical point is } (0,0).}
+$$
+
+**(c)** $\det A=(-2)(0)-0\cdot1=0$. Solving directly, $x'=-2x=0$ forces $x=0$, and then $y'=x=0$ holds automatically, with $y$ unrestricted.
+$$
+\boxed{\text{Critical points: all } (0,y), \text{ i.e. the entire } y\text{-axis.}}
+$$
+
+**(d)** $\det A=(-2)(-4)-(-1)(0)=8\neq0$.
+$$
+\boxed{\text{The only critical point is } (0,0).}
+$$
+
+**(e)** $\det A=(1)(4)-(-2)(-2)=0$. The second equation is $-2$ times the first, so both reduce to $x-2y=0$.
+$$
+\boxed{\text{Critical points: all } (2s,s), \text{ i.e. the line } x=2y.}
+$$
+
+**(f)** $\det A=0\cdot6-(-6)(0)=0$. Both equations $-6y=0$ and $6y=0$ say $y=0$, with $x$ unrestricted.
+$$
+\boxed{\text{Critical points: all } (x,0), \text{ i.e. the entire } x\text{-axis.}}
+$$
+
+```{python}
+x, y = sym.symbols('x y')
+
+rhs = {
+    "(a)": [-2*x - 3*y, -x + 4*y],
+    "(b)": [-3*y, -2*x + y],
+    "(c)": [-2*x, x],
+    "(d)": [-2*x - y, -4*y],
+    "(e)": [x - 2*y, -2*x + 4*y],
+    "(f)": [-6*y, 6*y],
+}
+
+for label, eqs in rhs.items():
+    A, _ = sym.linear_eq_to_matrix(eqs, [x, y])
+    crit = sym.linsolve((A, sym.zeros(2, 1)), [x, y])
+    print(f"{label} A = {A.tolist()}, det A = {A.det()}, critical points: {crit}")
+```
+
+::: {.callout-note}
+SymPy reproduces all six coefficient matrices and critical-point sets. The determinant is nonzero exactly in (a), (b), (d), where the origin is the only equilibrium, and is zero in (c), (e), (f), where the equilibria fill a line.
+:::
+
+---
+
+## Section 4.3 — The Eigenvalue Problem
+
+### Exercise 1, Page 206
+
+Find the eigenvalues and eigenvectors of the following matrices.
+
+For a $2\times2$ matrix $A$, the eigenvalues are the roots of the characteristic polynomial
+$$
+\det(A-\lambda I)=\lambda^2-(\operatorname{tr}A)\,\lambda+\det A=0,
+$$
+and for each eigenvalue $\lambda$ the eigenvectors are the nonzero solutions of $(A-\lambda I)\mathbf{v}=\mathbf{0}$. Any nonzero multiple of an eigenvector is again an eigenvector, so we choose a convenient multiple in each case.
+
+#### (a) $A=\begin{pmatrix}2&-1\\-4&2\end{pmatrix}$
+
+$\operatorname{tr}A=4$, $\det A=4-4=0$, so $\lambda^2-4\lambda=\lambda(\lambda-4)=0$.
+
+- $\lambda=0$: $A\mathbf{v}=\mathbf{0}$ gives $2v_1-v_2=0$, so $v_2=2v_1$.
+- $\lambda=4$: $A-4I=\begin{pmatrix}-2&-1\\-4&-2\end{pmatrix}$ gives $-2v_1-v_2=0$, so $v_2=-2v_1$.
+
+$$
+\boxed{\lambda=0,\ \mathbf{v}=\begin{pmatrix}1\\2\end{pmatrix}; \qquad \lambda=4,\ \mathbf{v}=\begin{pmatrix}1\\-2\end{pmatrix}.}
+$$
+
+#### (b) $A=\begin{pmatrix}1&1\\4&1\end{pmatrix}$
+
+$\operatorname{tr}A=2$, $\det A=1-4=-3$, so $\lambda^2-2\lambda-3=(\lambda-3)(\lambda+1)=0$.
+
+- $\lambda=3$: $A-3I=\begin{pmatrix}-2&1\\4&-2\end{pmatrix}$ gives $v_2=2v_1$.
+- $\lambda=-1$: $A+I=\begin{pmatrix}2&1\\4&2\end{pmatrix}$ gives $v_2=-2v_1$.
+
+$$
+\boxed{\lambda=3,\ \mathbf{v}=\begin{pmatrix}1\\2\end{pmatrix}; \qquad \lambda=-1,\ \mathbf{v}=\begin{pmatrix}1\\-2\end{pmatrix}.}
+$$
+
+#### (c) $A=\begin{pmatrix}0&-2\\3&0\end{pmatrix}$
+
+$\operatorname{tr}A=0$, $\det A=0-(-2)(3)=6$, so $\lambda^2+6=0$ and $\lambda=\pm i\sqrt6$ (purely imaginary).
+
+For $\lambda=i\sqrt6$: $A-\lambda I=\begin{pmatrix}-i\sqrt6&-2\\3&-i\sqrt6\end{pmatrix}$. The first row gives $-i\sqrt6\,v_1-2v_2=0$, so $v_2=-\dfrac{i\sqrt6}{2}v_1$. Taking $v_1=2$ gives $v_2=-i\sqrt6$. (The second row, $3v_1-i\sqrt6\,v_2=6+i^2\cdot6=0$, agrees.) The eigenvector for $\lambda=-i\sqrt6$ is the complex conjugate.
+
+$$
+\boxed{\lambda=\pm i\sqrt6, \qquad \lambda=i\sqrt6:\ \mathbf{v}=\begin{pmatrix}2\\-i\sqrt6\end{pmatrix}, \quad \lambda=-i\sqrt6:\ \mathbf{v}=\begin{pmatrix}2\\i\sqrt6\end{pmatrix}.}
+$$
+
+#### (d) $A=\begin{pmatrix}1&-1\\1&3\end{pmatrix}$
+
+$\operatorname{tr}A=4$, $\det A=3+1=4$, so $\lambda^2-4\lambda+4=(\lambda-2)^2=0$: a **repeated** eigenvalue $\lambda=2$.
+
+$A-2I=\begin{pmatrix}-1&-1\\1&1\end{pmatrix}$ gives $v_1+v_2=0$, so $v_2=-v_1$. There is only **one** independent eigenvector.
+
+$$
+\boxed{\lambda=2\ (\text{double}), \qquad \mathbf{v}=\begin{pmatrix}1\\-1\end{pmatrix}.}
+$$
+
+#### (e) $A=\begin{pmatrix}-1&4\\\tfrac12&-2\end{pmatrix}$
+
+$\operatorname{tr}A=-3$, $\det A=2-2=0$, so $\lambda^2+3\lambda=\lambda(\lambda+3)=0$.
+
+- $\lambda=0$: $-v_1+4v_2=0$, so $v_1=4v_2$.
+- $\lambda=-3$: $A+3I=\begin{pmatrix}2&4\\\tfrac12&1\end{pmatrix}$ gives $v_1+2v_2=0$, so $v_1=-2v_2$.
+
+$$
+\boxed{\lambda=0,\ \mathbf{v}=\begin{pmatrix}4\\1\end{pmatrix}; \qquad \lambda=-3,\ \mathbf{v}=\begin{pmatrix}-2\\1\end{pmatrix}.}
+$$
+
+#### (f) $A=\begin{pmatrix}-\tfrac12&1\\-1&-\tfrac12\end{pmatrix}$
+
+$\operatorname{tr}A=-1$, $\det A=\tfrac14+1=\tfrac54$, so $\lambda^2+\lambda+\tfrac54=0$ and
+$$
+\lambda=\frac{-1\pm\sqrt{1-5}}{2}=-\frac12\pm i.
+$$
+
+For $\lambda=-\tfrac12+i$: $A-\lambda I=\begin{pmatrix}-i&1\\-1&-i\end{pmatrix}$. The first row gives $-iv_1+v_2=0$, so $v_2=iv_1$.
+
+$$
+\boxed{\lambda=-\tfrac12\pm i, \qquad \lambda=-\tfrac12+i:\ \mathbf{v}=\begin{pmatrix}1\\i\end{pmatrix}, \quad \lambda=-\tfrac12-i:\ \mathbf{v}=\begin{pmatrix}1\\-i\end{pmatrix}.}
+$$
+
+#### (g) $A=\begin{pmatrix}\tfrac12&-\tfrac54\\2&-\tfrac12\end{pmatrix}$
+
+$\operatorname{tr}A=0$, $\det A=-\tfrac14+\tfrac{10}{4}=\tfrac94$, so $\lambda^2+\tfrac94=0$ and $\lambda=\pm\dfrac{3i}{2}$.
+
+For $\lambda=\tfrac{3i}{2}$: the second row of $A-\lambda I$ is $\begin{pmatrix}2&-\tfrac12-\tfrac{3i}{2}\end{pmatrix}$, so $2v_1=\left(\tfrac12+\tfrac{3i}{2}\right)v_2$, i.e. $v_1=\dfrac{1+3i}{4}v_2$. Taking $v_2=4$ gives $v_1=1+3i$. (Check with the first row: $\left(\tfrac12-\tfrac{3i}{2}\right)(1+3i)-\tfrac54\cdot4=\tfrac12(1-3i)(1+3i)-5=\tfrac{10}{2}-5=0$.)
+
+$$
+\boxed{\lambda=\pm\tfrac{3i}{2}, \qquad \lambda=\tfrac{3i}{2}:\ \mathbf{v}=\begin{pmatrix}1+3i\\4\end{pmatrix}, \quad \lambda=-\tfrac{3i}{2}:\ \mathbf{v}=\begin{pmatrix}1-3i\\4\end{pmatrix}.}
+$$
+
+#### (h) $A=\begin{pmatrix}-\tfrac12&1\\0&-\tfrac12\end{pmatrix}$
+
+$A$ is upper triangular, so the eigenvalues are the diagonal entries: $\lambda=-\tfrac12$, a **repeated** eigenvalue.
+
+$A+\tfrac12I=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ gives $v_2=0$ with $v_1$ free. Again there is only **one** independent eigenvector.
+
+$$
+\boxed{\lambda=-\tfrac12\ (\text{double}), \qquad \mathbf{v}=\begin{pmatrix}1\\0\end{pmatrix}.}
+$$
+
+#### (i) $A=\begin{pmatrix}-2&-3\\2&4\end{pmatrix}$
+
+$\operatorname{tr}A=2$, $\det A=-8+6=-2$, so $\lambda^2-2\lambda-2=0$ and
+$$
+\lambda=\frac{2\pm\sqrt{4+8}}{2}=1\pm\sqrt3.
+$$
+
+The second row of $A-\lambda I$ is $\begin{pmatrix}2&4-\lambda\end{pmatrix}$, so $2v_1=-(4-\lambda)v_2$. Taking $v_2=2$ gives $v_1=\lambda-4$:
+
+- $\lambda=1+\sqrt3$: $v_1=\sqrt3-3$.
+- $\lambda=1-\sqrt3$: $v_1=-\sqrt3-3=-(3+\sqrt3)$.
+
+$$
+\boxed{\lambda=1+\sqrt3,\ \mathbf{v}=\begin{pmatrix}\sqrt3-3\\2\end{pmatrix}; \qquad \lambda=1-\sqrt3,\ \mathbf{v}=\begin{pmatrix}-3-\sqrt3\\2\end{pmatrix}.}
+$$
+
+#### (j) $A=\begin{pmatrix}-2&0\\2&-4\end{pmatrix}$
+
+$A$ is lower triangular, so $\lambda=-2,\ -4$.
+
+- $\lambda=-2$: $A+2I=\begin{pmatrix}0&0\\2&-2\end{pmatrix}$ gives $v_1=v_2$.
+- $\lambda=-4$: $A+4I=\begin{pmatrix}2&0\\2&0\end{pmatrix}$ gives $v_1=0$.
+
+$$
+\boxed{\lambda=-2,\ \mathbf{v}=\begin{pmatrix}1\\1\end{pmatrix}; \qquad \lambda=-4,\ \mathbf{v}=\begin{pmatrix}0\\1\end{pmatrix}.}
+$$
+
+#### (k) $A=\begin{pmatrix}-4&\tfrac14\\4&-4\end{pmatrix}$
+
+$\operatorname{tr}A=-8$, $\det A=16-1=15$, so $\lambda^2+8\lambda+15=(\lambda+3)(\lambda+5)=0$.
+
+- $\lambda=-3$: $A+3I=\begin{pmatrix}-1&\tfrac14\\4&-1\end{pmatrix}$ gives $v_2=4v_1$.
+- $\lambda=-5$: $A+5I=\begin{pmatrix}1&\tfrac14\\4&1\end{pmatrix}$ gives $v_2=-4v_1$.
+
+$$
+\boxed{\lambda=-3,\ \mathbf{v}=\begin{pmatrix}1\\4\end{pmatrix}; \qquad \lambda=-5,\ \mathbf{v}=\begin{pmatrix}1\\-4\end{pmatrix}.}
+$$
+
+#### (l) $A=\begin{pmatrix}1&-1\\1&1\end{pmatrix}$
+
+$\operatorname{tr}A=2$, $\det A=1+1=2$, so $\lambda^2-2\lambda+2=0$ and $\lambda=1\pm i$.
+
+For $\lambda=1+i$: $A-\lambda I=\begin{pmatrix}-i&-1\\1&-i\end{pmatrix}$. The second row gives $v_1-iv_2=0$, so $v_1=iv_2$. Taking $v_2=1$ gives $v_1=i$.
+
+$$
+\boxed{\lambda=1\pm i, \qquad \lambda=1+i:\ \mathbf{v}=\begin{pmatrix}i\\1\end{pmatrix}, \quad \lambda=1-i:\ \mathbf{v}=\begin{pmatrix}-i\\1\end{pmatrix}.}
+$$
+
+#### (m) $A=\begin{pmatrix}-7&6\\6&2\end{pmatrix}$
+
+$\operatorname{tr}A=-5$, $\det A=-14-36=-50$, so $\lambda^2+5\lambda-50=(\lambda-5)(\lambda+10)=0$.
+
+- $\lambda=5$: $A-5I=\begin{pmatrix}-12&6\\6&-3\end{pmatrix}$ gives $v_2=2v_1$.
+- $\lambda=-10$: $A+10I=\begin{pmatrix}3&6\\6&12\end{pmatrix}$ gives $v_1=-2v_2$.
+
+$$
+\boxed{\lambda=5,\ \mathbf{v}=\begin{pmatrix}1\\2\end{pmatrix}; \qquad \lambda=-10,\ \mathbf{v}=\begin{pmatrix}-2\\1\end{pmatrix}.}
+$$
+
+#### (n) $A=\begin{pmatrix}2&1\\-1&2\end{pmatrix}$
+
+$\operatorname{tr}A=4$, $\det A=4+1=5$, so $\lambda^2-4\lambda+5=0$ and $\lambda=2\pm i$.
+
+For $\lambda=2+i$: $A-\lambda I=\begin{pmatrix}-i&1\\-1&-i\end{pmatrix}$. The first row gives $-iv_1+v_2=0$, so $v_2=iv_1$.
+
+$$
+\boxed{\lambda=2\pm i, \qquad \lambda=2+i:\ \mathbf{v}=\begin{pmatrix}1\\i\end{pmatrix}, \quad \lambda=2-i:\ \mathbf{v}=\begin{pmatrix}1\\-i\end{pmatrix}.}
+$$
+
+#### (o) $A=\begin{pmatrix}1&3\\1&-1\end{pmatrix}$
+
+$\operatorname{tr}A=0$, $\det A=-1-3=-4$, so $\lambda^2-4=0$ and $\lambda=\pm2$.
+
+- $\lambda=2$: $A-2I=\begin{pmatrix}-1&3\\1&-3\end{pmatrix}$ gives $v_1=3v_2$.
+- $\lambda=-2$: $A+2I=\begin{pmatrix}3&3\\1&1\end{pmatrix}$ gives $v_1=-v_2$.
+
+$$
+\boxed{\lambda=2,\ \mathbf{v}=\begin{pmatrix}3\\1\end{pmatrix}; \qquad \lambda=-2,\ \mathbf{v}=\begin{pmatrix}1\\-1\end{pmatrix}.}
+$$
+
+```{python}
+R, I = sym.Rational, sym.I
+s3, s6 = sym.sqrt(3), sym.sqrt(6)
+
+# Each entry: matrix, then the by-hand eigenpairs (eigenvalue, eigenvector)
+cases = {
+    "a": (sym.Matrix([[2, -1], [-4, 2]]),            [(0, [1, 2]), (4, [1, -2])]),
+    "b": (sym.Matrix([[1, 1], [4, 1]]),              [(3, [1, 2]), (-1, [1, -2])]),
+    "c": (sym.Matrix([[0, -2], [3, 0]]),             [(I*s6, [2, -I*s6]), (-I*s6, [2, I*s6])]),
+    "d": (sym.Matrix([[1, -1], [1, 3]]),             [(2, [1, -1])]),
+    "e": (sym.Matrix([[-1, 4], [R(1, 2), -2]]),      [(0, [4, 1]), (-3, [-2, 1])]),
+    "f": (sym.Matrix([[R(-1, 2), 1], [-1, R(-1, 2)]]), [(R(-1, 2) + I, [1, I]), (R(-1, 2) - I, [1, -I])]),
+    "g": (sym.Matrix([[R(1, 2), R(-5, 4)], [2, R(-1, 2)]]),
+                                                     [(3*I/2, [1 + 3*I, 4]), (-3*I/2, [1 - 3*I, 4])]),
+    "h": (sym.Matrix([[R(-1, 2), 1], [0, R(-1, 2)]]), [(R(-1, 2), [1, 0])]),
+    "i": (sym.Matrix([[-2, -3], [2, 4]]),            [(1 + s3, [s3 - 3, 2]), (1 - s3, [-3 - s3, 2])]),
+    "j": (sym.Matrix([[-2, 0], [2, -4]]),            [(-2, [1, 1]), (-4, [0, 1])]),
+    "k": (sym.Matrix([[-4, R(1, 4)], [4, -4]]),      [(-3, [1, 4]), (-5, [1, -4])]),
+    "l": (sym.Matrix([[1, -1], [1, 1]]),             [(1 + I, [I, 1]), (1 - I, [-I, 1])]),
+    "m": (sym.Matrix([[-7, 6], [6, 2]]),             [(5, [1, 2]), (-10, [-2, 1])]),
+    "n": (sym.Matrix([[2, 1], [-1, 2]]),             [(2 + I, [1, I]), (2 - I, [1, -I])]),
+    "o": (sym.Matrix([[1, 3], [1, -1]]),             [(2, [3, 1]), (-2, [1, -1])]),
+}
+
+for label, (A, pairs) in cases.items():
+    # 1. every by-hand pair must satisfy A v = lambda v exactly
+    ok = all(sym.simplify(sym.expand(A*sym.Matrix(v) - lam*sym.Matrix(v))) == sym.zeros(2, 1)
+             for lam, v in pairs)
+    # 2. compare with SymPy's eigenvalues, and report the number of independent eigenvectors
+    eigs = A.eigenvals()
+    dims = {sym.simplify(l): len((A - l*sym.eye(2)).nullspace()) for l in eigs}
+    print(f"({label}) eigenvalues {list(eigs.keys())}  Av=lambda*v holds: {ok}  "
+          f"independent eigenvectors per eigenvalue: {list(dims.values())}")
+```
+
+::: {.callout-note}
+For every one of the fifteen matrices, each by-hand eigenpair satisfies $A\mathbf{v}=\lambda\mathbf{v}$ exactly, and the eigenvalues agree with SymPy's. The final list in each line gives the number of independent eigenvectors for each eigenvalue: $[1]$ for the repeated eigenvalues in (d) and (h), meaning those matrices have only one eigenvector direction, and $[1,1]$ for the others. SymPy may display a different multiple of an eigenvector than the one chosen here, which is equally valid.
+:::
+
+::: {.callout-tip}
+The fifteen matrices fall into the three cases that organize Section 4.4. **Real, distinct eigenvalues**: (a), (b), (e), (i), (j), (k), (m), (o). **Complex-conjugate eigenvalues** (note that the eigenvectors also come in conjugate pairs): (c), (f), (g), (l), (n). **Repeated eigenvalue with only one eigenvector**: (d) and (h). Also note that $\lambda=0$ occurs in (a) and (e), exactly the two cases where $\det A=0$ (see Exercise 3 on p. 207).
+:::
+
+### Exercise 7, Page 207
+
+Let $A=\begin{pmatrix}0&1\\-2&-3\end{pmatrix}$. If $(1,-2)^{\mathrm{T}}$ is an eigenvector, what is the eigenvalue?
+
+**By Hand.**
+
+If $\mathbf{v}=\begin{pmatrix}1\\-2\end{pmatrix}$ is an eigenvector, then $A\mathbf{v}=\lambda\mathbf{v}$ for some scalar $\lambda$. Compute
+$$
+A\mathbf{v}=\begin{pmatrix}0&1\\-2&-3\end{pmatrix}\begin{pmatrix}1\\-2\end{pmatrix}=\begin{pmatrix}0(1)+1(-2)\\-2(1)-3(-2)\end{pmatrix}=\begin{pmatrix}-2\\4\end{pmatrix}=-2\begin{pmatrix}1\\-2\end{pmatrix}.
+$$
+
+So $A\mathbf{v}=-2\mathbf{v}$.
+
+$$
+\boxed{\lambda=-2}
+$$
+
+```{python}
+A7 = sym.Matrix([[0, 1], [-2, -3]])
+v7 = sym.Matrix([1, -2])
+
+Av = A7*v7
+lam7 = Av[0] / v7[0]
+print("A v =", Av.T.tolist()[0])
+print("lambda =", lam7, "  A v == lambda v:", Av == lam7*v7)
+print("All eigenvalues of A:", A7.eigenvals())
+```
+
+::: {.callout-note}
+SymPy confirms $A\mathbf{v}=-2\mathbf{v}$. It also shows that $A$ has a second eigenvalue, $\lambda=-1$ (the characteristic equation is $\lambda^2+3\lambda+2=(\lambda+1)(\lambda+2)=0$), and $(1,-2)^{\mathrm{T}}$ is the eigenvector belonging to $\lambda=-2$. (The eigenvector for $\lambda=-1$ is $(1,-1)^{\mathrm{T}}$.)
+:::
+
+## References
+
+::: {#refs}
+:::
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+import sys # sys for system-specific parameters and functions
+print("Python version:", sys.version)
+print('\n'.join(f'{m.__name__}=={m.__version__}' for m in globals().values() if getattr(m, '__version__', None)))
+```
+:::
+
+## Reuse
+
+[![](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png?raw=1){fig-align="left" width=15%}](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)
+
+
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
