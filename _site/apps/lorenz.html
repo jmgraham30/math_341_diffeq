@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lorenz Attractor Explorer</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#1d2733; --muted:#5b6876; --panel:#f4f6f8; --border:#d5dbe1;
+  --accent:#2563eb; --grid:#e8ecef; --axis:#8a96a3; --second:#d9480f; --green:#2f9e44;
+  --purple:#9c36b5; --teal:#0b7285; --err:#c92a2a; --canvas:#ffffff;
+}
+:root[data-theme="dark"]{
+  --bg:#14181d; --fg:#e6eaee; --muted:#9aa6b2; --panel:#1d232a; --border:#323b45;
+  --accent:#6ea0ff; --grid:#232b33; --axis:#6f7c89; --second:#ff8a5c; --green:#51cf66;
+  --purple:#d0a0ff; --teal:#4fd1c5; --err:#ff8787; --canvas:#10141a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);
+  font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;padding:12px;max-width:1100px;margin:0 auto}
+@media (max-width:760px){#app{grid-template-columns:minmax(0,1fr);padding:12px 16px}}
+canvas{display:block;width:100%;border:1px solid var(--border);border-radius:6px;background:var(--canvas)}
+#cv{aspect-ratio:5/4;cursor:grab;touch-action:pan-y}
+#cv.drag{cursor:grabbing}
+#cv2{aspect-ratio:2.6/1}
+#bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+#readout{color:var(--muted);font-variant-numeric:tabular-nums;font-size:13px;min-height:20px;margin-bottom:6px}
+#msg{color:var(--err);font-size:13px;min-height:0}
+.tabs{display:flex;gap:6px;margin:10px 0 6px}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+aside section{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:10px}
+aside h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+label{display:block;color:var(--muted);font-size:12px;margin-bottom:2px}
+input[type=text],input[type=number],select{width:100%;padding:5px 7px;border:1px solid var(--border);
+  border-radius:4px;background:var(--bg);color:var(--fg);font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+select{font-family:inherit}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.row>*{flex:1;min-width:0}
+.param{display:grid;grid-template-columns:18px 1fr 64px;gap:6px;align-items:center;margin-bottom:4px}
+.param b{font-family:ui-monospace,Menlo,Consolas,monospace}
+input[type=range]{width:100%;accent-color:var(--accent)}
+button{font:inherit;padding:5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent);color:var(--accent)}
+.tabs button.on:hover{color:#fff}
+.checks label{display:flex;align-items:center;gap:6px;color:var(--fg);font-size:13px;margin:3px 0}
+.hint{color:var(--muted);font-size:12px}
+.sys{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;margin-bottom:8px}
+#eqlist .eq{padding:6px 0;border-top:1px solid var(--border)}
+#eqlist .eq:first-child{border-top:0;padding-top:0}
+#eqlist .pt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+#eqlist .ty{font-weight:600}
+#eqlist .ev{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+#facts div{margin-bottom:6px;font-size:13px}
+#link{font-size:12px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="main">
+    <canvas id="cv" role="img" aria-label="Three-dimensional view of the Lorenz attractor. Drag to rotate."></canvas>
+    <div id="bar">
+      <button id="play">Pause</button>
+      <button id="reset">Restart</button>
+      <button id="v3d">3D</button><button id="vxz">x–z</button><button id="vxy">x–y</button><button id="vyz">y–z</button>
+    </div>
+    <div id="readout"></div>
+    <div id="msg"></div>
+    <div class="tabs">
+      <button id="tab_ts" class="on">Time series</button>
+      <button id="tab_sep">Sensitive dependence</button>
+      <button id="tab_map">Lorenz map</button>
+    </div>
+    <canvas id="cv2" role="img" aria-label="Secondary plot"></canvas>
+    <div id="tabhint" class="hint" style="margin-top:4px"></div>
+  </div>
+
+  <aside>
+    <section>
+      <h2>System</h2>
+      <div class="sys">x′ = σ(y − x)<br>y′ = x(ρ − z) − y<br>z′ = xy − βz</div>
+      <label for="preset">Example</label>
+      <select id="preset"></select>
+      <div style="height:8px"></div>
+      <div id="params"></div>
+    </section>
+
+    <section>
+      <h2>Initial condition</h2>
+      <div class="row">
+        <div><label for="x0">x₀</label><input type="number" id="x0" step="any" value="1"></div>
+        <div><label for="y0">y₀</label><input type="number" id="y0" step="any" value="1"></div>
+        <div><label for="z0">z₀</label><input type="number" id="z0" step="any" value="1"></div>
+      </div>
+      <div class="checks">
+        <label><input type="checkbox" id="useB" checked> Second trajectory, x₀ shifted by δ</label>
+      </div>
+      <div class="row"><div><label for="delta">δ</label><input type="number" id="delta" step="any" value="0.000001"></div></div>
+    </section>
+
+    <section>
+      <h2>Playback and display</h2>
+      <label for="speed">Speed (time units per second): <span id="speedv"></span></label>
+      <input type="range" id="speed" min="1" max="30" step="1" value="6">
+      <label for="trail" style="margin-top:6px">Trail length (time units): <span id="trailv"></span></label>
+      <input type="range" id="trail" min="2" max="60" step="1" value="25">
+      <div class="checks" style="margin-top:6px">
+        <label><input type="checkbox" id="showEq" checked> Equilibria</label>
+        <label><input type="checkbox" id="auto"> Slowly rotate view</label>
+        <label><input type="checkbox" id="cloud"> Cloud of 400 initial points</label>
+      </div>
+      <div class="hint">Drag the picture to rotate it. The cloud starts as a ball of radius 8 about (0, 0, ρ − 1) and shows volume contraction.</div>
+      <div class="row" style="margin-top:6px"><button id="zin">Zoom in</button><button id="zout">Zoom out</button></div>
+    </section>
+
+    <section>
+      <h2>Equilibria</h2>
+      <div id="eqlist"></div>
+    </section>
+
+    <section>
+      <h2>Facts for these parameters</h2>
+      <div id="facts"></div>
+    </section>
+
+    <section>
+      <h2>Share</h2>
+      <div class="row"><button id="mklink">Make link to this setup</button></div>
+      <input type="text" id="link" readonly placeholder="link appears here">
+    </section>
+  </aside>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const H=0.005, REC=2, CAP=6000;           // RK4 step, steps per record (0.01 time units), records kept
+const S={sigma:10,rho:28,beta:8/3,x0:1,y0:1,z0:1,delta:1e-6,useB:true,speed:6,trail:25,
+  playing:true,az:-0.35,el:0.3,zoom:1,auto:false,tab:'ts',cloud:false,showEq:true};
+
+const PRESETS=[
+  {name:'Classic chaos (ρ = 28)',r:28},
+  {name:'Origin attracts (ρ = 0.5)',r:0.5},
+  {name:'Spiral into C± (ρ = 15)',r:15},
+  {name:'Near the threshold (ρ = 24)',r:24},
+  {name:'Periodic window (ρ = 150)',r:150},
+  {name:'Periodic window (ρ = 166)',r:166},
+];
+
+/* ======================= simulation ======================= */
+let A,B,cloud,cloudN0=0,n=0,sepT=[],sepD=[],maxima=[],blown=false,dirty=true;
+function newTraj(x,y,z){return {x,y,z,T:[0],X:[x],Y:[y],Z:[z]};}
+function rk4(p){
+  const s=S.sigma,r=S.rho,b=S.beta,h=H;
+  let x=p.x,y=p.y,z=p.z;
+  const k1x=s*(y-x),k1y=x*(r-z)-y,k1z=x*y-b*z;
+  let X=x+h/2*k1x,Y=y+h/2*k1y,Z=z+h/2*k1z;
+  const k2x=s*(Y-X),k2y=X*(r-Z)-Y,k2z=X*Y-b*Z;
+  X=x+h/2*k2x;Y=y+h/2*k2y;Z=z+h/2*k2z;
+  const k3x=s*(Y-X),k3y=X*(r-Z)-Y,k3z=X*Y-b*Z;
+  X=x+h*k3x;Y=y+h*k3y;Z=z+h*k3z;
+  const k4x=s*(Y-X),k4y=X*(r-Z)-Y,k4z=X*Y-b*Z;
+  p.x=x+h/6*(k1x+2*k2x+2*k3x+k4x);
+  p.y=y+h/6*(k1y+2*k2y+2*k3y+k4y);
+  p.z=z+h/6*(k1z+2*k2z+2*k3z+k4z);
+}
+function record(tr,t){
+  tr.T.push(t);tr.X.push(tr.x);tr.Y.push(tr.y);tr.Z.push(tr.z);
+  if(tr.T.length>CAP){tr.T.splice(0,1000);tr.X.splice(0,1000);tr.Y.splice(0,1000);tr.Z.splice(0,1000);}
+}
+function makeCloud(){
+  const N=400,a=new Float64Array(3*N);let seed=12345;
+  const rnd=()=>{seed=(seed+0x6D2B79F5)|0;let t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};
+  for(let i=0;i<N;i++){
+    let u,v,w;do{u=2*rnd()-1;v=2*rnd()-1;w=2*rnd()-1;}while(u*u+v*v+w*w>1);
+    a[3*i]=8*u;a[3*i+1]=8*v;a[3*i+2]=S.rho-1+8*w;
+  }
+  return a;
+}
+const tmp={x:0,y:0,z:0};
+function stepCloud(){
+  for(let i=0;i<cloud.length;i+=3){
+    tmp.x=cloud[i];tmp.y=cloud[i+1];tmp.z=cloud[i+2];rk4(tmp);
+    cloud[i]=tmp.x;cloud[i+1]=tmp.y;cloud[i+2]=tmp.z;
+  }
+}
+function reset(){
+  n=0;A=newTraj(S.x0,S.y0,S.z0);
+  B=(S.useB&&S.delta!==0)?newTraj(S.x0+S.delta,S.y0,S.z0):null;
+  sepT=[0];sepD=[Math.abs(S.delta)];maxima=[];blown=false;$('msg').textContent='';
+  cloud=S.cloud?makeCloud():null;cloudN0=0;dirty=true;
+}
+function stepOnce(){
+  rk4(A);if(B)rk4(B);if(cloud)stepCloud();
+  n++;
+  if(n%REC===0){
+    const t=n*H;record(A,t);if(B)record(B,t);
+    if(!isFinite(A.x+A.y+A.z)||Math.abs(A.x)+Math.abs(A.y)+Math.abs(A.z)>1e6){blown=true;return;}
+    if(B&&n%(REC*5)===0&&sepT.length<8000){sepT.push(t);sepD.push(Math.hypot(A.x-B.x,A.y-B.y,A.z-B.z));}
+    const L=A.Z.length;
+    if(L>=3){
+      const z0=A.Z[L-3],z1=A.Z[L-2],z2=A.Z[L-1];
+      if(z1-z0>1e-9&&z1>=z2){const den=z2-2*z1+z0;maxima.push(z1-(z2-z0)*(z2-z0)/(8*den));if(maxima.length>3000)maxima.shift();}
+    }
+  }
+}
+function stepN(k){for(let i=0;i<k&&!blown;i++)stepOnce();}
+
+/* ======================= equilibria and eigenvalues ======================= */
+const cm=(a,b)=>[a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]];
+function cubicRoots(a,b,c){
+  const f=z=>{const z2=cm(z,z),z3=cm(z2,z);return[z3[0]+a*z2[0]+b*z[0]+c,z3[1]+a*z2[1]+b*z[1]];};
+  const r0=1+Math.max(Math.abs(a),Math.sqrt(Math.abs(b)),Math.cbrt(Math.abs(c)));
+  let r=[0,1,2].map(k=>[r0*Math.cos(0.4+2.0944*k),r0*Math.sin(0.4+2.0944*k)]);
+  for(let it=0;it<300;it++){
+    for(let i=0;i<3;i++){
+      const num=f(r[i]);let den=[1,0];
+      for(let j=0;j<3;j++)if(j!==i)den=cm(den,[r[i][0]-r[j][0],r[i][1]-r[j][1]]);
+      const d2=den[0]*den[0]+den[1]*den[1]||1e-300;
+      const q=[(num[0]*den[0]+num[1]*den[1])/d2,(num[1]*den[0]-num[0]*den[1])/d2];
+      r[i]=[r[i][0]-q[0],r[i][1]-q[1]];
+    }
+  }
+  return r.map(z=>[z[0],Math.abs(z[1])<1e-7*(1+Math.abs(z[0]))?0:z[1]]);
+}
+function equilibria(){
+  const s=S.sigma,r=S.rho,b=S.beta,list=[];
+  const disc=(s+1)*(s+1)-4*s*(1-r);
+  let ev0;
+  if(disc>=0){const q=Math.sqrt(disc);ev0=[[(-(s+1)+q)/2,0],[(-(s+1)-q)/2,0],[-b,0]];}
+  else{const q=Math.sqrt(-disc)/2;ev0=[[-(s+1)/2,q],[-(s+1)/2,-q],[-b,0]];}
+  list.push({name:'C₀',p:[0,0,0],ev:ev0});
+  if(r>1){
+    const c=Math.sqrt(b*(r-1));
+    const ev=cubicRoots(s+b+1,b*(s+r),2*s*b*(r-1));
+    list.push({name:'C₊',p:[c,c,r-1],ev});list.push({name:'C₋',p:[-c,-c,r-1],ev});
+  }
+  return list;
+}
+const fmt=v=>{
+  if(!isFinite(v))return String(v);
+  if(Math.abs(v)<1e-9)return'0';
+  const a=Math.abs(v);
+  return((a<1e-3||a>=1e5)?v.toExponential(2):String(+v.toPrecision(4))).replace('-','−');
+};
+const fmtC=z=>z[1]===0?fmt(z[0]):fmt(z[0])+(z[1]>0?' + ':' − ')+fmt(Math.abs(z[1]))+'i';
+function classify(ev){
+  const nu=ev.filter(z=>z[0]>1e-9).length,cx=ev.some(z=>z[1]!==0);
+  if(nu===0)return cx?'stable spiral (attracting)':'stable node (attracting)';
+  return 'unstable: '+nu+' growing direction'+(nu>1?'s':'')+(cx?', oscillating':'');
+}
+function renderEq(){
+  const box=$('eqlist');box.textContent='';
+  for(const e of equilibria()){
+    const d=document.createElement('div');d.className='eq';
+    const a=document.createElement('div');a.className='pt';a.textContent=e.name+' = ('+e.p.map(fmt).join(', ')+')';
+    const b=document.createElement('div');b.className='ty';b.textContent=classify(e.ev);
+    const c=document.createElement('div');c.className='ev';c.textContent='λ = '+e.ev.map(fmtC).join(',  ');
+    d.append(a,b,c);box.appendChild(d);
+  }
+  if(S.rho<=1){const d=document.createElement('div');d.className='hint';d.textContent='For ρ ≤ 1 the origin is the only equilibrium. At ρ = 1 a pitchfork bifurcation creates C±.';box.appendChild(d);}
+}
+function renderFacts(){
+  const box=$('facts');box.textContent='';
+  const add=t=>{const d=document.createElement('div');d.textContent=t;box.appendChild(d);};
+  const dv=-(S.sigma+S.beta+1);
+  add('Divergence ∇·F = −(σ + β + 1) = '+fmt(dv)+'. Volumes shrink by the factor e^'+fmt(dv)+' ≈ '+fmt(Math.exp(dv))+' per unit time.');
+  if(S.sigma>S.beta+1){
+    const rH=S.sigma*(S.sigma+S.beta+3)/(S.sigma-S.beta-1);
+    add('C± lose stability at ρ = σ(σ + β + 3)/(σ − β − 1) ≈ '+fmt(rH)+'.');
+  }else add('Since σ ≤ β + 1, C± never lose stability through a Hopf bifurcation.');
+  const li=$('lyap');
+  const d=document.createElement('div');d.id='lyap';box.appendChild(d);
+}
+
+/* ======================= Lyapunov estimate from the separation ======================= */
+function lyapunov(){
+  if(!B||sepT.length<5)return null;
+  const lo=30*Math.abs(S.delta),hi=0.5;let sx=0,sy=0,sxx=0,sxy=0,m=0,t0=null,t1=null,reached=false;
+  if(hi/lo<100)return null;
+  for(let i=1;i<sepT.length;i++){
+    if(sepT[i]>sepT[i-1]&&sepD[i]>lo&&sepD[i]<hi){
+      if(t0===null)t0=sepT[i];
+      // stop once the separation has saturated for the first time
+      t1=sepT[i];const y=Math.log(sepD[i]),x=sepT[i];
+      sx+=x;sy+=y;sxx+=x*x;sxy+=x*y;m++;
+    }else if(sepD[i]>=hi&&t0!==null){reached=true;break;}
+  }
+  if(m<8||!reached)return null;
+  const slope=(m*sxy-sx*sy)/(m*sxx-sx*sx);
+  return {lam:slope,t0,t1,icpt:(sy-slope*sx)/m-slope*(sx/m)+slope*(sx/m)};
+}
+
+/* ======================= drawing ======================= */
+const cv=$('cv'),ctx=cv.getContext('2d'),cv2=$('cv2'),ctx2=cv2.getContext('2d');
+let cw=0,ch=0,w2=0,h2=0,dpr=1;
+const css=nm=>getComputedStyle(document.documentElement).getPropertyValue(nm).trim();
+function fit(){
+  dpr=window.devicePixelRatio||1;
+  let r=cv.getBoundingClientRect();cw=r.width;ch=r.height;cv.width=Math.round(cw*dpr);cv.height=Math.round(ch*dpr);
+  r=cv2.getBoundingClientRect();w2=r.width;h2=r.height;cv2.width=Math.round(w2*dpr);cv2.height=Math.round(h2*dpr);
+  dirty=true;
+}
+function viewR(){return Math.max(25,0.55*S.rho+15);}
+function makeProj(){
+  const R=viewR(),sc=0.47*Math.min(cw,ch)/R*S.zoom,cz=S.rho-1,PD=5*R;
+  const ca=Math.cos(S.az),sa=Math.sin(S.az),ce=Math.cos(S.el),se=Math.sin(S.el);
+  return (x,y,z)=>{
+    const pz=z-cz,x1=x*ca-y*sa,y1=x*sa+y*ca;
+    const sy=pz*ce+y1*se,d=y1*ce-pz*se,f=PD/(PD+d);
+    return [cw/2+x1*sc*f,ch/2-sy*sc*f];
+  };
+}
+function trail(P,tr,color,lw){
+  const L=tr.T.length,cnt=Math.min(L,Math.round(S.trail/(H*REC)));
+  if(cnt<2)return;
+  const i0=L-cnt,M=Math.min(30,cnt-1),per=(cnt-1)/M;
+  ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineJoin='round';ctx.lineCap='round';
+  for(let k=0;k<M;k++){
+    const a=i0+Math.floor(k*per),b=i0+Math.floor((k+1)*per);
+    ctx.globalAlpha=0.08+0.92*(k+1)/M;
+    ctx.beginPath();
+    for(let i=a;i<=b;i++){const q=P(tr.X[i],tr.Y[i],tr.Z[i]);i===a?ctx.moveTo(q[0],q[1]):ctx.lineTo(q[0],q[1]);}
+    ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+  const q=P(tr.x,tr.y,tr.z);ctx.fillStyle=color;ctx.beginPath();ctx.arc(q[0],q[1],4,0,6.2832);ctx.fill();
+  ctx.strokeStyle=css('--canvas');ctx.lineWidth=1.5;ctx.stroke();
+}
+function draw3D(){
+  if(!cw)return;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle=css('--canvas');ctx.fillRect(0,0,cw,ch);
+  const P=makeProj();
+  // equilibria
+  if(S.showEq){
+    ctx.font='12px system-ui,sans-serif';ctx.textAlign='left';ctx.textBaseline='bottom';
+    for(const e of equilibria().filter((e,i)=>i<3)){
+      const q=P(e.p[0],e.p[1],e.p[2]);
+      ctx.strokeStyle=css('--muted');ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(q[0],q[1],4,0,6.2832);ctx.stroke();
+      ctx.fillStyle=css('--muted');ctx.fillText(e.name,q[0]+6,q[1]-3);
+    }
+  }
+  if(cloud){
+    ctx.fillStyle=css('--green');ctx.globalAlpha=0.75;
+    for(let i=0;i<cloud.length;i+=3){const q=P(cloud[i],cloud[i+1],cloud[i+2]);ctx.fillRect(q[0]-1.2,q[1]-1.2,2.4,2.4);}
+    ctx.globalAlpha=1;
+  }
+  if(B)trail(P,B,css('--second'),1.5);
+  trail(P,A,css('--accent'),1.5);
+  // axis triad
+  const ca=Math.cos(S.az),sa=Math.sin(S.az),ce=Math.cos(S.el),se=Math.sin(S.el),ox=38,oy=ch-34,len=24;
+  const dirs=[['x',1,0,0],['y',0,1,0],['z',0,0,1]];
+  ctx.lineWidth=1.5;ctx.font='12px system-ui,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  for(const [nm,x,y,z] of dirs){
+    const x1=x*ca-y*sa,y1=x*sa+y*ca,sy=z*ce+y1*se;
+    const ex=ox+x1*len,ey=oy-sy*len;
+    ctx.strokeStyle=css('--axis');ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ex,ey);ctx.stroke();
+    ctx.fillStyle=css('--muted');ctx.fillText(nm,ox+x1*(len+9),oy-sy*(len+9));
+  }
+}
+
+/* ---------- 2D plots ---------- */
+function niceStep(range,target){
+  const raw=range/target,mag=Math.pow(10,Math.floor(Math.log10(raw))),r=raw/mag;
+  return(r<1.5?1:r<3.5?2:r<7.5?5:10)*mag;
+}
+function tickFmt(v,step){
+  if(Math.abs(v)<step*1e-6)return'0';
+  const dec=Math.min(8,Math.max(0,-Math.floor(Math.log10(step))));
+  let s=v.toFixed(dec);if(s.indexOf('.')>=0)s=s.replace(/0+$/,'').replace(/\.$/,'');
+  return s.replace('-','−');
+}
+function frame2(xr,yr,xl,yl,yfmt){
+  const m={l:46,r:12,t:10,b:26},W=w2-m.l-m.r,Ht=h2-m.t-m.b;
+  const X=v=>m.l+(v-xr[0])/(xr[1]-xr[0])*W,Y=v=>m.t+Ht-(v-yr[0])/(yr[1]-yr[0])*Ht;
+  ctx2.setTransform(dpr,0,0,dpr,0,0);ctx2.fillStyle=css('--canvas');ctx2.fillRect(0,0,w2,h2);
+  ctx2.font='11px system-ui,sans-serif';ctx2.lineWidth=1;
+  const sx=niceStep(xr[1]-xr[0],7),sy=niceStep(yr[1]-yr[0],5);
+  ctx2.strokeStyle=css('--grid');ctx2.fillStyle=css('--muted');ctx2.beginPath();
+  ctx2.textAlign='center';ctx2.textBaseline='top';
+  for(let v=Math.ceil(xr[0]/sx)*sx;v<=xr[1]+1e-9;v+=sx){const px=Math.round(X(v))+.5;ctx2.moveTo(px,m.t);ctx2.lineTo(px,m.t+Ht);}
+  for(let v=Math.ceil(yr[0]/sy)*sy;v<=yr[1]+1e-9;v+=sy){const py=Math.round(Y(v))+.5;ctx2.moveTo(m.l,py);ctx2.lineTo(m.l+W,py);}
+  ctx2.stroke();
+  for(let v=Math.ceil(xr[0]/sx)*sx;v<=xr[1]+1e-9;v+=sx)ctx2.fillText(tickFmt(v,sx),X(v),m.t+Ht+4);
+  ctx2.textAlign='right';ctx2.textBaseline='middle';
+  for(let v=Math.ceil(yr[0]/sy)*sy;v<=yr[1]+1e-9;v+=sy)ctx2.fillText(yfmt?yfmt(v):tickFmt(v,sy),m.l-5,Y(v));
+  ctx2.strokeStyle=css('--axis');ctx2.strokeRect(m.l+.5,m.t+.5,W,Ht);
+  ctx2.textAlign='right';ctx2.textBaseline='bottom';ctx2.fillText(xl,m.l+W-2,h2-1);
+  ctx2.save();ctx2.translate(11,m.t+Ht/2);ctx2.rotate(-Math.PI/2);ctx2.textAlign='center';ctx2.textBaseline='top';ctx2.fillText(yl,0,-3);ctx2.restore();
+  return {m,W,Ht,X,Y};
+}
+function clip(f){ctx2.save();ctx2.beginPath();ctx2.rect(46,10,w2-46-12,h2-10-26);ctx2.clip();f();ctx2.restore();}
+function line2(X,Y,T,V,i0,color,dash){
+  ctx2.strokeStyle=color;ctx2.lineWidth=1.6;ctx2.setLineDash(dash||[]);ctx2.beginPath();
+  for(let i=i0;i<T.length;i++){const px=X(T[i]),py=Y(V[i]);i===i0?ctx2.moveTo(px,py):ctx2.lineTo(px,py);}
+  ctx2.stroke();ctx2.setLineDash([]);
+}
+function drawTS(){
+  const tNow=A.T[A.T.length-1],Tw=30,t1=Math.max(tNow,Tw),t0=t1-Tw;
+  let i0=A.T.length-1;while(i0>0&&A.T[i0]>=t0)i0--;
+  let lo=-15,hi=15;
+  for(let i=i0;i<A.T.length;i++){lo=Math.min(lo,A.X[i],A.Y[i],A.Z[i]);hi=Math.max(hi,A.X[i],A.Y[i],A.Z[i]);}
+  const pad=(hi-lo)*0.06;
+  const f=frame2([t0,t1],[lo-pad,hi+pad],'t','x, y, z');
+  clip(()=>{
+    line2(f.X,f.Y,A.T,A.Y,i0,css('--green'));
+    line2(f.X,f.Y,A.T,A.Z,i0,css('--purple'));
+    if(B){let j=B.T.length-1;while(j>0&&B.T[j]>=t0)j--;line2(f.X,f.Y,B.T,B.X,j,css('--second'),[5,3]);}
+    line2(f.X,f.Y,A.T,A.X,i0,css('--accent'));
+  });
+  ctx2.font='12px system-ui,sans-serif';ctx2.textAlign='left';ctx2.textBaseline='top';
+  let lx=f.m.l+8;
+  for(const [nm,c] of [['x(t)','--accent'],['y(t)','--green'],['z(t)','--purple']].concat(B?[['x(t) of second trajectory','--second']]:[])){
+    ctx2.fillStyle=css(c);ctx2.fillText(nm,lx,f.m.t+4);lx+=ctx2.measureText(nm).width+14;
+  }
+}
+function drawSep(){
+  if(!B){frame2([0,20],[0,1],'t','log₁₀ distance');note2('Turn on the second trajectory to see how nearby solutions separate.');return;}
+  const tNow=sepT[sepT.length-1],t1=Math.max(tNow,20);
+  let dmin=Infinity,dmax=0;for(const d of sepD){if(d>0){dmin=Math.min(dmin,d);dmax=Math.max(dmax,d);}}
+  const lo=Math.floor(Math.log10(dmin)-0.3),hi=Math.max(Math.ceil(Math.log10(dmax)+0.3),1);
+  const f=frame2([0,t1],[lo,hi],'t','log₁₀ |A − B|',v=>(Math.abs(v-Math.round(v))<1e-9?'10^'+Math.round(v):'').replace('-','−'));
+  const ly=lyapunov();
+  clip(()=>{
+    ctx2.strokeStyle=css('--accent');ctx2.lineWidth=1.8;ctx2.beginPath();
+    for(let i=0;i<sepT.length;i++){const d=sepD[i]>0?Math.log10(sepD[i]):lo;const px=f.X(sepT[i]),py=f.Y(d);i?ctx2.lineTo(px,py):ctx2.moveTo(px,py);}
+    ctx2.stroke();
+    if(ly){
+      // fitted line log10 d = (ln d)/ln10 : through the fit window
+      const lg=Math.LN10;let sx=0,sy=0,m=0;
+      for(let i=1;i<sepT.length;i++)if(sepT[i]>=ly.t0&&sepT[i]<=ly.t1&&sepD[i]>0){sx+=sepT[i];sy+=Math.log(sepD[i]);m++;}
+      const mx=sx/m,my=sy/m,b0=my-ly.lam*mx;
+      ctx2.strokeStyle=css('--second');ctx2.lineWidth=2;ctx2.setLineDash([6,4]);ctx2.beginPath();
+      ctx2.moveTo(f.X(ly.t0),f.Y((b0+ly.lam*ly.t0)/lg));ctx2.lineTo(f.X(ly.t1),f.Y((b0+ly.lam*ly.t1)/lg));ctx2.stroke();ctx2.setLineDash([]);
+    }
+  });
+  ctx2.font='12px system-ui,sans-serif';ctx2.textAlign='left';ctx2.textBaseline='top';ctx2.fillStyle=css('--fg');
+  ctx2.fillText(ly?'Dashed fit: separation grows like e^(λt) with λ ≈ '+fmt(ly.lam):'Waiting for exponential growth (or the trajectories are not separating)…',f.m.l+8,f.m.t+4);
+}
+function note2(t){ctx2.font='13px system-ui,sans-serif';ctx2.fillStyle=css('--muted');ctx2.textAlign='center';ctx2.textBaseline='middle';ctx2.fillText(t,w2/2,h2/2);}
+function drawMap(){
+  if(maxima.length<2){frame2([0,1],[0,1],'zₙ','zₙ₊₁');note2('Collecting local maxima of z(t)…');return;}
+  let lo=Infinity,hi=-Infinity;for(const v of maxima){lo=Math.min(lo,v);hi=Math.max(hi,v);}
+  const pad=Math.max((hi-lo)*0.08,0.5);lo-=pad;hi+=pad;
+  const f=frame2([lo,hi],[lo,hi],'zₙ (a local maximum of z)','zₙ₊₁');
+  clip(()=>{
+    ctx2.strokeStyle=css('--axis');ctx2.lineWidth=1;ctx2.setLineDash([4,4]);ctx2.beginPath();ctx2.moveTo(f.X(lo),f.Y(lo));ctx2.lineTo(f.X(hi),f.Y(hi));ctx2.stroke();ctx2.setLineDash([]);
+    ctx2.fillStyle=css('--accent');ctx2.globalAlpha=0.7;
+    for(let i=0;i+1<maxima.length;i++)ctx2.fillRect(f.X(maxima[i])-1.5,f.Y(maxima[i+1])-1.5,3,3);
+    ctx2.globalAlpha=1;
+  });
+}
+const HINTS={
+  ts:'Blue, green and purple: x, y, z of the main trajectory. Dashed orange: x of the second trajectory, which starts δ away.',
+  sep:'The separation of the two trajectories on a log scale. Straight growth means exponential divergence, and its slope estimates the largest Lyapunov exponent (about 0.906 for σ = 10, ρ = 28, β = 8/3). It levels off at the size of the attractor.',
+  map:'Each dot plots one local maximum of z(t) against the next. For ρ = 28 the points fall on a nearly one-dimensional curve, so the chaotic dynamics are close to a one-dimensional map.'
+};
+function draw2D(){
+  if(!w2)return;
+  if(S.tab==='ts')drawTS();else if(S.tab==='sep')drawSep();else drawMap();
+}
+function draw(){draw3D();draw2D();}
+
+function updateReadout(){
+  const t=n*H;let s='t = '+t.toFixed(2);
+  if(B)s+='    |A − B| = '+fmt(Math.hypot(A.x-B.x,A.y-B.y,A.z-B.z));
+  if(cloud)s+='    cloud volume factor ≈ '+fmt(Math.exp(-(S.sigma+S.beta+1)*(n-cloudN0)*H));
+  $('readout').textContent=s;
+  const ly=lyapunov(),d=$('lyap');
+  if(d){
+    if(!B)d.textContent='Turn on the second trajectory to estimate the largest Lyapunov exponent.';
+    else if(ly)d.textContent='Estimated largest Lyapunov exponent from this run: λ ≈ '+fmt(ly.lam)+(ly.lam>0.05?' > 0: in this run nearby solutions separate exponentially.':'.');
+    else if(t>40&&Math.max(...sepD)<0.5)d.textContent='The two trajectories never separate to the size of the attractor, so the motion is not chaotic here.';
+    else d.textContent='Lyapunov estimate: running…';
+  }
+}
+
+/* ======================= UI ======================= */
+const NAMES=[['s','σ','sigma',0.5,30,0.1],['r','ρ','rho',0,220,0.1],['b','β','beta',0.2,8,0.01]];
+function buildParams(){
+  const box=$('params');
+  NAMES.forEach(([k,lab,key,mn,mx,st])=>{
+    const row=document.createElement('div');row.className='param';
+    const b=document.createElement('b');b.textContent=lab;
+    const rng=document.createElement('input');rng.type='range';rng.min=mn;rng.max=mx;rng.step=st;rng.id='pr_'+k;
+    const num=document.createElement('input');num.type='number';num.step='any';num.id='pn_'+k;
+    rng.addEventListener('input',()=>{S[key]=+rng.value;num.value=S[key];paramsChanged();});
+    num.addEventListener('input',()=>{const v=parseFloat(num.value);if(isFinite(v)&&v>0){S[key]=v;rng.value=v;paramsChanged();}});
+    row.append(b,rng,num);box.appendChild(row);
+  });
+}
+function syncParams(){NAMES.forEach(([k,,key])=>{$('pr_'+k).value=S[key];$('pn_'+k).value=+(+S[key]).toFixed(3);});}
+function paramsChanged(){$('preset').value='custom';renderEq();renderFacts();reset();}
+function buildPresets(){
+  const sel=$('preset');
+  const c=document.createElement('option');c.value='custom';c.textContent='Custom';sel.appendChild(c);
+  PRESETS.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.name;sel.appendChild(o);});
+}
+function setTab(t){
+  S.tab=t;['ts','sep','map'].forEach(k=>$('tab_'+k).classList.toggle('on',k===t));
+  $('tabhint').textContent=HINTS[t];dirty=true;
+}
+function readInit(){
+  const v=['x0','y0','z0','delta'].map(id=>parseFloat($(id).value));
+  if(v.every(isFinite)){S.x0=v[0];S.y0=v[1];S.z0=v[2];S.delta=v[3];}
+  S.useB=$('useB').checked;reset();
+}
+function setView(az,el){S.az=az;S.el=el;dirty=true;}
+function makeLink(){
+  const q=new URLSearchParams();
+  q.set('s',S.sigma);q.set('r',S.rho);q.set('b',+S.beta.toFixed(6));
+  q.set('x',S.x0);q.set('y',S.y0);q.set('z',S.z0);q.set('d',S.delta);if(!S.useB)q.set('B','0');
+  q.set('az',+S.az.toFixed(3));q.set('el',+S.el.toFixed(3));q.set('tab',S.tab);
+  q.set('sp',S.speed);q.set('tr',S.trail);if(S.cloud)q.set('cloud','1');
+  const url=location.href.split('#')[0].split('?')[0]+'#'+q.toString();
+  $('link').value=url;$('link').select();
+  try{if(navigator.clipboard)navigator.clipboard.writeText(url).catch(()=>{});}catch(e){}
+}
+const params=new URLSearchParams((location.hash||'').replace(/^#/,'')||(location.search||'').replace(/^\?/,''));
+if(params.get('theme')==='dark')document.documentElement.dataset.theme='dark';
+function readHash(){
+  const num=(k,f)=>{const v=parseFloat(params.get(k));if(isFinite(v))f(v);};
+  num('s',v=>{if(v>0)S.sigma=v;});num('r',v=>{if(v>=0)S.rho=v;});num('b',v=>{if(v>0)S.beta=v;});
+  num('x',v=>S.x0=v);num('y',v=>S.y0=v);num('z',v=>S.z0=v);num('d',v=>S.delta=v);
+  num('az',v=>S.az=v);num('el',v=>S.el=Math.max(-1.5708,Math.min(1.5708,v)));
+  num('sp',v=>S.speed=Math.max(1,Math.min(30,v)));num('tr',v=>S.trail=Math.max(2,Math.min(60,v)));
+  if(params.get('B')==='0')S.useB=false;
+  if(params.get('cloud')==='1')S.cloud=true;
+  if(['ts','sep','map'].includes(params.get('tab')))S.tab=params.get('tab');
+  return params.has('r')||params.has('s');
+}
+
+buildParams();buildPresets();
+const fromHash=readHash();
+if(!fromHash)$('preset').value='0';else $('preset').value='custom';
+$('x0').value=S.x0;$('y0').value=S.y0;$('z0').value=S.z0;$('delta').value=S.delta;$('useB').checked=S.useB;
+$('speed').value=S.speed;$('trail').value=S.trail;$('cloud').checked=S.cloud;
+$('speedv').textContent=S.speed;$('trailv').textContent=S.trail;
+syncParams();renderEq();renderFacts();setTab(S.tab);
+
+$('preset').addEventListener('change',e=>{
+  if(e.target.value==='custom')return;
+  const p=PRESETS[+e.target.value];S.sigma=10;S.beta=8/3;S.rho=p.r;syncParams();renderEq();renderFacts();reset();
+});
+['x0','y0','z0','delta'].forEach(id=>$(id).addEventListener('change',readInit));
+$('useB').addEventListener('change',readInit);
+$('speed').addEventListener('input',e=>{S.speed=+e.target.value;$('speedv').textContent=S.speed;});
+$('trail').addEventListener('input',e=>{S.trail=+e.target.value;$('trailv').textContent=S.trail;dirty=true;});
+$('showEq').addEventListener('change',e=>{S.showEq=e.target.checked;dirty=true;});
+$('auto').addEventListener('change',e=>{S.auto=e.target.checked;dirty=true;});
+$('cloud').addEventListener('change',e=>{S.cloud=e.target.checked;cloud=S.cloud?makeCloud():null;cloudN0=n;dirty=true;});
+$('play').addEventListener('click',()=>{S.playing=!S.playing;$('play').textContent=S.playing?'Pause':'Play';});
+$('reset').addEventListener('click',reset);
+$('v3d').addEventListener('click',()=>setView(-0.35,0.3));
+$('vxz').addEventListener('click',()=>setView(0,0));
+$('vxy').addEventListener('click',()=>setView(0,1.5708));
+$('vyz').addEventListener('click',()=>setView(-1.5708,0));
+$('zin').addEventListener('click',()=>{S.zoom*=1.25;dirty=true;});
+$('zout').addEventListener('click',()=>{S.zoom/=1.25;dirty=true;});
+$('tab_ts').addEventListener('click',()=>setTab('ts'));
+$('tab_sep').addEventListener('click',()=>setTab('sep'));
+$('tab_map').addEventListener('click',()=>setTab('map'));
+$('mklink').addEventListener('click',makeLink);
+
+let drag=null;
+cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);cv.classList.add('drag');});
+cv.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  S.az+=(e.clientX-drag.x)*0.01;S.el=Math.max(-1.5708,Math.min(1.5708,S.el+(e.clientY-drag.y)*0.01));
+  drag.x=e.clientX;drag.y=e.clientY;dirty=true;
+});
+const endDrag=()=>{drag=null;cv.classList.remove('drag');};
+cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);
+window.addEventListener('resize',fit);
+if(window.ResizeObserver){new ResizeObserver(fit).observe(cv);new ResizeObserver(fit).observe(cv2);}
+
+/* ======================= main loop ======================= */
+let last=performance.now(),acc=0;
+function frame(now){
+  const dt=Math.min(0.1,(now-last)/1000);last=now;
+  if(S.playing&&!blown){
+    acc+=S.speed*dt/H;const k=Math.min(400,Math.floor(acc));acc-=k;
+    stepN(k);dirty=true;
+    if(blown){$('msg').textContent='The solution has become non-finite for these parameters. Change the parameters or restart.';}
+  }
+  if(S.auto){S.az+=0.25*dt;dirty=true;}
+  if(dirty){draw();updateReadout();dirty=false;}
+  requestAnimationFrame(frame);
+}
+fit();reset();
+requestAnimationFrame(frame);
+
+/* follow the host site's light/dark toggle (same-origin Quarto page) */
+if(params.get('theme')==null){
+  const syncTheme=()=>{
+    try{
+      if(window.parent===window)return;
+      const pd=window.parent.document,pb=pd.body,ph=pd.documentElement;
+      const dark=pb.classList.contains('quarto-dark')||ph.getAttribute('data-bs-theme')==='dark'||pb.getAttribute('data-bs-theme')==='dark';
+      document.documentElement.dataset.theme=dark?'dark':'light';dirty=true;
+    }catch(e){}
+  };
+  try{
+    if(window.parent!==window){
+      const pd=window.parent.document,mo=new MutationObserver(syncTheme);
+      mo.observe(pd.body,{attributes:true,attributeFilter:['class','data-bs-theme']});
+      mo.observe(pd.documentElement,{attributes:true,attributeFilter:['data-bs-theme']});
+      syncTheme();
+    }
+  }catch(e){}
+}
+function postHeight(){
+  try{if(window.parent!==window)window.parent.postMessage({type:'app-height',height:$('app').offsetHeight},'*');}catch(e){}
+}
+if(window.ResizeObserver)new ResizeObserver(postHeight).observe($('app'));
+postHeight();
+
+window.__lz={S,cubicRoots,equilibria,stepN,reset,lyapunov,sim:()=>({A,B,n,maxima,sepT,sepD}),setPlaying:v=>{S.playing=v;}};
+})();
+</script>
+</body>
+</html>
