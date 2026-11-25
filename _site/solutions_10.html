@@ -378,6 +378,10 @@ window.Quarto = {
  <span class="dropdown-text">Slope Field</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./oscillator.html">
+ <span class="dropdown-text">Oscillators and Circuits</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./viz_numerical.html">
  <span class="dropdown-text">Numerical Methods</span></a>
   </li>  
@@ -472,7 +476,7 @@ window.Quarto = {
 </header>
 
 
-<div id="64bb1960" class="cell" data-execution_count="1">
+<div id="62571b8e" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -549,7 +553,7 @@ J(x^*,y^*)=\begin{pmatrix} f_x &amp; f_y\\ g_x &amp; g_y\end{pmatrix}\Bigg|_{(x^
 <li><strong>Phase diagram.</strong> Combine the equilibria, their types, and the region arrows into a sketch of key orbits. At a saddle, the stable and unstable manifolds (the <em>separatrices</em>) are tangent to the eigenvectors of <span class="math inline">\(J\)</span> and organize the whole picture.</li>
 </ol>
 <p>By the Hartman–Grobman theorem, if no eigenvalue of <span class="math inline">\(J\)</span> has zero real part, the linearization gives the correct local picture (the type of the critical point and its stability). Two code cells below are shared by all the exercises and are defined here once: one analyzes a system symbolically, and one draws the two-panel figure. Because the kernel is shared, they are available on the rest of the page.</p>
-<div id="2a333737" class="cell" data-execution_count="2">
+<div id="b8e71ea0" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code: symbolic analysis helper</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> sym.symbols(<span class="st">'x y'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
@@ -598,7 +602,7 @@ J(x^*,y^*)=\begin{pmatrix} f_x &amp; f_y\\ g_x &amp; g_y\end{pmatrix}\Bigg|_{(x^
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: region arrows agree with the hand analysis at all </span><span class="sc">{</span><span class="bu">len</span>(samples)<span class="sc">}</span><span class="ss"> sample points: </span><span class="sc">{</span>ok<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="705814f2" class="cell" data-execution_count="3">
+<div id="4cf31807" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code: nullcline and phase portrait figure</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nullcline_and_portrait(f, g, xlim, ylim, title, pts_J, n_arrows<span class="op">=</span><span class="dv">11</span>, density<span class="op">=</span><span class="fl">1.3</span>):</span>
@@ -745,7 +749,7 @@ J(x,y)=\begin{pmatrix}1&amp;-1\\2(y-1)&amp;2x\end{pmatrix}.
 </table>
 <p>The saddle at the origin is where all four arrow directions meet in an alternating pattern, and in the triangle with vertices <span class="math inline">\((0,0),(0,1),(1,1)\)</span> the flow points SW toward the origin.</p>
 <p><strong>SymPy check.</strong></p>
-<div id="adca796e" class="cell" data-execution_count="4">
+<div id="82bd0447" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>f1a, g1a <span class="op">=</span> x <span class="op">-</span> y, <span class="dv">2</span><span class="op">*</span>x<span class="op">*</span>(<span class="op">-</span><span class="dv">1</span> <span class="op">+</span> y)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pts, J <span class="op">=</span> analyze(f1a, g1a, <span class="st">"1(a)"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>check_regions(f1a, g1a, [((<span class="fl">0.5</span>, <span class="dv">2</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="dv">3</span>, <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="dv">2</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="fl">0.5</span>, <span class="fl">0.8</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)),</span>
@@ -773,7 +777,7 @@ Note
 </div>
 </div>
 <p><strong>Phase diagram.</strong></p>
-<div id="4d804227" class="cell" data-execution_count="5">
+<div id="75a1037a" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nullcline_and_portrait(f1a, g1a, (<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>), (<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>), <span class="vs">r"1</span><span class="kw">(</span><span class="vs">a</span><span class="kw">)</span><span class="vs">: </span><span class="dv">$</span><span class="vs">x'=x-y,</span><span class="ch">\ </span><span class="vs">y'=2x</span><span class="kw">(</span><span class="vs">-1</span><span class="op">+</span><span class="vs">y</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>, pts_with_J(f1a, g1a, pts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -802,7 +806,7 @@ Note
 </ul>
 <p>Around the saddle <span class="math inline">\((-1,1)\)</span> the four neighboring regions give NE (above the line, <span class="math inline">\(y&gt;1\)</span>), SW (below the line, <span class="math inline">\(|y|&lt;1\)</span>), SE (<span class="math inline">\(y&gt;1\)</span> and <span class="math inline">\(y&lt;-x\)</span>), and NW (<span class="math inline">\(|y|&lt;1\)</span> and <span class="math inline">\(y&gt;-x\)</span>) in alternating positions, the pattern of a saddle. The system is invariant under <span class="math inline">\((x,y)\mapsto(-x,-y)\)</span>, so the picture at <span class="math inline">\((1,-1)\)</span> is the point reflection of the picture at <span class="math inline">\((-1,1)\)</span>.</p>
 <p><strong>SymPy check.</strong></p>
-<div id="d2ddb153" class="cell" data-execution_count="6">
+<div id="2c3138e1" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f1b, g1b <span class="op">=</span> x <span class="op">-</span> x<span class="op">*</span>y<span class="op">**</span><span class="dv">2</span>, x <span class="op">+</span> y</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pts, J <span class="op">=</span> analyze(f1b, g1b, <span class="st">"1(b)"</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>check_regions(f1b, g1b, [((<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.2</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">1.5</span>), (<span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">0.8</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.8</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)),</span>
@@ -833,7 +837,7 @@ Note
 </div>
 </div>
 <p><strong>Phase diagram.</strong></p>
-<div id="b4aa48a7" class="cell" data-execution_count="7">
+<div id="917a561d" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nullcline_and_portrait(f1b, g1b, (<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), (<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="vs">r"1</span><span class="kw">(</span><span class="vs">b</span><span class="kw">)</span><span class="vs">: </span><span class="dv">$</span><span class="vs">x'=x-xy</span><span class="dv">^</span><span class="vs">2,</span><span class="ch">\ </span><span class="vs">y'=x</span><span class="op">+</span><span class="vs">y</span><span class="dv">$</span><span class="vs">"</span>, pts_with_J(f1b, g1b, pts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -881,7 +885,7 @@ Note
 </table>
 <p>Since the system is uncoupled, all three lines are also invariant sets: a solution that starts on <span class="math inline">\(x=1\)</span> stays there. These lines are the separatrices of the saddle at <span class="math inline">\((1,-2)\)</span>.</p>
 <p><strong>SymPy check.</strong></p>
-<div id="31bede43" class="cell" data-execution_count="8">
+<div id="82f076d8" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>f1c, g1c <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> x<span class="op">**</span><span class="dv">2</span>, y <span class="op">+</span> <span class="dv">2</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>pts, J <span class="op">=</span> analyze(f1c, g1c, <span class="st">"1(c)"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>check_regions(f1c, g1c, [((<span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="dv">2</span>, <span class="dv">0</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)),</span>
@@ -909,7 +913,7 @@ Note
 </div>
 </div>
 <p><strong>Phase diagram.</strong></p>
-<div id="60edd916" class="cell" data-execution_count="9">
+<div id="da14e954" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nullcline_and_portrait(f1c, g1c, (<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), (<span class="op">-</span><span class="dv">4</span>, <span class="dv">1</span>), <span class="vs">r"1</span><span class="kw">(</span><span class="vs">c</span><span class="kw">)</span><span class="vs">: </span><span class="dv">$</span><span class="vs">x'=1-x</span><span class="dv">^</span><span class="vs">2,</span><span class="ch">\ </span><span class="vs">y'=y</span><span class="op">+</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>, pts_with_J(f1c, g1c, pts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -937,7 +941,7 @@ Note
 </ul>
 <p>so the arrows in all four quadrants point toward the origin, consistent with a stable node. Near <span class="math inline">\(\left(\tfrac14,1\right)\)</span> the four regions give NE (<span class="math inline">\(x&gt;\tfrac14,\ y&gt;1\)</span>), SE (<span class="math inline">\(x&lt;\tfrac14,\ y&gt;1\)</span>), SW (<span class="math inline">\(x&lt;\tfrac14,\ y&lt;1\)</span>) and NW (<span class="math inline">\(x&gt;\tfrac14,\ y&lt;1\)</span>), an alternating pattern, consistent with a saddle.</p>
 <p><strong>SymPy check.</strong></p>
-<div id="5fb3a095" class="cell" data-execution_count="10">
+<div id="70769ae7" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>f1d, g1d <span class="op">=</span> <span class="op">-</span>x <span class="op">+</span> x<span class="op">*</span>y, <span class="op">-</span><span class="dv">2</span><span class="op">*</span>y<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>x)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pts, J <span class="op">=</span> analyze(f1d, g1d, <span class="st">"1(d)"</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>check_regions(f1d, g1d, [((<span class="fl">0.1</span>, <span class="fl">0.5</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.5</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>), (<span class="dv">1</span>, <span class="dv">1</span>)),</span>
@@ -965,7 +969,7 @@ Note
 </div>
 </div>
 <p><strong>Phase diagram.</strong></p>
-<div id="243c7b1e" class="cell" data-execution_count="11">
+<div id="1c71ab18" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nullcline_and_portrait(f1d, g1d, (<span class="op">-</span><span class="dv">1</span>, <span class="fl">1.5</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>), <span class="vs">r"1</span><span class="kw">(</span><span class="vs">d</span><span class="kw">)</span><span class="vs">: </span><span class="dv">$</span><span class="vs">x'=-x</span><span class="op">+</span><span class="vs">xy,</span><span class="ch">\ </span><span class="vs">y'=-2y</span><span class="kw">(</span><span class="vs">1-4x</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>, pts_with_J(f1d, g1d, pts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -993,7 +997,7 @@ Note
 </ul>
 <p>Going around the origin the arrows point N→NW, W→SW, S→SE, E→NE, which is a counterclockwise circulation. Together with the positive real part of the eigenvalues this gives a spiral that unwinds counterclockwise.</p>
 <p><strong>SymPy check.</strong></p>
-<div id="0b867742" class="cell" data-execution_count="12">
+<div id="6fd29594" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>f1e, g1e <span class="op">=</span> x <span class="op">-</span> y <span class="op">+</span> x<span class="op">**</span><span class="dv">2</span>, x <span class="op">+</span> y</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pts, J <span class="op">=</span> analyze(f1e, g1e, <span class="st">"1(e)"</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>check_regions(f1e, g1e, [((<span class="dv">0</span>, <span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">0</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="fl">0.5</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="dv">1</span>))], <span class="st">"1(e)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1020,7 +1024,7 @@ Note
 </div>
 </div>
 <p><strong>Phase diagram.</strong></p>
-<div id="adbdeb64" class="cell" data-execution_count="13">
+<div id="93ce5b85" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>nullcline_and_portrait(f1e, g1e, (<span class="op">-</span><span class="dv">4</span>, <span class="dv">2</span>), (<span class="op">-</span><span class="dv">2</span>, <span class="dv">4</span>), <span class="vs">r"1</span><span class="kw">(</span><span class="vs">e</span><span class="kw">)</span><span class="vs">: </span><span class="dv">$</span><span class="vs">x'=x-y</span><span class="op">+</span><span class="vs">x</span><span class="dv">^</span><span class="vs">2,</span><span class="ch">\ </span><span class="vs">y'=x</span><span class="op">+</span><span class="vs">y</span><span class="dv">$</span><span class="vs">"</span>, pts_with_J(f1e, g1e, pts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1046,7 +1050,7 @@ Note
 </ul>
 <p>which is again a counterclockwise circulation, and with negative real part the orbits spiral inward.</p>
 <p><strong>SymPy check.</strong></p>
-<div id="9c664f31" class="cell" data-execution_count="14">
+<div id="4581affb" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>f1f, g1f <span class="op">=</span> <span class="op">-</span>x <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>y, <span class="dv">2</span><span class="op">*</span>x <span class="op">-</span> y <span class="op">+</span> x<span class="op">*</span>y<span class="op">**</span><span class="dv">2</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pts, J <span class="op">=</span> analyze(f1f, g1f, <span class="st">"1(f)"</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>check_regions(f1f, g1f, [((<span class="dv">1</span>, <span class="dv">0</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)), ((<span class="dv">0</span>, <span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)), ((<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">1</span>))], <span class="st">"1(f)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1071,7 +1075,7 @@ Note
 </div>
 </div>
 <p><strong>Phase diagram.</strong></p>
-<div id="20587208" class="cell" data-execution_count="15">
+<div id="2435ae28" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>nullcline_and_portrait(f1f, g1f, (<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), (<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="vs">r"1</span><span class="kw">(</span><span class="vs">f</span><span class="kw">)</span><span class="vs">: </span><span class="dv">$</span><span class="vs">x'=-x-2y,</span><span class="ch">\ </span><span class="vs">y'=2x-y</span><span class="op">+</span><span class="vs">xy</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>, pts_with_J(f1f, g1f, pts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1238,7 +1242,7 @@ x^2+4x^2-4=0\ \Longrightarrow\ x^2=\tfrac45\ \Longrightarrow\ x=\pm\tfrac{2}{\sq
 <li>At <span class="math inline">\(P_-\)</span>: <span class="math inline">\(J=\begin{pmatrix}-\tfrac{4}{\sqrt5}&amp;-\tfrac{8}{\sqrt5}\\-2&amp;1\end{pmatrix}\)</span> has <span class="math inline">\(\Delta=-\tfrac{4}{\sqrt5}-\tfrac{16}{\sqrt5}=-4\sqrt5&lt;0\)</span>. It is a <strong>saddle</strong>.</li>
 </ul>
 <p><strong>SymPy check.</strong></p>
-<div id="a69f4118" class="cell" data-execution_count="16">
+<div id="2b9de384" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>f4, g4 <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">4</span>, y <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>x</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>pts, J <span class="op">=</span> analyze(f4, g4, <span class="st">"4"</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> pts:</span>
@@ -1270,7 +1274,7 @@ Note
 </div>
 </div>
 <p><strong>Phase diagram.</strong> The left panel answers parts (a)–(c): the two equilibria, the two nullclines, and the arrows. The right panel is the phase portrait.</p>
-<div id="3dfdfa96" class="cell" data-execution_count="17">
+<div id="60f887db" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>nullcline_and_portrait(f4, g4, (<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), (<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="vs">r"4: </span><span class="dv">$</span><span class="vs">x'=x</span><span class="dv">^</span><span class="vs">2</span><span class="op">+</span><span class="vs">y</span><span class="dv">^</span><span class="vs">2-4,</span><span class="ch">\ </span><span class="vs">y'=y-2x</span><span class="dv">$</span><span class="vs">"</span>, pts_with_J(f4, g4, pts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1292,7 +1296,7 @@ Note
 </section>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
-<div id="df0c1476" class="cell" data-execution_count="18">
+<div id="c00333d6" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, platform</span>

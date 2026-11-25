@@ -1,0 +1,69 @@
+---
+title: "Oscillator and RLC Circuit Explorer"
+subtitle: "Damped, driven, and switched second-order systems: one equation, three views"
+page-layout: full
+toc: false
+---
+
+A mass on a spring and a series RLC circuit obey the same equation,
+$$m x'' + b x' + k x = F(t) \qquad\text{and}\qquad L Q'' + R Q' + \tfrac{1}{C} Q = E(t),$$
+which in the form used in the notes is $x'' + 2\gamma x' + \omega_0^2 x = f(t)$ with $\gamma = b/2m$, $\omega_0^2 = k/m$, and $f = F/m$. Change the parameters, the initial condition, or the input, and watch the same solution in three views: the graph of $x(t)$, the **roots** of the characteristic equation in the complex plane, and the **phase portrait**. The panel on the right shows the steady-state amplitude and phase for a cosine drive. Use the "RLC circuit" button to switch the labels and the picture to the electrical version.
+
+::: {.content-visible when-format="html"}
+```{=html}
+<iframe class="app-frame" src="apps/oscillator.html"
+        width="100%" height="1100" style="border:0" loading="lazy"
+        title="Oscillator and RLC circuit explorer"></iframe>
+<script>
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'app-height')
+    document.querySelectorAll('iframe.app-frame').forEach(f => {
+      if (f.contentWindow === e.source) f.style.height = e.data.height + 'px';
+    });
+});
+</script>
+```
+:::
+
+[Open full screen](apps/oscillator.html){target="_blank"}
+
+## Guided experiments
+
+Each experiment starts with a prediction. Write down your answer *before* you open the link, then check it.
+
+### 1. The three damping regimes (Notes 4)
+
+Take $m = 1$, $k = 4$, so $\omega_0 = 2$, and start from $x(0)=1$, $x'(0)=0$.
+
+- **Predict:** as $b$ increases from $0$, where do the two roots move? At what value of $b$ do they meet, and what happens to the solution when they do?
+- Check with [$b = 0.4$ (underdamped)](apps/oscillator.html#mode=mech&m=1&b=0.4&k=4&x0=1&v0=0&in=none){target="_blank"}, [$b = 4$ (critically damped)](apps/oscillator.html#mode=mech&m=1&b=4&k=4&x0=1&v0=0&in=none){target="_blank"}, and [$b = 5$ (overdamped)](apps/oscillator.html#mode=mech&m=1&b=5&k=4&x0=1&v0=0&in=none){target="_blank"}. The teal curve shows the path the roots take as $b$ increases.
+- **Explain:** why is the overdamped solution slower to settle than the critically damped one, even though it has more damping? (Look at the slow root.)
+
+### 2. Resonance without damping (Examples 7 and 8)
+
+- **Predict:** for $x'' + 4x = \cos(\omega t)$ starting from rest, what does the solution look like when $\omega = 1$? When $\omega = 2$? When $\omega = 1.8$?
+- Check with [$\omega = 1$](apps/oscillator.html#mode=mech&m=1&b=0&k=4&x0=0&v0=0&in=cos&F0=1&w=1){target="_blank"} (the solution is $(\cos t - \cos 2t)/3$), [$\omega = 2$](apps/oscillator.html#mode=mech&m=1&b=0&k=4&x0=0&v0=0&in=cos&F0=1&w=2){target="_blank"} (the solution is $t\sin(2t)/4$, which grows linearly), and [$\omega = 1.8$](apps/oscillator.html#mode=mech&m=1&b=0&k=4&x0=0&v0=0&in=cos&F0=1&w=1.8&T=40){target="_blank"} (beats).
+- **Explain:** where is the point $i\omega$ in the root plot compared with the roots when resonance occurs?
+
+### 3. Resonance with damping: transient and steady state
+
+- **Predict:** with $b = 0.4$, will the largest amplitude occur exactly at $\omega = \omega_0$? Will it be the same for $b = 2$?
+- Open [the damped resonance setup](apps/oscillator.html#mode=mech&m=1&b=0.4&k=4&x0=0&v0=0&in=cos&F0=1&w=2){target="_blank"}, tick "Transient" to see $x - x_p$, and use the buttons $\omega=\omega_0$ and $\omega=\omega_r$. The orange dot on the right shows $D(\omega)$ and the phase $\delta$.
+- **Explain:** the transient dies like $e^{-\gamma t}$, but the steady-state oscillation does not. Why can the steady state be larger than the static deflection $f/\omega_0^2$ when $\omega \approx \omega_0$? Compare with $b = 2$, where the peak formula $\omega_r = \sqrt{\omega_0^2 - 2\gamma^2}$ gives a smaller value and there is only a mild peak.
+
+### 4. Switching on a constant force (Laplace unit)
+
+- **Predict:** a force $F_0 = 4$ is switched on at $t=0$ for $m=1$, $k=4$. Where will the mass finally rest? For $b = 0.8$, will it overshoot, and by how much?
+- Check with [$b = 0.8$](apps/oscillator.html#mode=mech&m=1&b=0.8&k=4&x0=0&v0=0&in=step&F0=4){target="_blank"} and [$b = 4$](apps/oscillator.html#mode=mech&m=1&b=4&k=4&x0=0&v0=0&in=step&F0=4){target="_blank"}. The Facts panel reports the overshoot, which for a start from rest should match $e^{-\pi\gamma/\omega_d}$.
+- **Explain:** how do the roots in the left half-plane predict the overshoot and the settling time?
+
+### 5. Impulses and pulses
+
+- **Predict:** the response to an impulse of size $J$ at $t = 0$ from rest equals the free motion with what initial condition? Compare it with the response to a [short square pulse](apps/oscillator.html#mode=mech&m=1&b=0.4&k=4&x0=0&v0=0&in=pulse&F0=4&Tp=0.2){target="_blank"} of width $0.2$ and height $4$ (area $0.8$).
+- Check with [an impulse](apps/oscillator.html#mode=mech&m=1&b=0.8&k=4&x0=0&v0=0&in=impulse&J=1){target="_blank"}. Then shrink the pulse width in the Input panel, increasing $F_0$ to keep the area fixed, and watch the pulse response approach the impulse response.
+- **Explain:** why does the phase portrait of an impulse start with a vertical jump?
+
+### 6. The same equation in a circuit
+
+- **Predict:** in an RLC circuit with $L = 1$, $R = 0.8$, $C = 0.25$, and a battery $E_0 = 4$ switched on, what is the final charge on the capacitor?
+- Check with [this circuit](apps/oscillator.html#mode=elec&m=1&b=0.8&k=4&x0=0&v0=0&in=step&F0=4){target="_blank"}, then compare it with experiment 4. Are the two graphs the same? Which circuit element plays the role of the mass, the damper, and the spring?

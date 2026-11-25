@@ -378,6 +378,10 @@ window.Quarto = {
  <span class="dropdown-text">Slope Field</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./oscillator.html">
+ <span class="dropdown-text">Oscillators and Circuits</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./viz_numerical.html">
  <span class="dropdown-text">Numerical Methods</span></a>
   </li>  
@@ -486,7 +490,7 @@ window.Quarto = {
 </header>
 
 
-<div id="16255c85" class="cell" data-execution_count="1">
+<div id="ca0df4a5" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a code cell that imports the necessary libraries for our session.</span></span>
@@ -509,7 +513,7 @@ window.Quarto = {
 <li><strong>A repeated eigenvalue</strong> <span class="math inline">\(\lambda\)</span> with only one eigenvector <span class="math inline">\(\mathbf{v}\)</span>: <span class="math inline">\(\ \mathbf{x}(t)=c_1\mathbf{v}e^{\lambda t}+c_2(t\mathbf{v}+\mathbf{w})e^{\lambda t}\)</span>, where <span class="math inline">\((A-\lambda I)\mathbf{w}=\mathbf{v}\)</span>.</li>
 </ul>
 <p>Several of the SymPy checks below use one small helper, defined here once. Given a matrix <span class="math inline">\(A\)</span> and two proposed solutions, it checks that each solves <span class="math inline">\(\mathbf{x}'=A\mathbf{x}\)</span> and that the pair is a <em>fundamental set</em> (the matrix with the two solutions as columns has nonzero determinant at <span class="math inline">\(t=0\)</span>, the Wronskian condition).</p>
-<div id="e706cbe9" class="cell" data-execution_count="2">
+<div id="505c0b5b" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> sym.symbols(<span class="st">'t'</span>, real<span class="op">=</span><span class="va">True</span>)</span>
@@ -554,7 +558,7 @@ window.Quarto = {
 \boxed{\mathbf{x}(t)=c_1\begin{pmatrix}2\\1\end{pmatrix}e^{-3t}+c_2\begin{pmatrix}-1\\0\end{pmatrix}e^{2t}.}
 \]</span></p>
 <p>The eigenvalues have opposite signs: the origin is a <strong>saddle</strong>, unstable.</p>
-<div id="9d9abc8c" class="cell" data-execution_count="3">
+<div id="62700921" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>eigpairs <span class="op">=</span> {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"a"</span>: [(<span class="op">-</span><span class="dv">1</span>, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>]), (<span class="op">-</span><span class="dv">2</span>, [<span class="dv">1</span>, <span class="dv">2</span>])],</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"b"</span>: [(<span class="op">-</span><span class="dv">1</span>, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>]), (<span class="dv">2</span>, [<span class="dv">1</span>, <span class="dv">2</span>])],</span>
@@ -653,7 +657,7 @@ Tip
 <p><span class="math display">\[
 \boxed{\mathbf{x}(t)=e^{2t}\left[c_1\begin{pmatrix}\cos\sqrt2t\\\cos\sqrt2t-\sqrt2\sin\sqrt2t\end{pmatrix}+c_2\begin{pmatrix}\sin\sqrt2t\\\sin\sqrt2t+\sqrt2\cos\sqrt2t\end{pmatrix}\right].}
 \]</span></p>
-<div id="01ed7f86" class="cell" data-execution_count="4">
+<div id="d869c351" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s5, s2 <span class="op">=</span> sym.sqrt(<span class="dv">5</span>), sym.sqrt(<span class="dv">2</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lam1, lam2 <span class="op">=</span> (<span class="op">-</span><span class="dv">3</span> <span class="op">+</span> s5)<span class="op">/</span><span class="dv">2</span>, (<span class="op">-</span><span class="dv">3</span> <span class="op">-</span> s5)<span class="op">/</span><span class="dv">2</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -722,7 +726,7 @@ c_1\begin{pmatrix}1\\1\end{pmatrix}+c_2\begin{pmatrix}2\\3\end{pmatrix}=\begin{p
 \boxed{\mathbf{x}(t)=7\begin{pmatrix}1\\1\end{pmatrix}e^{-t}-2\begin{pmatrix}2\\3\end{pmatrix}e^{-2t}=\begin{pmatrix}7e^{-t}-4e^{-2t}\\7e^{-t}-6e^{-2t}\end{pmatrix}.}
 \]</span></p>
 <p>Both eigenvalues are negative, so the origin is a stable node and the solution tends to <span class="math inline">\(\mathbf{0}\)</span> as <span class="math inline">\(t\to\infty\)</span>.</p>
-<div id="574bf798" class="cell" data-execution_count="5">
+<div id="cf16b8d9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>A4 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>], [<span class="dv">3</span>, <span class="op">-</span><span class="dv">4</span>]])</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>x4 <span class="op">=</span> <span class="dv">7</span><span class="op">*</span>sym.Matrix([<span class="dv">1</span>, <span class="dv">1</span>])<span class="op">*</span>sym.exp(<span class="op">-</span>t) <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>sym.Matrix([<span class="dv">2</span>, <span class="dv">3</span>])<span class="op">*</span>sym.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -776,7 +780,7 @@ Note
 \boxed{\begin{aligned}x(t)&amp;=e^{t}\left(c_1\cos2t+c_2\sin2t\right),\\y(t)&amp;=e^{t}\left[c_1(\cos2t-\sin2t)+c_2(\sin2t+\cos2t)\right].\end{aligned}}
 \]</span></p>
 <p>Here <span class="math inline">\(a=1&gt;0\)</span>, so the orbits spiral <strong>outward</strong>: the origin is an unstable spiral.</p>
-<div id="81a3982d" class="cell" data-execution_count="6">
+<div id="bbcb80e4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>I <span class="op">=</span> sym.I</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_from_complex_eigenpair(lam, v):</span>
@@ -837,7 +841,7 @@ Note
 <li>The <strong><span class="math inline">\(y'=0\)</span> nullcline</strong> is <span class="math inline">\(x-3y=0\)</span>, i.e.&nbsp;<span class="math inline">\(y=\tfrac13x\)</span>. On it <span class="math inline">\(x'=3x+4y=13y\)</span>, so the direction field is <strong>horizontal</strong> there (to the right for <span class="math inline">\(y&gt;0\)</span>, to the left for <span class="math inline">\(y&lt;0\)</span>).</li>
 </ul>
 <p>The nullclines cut the plane into four regions in which the signs of <span class="math inline">\(x'\)</span> and <span class="math inline">\(y'\)</span> are fixed, and the two eigenvector lines act as the “rails” that organize the saddle. The helper function defined below draws the diagram. It shows a direction field, a selection of orbits (computed exactly from the matrix exponential, <span class="math inline">\(\mathbf{x}(t)=e^{At}\mathbf{x}_0\)</span>), any linear orbits, and optionally the nullclines. It is reused for all of the phase portraits on this page.</p>
-<div id="f66e28bc" class="cell" data-execution_count="7">
+<div id="060ac794" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> expm</span>
@@ -945,7 +949,7 @@ Figure&nbsp;1: Phase portrait of <span class="math inline">\(x'=3x+4y,\ y'=x-3y\
 </div>
 </div>
 </div>
-<div id="46d0d7ed" class="cell" data-execution_count="9">
+<div id="74733b00" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>A3 <span class="op">=</span> sym.Matrix([[<span class="dv">3</span>, <span class="dv">4</span>], [<span class="dv">1</span>, <span class="op">-</span><span class="dv">3</span>]])</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>s13 <span class="op">=</span> sym.sqrt(<span class="dv">13</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1016,7 +1020,7 @@ Tip
 \boxed{\mathbf{x}(t)=c_1\begin{pmatrix}1\\-1\end{pmatrix}e^{2t}+c_2\left[t\begin{pmatrix}1\\-1\end{pmatrix}+\begin{pmatrix}0\\-1\end{pmatrix}\right]e^{2t}=e^{2t}\begin{pmatrix}c_1+c_2t\\-c_1-c_2t-c_2\end{pmatrix}.}
 \]</span></p>
 <p><em>Phase diagram.</em> Since <span class="math inline">\(2&gt;0\)</span>, every nonzero solution grows without bound as <span class="math inline">\(t\to\infty\)</span>: a <strong>degenerate node</strong>, unstable. The single linear orbit lies along the line <span class="math inline">\(y=-x\)</span>, and as <span class="math inline">\(t\to-\infty\)</span> every other orbit enters the origin tangent to that line.</p>
-<div id="9ad8ec8e" class="cell" data-execution_count="10">
+<div id="8b68d050" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Aa <span class="op">=</span> sym.Matrix([[<span class="op">-</span><span class="dv">3</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="op">-</span><span class="dv">3</span>]])</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cols_a <span class="op">=</span> [sym.exp(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t)<span class="op">*</span>sym.Matrix([<span class="dv">1</span>, <span class="dv">0</span>]), sym.exp(<span class="op">-</span><span class="dv">3</span><span class="op">*</span>t)<span class="op">*</span>sym.Matrix([t, <span class="dv">1</span>])]</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>Ab <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">3</span>]])</span>
@@ -1102,7 +1106,7 @@ Note
 <p><strong>(h) <span class="math inline">\(A=\begin{pmatrix}0&amp;9\\-1&amp;0\end{pmatrix}\)</span>.</strong> <span class="math inline">\(\operatorname{tr}A=0\)</span>, <span class="math inline">\(\det A=9\)</span>, so <span class="math inline">\(\lambda^2+9=0\)</span> and <span class="math inline">\(\lambda=\pm3i\)</span>. For <span class="math inline">\(\lambda=3i\)</span> the first row of <span class="math inline">\(A-\lambda I\)</span> gives <span class="math inline">\(-3iv_1+9v_2=0\)</span>, so <span class="math inline">\(v_2=\tfrac{i}{3}v_1\)</span> and <span class="math inline">\(\mathbf{v}=\begin{pmatrix}3\\i\end{pmatrix}=\underbrace{\begin{pmatrix}3\\0\end{pmatrix}}_{\mathbf{w}}+i\underbrace{\begin{pmatrix}0\\1\end{pmatrix}}_{\mathbf{z}}\)</span>, with <span class="math inline">\(a=0\)</span>, <span class="math inline">\(b=3\)</span>. <span class="math display">\[
 \boxed{\mathbf{x}(t)=c_1\begin{pmatrix}3\cos3t\\-\sin3t\end{pmatrix}+c_2\begin{pmatrix}3\sin3t\\\cos3t\end{pmatrix}.}
 \]</span> <strong>Center</strong> (stable but not asymptotically stable). Since <span class="math inline">\(\tfrac{d}{dt}\left(x^2+9y^2\right)=2x(9y)+18y(-x)=0\)</span>, the orbits are the ellipses <span class="math inline">\(x^2+9y^2=\text{const}\)</span>, with semi-axes in ratio <span class="math inline">\(3:1\)</span>. At <span class="math inline">\((1,0)\)</span> the vector <span class="math inline">\(A(1,0)^{\mathrm T}=(0,-1)^{\mathrm T}\)</span> points downward, so the motion is <strong>clockwise</strong>. No linear orbits.</p>
-<div id="a544e6e3" class="cell" data-execution_count="12">
+<div id="43f30ae6" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>systems4 <span class="op">=</span> {</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"a"</span>: (sym.Matrix([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">2</span>]]),</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>          [sym.Matrix([<span class="dv">2</span>, <span class="dv">3</span>])<span class="op">*</span>sym.exp(<span class="dv">4</span><span class="op">*</span>t), sym.Matrix([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>])<span class="op">*</span>sym.exp(<span class="op">-</span>t)]),</span>
@@ -1327,7 +1331,7 @@ Tip
 <p>The generalized-eigenvector term drops out because the initial condition <span class="math inline">\((1,-1)^{\mathrm T}\)</span> is itself an <strong>eigenvector</strong> of <span class="math inline">\(A\)</span>. The solution is therefore a straight-line (linear) orbit: it moves along the line <span class="math inline">\(y=-x\)</span> away from the origin, and the factor <span class="math inline">\(t\)</span> never appears.</p>
 </div>
 </div>
-<div id="cdee805e" class="cell" data-execution_count="15">
+<div id="6ef9b832" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>A5 <span class="op">=</span> sym.Matrix([[<span class="dv">2</span>, <span class="dv">1</span>], [<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>]])</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>x5 <span class="op">=</span> sym.Matrix([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>])<span class="op">*</span>sym.exp(t)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1434,7 +1438,7 @@ Figure&nbsp;6: Phase portrait of <span class="math inline">\(\mathbf{x}'=A\mathb
 </div>
 </div>
 </div>
-<div id="31181e9f" class="cell" data-execution_count="18">
+<div id="0f42539a" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>A6 <span class="op">=</span> sym.Matrix([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>], [<span class="op">-</span><span class="dv">2</span>, <span class="dv">4</span>]])</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>x_, y_ <span class="op">=</span> sym.symbols(<span class="st">'x y'</span>)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1489,7 +1493,7 @@ Note
 </div>
 <div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="d0117b23" class="cell" data-execution_count="19">
+<div id="dad2cef9" class="cell" data-execution_count="19">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys <span class="co"># sys for system-specific parameters and functions</span></span>
